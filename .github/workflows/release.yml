@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['[0-9]+.[0-9]+.[0-9]+*']
+
+# Das automatisch ausgestellte Token darf ausschliesslich Releases dieses oeffentlichen
+# Repositories anlegen bzw. aktualisieren. Das Packaging-Repo wird nur lesend per Deploy-Key
+# ausgecheckt.
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    name: AppImage und ZIP
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/checkout@v7
+        with:
+          repository: Bitpainter75/FerrumPlay-Build
+          path: packaging
+          ssh-key: ${{ secrets.PACKAGING_DEPLOY_KEY }}
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Werkzeuge
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zip desktop-file-utils
+
+      - name: Pakete bauen
+        run: packaging/package.sh
+        env:
+          FERRUMPLAY_BUILD_BOX: ""
+
+      - name: Ins Latest-Release
+        run: packaging/publish-github-release.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
