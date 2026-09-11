@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1
+
+- The converter context-menu action now respects a multi-selection: right-clicking one of the
+  selected tracks converts every selected track instead of only the clicked one.
+
 ## 0.4.0
 
 - Added the integrated Audio Converter. Convert selected tracks and albums to MP3 (CBR or VBR),

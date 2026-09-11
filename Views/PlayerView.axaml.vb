@@ -117,7 +117,7 @@ Namespace Views
         Private Sub OnTrackConvertClick(sender As Object, e As RoutedEventArgs)
             Dim row = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistTrackRow)
             If row Is Nothing Then Return
-            ShowConverter({row.Track})
+            ShowConverter(ConversionTracksForContext(row))
         End Sub
 
         Private Sub OnTrackRemoveClick(sender As Object, e As RoutedEventArgs)
@@ -150,6 +150,21 @@ Namespace Views
             Me.FindControl(Of Control)("PlaylistSummaryText").IsVisible = False
             Me.FindControl(Of Control)("PlaylistToolbar").IsVisible = False
         End Sub
+
+        ''' <summary>Ein Kontextmenü gehört zu seiner angeklickten Zeile. Ist diese Teil einer
+        ''' Mehrfachauswahl, gilt seine Aktion aber für die ganze Auswahl – genauso wie im
+        ''' Dateimanager. Ein Rechtsklick auf einen nicht markierten Titel bleibt dagegen eine
+        ''' Aktion nur für diesen Titel.</summary>
+        Private Function ConversionTracksForContext(contextRow As PlaylistTrackRow) As IEnumerable(Of Track)
+            Dim list = Me.FindControl(Of ListBox)("PlaylistBox")
+            If list Is Nothing Then Return {contextRow.Track}
+
+            Dim selectedRows = list.SelectedItems.OfType(Of PlaylistTrackRow)().ToList()
+            If selectedRows.Any(Function(row) Object.ReferenceEquals(row, contextRow)) Then
+                Return selectedRows.Select(Function(row) row.Track).Where(Function(track) track IsNot Nothing).Distinct().ToList()
+            End If
+            Return {contextRow.Track}
+        End Function
 
         Private Sub OnConverterCloseRequested(sender As Object, e As EventArgs)
             Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
