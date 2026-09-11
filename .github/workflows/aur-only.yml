@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     container: archlinux:base-devel
     steps:
-      - run: pacman -Sy --noconfirm --needed git openssh zip unzip jq curl python dotnet-sdk
+      - run: pacman -Sy --noconfirm --needed git openssh zip unzip jq curl python github-cli dotnet-sdk
       - uses: actions/checkout@v7
       - uses: actions/checkout@v7
         with:
