@@ -18,12 +18,21 @@ Namespace Views
         Inherits ViewModelBase
         Private _status As String
         Public Sub New(track As Track)
+            Me.Track = track
             Me.Title = track.DisplayTitle
             Me.Detail = track.FormatText
             _status = LocalizationService.T("Wartet")
         End Sub
+        Public ReadOnly Property Track As Track
         Public ReadOnly Property Title As String
         Public ReadOnly Property Detail As String
+        ''' <summary>Die Kennzeichen-Tracknummer bleibt beim Konvertieren sichtbar. Hat die Datei
+        ''' keine, zeigt der Strich bewusst an, dass keine Nummer erfunden wurde.</summary>
+        Public ReadOnly Property TrackNumberText As String
+            Get
+                Return If(Track.TrackNumber > 0, Track.TrackNumber.ToString(), "–")
+            End Get
+        End Property
         Public Property Status As String
             Get
                 Return _status
@@ -34,12 +43,24 @@ Namespace Views
         End Property
     End Class
 
+    ''' <summary>Eine nicht konvertierbare Trennerzeile. Sie bewahrt die Album-/Ordnerstruktur in
+    ''' der Warteschlange, ohne die Fortschrittsindizes der eigentlichen Titel zu verschieben.</summary>
+    Public NotInheritable Class ConversionQueueGroupRow
+        Public Sub New(title As String, trackCount As Integer)
+            Me.Title = title
+            Me.Summary = LocalizationService.Format("{0} Titel", trackCount)
+        End Sub
+        Public ReadOnly Property Title As String
+        Public ReadOnly Property Summary As String
+    End Class
+
     Public Class ConverterPanel
         Inherits UserControl
         Private _tracks As List(Of Track) = New List(Of Track)()
         Private _cancel As CancellationTokenSource
         Public Event CloseRequested As EventHandler
         Public ReadOnly Property Queue As New ObservableCollection(Of ConversionQueueRow)()
+        Public ReadOnly Property DisplayRows As New ObservableCollection(Of Object)()
 
         Public Sub New()
             InitializeComponent()
@@ -51,7 +72,7 @@ Namespace Views
         Public Sub New(tracks As IEnumerable(Of Track))
             Me.New()
             _tracks = tracks.Where(Function(track) track IsNot Nothing).ToList()
-            For Each track In _tracks : Queue.Add(New ConversionQueueRow(track)) : Next
+            AddQueueRows()
             FindControl(Of TextBlock)("CountText").Text = LocalizationService.Format("{0} Titel", _tracks.Count)
             Dim firstFile = _tracks.FirstOrDefault(Function(track) Not track.IsAudioCdTrack)
             FindControl(Of TextBox)("FolderBox").Text = If(firstFile Is Nothing, AppSettingsService.Current.LastBrowseFolder, Path.GetDirectoryName(firstFile.FilePath))
@@ -60,6 +81,44 @@ Namespace Views
         Private Sub InitializeComponent()
             AvaloniaXamlLoader.Load(Me)
         End Sub
+
+        Private Sub AddQueueRows()
+            ' Die Auswahl behält ihre Reihenfolge; ein Album wird nur dann mit einer neuen
+            ' Überschrift begonnen, wenn in der Auswahl tatsächlich ein anderer Ordner folgt.
+            Dim start = 0
+            While start < _tracks.Count
+                Dim folder = _tracks(start).FolderPath
+                Dim [end] = start + 1
+                While [end] < _tracks.Count AndAlso String.Equals(_tracks([end]).FolderPath, folder, StringComparison.Ordinal)
+                    [end] += 1
+                End While
+
+                Dim groupTracks = _tracks.GetRange(start, [end] - start)
+                DisplayRows.Add(New ConversionQueueGroupRow(DescribeGroup(folder, groupTracks), groupTracks.Count))
+                For Each track In groupTracks
+                    Dim row As New ConversionQueueRow(track)
+                    Queue.Add(row)
+                    DisplayRows.Add(row)
+                Next
+                start = [end]
+            End While
+        End Sub
+
+        Private Shared Function DescribeGroup(folder As String, tracks As List(Of Track)) As String
+            Dim first = tracks.FirstOrDefault()
+            If first IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(first.Album) Then
+                Dim artist = If(String.IsNullOrWhiteSpace(first.AlbumArtist), first.Artist, first.AlbumArtist)
+                Dim title = If(String.IsNullOrWhiteSpace(artist), first.Album, $"{artist} - {first.Album}")
+                If first.Year > 0 Then title &= $" [{first.Year}]"
+                Return title
+            End If
+            Try
+                Dim name = Path.GetFileName(folder.TrimEnd(Path.DirectorySeparatorChar))
+                If Not String.IsNullOrEmpty(name) Then Return name
+            Catch
+            End Try
+            Return folder
+        End Function
 
         Private Async Sub OnChooseFolderClick(sender As Object, e As RoutedEventArgs)
             Dim folders = Await TopLevel.GetTopLevel(Me).StorageProvider.OpenFolderPickerAsync(New FolderPickerOpenOptions With {.Title = LocalizationService.T("Zielordner"), .AllowMultiple = False})

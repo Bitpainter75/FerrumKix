@@ -131,9 +131,10 @@ Namespace Views
 
         Private Sub OnGroupConvertClick(sender As Object, e As RoutedEventArgs)
             Dim group = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow)
-            Dim vm As MainWindowViewModel = Me.ViewModel
-            If group Is Nothing OrElse vm Is Nothing Then Return
-            ShowConverter(vm.TracksInGroup(group))
+            If group Is Nothing Then Return
+            ' Wie im Dateimanager gilt das Kontextmenue fuer die ganze Auswahl, sofern die
+            ' angeklickte Albumzeile dazugehört. So lassen sich mehrere Alben auf einmal senden.
+            ShowConverter(ConversionTracksForContext(group))
         End Sub
 
         Private Sub ShowConverter(tracks As IEnumerable(Of Track))
@@ -155,16 +156,56 @@ Namespace Views
         ''' Mehrfachauswahl, gilt seine Aktion aber für die ganze Auswahl – genauso wie im
         ''' Dateimanager. Ein Rechtsklick auf einen nicht markierten Titel bleibt dagegen eine
         ''' Aktion nur für diesen Titel.</summary>
-        Private Function ConversionTracksForContext(contextRow As PlaylistTrackRow) As IEnumerable(Of Track)
+        ''' <summary>Liefert die Titel einer Auswahl. Gruppen stehen fuer alle ihre Titel, damit
+        ''' Ordner/Alben und einzelne Titel beliebig zusammen markiert werden koennen.</summary>
+        Private Function ConversionTracksForContext(contextRow As PlaylistRow) As IEnumerable(Of Track)
             Dim list = Me.FindControl(Of ListBox)("PlaylistBox")
-            If list Is Nothing Then Return {contextRow.Track}
-
-            Dim selectedRows = list.SelectedItems.OfType(Of PlaylistTrackRow)().ToList()
-            If selectedRows.Any(Function(row) Object.ReferenceEquals(row, contextRow)) Then
-                Return selectedRows.Select(Function(row) row.Track).Where(Function(track) track IsNot Nothing).Distinct().ToList()
+            If list Is Nothing Then
+                Dim loneTrack = TryCast(contextRow, PlaylistTrackRow)
+                If loneTrack IsNot Nothing Then Return {loneTrack.Track}
+                Dim loneGroup = TryCast(contextRow, PlaylistGroupRow)
+                Return If(loneGroup Is Nothing OrElse ViewModel Is Nothing,
+                          New List(Of Track)(), ViewModel.TracksInGroup(loneGroup))
             End If
-            Return {contextRow.Track}
+
+            Dim selectedRows = list.SelectedItems.OfType(Of PlaylistRow)().ToList()
+            If Not selectedRows.Any(Function(row) Object.ReferenceEquals(row, contextRow)) Then
+                selectedRows = New List(Of PlaylistRow) From {contextRow}
+            End If
+
+            Dim selectedTracks As New List(Of Track)()
+            Dim seen As New HashSet(Of Track)()
+            Dim vm = ViewModel
+            For Each row In selectedRows
+                Dim trackRow = TryCast(row, PlaylistTrackRow)
+                If trackRow IsNot Nothing Then
+                    If trackRow.Track IsNot Nothing AndAlso seen.Add(trackRow.Track) Then selectedTracks.Add(trackRow.Track)
+                    Continue For
+                End If
+
+                Dim groupRow = TryCast(row, PlaylistGroupRow)
+                If groupRow Is Nothing OrElse vm Is Nothing Then Continue For
+                For Each track In vm.TracksInGroup(groupRow)
+                    If track IsNot Nothing AndAlso seen.Add(track) Then selectedTracks.Add(track)
+                Next
+            Next
+            Return selectedTracks
         End Function
+
+        ''' <summary>Mehrfachauswahl ist auch vollstaendig per Tastatur erreichbar. Avalonia
+        ''' bringt fuer ListBox nicht auf allen Plattformen eine einheitliche Strg+A-Belegung mit,
+        ''' deshalb wird sie hier explizit umgesetzt.</summary>
+        Private Sub OnPlaylistKeyDown(sender As Object, e As KeyEventArgs)
+            If e.Key <> Key.A OrElse Not e.KeyModifiers.HasFlag(KeyModifiers.Control) Then Return
+            Dim list = TryCast(sender, ListBox)
+            If list Is Nothing Then Return
+
+            list.SelectedItems.Clear()
+            For Each row In list.Items.OfType(Of PlaylistTrackRow)()
+                list.SelectedItems.Add(row)
+            Next
+            e.Handled = True
+        End Sub
 
         Private Sub OnConverterCloseRequested(sender As Object, e As EventArgs)
             Dim host = Me.FindControl(Of ContentControl)("ConverterHost")

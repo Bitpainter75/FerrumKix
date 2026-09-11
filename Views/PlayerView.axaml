@@ -172,6 +172,7 @@
                              Margin="0,6,0,0"
                              ItemsSource="{Binding Rows}"
                              SelectionMode="Multiple"
+                             KeyDown="OnPlaylistKeyDown"
                              DoubleTapped="OnPlaylistDoubleTapped">
                         <ListBox.DataTemplates>
 

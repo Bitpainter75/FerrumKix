@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.2
+
+- `Ctrl+A` selects every track in the playlist.
+- Multiple selected tracks, albums, and folders can now be converted together from the context
+  menu; selected album and folder headers include all of their tracks.
+- The conversion queue now retains album and folder headers and displays each track's tagged
+  track number.
+
 ## 0.4.1
 
 - The converter context-menu action now respects a multi-selection: right-clicking one of the
