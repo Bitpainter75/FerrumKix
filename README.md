@@ -1,4 +1,4 @@
-<img src="Assets/FerrumPlay_TopBar.png" height="64" />
+<img src="Screenshot.png" height="250" />
 
 # FerrumPlay
 
