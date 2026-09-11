@@ -1,4 +1,4 @@
-<img src="Screenshot.png" height="550" />
+<img src="Banner.png" height="250" />
 
 # FerrumPlay
 
@@ -32,6 +32,8 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Runs once.** Open a file or folder from the file manager while FerrumPlay is running, and the running window takes it over, plays it, expands its album group and scrolls directly to the requested track.
 - **Remembers everything.** Playlist, volume, window position and the last track are back at the next start - and if you like, playback resumes right where it stopped.
 - **Speaks your language.** German and English, following your system by default.
+
+<img src="Screenshot.png" height="550" />
 
 ## The player
 
