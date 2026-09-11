@@ -23,16 +23,19 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Takes what you give it.** Drag files and whole folders into the window, add them with the buttons below the list, or pass them on the command line.
 - **Shuffle and repeat.** Whole list or a single track. Don't want to hear a track right now? Untick it instead of removing it.
 - **Gapless.** A continuously mixed album plays from track to track without a break.
+- **Plays Audio CDs.** On Linux, an inserted Audio CD is detected automatically and appears as a
+  separate temporary playlist. Its tracks can be selected, searched and played just like files;
+  ejecting the disc removes the playlist again.
 - **Evens out loudness.** ReplayGain by track, by album, or automatically: by album while an album plays through, by track when shuffling.
 - **Notices missing files.** Tracks whose file is gone are greyed out and skipped instead of stopping playback. Plug the drive back in and they return; one click removes them all.
 - **Fits into the desktop.** FerrumPlay speaks MPRIS, so Waybar, playerctl, notifications and the media keys reach it even while its window is in the background - with title, artist, album and cover.
-- **Runs once.** Open a file or folder from the file manager while FerrumPlay is running, and the running window takes it over and plays it.
+- **Runs once.** Open a file or folder from the file manager while FerrumPlay is running, and the running window takes it over, plays it, expands its album group and scrolls directly to the requested track.
 - **Remembers everything.** Playlist, volume, window position and the last track are back at the next start - and if you like, playback resumes right where it stopped.
 - **Speaks your language.** German and English, following your system by default.
 
 ## The player
 
-The window is split into three areas. The cover column on the left shows the artwork, title, artist, album and the technical details of the track; its width can be dragged. The playlist on the right lists your albums with their tracks, and the track that is playing stays highlighted even when the selection is somewhere else. Behind both, the cover of the current track fills the window, softly blurred.
+The window is split into three areas. The cover column on the left shows the artwork, title, artist, album and the technical details of the track; its width can be dragged. The playlist on the right lists your albums with their tracks, while an inserted Audio CD has its own tab. The track that is playing stays highlighted even when the selection is somewhere else. Behind both, the cover of the current track fills the window, softly blurred.
 
 The transport sits on a dark deck at the bottom: the progress bar across the full width, shuffle and repeat on the left, previous, stop, play and next in the middle, and the volume on the right. The volume is a rotary knob, taken from the FerrumPlay logo - drag it up or to the right to turn it up, or use the mouse wheel or the arrow keys.
 
@@ -61,6 +64,9 @@ The packages are self-contained and bring the .NET runtime with them. **libmpv i
 
 Without it FerrumPlay starts, but tells you it cannot play anything.
 
+Audio CD playback uses the optical drive directly. On Linux, your account needs read access to the
+drive (typically through the distribution's optical-drive permission group).
+
 ### Windows and macOS
 
 The code is prepared for both, but there are no packages yet and they are untested. MPRIS and the single running instance need the D-Bus session bus and are Linux only. If you build it there and try it, please let me know how it goes.
@@ -78,7 +84,9 @@ FerrumPlay ~/Music/Album
 FerrumPlay track.flac another.mp3
 ```
 
-If FerrumPlay is already running, the running instance takes the files and folders over and plays the first track; the new call exits right away without opening a second window. Called without paths, it brings the running window to the front.
+If FerrumPlay is already running, the running instance takes the files and folders over, plays the
+first track, and scrolls the playlist to it; the new call exits right away without opening a second
+window. Called without paths, it brings the running window to the front.
 
 `--debug` writes a log for this run.
 
