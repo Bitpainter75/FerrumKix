@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   linux:
-    name: AppImage und ZIP
+    name: AppImage, ZIP, DEB und RPM
     runs-on: ubuntu-latest
 
     steps:
@@ -33,11 +33,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y zip desktop-file-utils rpm
-
-      - name: AUR-ZIP
-        run: packaging/package.sh aurzip
-        env:
-          FERRUMPLAY_BUILD_BOX: ""
 
       - name: AppImage
         run: packaging/package.sh appimage
@@ -60,6 +55,6 @@ jobs:
           FERRUMPLAY_BUILD_BOX: ""
 
       - name: Ins Latest-Release
-        run: packaging/publish-github-release.sh
+        run: packaging/publish-github-release.sh --only-latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
