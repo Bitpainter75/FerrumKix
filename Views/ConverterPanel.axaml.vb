@@ -81,7 +81,6 @@ Namespace Views
                     .BitrateKbps = SelectedBitrate(),
                     .VariableBitrate = FindControl(Of RadioButton)("VbrRadio").IsChecked.GetValueOrDefault(),
                     .Mode = SelectedMode(),
-                    .SplitExistingCue = FindControl(Of CheckBox)("SplitCueBox").IsChecked.GetValueOrDefault(),
                     .ItemProgress = AddressOf UpdateQueue
                 }, New Progress(Of String)(AddressOf Status), _cancel.Token)
                 Status(LocalizationService.T("Fertig konvertiert."))
@@ -98,7 +97,11 @@ Namespace Views
         End Sub
 
         Private Function SelectedMode() As AudioConversionService.ConversionMode
-            Return CType(Math.Max(0, FindControl(Of ComboBox)("ModeBox").SelectedIndex), AudioConversionService.ConversionMode)
+            Select Case FindControl(Of ComboBox)("ModeBox").SelectedIndex
+                Case 1 : Return AudioConversionService.ConversionMode.AllSourcesOneResult
+                Case 2 : Return AudioConversionService.ConversionMode.OneResultPerFolder
+                Case Else : Return AudioConversionService.ConversionMode.OneResultPerSource
+            End Select
         End Function
 
         Private Function SelectedBitrate() As Integer

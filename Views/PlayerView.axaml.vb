@@ -144,6 +144,7 @@ Namespace Views
             Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
             host.Content = _converterPanel
             host.IsVisible = True
+            Me.FindControl(Of Control)("PlaylistHeader").IsVisible = False
             Me.FindControl(Of ListBox)("PlaylistBox").IsVisible = False
             Me.FindControl(Of Control)("PlaylistEmptyHint").IsVisible = False
             Me.FindControl(Of Control)("PlaylistSummaryText").IsVisible = False
@@ -154,6 +155,7 @@ Namespace Views
             Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
             host.Content = Nothing
             host.IsVisible = False
+            Me.FindControl(Of Control)("PlaylistHeader").IsVisible = True
             Me.FindControl(Of ListBox)("PlaylistBox").IsVisible = True
             Me.FindControl(Of Control)("PlaylistEmptyHint").IsVisible = ViewModel IsNot Nothing AndAlso ViewModel.IsPlaylistEmpty
             Me.FindControl(Of Control)("PlaylistSummaryText").IsVisible = True

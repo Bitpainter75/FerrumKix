@@ -9,7 +9,6 @@
       </Button>
       <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
         <TextBlock Text="Audio konvertieren" FontSize="{DynamicResource FP.Font.Heading}" FontWeight="SemiBold"/>
-        <TextBlock Text="Warteschlange und Ausgabe" Classes="muted"/>
       </StackPanel>
       <TextBlock Grid.Column="2" x:Name="CountText" Classes="secondary" VerticalAlignment="Center"/>
     </Grid>
@@ -31,7 +30,7 @@
         </ListBox>
       </Border>
 
-      <Border Grid.Row="1" Background="{DynamicResource FP.Bg.Panel}" BorderBrush="{DynamicResource FP.Border.Normal}" BorderThickness="1" CornerRadius="7" Padding="14">
+      <Border Grid.Row="1" Background="{DynamicResource FP.Bg.Panel}" BorderBrush="{DynamicResource FP.Border.Normal}" BorderThickness="1" CornerRadius="7" Padding="12">
         <StackPanel Spacing="10">
           <WrapPanel>
             <TextBlock Text="Zielformat" Classes="section-header" Width="108" VerticalAlignment="Center"/>
@@ -59,17 +58,14 @@
             <ComboBox x:Name="ModeBox" Grid.Column="1" SelectedIndex="0">
               <ComboBoxItem Content="Ein Ergebnis je Titel"/>
               <ComboBoxItem Content="Gesamtauswahl zusammenführen"/>
-              <ComboBoxItem Content="Gesamtauswahl mit Kapiteldatei"/>
               <ComboBoxItem Content="Je Ordner zusammenführen"/>
-              <ComboBoxItem Content="Je Ordner mit Kapiteldatei"/>
             </ComboBox>
           </Grid>
-          <CheckBox x:Name="SplitCueBox" Content="Vorhandene CUE-Datei in einzelne Titel aufteilen" Margin="108,0,0,0"/>
-          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-            <TextBox x:Name="FolderBox" PlaceholderText="Zielordner auswählen" IsReadOnly="True"/>
-            <Button Grid.Column="1" Content="Ordner…" Click="OnChooseFolderClick"/>
-          </Grid>
-          <Button x:Name="ConvertButton" Content="Konvertierung starten" Click="OnConvertClick" HorizontalAlignment="Right"/>
+          <WrapPanel HorizontalAlignment="Left" ItemHeight="48">
+            <TextBox x:Name="FolderBox" PlaceholderText="Zielordner auswählen" IsReadOnly="True" Width="420" VerticalAlignment="Center"/>
+            <Button Content="Ordner…" Click="OnChooseFolderClick" Margin="8,0,0,0" VerticalAlignment="Center"/>
+            <Button x:Name="ConvertButton" Content="Konvertierung starten" Click="OnConvertClick" Margin="8,0,0,0" VerticalAlignment="Center"/>
+          </WrapPanel>
         </StackPanel>
       </Border>
     </Grid>

@@ -138,7 +138,7 @@
                 <!-- Die Wiedergabeliste -->
                 <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto,Auto" Background="#66101418">
 
-                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="18,10,10,0">
+                    <Grid x:Name="PlaylistHeader" Grid.Row="0" ColumnDefinitions="*,Auto" Margin="18,10,10,0">
                         <StackPanel Orientation="Horizontal">
                             <Button Classes="playlist-tab"
                                     Classes.active="{Binding IsFilesPlaylistSelected}"
@@ -259,7 +259,7 @@
                         </ListBox.DataTemplates>
                     </ListBox>
 
-                    <ContentControl x:Name="ConverterHost" Grid.Row="1" IsVisible="False"/>
+                    <ContentControl x:Name="ConverterHost" Grid.Row="0" Grid.RowSpan="4" IsVisible="False"/>
 
                     <!-- Der Hinweis fuer die leere Liste liegt UEBER dem Rollbereich und nicht an
                          seiner Stelle: so bleibt die Liste an ihrem Platz und springt nicht, sobald
