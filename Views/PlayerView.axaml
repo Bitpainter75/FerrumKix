@@ -259,7 +259,9 @@
                         </ListBox.DataTemplates>
                     </ListBox>
 
-                    <ContentControl x:Name="ConverterHost" Grid.Row="0" Grid.RowSpan="4" IsVisible="False"/>
+                    <ContentControl x:Name="ConverterHost" Grid.Row="0" Grid.RowSpan="4"
+                                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                    IsVisible="False"/>
 
                     <!-- Der Hinweis fuer die leere Liste liegt UEBER dem Rollbereich und nicht an
                          seiner Stelle: so bleibt die Liste an ihrem Platz und springt nicht, sobald

@@ -3,17 +3,17 @@
              xmlns:icons="clr-namespace:FerrumPlay.Controls"
              x:Class="FerrumPlay.Views.ConverterPanel">
   <Grid RowDefinitions="Auto,*,Auto" Background="{DynamicResource FP.Bg.Content}">
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="18,14,14,10">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="18,10,14,7">
       <Button Grid.Column="0" Classes="icon-btn" Click="OnBackClick" ToolTip.Tip="Zurück zur Wiedergabeliste">
         <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/>
       </Button>
       <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
-        <TextBlock Text="Audio konvertieren" FontSize="{DynamicResource FP.Font.Heading}" FontWeight="SemiBold"/>
+        <TextBlock Text="Audio konvertieren" FontSize="{DynamicResource FP.Font.Title}" FontWeight="SemiBold"/>
       </StackPanel>
       <TextBlock Grid.Column="2" x:Name="CountText" Classes="secondary" VerticalAlignment="Center"/>
     </Grid>
 
-    <Grid Grid.Row="1" RowDefinitions="*,Auto" Margin="18,0,18,12" RowSpacing="14">
+    <Grid Grid.Row="1" RowDefinitions="*,Auto" Margin="18,0,18,12" RowSpacing="10">
       <Border BorderBrush="{DynamicResource FP.Border.Normal}" BorderThickness="1" CornerRadius="7" ClipToBounds="True">
         <ListBox x:Name="QueueBox" ItemsSource="{Binding Queue}" BorderThickness="0">
           <ListBox.ItemTemplate>
@@ -53,19 +53,19 @@
               <RadioButton x:Name="B320Radio" GroupName="rate" Content="320"/>
             </StackPanel>
           </WrapPanel>
-          <Grid ColumnDefinitions="108,*">
+          <Grid ColumnDefinitions="108,*,Auto" ColumnSpacing="8">
             <TextBlock Text="Ausgabe" Classes="section-header" VerticalAlignment="Center"/>
-            <ComboBox x:Name="ModeBox" Grid.Column="1" SelectedIndex="0">
+            <TextBox x:Name="FolderBox" Grid.Column="1" PlaceholderText="Zielordner auswählen" IsReadOnly="True" VerticalAlignment="Center"/>
+            <Button Grid.Column="2" Content="..." Click="OnChooseFolderClick" VerticalAlignment="Center" Padding="12,7"/>
+          </Grid>
+          <Grid ColumnDefinitions="108,*,Auto" ColumnSpacing="8">
+            <ComboBox x:Name="ModeBox" Grid.Column="1" SelectedIndex="0" HorizontalAlignment="Left" MinWidth="260">
               <ComboBoxItem Content="Ein Ergebnis je Titel"/>
               <ComboBoxItem Content="Gesamtauswahl zusammenführen"/>
               <ComboBoxItem Content="Je Ordner zusammenführen"/>
             </ComboBox>
+            <Button Grid.Column="2" x:Name="ConvertButton" Classes="converter-primary" Content="Konvertierung starten" Click="OnConvertClick" VerticalAlignment="Center"/>
           </Grid>
-          <WrapPanel HorizontalAlignment="Left" ItemHeight="48">
-            <TextBox x:Name="FolderBox" PlaceholderText="Zielordner auswählen" IsReadOnly="True" Width="420" VerticalAlignment="Center"/>
-            <Button Content="Ordner…" Click="OnChooseFolderClick" Margin="8,0,0,0" VerticalAlignment="Center"/>
-            <Button x:Name="ConvertButton" Content="Konvertierung starten" Click="OnConvertClick" Margin="8,0,0,0" VerticalAlignment="Center"/>
-          </WrapPanel>
         </StackPanel>
       </Border>
     </Grid>

@@ -318,6 +318,18 @@
         <Setter Property="IconBrush" Value="{DynamicResource FP.Footer.OnAccent}"/>
     </Style>
 
+    <!-- Primaere Aktion im Konverter: bewusst wie die Wiedergabe akzentuiert, aber als
+         normaler Textknopf statt als runder Transportknopf. -->
+    <Style Selector="Button.converter-primary">
+        <Setter Property="Background" Value="{DynamicResource FP.Accent}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Footer.OnAccent}"/>
+    </Style>
+    <Style Selector="Button.converter-primary:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Accent.Light}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent.Light}"/>
+    </Style>
+
     <!-- Die kleinen Schalter links: Zufall, Wiederholen, dazu der Stummschalter rechts.
          Ausgeschaltet stehen sie gedaempft da, eingeschaltet in der Akzentfarbe. -->
     <Style Selector="Button.transport-toggle">
