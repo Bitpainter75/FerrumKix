@@ -511,7 +511,23 @@
         <Setter Property="Padding" Value="8,5"/>
     </Style>
     <Style Selector="MenuItem:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Bg.Active}"/>
+    </Style>
+    <!-- Fluent unterscheidet den gerade mit der Tastatur markierten Eintrag vom Zeigerzustand.
+         Ohne diese beiden Regeln gewinnt dort dessen helle Standardauswahl und das Kontextmenü
+         wirkt wie aus einem anderen Programm. Beide Zustände bleiben daher im selben, ruhigen
+         Blau-Grau wie der normale Hover. -->
+    <Style Selector="MenuItem:selected /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
+    </Style>
+    <Style Selector="MenuItem:selected:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Bg.Active}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
+    </Style>
+    <Style Selector="MenuItem:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Accent.Dim}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
     </Style>
 
     <Style Selector="ComboBox">
