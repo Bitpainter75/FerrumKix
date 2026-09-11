@@ -31,9 +31,10 @@ jobs:
           printf '%s\n' "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/aur
           chmod 600 ~/.ssh/aur
           export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new"
-          if ! git clone ssh://aur@aur.archlinux.org/ferrumplay-bin.git packaging/.aur-work; then
+          if ! git clone ssh://aur@aur.archlinux.org/ferrumplay-bin.git packaging/.aur-work || ! test -f packaging/.aur-work/PKGBUILD; then
             # Ein Paket entsteht auf dem AUR durch seinen ersten Push. Der Runner legt deshalb
             # den vollstaendigen Anfangsstand selbst an, wenn der Name noch nicht existiert.
+            rm -rf packaging/.aur-work
             mkdir packaging/.aur-work
             cp packaging/AUR/PKGBUILD packaging/.aur-work/PKGBUILD
             cp packaging/io.github.Bitpainter75.FerrumPlay.desktop packaging/.aur-work/
