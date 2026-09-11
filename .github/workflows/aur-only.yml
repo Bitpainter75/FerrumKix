@@ -1,0 +1,40 @@
+name: AUR veroeffentlichen
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  aur:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - run: pacman -Sy --noconfirm --needed git openssh zip unzip jq curl python dotnet-sdk
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: Bitpainter75/FerrumPlay-Build
+          path: packaging
+          ssh-key: ${{ secrets.PACKAGING_DEPLOY_KEY }}
+      - name: AUR-ZIP und Versionsrelease
+        run: |
+          packaging/package.sh aurzip
+          packaging/publish-github-release.sh --only-version
+        env:
+          FERRUMPLAY_BUILD_BOX: ""
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: AUR veroeffentlichen
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/aur
+          chmod 600 ~/.ssh/aur
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new" git clone ssh://aur@aur.archlinux.org/ferrumplay-bin.git packaging/.aur-work
+          useradd -m builder
+          chown -R builder:builder .
+          cp -r ~/.ssh /home/builder/.ssh
+          chown -R builder:builder /home/builder/.ssh
+          su builder -c "git config --global user.name 'Bitpainter75'"
+          su builder -c "git config --global user.email '55985980+Bitpainter75@users.noreply.github.com'"
+          su builder -c "GIT_SSH_COMMAND='ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new' packaging/publish-aur.sh"

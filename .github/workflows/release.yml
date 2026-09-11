@@ -32,10 +32,30 @@ jobs:
       - name: Werkzeuge
         run: |
           sudo apt-get update
-          sudo apt-get install -y zip desktop-file-utils
+          sudo apt-get install -y zip desktop-file-utils rpm
 
-      - name: Pakete bauen
-        run: packaging/package.sh
+      - name: AUR-ZIP
+        run: packaging/package.sh aurzip
+        env:
+          FERRUMPLAY_BUILD_BOX: ""
+
+      - name: AppImage
+        run: packaging/package.sh appimage
+        env:
+          FERRUMPLAY_BUILD_BOX: ""
+
+      - name: Linux-ZIP
+        run: packaging/package.sh zip
+        env:
+          FERRUMPLAY_BUILD_BOX: ""
+
+      - name: DEB
+        run: packaging/package.sh deb
+        env:
+          FERRUMPLAY_BUILD_BOX: ""
+
+      - name: RPM
+        run: packaging/package.sh rpm
         env:
           FERRUMPLAY_BUILD_BOX: ""
 
