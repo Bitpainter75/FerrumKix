@@ -27,8 +27,8 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
   separate temporary playlist. Its tracks can be selected, searched and played just like files;
   ejecting the disc removes the playlist again.
 - **Converts without another app.** Convert a title or album to MP3 (CBR or VBR), FLAC or Ogg
-  Vorbis. Whole selections or individual folders can become one ordered file, optionally with a
-  CUE chapter file; a single large file with an existing CUE can also be split into tracks.
+  Vorbis. Whole selections or individual source folders can become one ordered file, with a live
+  queue that follows the title currently being converted.
 - **Evens out loudness.** ReplayGain by track, by album, or automatically: by album while an album plays through, by track when shuffling.
 - **Notices missing files.** Tracks whose file is gone are greyed out and skipped instead of stopping playback. Plug the drive back in and they return; one click removes them all.
 - **Fits into the desktop.** FerrumPlay speaks MPRIS, so Waybar, playerctl, notifications and the media keys reach it even while its window is in the background - with title, artist, album and cover.
@@ -122,4 +122,4 @@ dotnet run --project FerrumPlay.vbproj
 
 FerrumPlay is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI and SkiaSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) and [Tabler Icons](https://github.com/tabler/tabler-icons) (MIT). [libmpv](https://mpv.io/) (GPL-2.0-or-later) is not bundled; it is loaded from your system.
 
-FerrumPlay is at version 0.3.0 and in active development.
+FerrumPlay is at version 0.4.0 and in active development.
