@@ -9,6 +9,7 @@ Imports Avalonia.Input
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
 Imports Avalonia.Platform.Storage
+Imports Avalonia.Threading
 Imports FerrumPlay.Models
 Imports FerrumPlay.Services
 Imports FerrumPlay.ViewModels
@@ -19,6 +20,7 @@ Namespace Views
         Inherits UserControl
 
         Private _focusViewModel As MainWindowViewModel
+        Private _draggedTrack As Track
 
         Public Sub New()
             InitializeComponent()
@@ -42,6 +44,12 @@ Namespace Views
             If _focusViewModel IsNot Nothing Then RemoveHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
             _focusViewModel = ViewModel
             If _focusViewModel IsNot Nothing Then AddHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
+            ' RestorePlaylist laeuft vor dem Anhaengen der Ansicht. Erst danach ist die ListBox
+            ' vorhanden und kann den zuletzt gewaehlten Titel wirklich sichtbar machen.
+            Dispatcher.UIThread.Post(Sub()
+                                         Dim track = _focusViewModel?.CurrentTrack
+                                         If track IsNot Nothing Then OnPlaylistFocusRequested(track)
+                                     End Sub)
         End Sub
 
         Private Sub OnPlaylistFocusRequested(track As Track)
@@ -92,6 +100,56 @@ Namespace Views
             If groupRow Is Nothing Then Return
             ViewModel?.ToggleGroup(groupRow)
             e.Handled = True
+        End Sub
+
+        Private Sub OnTrackPlayClick(sender As Object, e As RoutedEventArgs)
+            Dim row = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistTrackRow)
+            If row IsNot Nothing Then ViewModel?.Play(row.Track)
+        End Sub
+
+        Private Sub OnTrackToggleEnabledClick(sender As Object, e As RoutedEventArgs)
+            Dim row = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistTrackRow)
+            If row IsNot Nothing Then row.IsEnabled = Not row.IsEnabled
+        End Sub
+
+        Private Sub OnTrackRemoveClick(sender As Object, e As RoutedEventArgs)
+            Dim row = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistTrackRow)
+            If row IsNot Nothing Then ViewModel?.RemoveTracks({row.Track})
+        End Sub
+
+        Private Sub OnGroupPlayClick(sender As Object, e As RoutedEventArgs)
+            ViewModel?.PlayGroup(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow))
+        End Sub
+
+        Private Sub OnGroupToggleMenuClick(sender As Object, e As RoutedEventArgs)
+            ViewModel?.ToggleGroup(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow))
+        End Sub
+
+        Private Sub OnGroupRemoveClick(sender As Object, e As RoutedEventArgs)
+            Dim group = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow)
+            Dim vm As MainWindowViewModel = Me.ViewModel
+            If group IsNot Nothing AndAlso vm IsNot Nothing Then vm.RemoveTracks(vm.TracksInGroup(group))
+        End Sub
+
+        ' Die Liste wird ohne System-Dateipayload umsortiert: der Zug bleibt innerhalb der
+        ' ListBox, und nur die gespeicherte Reihenfolge aendert sich. Im Zufallsmodus ist die
+        ' Ansicht absichtlich die temporaere Abspielreihenfolge und daher nicht verschiebbar.
+        Private Sub OnTrackPointerPressed(sender As Object, e As PointerPressedEventArgs)
+            Dim vm As MainWindowViewModel = Me.ViewModel
+            If vm Is Nothing OrElse vm.IsShuffle OrElse Not e.GetCurrentPoint(Me).Properties.IsLeftButtonPressed Then Return
+            _draggedTrack = TryCast(TryCast(sender, Border)?.DataContext, PlaylistTrackRow)?.Track
+        End Sub
+
+        Private Sub OnTrackPointerMoved(sender As Object, e As PointerEventArgs)
+            Dim vm As MainWindowViewModel = Me.ViewModel
+            If _draggedTrack Is Nothing OrElse vm Is Nothing OrElse vm.IsShuffle OrElse Not e.GetCurrentPoint(Me).Properties.IsLeftButtonPressed Then Return
+            Dim target = TryCast(FindRow(TryCast(e.Source, Control)), PlaylistTrackRow)?.Track
+            If target Is Nothing OrElse Object.ReferenceEquals(target, _draggedTrack) Then Return
+            vm.MoveTrackBefore(_draggedTrack, target)
+        End Sub
+
+        Private Sub OnTrackPointerReleased(sender As Object, e As PointerReleasedEventArgs)
+            _draggedTrack = Nothing
         End Sub
 
         ''' <summary>Die Zeile unter dem angeklickten Element. Der Klick landet auf einem Textblock

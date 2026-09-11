@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0
+
+- The playlist can now be reordered by dragging tracks. A context menu on a track or album can
+  play it, include or exclude a track, collapse an album, or remove it from the list.
+- When shuffle is on, the playlist itself now shows the shuffled playback order instead of the
+  original order.
+- On startup, the last selected track is brought into view in the playlist.
+
 ## 0.2.0
 
 - MPRIS: Waybar, playerctl, system notifications, and multimedia keys can now control FerrumPlay

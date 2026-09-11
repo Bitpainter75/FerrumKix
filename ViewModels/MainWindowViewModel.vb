@@ -742,6 +742,7 @@ Namespace ViewModels
                 If Not SetField(_isShuffle, value) Then Return
                 AppSettingsService.Current.Shuffle = value
                 RebuildPlayOrder()
+                RebuildRows()
                 ' Die automatische Angleichung haengt an der Reihenfolge.
                 ApplyReplayGain()
             End Set
@@ -815,6 +816,7 @@ Namespace ViewModels
             _isStopped = False
             RaiseCurrentTrackChanged()
             UpdatePlayingRow()
+            FocusTrackInPlaylist(track)
 
             ' Laufzeit und Stelle gehoeren zum alten Titel. Sie stehen zu lassen, bis mpv das erste
             ' Mal meldet, zeigte den Balken des vorigen Titels ueber dem neuen.
@@ -1293,6 +1295,32 @@ Namespace ViewModels
             SavePlaylist()
         End Sub
 
+        ''' <summary>Verschiebt einen Titel vor einen anderen. Die gespeicherte Grundreihenfolge
+        ''' wird nur ausserhalb des Zufallsmodus bearbeitet; dort zeigt die Liste ohnehin die
+        ''' voruebergehende Abspielreihenfolge.</summary>
+        Public Sub MoveTrackBefore(source As Track, target As Track)
+            If _isShuffle OrElse source Is Nothing OrElse target Is Nothing OrElse Object.ReferenceEquals(source, target) Then Return
+            Dim sourceIndex = _tracks.IndexOf(source)
+            Dim targetIndex = _tracks.IndexOf(target)
+            If sourceIndex < 0 OrElse targetIndex < 0 Then Return
+            _tracks.RemoveAt(sourceIndex)
+            If sourceIndex < targetIndex Then targetIndex -= 1
+            _tracks.Insert(targetIndex, source)
+            RebuildPlayOrder()
+            RebuildRows()
+            SavePlaylist()
+        End Sub
+
+        Public Function TracksInGroup(group As PlaylistGroupRow) As List(Of Track)
+            If group Is Nothing Then Return New List(Of Track)()
+            Return ActiveTracks().Where(Function(track) String.Equals(track.FolderPath, group.FolderPath, StringComparison.Ordinal)).ToList()
+        End Function
+
+        Public Sub PlayGroup(group As PlaylistGroupRow)
+            Dim first = TracksInGroup(group).FirstOrDefault(Function(track) IsPlayable(track))
+            If first IsNot Nothing Then Play(first)
+        End Sub
+
         ' Fehlende Dateien
 
         ''' <summary>Mindestens ein Titel der Liste hat keine Datei mehr. Blendet den Knopf ein, der
@@ -1393,6 +1421,28 @@ Namespace ViewModels
             Rows.Clear()
 
             Dim filtered = ActiveTracks().Where(AddressOf MatchesSearch).ToList()
+
+            ' Zufall ist nicht nur ein Abspielmodus: die sichtbare Liste zeigt dieselbe Reihenfolge.
+            ' Albumüberschriften würden einen gemischten Durchlauf wieder künstlich zusammenziehen.
+            If _selectedPlaylist = PlaylistKind.Files AndAlso _isShuffle Then
+                Dim number = 1
+                For Each track In _playOrder.Where(Function(entry) filtered.Contains(entry))
+                    Dim row As PlaylistTrackRow = Nothing
+                    If Not _rowsByTrack.TryGetValue(track, row) Then
+                        row = New PlaylistTrackRow(track)
+                        _rowsByTrack(track) = row
+                    End If
+                    row.Number = number
+                    row.IsPlaying = Object.ReferenceEquals(track, _currentTrack)
+                    Rows.Add(row)
+                    number += 1
+                Next
+                RaisePropertyChanged(NameOf(PlaylistSummary))
+                RaisePropertyChanged(NameOf(IsPlaylistEmpty))
+                RaisePropertyChanged(NameOf(HasMissingTracks))
+                Return
+            End If
+
             Dim groups = New List(Of String)()
             Dim byFolder = New Dictionary(Of String, List(Of Track))(StringComparer.Ordinal)
 
@@ -1570,6 +1620,7 @@ Namespace ViewModels
             UpdatePlayingRow()
             DurationSeconds = last.DurationSeconds
             LoadCoverAsync(last)
+            FocusTrackInPlaylist(last)
 
             If Not allowResume OrElse Not settings.ResumeOnStart Then Return
 

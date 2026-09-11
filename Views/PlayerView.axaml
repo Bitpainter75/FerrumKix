@@ -169,6 +169,14 @@
 
                             <DataTemplate DataType="vm:PlaylistGroupRow">
                                 <Border Classes="group-row" Padding="8,7,16,7">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Album abspielen" Tag="{Binding}" Click="OnGroupPlayClick"/>
+                                            <MenuItem Header="Auf- oder zuklappen" Tag="{Binding}" Click="OnGroupToggleMenuClick"/>
+                                            <Separator/>
+                                            <MenuItem Header="Album aus Liste entfernen" Tag="{Binding}" Click="OnGroupRemoveClick"/>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
                                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
                                         <Button Grid.Column="0"
                                                 Classes="icon-btn"
@@ -194,7 +202,18 @@
                                 <Border Classes="track-row"
                                         Classes.playing="{Binding IsPlaying}"
                                         Classes.missing="{Binding IsMissing}"
-                                        Padding="12,5,16,5">
+                                        Padding="12,5,16,5"
+                                        PointerPressed="OnTrackPointerPressed"
+                                        PointerMoved="OnTrackPointerMoved"
+                                        PointerReleased="OnTrackPointerReleased">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Abspielen" Tag="{Binding}" Click="OnTrackPlayClick"/>
+                                            <MenuItem Header="Beim Abspielen berücksichtigen" Tag="{Binding}" Click="OnTrackToggleEnabledClick"/>
+                                            <Separator/>
+                                            <MenuItem Header="Aus Liste entfernen" Tag="{Binding}" Click="OnTrackRemoveClick"/>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
                                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
                                         <CheckBox Grid.Column="0"
                                                   IsChecked="{Binding IsEnabled}"
