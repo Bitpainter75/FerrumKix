@@ -140,7 +140,15 @@
 
                     <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="18,10,10,0">
                         <StackPanel Orientation="Horizontal">
-                            <Button Classes="playlist-tab active" Content="Wiedergabeliste"/>
+                            <Button Classes="playlist-tab"
+                                    Classes.active="{Binding IsFilesPlaylistSelected}"
+                                    Command="{Binding ShowFilesPlaylistCommand}"
+                                    Content="Wiedergabeliste"/>
+                            <Button Classes="playlist-tab"
+                                    Classes.active="{Binding IsAudioCdPlaylistSelected}"
+                                    Command="{Binding ShowAudioCdPlaylistCommand}"
+                                    IsVisible="{Binding HasAudioCd}"
+                                    Content="Audio-CD"/>
                         </StackPanel>
                         <Button Grid.Column="1"
                                 Classes="icon-btn"
@@ -269,6 +277,12 @@
                                         Click="OnAddFolderClick"
                                         ToolTip.Tip="Ordner hinzufügen">
                                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/folder-plus.svg"
+                                                   Width="15" Height="15"/>
+                                </Button>
+                                <Button Classes="icon-btn" Width="28" Height="28"
+                                        Click="OnAddAudioCdClick"
+                                        ToolTip.Tip="Eingelegte Audio-CD hinzufügen">
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/disc.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"

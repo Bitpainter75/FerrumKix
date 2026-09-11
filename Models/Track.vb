@@ -36,12 +36,61 @@ Namespace Models
         ''' Eintrag in der gespeicherten Liste als veraltet und wird neu gelesen.</summary>
         Public Property TagsReadUtc As Date
 
+        ''' <summary>Ob dieser Eintrag einen physischen CDDA-Titel beschreibt. Der interne URI
+        ''' ist absichtlich kein mpv-URI: er bleibt eine eindeutige, speicherbare Kennung pro
+        ''' Titel; <see cref="Services.AudioPlayer"/> wandelt ihn erst beim Laden in
+        ''' <c>cdda://</c> um.</summary>
+        <JsonIgnore>
+        Public ReadOnly Property IsAudioCdTrack As Boolean
+            Get
+                Dim devicePath As String = Nothing
+                Dim trackNumber As Integer
+                Dim lastTrack As Integer
+                Return TryGetAudioCdSource(FilePath, devicePath, trackNumber, lastTrack)
+            End Get
+        End Property
+
+        Public Shared Function CreateAudioCdPath(devicePath As String, trackNumber As Integer, lastTrack As Integer) As String
+            Dim escaped = Uri.EscapeDataString(If(devicePath, String.Empty).TrimStart("/"c))
+            Return $"cdda-track:///{escaped}?track={trackNumber}&last={lastTrack}"
+        End Function
+
+        Public Shared Function TryGetAudioCdSource(value As String, ByRef devicePath As String,
+                                                   ByRef trackNumber As Integer, ByRef lastTrack As Integer) As Boolean
+            devicePath = Nothing
+            trackNumber = 0
+            lastTrack = 0
+            If String.IsNullOrWhiteSpace(value) Then Return False
+            Try
+                Dim uri As New Uri(value, UriKind.Absolute)
+                If Not String.Equals(uri.Scheme, "cdda-track", StringComparison.OrdinalIgnoreCase) Then Return False
+                devicePath = Uri.UnescapeDataString(uri.AbsolutePath)
+                Dim query = uri.Query.TrimStart("?"c).Split("&"c)
+                For Each part In query
+                    Dim pair = part.Split("="c, 2)
+                    If pair.Length <> 2 Then Continue For
+                    If String.Equals(pair(0), "track", StringComparison.OrdinalIgnoreCase) Then Integer.TryParse(pair(1), trackNumber)
+                    If String.Equals(pair(0), "last", StringComparison.OrdinalIgnoreCase) Then Integer.TryParse(pair(1), lastTrack)
+                Next
+                Return Not String.IsNullOrWhiteSpace(devicePath) AndAlso trackNumber > 0 AndAlso lastTrack >= trackNumber
+            Catch
+                devicePath = Nothing
+                trackNumber = 0
+                lastTrack = 0
+                Return False
+            End Try
+        End Function
+
         ''' <summary>Der Ordner, in dem die Datei liegt. Die Gruppen der Liste haengen daran und
         ''' nicht am Albumnamen: ein Album ohne Kennzeichen hat keinen, und zwei verschiedene Alben
         ''' koennen denselben tragen.</summary>
         <JsonIgnore>
         Public ReadOnly Property FolderPath As String
             Get
+                Dim devicePath As String = Nothing
+                Dim trackNumber As Integer
+                Dim lastTrack As Integer
+                If TryGetAudioCdSource(FilePath, devicePath, trackNumber, lastTrack) Then Return $"Audio-CD ({devicePath})"
                 Try
                     Return If(Path.GetDirectoryName(FilePath), String.Empty)
                 Catch

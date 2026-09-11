@@ -1,29 +1,30 @@
 # Changelog
 
-## Unveroeffentlicht
+## 0.2.0
 
-- MPRIS: Waybar, playerctl, die Benachrichtigungen und die Multimedia-Tasten des Systems erreichen
-  FerrumPlay jetzt auch, wenn das Fenster im Hintergrund liegt. Titel, Interpret, Album, Laufzeit
-  und Titelbild gehen mit hinaus.
-- FerrumPlay laeuft nur noch einmal. Wer eine Datei oder einen Ordner oeffnet, waehrend es laeuft,
-  bekommt sie in der laufenden Instanz gespielt. Der Desktop-Eintrag nimmt dafuer jetzt Dateien und
-  Ordner an.
-- Lautstaerkeangleichung nach ReplayGain: aus, nach Titel, nach Album oder automatisch, dazu eine
-  Vorverstaerkung.
-- Titel, deren Datei fehlt, werden beim Start erkannt, ausgegraut und uebersprungen. Sie kommen
-  zurueck, sobald die Datei wieder da ist; ein Knopf unter der Liste entfernt sie alle auf einmal.
-  Laesst sich ein Titel nicht abspielen, geht es mit dem naechsten weiter, statt stehen zu bleiben.
+- MPRIS: Waybar, playerctl, system notifications, and multimedia keys can now control FerrumPlay
+  while its window is in the background. The title, artist, album, duration, and cover art are
+  published as metadata.
+- FerrumPlay now runs as a single instance. Opening a file or folder while it is already running
+  sends it to the existing instance for playback. The desktop entry accepts both files and folders.
+- ReplayGain volume normalization: off, track, album, or automatic, with a configurable preamp.
+- Missing tracks are detected on startup, dimmed, and skipped. They return when the file is
+  available again, and a button removes all missing entries at once. If a track cannot be played,
+  playback continues with the next one instead of stopping.
+- Audio CDs on Linux: an inserted disc appears automatically as its own playlist beside the file
+  playlist. Tracks are listed and played individually; the CD playlist disappears on eject and is
+  never saved permanently.
+- Sending a file to an already running instance now not only starts it, but also expands its group
+  and scrolls the playlist directly to the requested track.
 
 ## 0.1.0
 
-Die erste Fassung.
+Initial release.
 
-FerrumPlay spielt Musik: MP3, FLAC, OGG, Opus, M4A und die uebrigen gaengigen Formate. Die
-Wiedergabeliste ordnet sich nach Alben, das Titelbild und die Angaben zum Stueck stehen links,
-der Transport unten auf einem dunklen Deck, die Lautstaerke als Drehregler. Dateien und Ordner
-lassen sich ins Fenster ziehen oder beim Aufruf uebergeben (`FerrumPlay ~/Musik/Album`); der erste
-Titel wird dann gespielt.
+FerrumPlay plays music in MP3, FLAC, OGG, Opus, M4A, and other common formats. The playlist is
+grouped by album; cover art and track details are shown on the left, with transport controls along
+the bottom and a rotary volume control. Files and folders can be dropped onto the window or passed
+on launch (`FerrumPlay ~/Music/Album`); the first track starts playing automatically.
 
-Akzentfarbe, Schriftgroesse, Sprache (Deutsch, Englisch) und die Vergroesserung der Anwendung
-lassen sich einstellen. Die Wiedergabeliste und der zuletzt gespielte Titel stehen beim naechsten
-Start wieder da.
+Accent colour, font size, language (German or English), and application scaling are configurable.
+The playlist and last played track are restored on the next launch.

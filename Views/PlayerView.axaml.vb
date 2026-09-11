@@ -18,11 +18,14 @@ Namespace Views
     Public Class PlayerView
         Inherits UserControl
 
+        Private _focusViewModel As MainWindowViewModel
+
         Public Sub New()
             InitializeComponent()
 
             Dim seek = Me.FindControl(Of Controls.SeekBar)("Seek")
             If seek IsNot Nothing Then AddHandler seek.Seeked, AddressOf OnSeeked
+            AddHandler DataContextChanged, AddressOf OnViewModelDataContextChanged
         End Sub
 
         Private Sub InitializeComponent()
@@ -34,6 +37,21 @@ Namespace Views
                 Return TryCast(DataContext, MainWindowViewModel)
             End Get
         End Property
+
+        Private Sub OnViewModelDataContextChanged(sender As Object, e As EventArgs)
+            If _focusViewModel IsNot Nothing Then RemoveHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
+            _focusViewModel = ViewModel
+            If _focusViewModel IsNot Nothing Then AddHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
+        End Sub
+
+        Private Sub OnPlaylistFocusRequested(track As Track)
+            Dim list = Me.FindControl(Of ListBox)("PlaylistBox")
+            If list Is Nothing OrElse track Is Nothing Then Return
+            Dim row = list.Items.OfType(Of PlaylistTrackRow)().FirstOrDefault(Function(entry) Object.ReferenceEquals(entry.Track, track))
+            If row Is Nothing Then Return
+            list.SelectedItem = row
+            list.ScrollIntoView(row)
+        End Sub
 
         Private Sub OnSeeked(seconds As Double)
             ViewModel?.SeekTo(seconds)
@@ -137,6 +155,12 @@ Namespace Views
             Catch ex As Exception
                 DiagnosticLogService.LogException("Player.AddFolder", ex)
             End Try
+        End Sub
+
+        Private Async Sub OnAddAudioCdClick(sender As Object, e As RoutedEventArgs)
+            Dim viewModel = Me.ViewModel
+            If viewModel Is Nothing Then Return
+            Await viewModel.AddAudioCdAsync()
         End Sub
 
         Private Sub OnRemoveSelectedClick(sender As Object, e As RoutedEventArgs)

@@ -3,6 +3,7 @@ Imports System.Collections.Generic
 Imports System.Globalization
 Imports System.Runtime.InteropServices
 Imports System.Threading
+Imports FerrumPlay.Models
 
 Namespace Services
 
@@ -386,6 +387,26 @@ Namespace Services
 
             _loadedPath = Nothing
             If Not ReadyForPlayback() Then Return
+
+            ' Ein CD-Titel ist intern eine eindeutige, speicherbare Kennung. mpv kennt sie nicht;
+            ' es bekommt die echte CDDA-Adresse samt Bereich. Der vierte loadfile-Parameter ist
+            ' seit mpv 0.38 der Einfuegeindex, deshalb steht -1 explizit davor.
+            Dim cdDevice As String = Nothing
+            Dim cdTrack As Integer
+            Dim cdLastTrack As Integer
+            If Track.TryGetAudioCdSource(path, cdDevice, cdTrack, cdLastTrack) Then
+                SetPauseCore(True)
+                Dim source = "cdda://" & cdDevice
+                Dim options = $"start=#{cdTrack}"
+                ' --end ist exklusiv. Beim letzten Titel fehlt absichtlich ein Ende, damit mpv
+                ' bis zum Lead-out liest statt einen nicht vorhandenen Folgechapter zu verlangen.
+                If cdTrack < cdLastTrack Then options &= $",end=#{cdTrack + 1}"
+                If CommandAsyncRaw(_handle, "loadfile", source, "replace", "-1", options) < 0 Then Return
+                _loadedPath = path
+                RaiseEvent FileLoaded(path)
+                If PendingPlay() Then SetPauseCore(False)
+                Return
+            End If
 
             ' Eine Datei, die es nicht mehr gibt, geht gar nicht erst an mpv. mpv meldete sie nur
             ' als allgemeinen Fehler, ohne zu sagen, welcher Titel es war; hier ist der Pfad noch

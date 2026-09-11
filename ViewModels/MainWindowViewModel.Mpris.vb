@@ -27,6 +27,9 @@ Namespace ViewModels
         ''' <summary>Das Fenster soll nach vorn kommen: MPRIS Raise oder ein zweiter Aufruf.</summary>
         Public Event RaiseRequested As EventHandler
 
+        ''' <summary>Die Wiedergabelistenansicht soll einen Titel sichtbar machen.</summary>
+        Public Event PlaylistFocusRequested(track As Track)
+
         ''' <summary>MPRIS verlangt, die Anwendung zu beenden.</summary>
         Public Event QuitRequested As EventHandler
 
@@ -72,6 +75,10 @@ Namespace ViewModels
             If paths Is Nothing OrElse paths.Count = 0 Then Return
             Try
                 Await AddPathsAsync(paths, playFirst:=True)
+                ' Auch wenn der Titel schon in der Liste stand, wird er durch AddPathsAsync
+                ' gezielt gestartet. Danach muss die Liste dieselbe Stelle zeigen, statt den
+                ' alten Rollstand beizubehalten.
+                FocusTrackInPlaylist(_currentTrack)
             Catch ex As Exception
                 DiagnosticLogService.LogException("App.OpenFromOutside", ex)
             End Try

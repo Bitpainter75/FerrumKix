@@ -25,6 +25,12 @@ Namespace ViewModels
         [Single] = 2
     End Enum
 
+    ''' <summary>Die Dateiliste und eine eingelegte Audio-CD bleiben getrennte Wiedergabelisten.</summary>
+    Public Enum PlaylistKind
+        Files = 0
+        AudioCd = 1
+    End Enum
+
     Public NotInheritable Class MainWindowViewModel
         Inherits ViewModelBase
         Implements IDisposable
@@ -35,6 +41,7 @@ Namespace ViewModels
         ''' Sie ist die Quelle fuer alles andere: die angezeigten Zeilen, die Abspielreihenfolge
         ''' und die gespeicherte Datei.</summary>
         Private ReadOnly _tracks As New List(Of Track)()
+        Private ReadOnly _audioCdTracks As New List(Of Track)()
 
         ''' <summary>Die Zeile zu einem Titel. Sie ueberlebt das Neuaufbauen der Anzeige, damit das
         ''' Haekchen vor einem Titel nicht bei jedem Tastendruck im Suchfeld zurueckspringt.</summary>
@@ -64,6 +71,7 @@ Namespace ViewModels
         Private _isShuffle As Boolean
         Private _repeat As RepeatMode = RepeatMode.Off
         Private _sidePanelWidth As Double = 300
+        Private _selectedPlaylist As PlaylistKind = PlaylistKind.Files
 
         ''' <summary>Laeuft gerade ein Ordner-Einlesen. Zwei gleichzeitig waeren erlaubt, aber der
         ''' Balken kann nur eines zeigen, und die Reihenfolge in der Liste wuerde sich mischen.</summary>
@@ -75,6 +83,8 @@ Namespace ViewModels
         ''' <summary>Der Abbruch fuer das Einlesen. Beim Beenden wird gezogen, damit ein Lauf ueber
         ''' ein Netzlaufwerk die Anwendung nicht festhaelt.</summary>
         Private ReadOnly _shutdown As New CancellationTokenSource()
+        Private _audioCdMonitor As Timer
+        Private _audioCdCheckRunning As Integer
 
         ''' <summary>Nur das JUENGSTE Titelbild darf ankommen. Wer schnell durch die Liste geht,
         ''' startet mehrere Ladevorgaenge; ohne diese Nummer gewinnt der, der zufaellig zuletzt
@@ -117,6 +127,8 @@ Namespace ViewModels
             CycleRepeatCommand = New DelegateCommand(AddressOf CycleRepeat)
             ToggleMuteCommand = New DelegateCommand(Sub() IsMuted = Not IsMuted)
             ClearPlaylistCommand = New DelegateCommand(AddressOf ClearPlaylist)
+            ShowFilesPlaylistCommand = New DelegateCommand(Sub() SelectedPlaylist = PlaylistKind.Files)
+            ShowAudioCdPlaylistCommand = New DelegateCommand(Sub() SelectedPlaylist = PlaylistKind.AudioCd)
             ClearSearchCommand = New DelegateCommand(Sub() SearchText = String.Empty)
             RemoveMissingTracksCommand = New DelegateCommand(AddressOf RemoveMissingTracks)
             OpenSettingsCommand = New DelegateCommand(Sub() Mode = AppMode.Settings)
@@ -140,6 +152,7 @@ Namespace ViewModels
             LoadSettings()
             WirePlayer()
             _player.Start()
+            _audioCdMonitor = New Timer(Sub() CheckAudioCd(), Nothing, TimeSpan.Zero, TimeSpan.FromSeconds(5))
             ' VOR dem Wiederherstellen: dann bekommt schon der zuletzt gespielte Titel sein Bild
             ' fuer MPRIS.
             ConnectToSession()
@@ -170,6 +183,8 @@ Namespace ViewModels
         Public ReadOnly Property CycleRepeatCommand As DelegateCommand
         Public ReadOnly Property ToggleMuteCommand As DelegateCommand
         Public ReadOnly Property ClearPlaylistCommand As DelegateCommand
+        Public ReadOnly Property ShowFilesPlaylistCommand As DelegateCommand
+        Public ReadOnly Property ShowAudioCdPlaylistCommand As DelegateCommand
         Public ReadOnly Property ClearSearchCommand As DelegateCommand
         Public ReadOnly Property OpenSettingsCommand As DelegateCommand
         Public ReadOnly Property ClosePanelCommand As DelegateCommand
@@ -223,18 +238,55 @@ Namespace ViewModels
         ''' <summary>Die Zeile unter der Liste: "8 / 00:32:21 / 74,51 MB".</summary>
         Public ReadOnly Property PlaylistSummary As String
             Get
-                If _tracks.Count = 0 Then Return String.Empty
-                Dim totalSeconds = _tracks.Sum(Function(t) t.DurationSeconds)
-                Dim totalBytes = _tracks.Sum(Function(t) t.FileSize)
-                Return $"{_tracks.Count} / {FormatLongDuration(totalSeconds)} / {Track.FormatFileSize(totalBytes)}"
+                Dim tracks = ActiveTracks()
+                If tracks.Count = 0 Then Return String.Empty
+                Dim totalSeconds = tracks.Sum(Function(t) t.DurationSeconds)
+                Dim totalBytes = tracks.Sum(Function(t) t.FileSize)
+                Dim sizeText = Track.FormatFileSize(totalBytes)
+                Return If(String.IsNullOrEmpty(sizeText), $"{tracks.Count} / {FormatLongDuration(totalSeconds)}",
+                          $"{tracks.Count} / {FormatLongDuration(totalSeconds)} / {sizeText}")
             End Get
         End Property
 
         Public ReadOnly Property IsPlaylistEmpty As Boolean
             Get
-                Return _tracks.Count = 0
+                Return ActiveTracks().Count = 0
             End Get
         End Property
+
+        Public Property SelectedPlaylist As PlaylistKind
+            Get
+                Return _selectedPlaylist
+            End Get
+            Set(value As PlaylistKind)
+                If Not SetField(_selectedPlaylist, value) Then Return
+                RaisePropertyChanged(NameOf(IsFilesPlaylistSelected))
+                RaisePropertyChanged(NameOf(IsAudioCdPlaylistSelected))
+                RebuildRows()
+            End Set
+        End Property
+
+        Public ReadOnly Property IsFilesPlaylistSelected As Boolean
+            Get
+                Return _selectedPlaylist = PlaylistKind.Files
+            End Get
+        End Property
+
+        Public ReadOnly Property IsAudioCdPlaylistSelected As Boolean
+            Get
+                Return _selectedPlaylist = PlaylistKind.AudioCd
+            End Get
+        End Property
+
+        Public ReadOnly Property HasAudioCd As Boolean
+            Get
+                Return _audioCdTracks.Count > 0
+            End Get
+        End Property
+
+        Private Function ActiveTracks() As List(Of Track)
+            Return If(_selectedPlaylist = PlaylistKind.AudioCd, _audioCdTracks, _tracks)
+        End Function
 
         ' Einstellungen. Sie stehen hier und nicht in einem eigenen Bauplan, weil es (noch) wenige
         ' sind und jede von ihnen unmittelbar auf den Spieler oder die Ansicht wirkt. Kommen mehr
@@ -739,6 +791,16 @@ Namespace ViewModels
             PlayCore(track, skipDirection:=0)
         End Sub
 
+        ''' <summary>Blendet den Titel in der Liste ein und laesst die Ansicht darauf springen.
+        ''' Das Ereignis bleibt bei der Ansicht, weil nur sie weiss, welches ListBox-Steuerelement
+        ''' gerade den sichtbaren Bereich besitzt.</summary>
+        Public Sub FocusTrackInPlaylist(track As Track)
+            If track Is Nothing OrElse (Not _tracks.Contains(track) AndAlso Not _audioCdTracks.Contains(track)) Then Return
+            SelectedPlaylist = If(track.IsAudioCdTrack, PlaylistKind.AudioCd, PlaylistKind.Files)
+            If _collapsedFolders.Remove(track.FolderPath) Then RebuildRows()
+            RaiseEvent PlaylistFocusRequested(track)
+        End Sub
+
         ''' <param name="skipDirection">Wohin es geht, wenn sich der Titel nicht oeffnen laesst:
         ''' +1 weiter, -1 zurueck, 0 gar nicht. Siehe <see cref="HandleUnplayableTrack"/>.</param>
         Private Sub PlayCore(track As Track, skipDirection As Integer)
@@ -837,7 +899,7 @@ Namespace ViewModels
 
         ''' <summary>Die Abspielreihenfolge ohne die Titel, die nicht dran kommen.</summary>
         Private Function PlayableOrder() As List(Of Track)
-            Return _playOrder.Where(AddressOf IsPlayable).ToList()
+            Return CurrentPlayOrder().Where(AddressOf IsPlayable).ToList()
         End Function
 
         ''' <summary>Dran kommt ein Titel, der angehakt ist und dessen Datei nicht als fehlend gilt.</summary>
@@ -858,10 +920,11 @@ Namespace ViewModels
         ''' fehlt er in der gefilterten, und die Suche finge wieder vorn an.</summary>
         ''' <param name="wrap">Ob es ueber das Ende hinaus am anderen Ende weitergehen darf.</param>
         Private Function FindNeighbour(direction As Integer, wrap As Boolean) As Track
-            Dim count = _playOrder.Count
+            Dim order = CurrentPlayOrder()
+            Dim count = order.Count
             If count = 0 Then Return Nothing
 
-            Dim start = If(_currentTrack Is Nothing, -1, _playOrder.IndexOf(_currentTrack))
+            Dim start = If(_currentTrack Is Nothing, -1, order.IndexOf(_currentTrack))
             ' Rueckwaerts ohne laufenden Titel beginnt am Ende.
             If start < 0 AndAlso direction < 0 Then start = 0
 
@@ -871,7 +934,7 @@ Namespace ViewModels
                     If Not wrap Then Return Nothing
                     index = ((index Mod count) + count) Mod count
                 End If
-                Dim candidate = _playOrder(index)
+                Dim candidate = order(index)
                 If IsPlayable(candidate) Then Return candidate
             Next
             Return Nothing
@@ -932,9 +995,21 @@ Namespace ViewModels
             _playOrder = shuffled
         End Sub
 
+        Private Function CurrentPlayOrder() As List(Of Track)
+            If _currentTrack IsNot Nothing AndAlso _currentTrack.IsAudioCdTrack Then Return _audioCdTracks
+            Return If(_selectedPlaylist = PlaylistKind.AudioCd, _audioCdTracks, _playOrder)
+        End Function
+
         ' Das Titelbild
 
         Private Sub LoadCoverAsync(track As Track)
+            If track.IsAudioCdTrack Then
+                _currentCover = Nothing
+                RaisePropertyChanged(NameOf(CurrentCover))
+                RaisePropertyChanged(NameOf(HasCover))
+                RaisePropertyChanged(NameOf(IsCoverBackdropVisible))
+                Return
+            End If
             Dim request = Interlocked.Increment(_coverRequest)
             Dim path = track.FilePath
             ' MPRIS braucht das Bild als Datei. Ohne MPRIS spart man sich das Auslagern.
@@ -1026,6 +1101,64 @@ Namespace ViewModels
                 Await AddPathsAsync(queued.Paths, queued.PlayFirst)
             End If
         End Function
+
+        ''' <summary>Liest die eingelegte Audio-CD ein. CDDA-Titel sind keine Dateien und werden
+        ''' deshalb getrennt vom Dateiscanner behandelt. Sie leben nur in dieser Sitzung: nach
+        ''' einem Neustart kann dasselbe Laufwerk eine andere CD enthalten.</summary>
+        Public Async Function AddAudioCdAsync() As Task
+            StatusText = LocalizationService.T("Audio-CD wird gelesen.")
+            Try
+                Dim tracks = Await Task.Run(AddressOf AudioCdService.ReadFirstDisc)
+                If _shutdown.IsCancellationRequested Then Return
+                If tracks.Count = 0 Then
+                    StatusText = LocalizationService.T("Keine Audio-CD gefunden oder das Laufwerk ist nicht lesbar.")
+                    Return
+                End If
+                SetAudioCdTracks(tracks, selectPlaylist:=True)
+                StatusText = LocalizationService.Format("{0} Titel von Audio-CD verfügbar.", tracks.Count)
+            Catch ex As Exception
+                DiagnosticLogService.LogException("AudioCd.Add", ex)
+                StatusText = LocalizationService.T("Die Audio-CD konnte nicht gelesen werden.")
+            End Try
+        End Function
+
+        ''' <summary>Der Monitor fragt in kleinen Abstaenden die TOC ab. Nur ein Lauf darf zugleich
+        ''' lesen; optische Laufwerke reagieren auf parallele TOC-Anfragen teilweise traege.</summary>
+        Private Async Sub CheckAudioCd()
+            If _shutdown.IsCancellationRequested OrElse Interlocked.Exchange(_audioCdCheckRunning, 1) <> 0 Then Return
+            Try
+                Dim tracks = Await Task.Run(AddressOf AudioCdService.ReadFirstDisc)
+                Dispatcher.UIThread.Post(Sub() SetAudioCdTracks(tracks, selectPlaylist:=False))
+            Catch ex As Exception
+                DiagnosticLogService.LogException("AudioCd.Monitor", ex)
+            Finally
+                Interlocked.Exchange(_audioCdCheckRunning, 0)
+            End Try
+        End Sub
+
+        Private Sub SetAudioCdTracks(tracks As List(Of Track), selectPlaylist As Boolean)
+            If _shutdown.IsCancellationRequested Then Return
+            tracks = If(tracks, New List(Of Track)())
+            Dim unchanged = tracks.Count = _audioCdTracks.Count AndAlso
+                            tracks.Select(Function(track) track.FilePath).SequenceEqual(_audioCdTracks.Select(Function(track) track.FilePath), StringComparer.Ordinal)
+            If unchanged Then Return
+
+            For Each track In _audioCdTracks
+                _rowsByTrack.Remove(track)
+            Next
+            _audioCdTracks.Clear()
+            _audioCdTracks.AddRange(tracks)
+            For Each track In _audioCdTracks
+                _rowsByTrack(track) = New PlaylistTrackRow(track)
+            Next
+            RaisePropertyChanged(NameOf(HasAudioCd))
+
+            If _selectedPlaylist = PlaylistKind.AudioCd OrElse selectPlaylist Then
+                SelectedPlaylist = PlaylistKind.AudioCd
+                ' SetField ruft bei bereits ausgewaehlter CD nicht neu auf.
+                RebuildRows()
+            End If
+        End Sub
 
         ''' <summary>Sammelt die abspielbaren Dateien unter den angegebenen Pfaden. Ordner werden
         ''' durchgegangen, Dateien direkt genommen. Sortiert wird je Ordner nach Dateiname, weil
@@ -1222,6 +1355,10 @@ Namespace ViewModels
             For Each track In tracks
                 If cancellation.IsCancellationRequested Then Exit For
                 Try
+                    ' Ein optisches Laufwerk existiert auch bei ausgeworfenem Medium. Die
+                    ' Verfuegbarkeit klaert mpv beim Start; eine CD deshalb nie als "Datei fehlt"
+                    ' markieren, sonst bliebe sie nach dem Wiedereinlegen ausgegraut.
+                    If track.IsAudioCdTrack Then Continue For
                     If Not File.Exists(track.FilePath) Then missing.Add(track)
                 Catch ex As Exception
                     DiagnosticLogService.Log("Playlist.CheckMissing", $"{track.FilePath}: {ex.Message}")
@@ -1255,7 +1392,7 @@ Namespace ViewModels
         Private Sub RebuildRows()
             Rows.Clear()
 
-            Dim filtered = _tracks.Where(AddressOf MatchesSearch).ToList()
+            Dim filtered = ActiveTracks().Where(AddressOf MatchesSearch).ToList()
             Dim groups = New List(Of String)()
             Dim byFolder = New Dictionary(Of String, List(Of Track))(StringComparer.Ordinal)
 
@@ -1451,12 +1588,13 @@ Namespace ViewModels
         End Sub
 
         Public Sub SavePlaylist()
-            PlaylistStore.Save(_tracks)
+            PlaylistStore.Save(_tracks.Where(Function(track) Not track.IsAudioCdTrack))
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
             DisconnectFromSession()
             _shutdown.Cancel()
+            _audioCdMonitor?.Dispose()
             AppSettingsService.Current.LastPositionSeconds = _positionSeconds
             SavePlaylist()
             AppSettingsService.Save()
