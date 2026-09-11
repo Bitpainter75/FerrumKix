@@ -98,11 +98,7 @@ Namespace Views
         End Sub
 
         Private Function SelectedMode() As AudioConversionService.ConversionMode
-            If FindControl(Of RadioButton)("AllRadio").IsChecked.GetValueOrDefault() Then Return AudioConversionService.ConversionMode.AllSourcesOneResult
-            If FindControl(Of RadioButton)("AllCueRadio").IsChecked.GetValueOrDefault() Then Return AudioConversionService.ConversionMode.AllSourcesOneResultWithCue
-            If FindControl(Of RadioButton)("FolderRadio").IsChecked.GetValueOrDefault() Then Return AudioConversionService.ConversionMode.OneResultPerFolder
-            If FindControl(Of RadioButton)("FolderCueRadio").IsChecked.GetValueOrDefault() Then Return AudioConversionService.ConversionMode.OneResultPerFolderWithCue
-            Return AudioConversionService.ConversionMode.OneResultPerSource
+            Return CType(Math.Max(0, FindControl(Of ComboBox)("ModeBox").SelectedIndex), AudioConversionService.ConversionMode)
         End Function
 
         Private Function SelectedBitrate() As Integer
