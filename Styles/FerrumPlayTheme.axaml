@@ -506,26 +506,30 @@
     </Style>
 
     <Style Selector="MenuItem">
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
         <Setter Property="FontSize" Value="{DynamicResource FP.Font.Body}"/>
         <Setter Property="Padding" Value="8,5"/>
     </Style>
-    <Style Selector="MenuItem:pointerover /template/ ContentPresenter">
+    <!-- Nicht nur den ContentPresenter färben: der umfasst in Avalonia allein die Textspalte
+         und ließ links/rechts einen andersfarbigen Streifen stehen. Der Hintergrund des MenuItem
+         selbst ist die volle Zeile inklusive der reservierten Symbolspalte. -->
+    <Style Selector="MenuItem:pointerover">
         <Setter Property="Background" Value="{DynamicResource FP.Bg.Active}"/>
     </Style>
     <!-- Fluent unterscheidet den gerade mit der Tastatur markierten Eintrag vom Zeigerzustand.
          Ohne diese beiden Regeln gewinnt dort dessen helle Standardauswahl und das Kontextmenü
          wirkt wie aus einem anderen Programm. Beide Zustände bleiben daher im selben, ruhigen
          Blau-Grau wie der normale Hover. -->
-    <Style Selector="MenuItem:selected /template/ ContentPresenter">
+    <Style Selector="MenuItem:selected">
         <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
         <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
     </Style>
-    <Style Selector="MenuItem:selected:pointerover /template/ ContentPresenter">
+    <Style Selector="MenuItem:selected:pointerover">
         <Setter Property="Background" Value="{DynamicResource FP.Bg.Active}"/>
         <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
     </Style>
-    <Style Selector="MenuItem:pressed /template/ ContentPresenter">
+    <Style Selector="MenuItem:pressed">
         <Setter Property="Background" Value="{DynamicResource FP.Accent.Dim}"/>
         <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
     </Style>
