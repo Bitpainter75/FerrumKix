@@ -6,6 +6,8 @@
   combine a selection or each folder in track order, write a matching CUE chapter file, or split
   a file with an existing CUE into individual tracks.
 - Audio-CD tracks can be ripped directly to files through cdparanoia.
+- The playlist header now has a button that jumps directly to the current track, including its
+  album group, in long playlists.
 
 ## 0.3.0
 

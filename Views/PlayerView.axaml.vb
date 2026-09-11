@@ -65,6 +65,12 @@ Namespace Views
             ViewModel?.SeekTo(seconds)
         End Sub
 
+        Private Sub OnJumpToCurrentTrackClick(sender As Object, e As RoutedEventArgs)
+            Dim viewModel = Me.ViewModel
+            Dim track = viewModel?.CurrentTrack
+            If track IsNot Nothing Then viewModel.FocusTrackInPlaylist(track)
+        End Sub
+
         Private Sub OnSidePanelDrag(sender As Object, e As VectorEventArgs)
             Dim viewModel = Me.ViewModel
             If viewModel Is Nothing Then Return

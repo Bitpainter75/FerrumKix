@@ -284,4 +284,5 @@
   <data name="Die_Audio_CD_Quelle_ist_ung_ltig_6d01425b" xml:space="preserve"><value>The Audio CD source is invalid.</value></data>
   <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>Convert album…</value></data>
   <data name="Konvertieren_ce23485e" xml:space="preserve"><value>Convert…</value></data>
+  <data name="Zum_aktuellen_Titel_springen_84da67c6" xml:space="preserve"><value>Jump to current track</value></data>
 </root>

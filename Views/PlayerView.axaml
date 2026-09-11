@@ -150,13 +150,21 @@
                                     IsVisible="{Binding HasAudioCd}"
                                     Content="Audio-CD"/>
                         </StackPanel>
-                        <Button Grid.Column="1"
-                                Classes="icon-btn"
-                                Command="{Binding OpenSettingsCommand}"
-                                ToolTip.Tip="Einstellungen">
-                            <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/settings.svg"
-                                           Width="16" Height="16"/>
-                        </Button>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                            <Button Classes="icon-btn"
+                                    IsEnabled="{Binding HasCurrentTrack}"
+                                    Click="OnJumpToCurrentTrackClick"
+                                    ToolTip.Tip="Zum aktuellen Titel springen">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/target.svg"
+                                               Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="icon-btn"
+                                    Command="{Binding OpenSettingsCommand}"
+                                    ToolTip.Tip="Einstellungen">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/settings.svg"
+                                               Width="16" Height="16"/>
+                            </Button>
+                        </StackPanel>
                     </Grid>
 
                     <ListBox x:Name="PlaylistBox"
