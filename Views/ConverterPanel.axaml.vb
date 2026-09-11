@@ -113,7 +113,13 @@ Namespace Views
 
         Private Sub UpdateQueue(index As Integer, text As String)
             Dispatcher.UIThread.Post(Sub()
-                                         If index >= 0 AndAlso index < Queue.Count Then Queue(index).Status = text
+                                         If index < 0 OrElse index >= Queue.Count Then Return
+                                         Queue(index).Status = text
+                                         ' Die Warteschlange waechst nach unten. Beim Wechsel zum
+                                         ' naechsten Titel bleibt er automatisch im sichtbaren Bereich,
+                                         ' auch wenn die vorherigen Ergebnisse die Liste gefuellt haben.
+                                         Dim queueBox = FindControl(Of ListBox)("QueueBox")
+                                         queueBox?.ScrollIntoView(Queue(index))
                                      End Sub)
         End Sub
 
