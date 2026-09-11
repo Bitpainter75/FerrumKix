@@ -172,6 +172,7 @@
                                     <Border.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="Album abspielen" Tag="{Binding}" Click="OnGroupPlayClick"/>
+                                            <MenuItem Header="Album konvertieren…" Tag="{Binding}" Click="OnGroupConvertClick"/>
                                             <MenuItem Header="Auf- oder zuklappen" Tag="{Binding}" Click="OnGroupToggleMenuClick"/>
                                             <Separator/>
                                             <MenuItem Header="Album aus Liste entfernen" Tag="{Binding}" Click="OnGroupRemoveClick"/>
@@ -209,7 +210,7 @@
                                     <Border.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="Abspielen" Tag="{Binding}" Click="OnTrackPlayClick"/>
-                                            <MenuItem Header="Beim Abspielen berücksichtigen" Tag="{Binding}" Click="OnTrackToggleEnabledClick"/>
+                                            <MenuItem Header="Konvertieren…" Tag="{Binding}" Click="OnTrackConvertClick"/>
                                             <Separator/>
                                             <MenuItem Header="Aus Liste entfernen" Tag="{Binding}" Click="OnTrackRemoveClick"/>
                                         </ContextMenu>

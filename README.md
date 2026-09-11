@@ -26,6 +26,9 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Plays Audio CDs.** On Linux, an inserted Audio CD is detected automatically and appears as a
   separate temporary playlist. Its tracks can be selected, searched and played just like files;
   ejecting the disc removes the playlist again.
+- **Converts without another app.** Convert a title or album to MP3 (CBR or VBR), FLAC or Ogg
+  Vorbis. Whole selections or individual folders can become one ordered file, optionally with a
+  CUE chapter file; a single large file with an existing CUE can also be split into tracks.
 - **Evens out loudness.** ReplayGain by track, by album, or automatically: by album while an album plays through, by track when shuffling.
 - **Notices missing files.** Tracks whose file is gone are greyed out and skipped instead of stopping playback. Plug the drive back in and they return; one click removes them all.
 - **Fits into the desktop.** FerrumPlay speaks MPRIS, so Waybar, playerctl, notifications and the media keys reach it even while its window is in the background - with title, artist, album and cover.
@@ -64,7 +67,9 @@ The packages are self-contained and bring the .NET runtime with them. **libmpv i
 | Debian, Ubuntu, Mint | `libmpv2` |
 | Fedora | `mpv-libs` |
 
-Without it FerrumPlay starts, but tells you it cannot play anything.
+Without it FerrumPlay starts, but tells you it cannot play anything. The converter additionally
+uses **FFmpeg** (`ffmpeg` on Arch, Debian/Ubuntu and Fedora); Audio-CD ripping uses
+**cdparanoia**. The DEB, RPM and AUR packages declare both as dependencies.
 
 Audio CD playback uses the optical drive directly. On Linux, your account needs read access to the
 drive (typically through the distribution's optical-drive permission group).

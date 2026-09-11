@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Added the Audio Converter: convert tracks and albums to MP3 (CBR/VBR), FLAC, or Ogg Vorbis;
+  combine a selection or each folder in track order, write a matching CUE chapter file, or split
+  a file with an existing CUE into individual tracks.
+- Audio-CD tracks can be ripped directly to files through cdparanoia.
+
 ## 0.3.0
 
 - The playlist can now be reordered by dragging tracks. A context menu on a track or album can

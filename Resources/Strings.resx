@@ -249,4 +249,39 @@
   <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve">
     <value>Back to playback</value>
   </data>
+  <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>Convert audio</value></data>
+  <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>The original files stay unchanged. FFmpeg is provided by the system.</value></data>
+  <data name="Zielformat_3f9af674" xml:space="preserve"><value>Output format</value></data>
+  <data name="Ogg_Vorbis_37bb6215" xml:space="preserve"><value>Ogg Vorbis</value></data>
+  <data name="Bitrate_Qualit_t_cae46720" xml:space="preserve"><value>Bitrate / quality</value></data>
+  <data name="Variable_Bitrate_VBR_nur_MP3_8690f777" xml:space="preserve"><value>Variable bitrate (VBR, MP3 only)</value></data>
+  <data name="Ausgabeform_a281e59e" xml:space="preserve"><value>Output mode</value></data>
+  <data name="Ein_Ergebnis_je_Titel_c314fcaf" xml:space="preserve"><value>One output per track</value></data>
+  <data name="Gesamtauswahl_zusammenf_hren_83ff5f61" xml:space="preserve"><value>Merge entire selection</value></data>
+  <data name="Gesamtauswahl_mit_Kapiteldatei_5e04fe2a" xml:space="preserve"><value>Merge selection with chapter file</value></data>
+  <data name="Je_Ordner_zusammenf_hren_af500147" xml:space="preserve"><value>Merge each folder</value></data>
+  <data name="Je_Ordner_mit_Kapiteldatei_9abbc998" xml:space="preserve"><value>Merge each folder with chapter file</value></data>
+  <data name="Vorhandene_CUE_Datei_in_einzelne_Titel_aufteilen_88ac3275" xml:space="preserve"><value>Split an existing CUE file into tracks</value></data>
+  <data name="Zielordner_ausw_hlen_9366a7d5" xml:space="preserve"><value>Choose output folder</value></data>
+  <data name="Ordner_435f23d2" xml:space="preserve"><value>Folder…</value></data>
+  <data name="Abbrechen_07af7cb3" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Konvertieren_a3262ed0" xml:space="preserve"><value>Convert</value></data>
+  <data name="0_Titel_konvertieren_035b7c0e" xml:space="preserve"><value>Convert {0} tracks</value></data>
+  <data name="Zielordner_8036bfe3" xml:space="preserve"><value>Output folder</value></data>
+  <data name="Bitte_zuerst_einen_Zielordner_ausw_hlen_8f6bde6a" xml:space="preserve"><value>Please choose an output folder first.</value></data>
+  <data name="Fertig_konvertiert_11f92741" xml:space="preserve"><value>Conversion complete.</value></data>
+  <data name="Konvertierung_abgebrochen_b2bffba9" xml:space="preserve"><value>Conversion cancelled.</value></data>
+  <data name="Keine_Titel_zum_Konvertieren_ausgew_hlt_23590936" xml:space="preserve"><value>No tracks selected for conversion.</value></data>
+  <data name="Kein_Zielordner_gew_hlt_7432a7fd" xml:space="preserve"><value>No output folder selected.</value></data>
+  <data name="FFmpeg_wurde_nicht_gefunden_Bitte_installiere_da_0202a9db" xml:space="preserve"><value>FFmpeg was not found. Please install the 'ffmpeg' package.</value></data>
+  <data name="Titel_werden_zusammengef_hrt_7fe4a686" xml:space="preserve"><value>Merging tracks …</value></data>
+  <data name="Konvertiere_Ordner_0_von_1_744978b5" xml:space="preserve"><value>Converting folder {0} of {1} …</value></data>
+  <data name="Konvertiere_0_von_1_2_87eb0ba9" xml:space="preserve"><value>Converting {0} of {1}: {2}</value></data>
+  <data name="Audio_CD_Titel_werden_einzeln_gerippt_Bitte_den__5ab38b45" xml:space="preserve"><value>Audio CD tracks are ripped individually. Please choose 'One output per track'.</value></data>
+  <data name="Die_CUE_Datei_enth_lt_keine_verwertbaren_INDEX_0_42d32749" xml:space="preserve"><value>The CUE file contains no usable INDEX 01 entries.</value></data>
+  <data name="Teile_CUE_0_von_1_2_2b7a981e" xml:space="preserve"><value>Splitting CUE {0} of {1}: {2}</value></data>
+  <data name="Zum_Rippen_einer_Audio_CD_fehlt_cdparanoia_91215ae7" xml:space="preserve"><value>'cdparanoia' is required to rip an Audio CD.</value></data>
+  <data name="Die_Audio_CD_Quelle_ist_ung_ltig_6d01425b" xml:space="preserve"><value>The Audio CD source is invalid.</value></data>
+  <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>Convert album…</value></data>
+  <data name="Konvertieren_ce23485e" xml:space="preserve"><value>Convert…</value></data>
 </root>

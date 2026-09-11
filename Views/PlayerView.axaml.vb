@@ -107,9 +107,10 @@ Namespace Views
             If row IsNot Nothing Then ViewModel?.Play(row.Track)
         End Sub
 
-        Private Sub OnTrackToggleEnabledClick(sender As Object, e As RoutedEventArgs)
+        Private Async Sub OnTrackConvertClick(sender As Object, e As RoutedEventArgs)
             Dim row = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistTrackRow)
-            If row IsNot Nothing Then row.IsEnabled = Not row.IsEnabled
+            If row Is Nothing Then Return
+            Await ShowConversionAsync({row.Track})
         End Sub
 
         Private Sub OnTrackRemoveClick(sender As Object, e As RoutedEventArgs)
@@ -120,6 +121,22 @@ Namespace Views
         Private Sub OnGroupPlayClick(sender As Object, e As RoutedEventArgs)
             ViewModel?.PlayGroup(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow))
         End Sub
+
+        Private Async Sub OnGroupConvertClick(sender As Object, e As RoutedEventArgs)
+            Dim group = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow)
+            Dim vm As MainWindowViewModel = Me.ViewModel
+            If group Is Nothing OrElse vm Is Nothing Then Return
+            Await ShowConversionAsync(vm.TracksInGroup(group))
+        End Sub
+
+        Private Async Function ShowConversionAsync(tracks As IEnumerable(Of Track)) As Threading.Tasks.Task
+            Dim selected = tracks?.Where(Function(track) track IsNot Nothing).ToList()
+            If selected Is Nothing OrElse selected.Count = 0 Then Return
+            Dim owner = TryCast(TopLevel.GetTopLevel(Me), Window)
+            If owner Is Nothing Then Return
+            Dim dialog As New ConversionDialog(selected)
+            Await dialog.ShowDialog(owner)
+        End Function
 
         Private Sub OnGroupToggleMenuClick(sender As Object, e As RoutedEventArgs)
             ViewModel?.ToggleGroup(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow))
