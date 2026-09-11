@@ -1,4 +1,4 @@
-<img src="Screenshot.png" height="450" />
+<img src="Screenshot.png" height="550" />
 
 # FerrumPlay
 
