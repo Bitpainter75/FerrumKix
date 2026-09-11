@@ -285,4 +285,14 @@
   <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>Convert album…</value></data>
   <data name="Konvertieren_ce23485e" xml:space="preserve"><value>Convert…</value></data>
   <data name="Zum_aktuellen_Titel_springen_84da67c6" xml:space="preserve"><value>Jump to current track</value></data>
+  <data name="Zur_ck_zur_Wiedergabeliste_05ea62ef" xml:space="preserve"><value>Back to playlist</value></data>
+  <data name="Warteschlange_und_Ausgabe_5ebecdc8" xml:space="preserve"><value>Queue and output</value></data>
+  <data name="0_Titel_458a8411" xml:space="preserve"><value>{0} tracks</value></data>
+  <data name="Wartet_db5b60a5" xml:space="preserve"><value>Waiting</value></data>
+  <data name="MP3_Qualit_t_058b8ca5" xml:space="preserve"><value>MP3 quality</value></data>
+  <data name="Bitrate_fa1da0b1" xml:space="preserve"><value>Bitrate:</value></data>
+  <data name="Konvertierung_starten_7ba534c7" xml:space="preserve"><value>Start conversion</value></data>
+  <data name="Wird_zusammengef_hrt_bb617c26" xml:space="preserve"><value>Merging</value></data>
+  <data name="Fertig_708ad54e" xml:space="preserve"><value>Done</value></data>
+  <data name="Konvertiert_7600f56a" xml:space="preserve"><value>Converting</value></data>
 </root>

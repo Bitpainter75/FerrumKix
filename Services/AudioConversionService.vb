@@ -42,6 +42,9 @@ Namespace Services
             Public Property VariableBitrate As Boolean
             Public Property Mode As ConversionMode = ConversionMode.OneResultPerSource
             Public Property SplitExistingCue As Boolean
+            ''' <summary>Status je Ursprungszeile fuer die Warteschlange der Oberfläche. -1 steht
+            ''' fuer einen Sammellauf, dessen Ergebnis mehrere Zeilen umfasst.</summary>
+            Public Property ItemProgress As Action(Of Integer, String)
         End Class
 
         Public Shared Function IsFfmpegAvailable() As Boolean
@@ -62,13 +65,18 @@ Namespace Services
             Select Case request.Mode
                 Case ConversionMode.AllSourcesOneResult, ConversionMode.AllSourcesOneResultWithCue
                     progress?.Report(LocalizationService.T("Titel werden zusammengeführt …"))
+                    request.ItemProgress?.Invoke(0, LocalizationService.T("Wird zusammengeführt"))
                     Await ConvertMergedAsync(tracks, request, progress, cancellationToken, request.Mode = ConversionMode.AllSourcesOneResultWithCue)
+                    For index = 0 To tracks.Count - 1 : request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig")) : Next
                     Return
                 Case ConversionMode.OneResultPerFolder, ConversionMode.OneResultPerFolderWithCue
                     Dim folders = tracks.GroupBy(Function(track) track.FolderPath, StringComparer.OrdinalIgnoreCase).ToList()
                     For index = 0 To folders.Count - 1
                         progress?.Report(LocalizationService.Format("Konvertiere Ordner {0} von {1} …", index + 1, folders.Count))
+                        Dim firstIndex = tracks.IndexOf(folders(index).First())
+                        request.ItemProgress?.Invoke(firstIndex, LocalizationService.T("Wird zusammengeführt"))
                         Await ConvertMergedAsync(folders(index).ToList(), request, progress, cancellationToken, request.Mode = ConversionMode.OneResultPerFolderWithCue)
+                        For Each track In folders(index) : request.ItemProgress?.Invoke(tracks.IndexOf(track), LocalizationService.T("Fertig")) : Next
                     Next
                     Return
             End Select
@@ -85,10 +93,12 @@ Namespace Services
                 cancellationToken.ThrowIfCancellationRequested()
                 Dim track = tracks(index)
                 progress?.Report(LocalizationService.Format("Konvertiere {0} von {1}: {2}", index + 1, tracks.Count, track.ShortTitle))
+                request.ItemProgress?.Invoke(index, LocalizationService.T("Konvertiert"))
                 Dim input = Await GetInputAsync(track, request.OutputDirectory, cancellationToken)
                 Try
                     Dim target = UniquePath(request.OutputDirectory, SafeFileName($"{TrackPrefix(track)}{track.DisplayTitle}") & ExtensionFor(request.Format))
                     Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken)
+                    request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig"))
                 Finally
                     DeleteTemporaryCdWav(input)
                 End Try

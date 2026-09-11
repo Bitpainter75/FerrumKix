@@ -259,10 +259,12 @@
                         </ListBox.DataTemplates>
                     </ListBox>
 
+                    <ContentControl x:Name="ConverterHost" Grid.Row="1" IsVisible="False"/>
+
                     <!-- Der Hinweis fuer die leere Liste liegt UEBER dem Rollbereich und nicht an
                          seiner Stelle: so bleibt die Liste an ihrem Platz und springt nicht, sobald
                          der erste Titel ankommt. -->
-                    <StackPanel Grid.Row="1"
+                    <StackPanel x:Name="PlaylistEmptyHint" Grid.Row="1"
                                 Spacing="10"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -277,13 +279,13 @@
                                    TextAlignment="Center"/>
                     </StackPanel>
 
-                    <TextBlock Grid.Row="2"
+                    <TextBlock x:Name="PlaylistSummaryText" Grid.Row="2"
                                Text="{Binding PlaylistSummary}"
                                Classes="muted"
                                TextAlignment="Center"
                                Margin="0,8,0,8"/>
 
-                    <Border Grid.Row="3" Classes="toolbar" BorderThickness="0,1,0,0" Padding="14,7">
+                    <Border x:Name="PlaylistToolbar" Grid.Row="3" Classes="toolbar" BorderThickness="0,1,0,0" Padding="14,7">
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
                             <icons:SvgIcon Grid.Column="0"
                                            Source="avares://FerrumPlay/Assets/Icons/outline/search.svg"

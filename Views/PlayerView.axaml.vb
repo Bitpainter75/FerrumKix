@@ -21,6 +21,7 @@ Namespace Views
 
         Private _focusViewModel As MainWindowViewModel
         Private _draggedTrack As Track
+        Private _converterPanel As ConverterPanel
 
         Public Sub New()
             InitializeComponent()
@@ -113,10 +114,10 @@ Namespace Views
             If row IsNot Nothing Then ViewModel?.Play(row.Track)
         End Sub
 
-        Private Async Sub OnTrackConvertClick(sender As Object, e As RoutedEventArgs)
+        Private Sub OnTrackConvertClick(sender As Object, e As RoutedEventArgs)
             Dim row = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistTrackRow)
             If row Is Nothing Then Return
-            Await ShowConversionAsync({row.Track})
+            ShowConverter({row.Track})
         End Sub
 
         Private Sub OnTrackRemoveClick(sender As Object, e As RoutedEventArgs)
@@ -128,21 +129,37 @@ Namespace Views
             ViewModel?.PlayGroup(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow))
         End Sub
 
-        Private Async Sub OnGroupConvertClick(sender As Object, e As RoutedEventArgs)
+        Private Sub OnGroupConvertClick(sender As Object, e As RoutedEventArgs)
             Dim group = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow)
             Dim vm As MainWindowViewModel = Me.ViewModel
             If group Is Nothing OrElse vm Is Nothing Then Return
-            Await ShowConversionAsync(vm.TracksInGroup(group))
+            ShowConverter(vm.TracksInGroup(group))
         End Sub
 
-        Private Async Function ShowConversionAsync(tracks As IEnumerable(Of Track)) As Threading.Tasks.Task
+        Private Sub ShowConverter(tracks As IEnumerable(Of Track))
             Dim selected = tracks?.Where(Function(track) track IsNot Nothing).ToList()
             If selected Is Nothing OrElse selected.Count = 0 Then Return
-            Dim owner = TryCast(TopLevel.GetTopLevel(Me), Window)
-            If owner Is Nothing Then Return
-            Dim dialog As New ConversionDialog(selected)
-            Await dialog.ShowDialog(owner)
-        End Function
+            _converterPanel = New ConverterPanel(selected)
+            AddHandler _converterPanel.CloseRequested, AddressOf OnConverterCloseRequested
+            Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
+            host.Content = _converterPanel
+            host.IsVisible = True
+            Me.FindControl(Of ListBox)("PlaylistBox").IsVisible = False
+            Me.FindControl(Of Control)("PlaylistEmptyHint").IsVisible = False
+            Me.FindControl(Of Control)("PlaylistSummaryText").IsVisible = False
+            Me.FindControl(Of Control)("PlaylistToolbar").IsVisible = False
+        End Sub
+
+        Private Sub OnConverterCloseRequested(sender As Object, e As EventArgs)
+            Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
+            host.Content = Nothing
+            host.IsVisible = False
+            Me.FindControl(Of ListBox)("PlaylistBox").IsVisible = True
+            Me.FindControl(Of Control)("PlaylistEmptyHint").IsVisible = ViewModel IsNot Nothing AndAlso ViewModel.IsPlaylistEmpty
+            Me.FindControl(Of Control)("PlaylistSummaryText").IsVisible = True
+            Me.FindControl(Of Control)("PlaylistToolbar").IsVisible = True
+            _converterPanel = Nothing
+        End Sub
 
         Private Sub OnGroupToggleMenuClick(sender As Object, e As RoutedEventArgs)
             ViewModel?.ToggleGroup(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow))
