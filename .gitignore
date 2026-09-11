@@ -1,0 +1,9 @@
+/.idea/
+/obj/
+/bin/
+/Audits/
+/Branding/
+/publish/
+/packaging/
+
+*.DotSettings.user

@@ -1,0 +1,131 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:icons="clr-namespace:FerrumPlay.Controls"
+             xmlns:vm="clr-namespace:FerrumPlay.ViewModels"
+             x:Class="FerrumPlay.Views.LyrionBrowserPanel">
+    <UserControl.Styles>
+        <!-- Die Cover sind Kacheln, keine Schaltflaechen: ihr Rand bleibt deshalb unsichtbar. -->
+        <Style Selector="Button.lyrion-album">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="0"/>
+        </Style>
+        <Style Selector="Button.lyrion-album:pointerover">
+            <Setter Property="Opacity" Value="0.78"/>
+        </Style>
+        <Style Selector="Button.lyrion-album TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
+        </Style>
+        <Style Selector="Button.lyrion-album TextBlock.muted">
+            <Setter Property="Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
+        </Style>
+        <!-- Gleiche Flächen für Hover und Auswahl wie in der normalen Wiedergabeliste. -->
+        <Style Selector="ListBoxItem.lyrion-track">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+        <Style Selector="ListBoxItem.lyrion-track:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
+        </Style>
+        <Style Selector="ListBoxItem.lyrion-track:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource FP.Sel.Bg}"/>
+        </Style>
+        <Style Selector="ListBoxItem.lyrion-track:selected:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource FP.Sel.Hover}"/>
+        </Style>
+        <Style Selector="ListBoxItem.lyrion-track.playing /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource FP.Row.Playing}"/>
+        </Style>
+        <Style Selector="ListBoxItem.lyrion-track.playing:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource FP.Row.PlayingHover}"/>
+        </Style>
+    </UserControl.Styles>
+    <UserControl.Resources>
+        <!-- Die Kachel eines Albums. Ihre Masse stehen HIER und nirgends sonst: UniformGridLayout
+             misst das erste gebaute Element und teilt danach die Zeilen ein. -->
+        <DataTemplate x:Key="LyrionAlbumTileTemplate" DataType="{x:Type vm:LyrionAlbumTile}">
+            <Button Classes="lyrion-album" Width="172" Height="238" Padding="6"
+                    Tag="{Binding}" Click="OnAlbumClick"
+                    HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
+                <StackPanel Width="160" Spacing="6">
+                    <!-- Der Rahmen steht auch ohne Bild: eine Kachel, deren Cover noch unterwegs
+                         ist, darf die Zeile nicht kuerzer machen. -->
+                    <Border Width="160" Height="160" CornerRadius="5" ClipToBounds="True"
+                            Background="#22FFFFFF">
+                        <Panel>
+                            <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/music.svg"
+                                           Width="36" Height="36"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           IconBrush="{DynamicResource FP.Text.Muted}"/>
+                            <Image Source="{Binding Cover}" Width="160" Height="160"
+                                   Stretch="UniformToFill"/>
+                        </Panel>
+                    </Border>
+                    <TextBlock Text="{Binding Title}" MinHeight="18" FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding Artist}" MinHeight="17" Classes="muted"
+                               TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid RowDefinitions="Auto,Auto,*"
+          Background="#66101418"
+          Margin="18,10,10,10">
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+            <Button Classes="icon-btn" Click="OnBackClick" ToolTip.Tip="Zurück zur Wiedergabeliste">
+                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/>
+            </Button>
+            <TextBlock x:Name="PageTitle" Grid.Column="1" Text="Lyrion Media Server"
+                       FontSize="{DynamicResource FP.Font.Heading}" VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6">
+                <Button Classes="icon-btn" Click="OnJumpToCurrentTrackClick" ToolTip.Tip="Zum aktuellen Titel springen">
+                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/target.svg" Width="16" Height="16"/>
+                </Button>
+                <Button Classes="icon-btn" Click="OnReloadClick" ToolTip.Tip="Bibliothek aktualisieren">
+                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/repeat.svg" Width="16" Height="16"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <TextBox x:Name="SearchBox" Grid.Row="1" Margin="0,14,0,10"
+                 PlaceholderText="Alben durchsuchen" TextChanged="OnSearchTextChanged"/>
+
+        <Grid Grid.Row="2" RowDefinitions="Auto,*">
+            <TextBlock x:Name="Status" Classes="muted" Text="Lyrion Media Server wird geladen …" Margin="2,0,0,8"/>
+            <Grid Grid.Row="1">
+                <!-- Die Alben und die Titel eines Albums haben je einen eigenen Rollbereich: der
+                     Repeater bekommt sein Sichtfenster vom ScrollViewer, in dem er steckt, und
+                     kann sich zwei Ansichten nicht mit einer Liste teilen. -->
+                <ScrollViewer x:Name="AlbumScroll"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto"
+                              ScrollChanged="OnAlbumScrollChanged">
+                    <!-- MinItemWidth/MinItemHeight werden bewusst nicht gesetzt: das Layout nimmt
+                         sie unveraendert als Mass und vergleicht sie nicht mit der Kachel. Ohne
+                         Angabe misst es das erste gebaute Element und trifft damit immer. -->
+                    <ItemsRepeater x:Name="Albums"
+                                   VerticalAlignment="Top"
+                                   ElementPrepared="OnAlbumTilePrepared"
+                                   ElementClearing="OnAlbumTileClearing"
+                                   ItemTemplate="{StaticResource LyrionAlbumTileTemplate}">
+                        <ItemsRepeater.Layout>
+                            <UniformGridLayout Orientation="Horizontal"
+                                               ItemsStretch="None"
+                                               ItemsJustification="Start"/>
+                        </ItemsRepeater.Layout>
+                    </ItemsRepeater>
+                </ScrollViewer>
+                <ScrollViewer x:Name="TrackScroll" IsVisible="False"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <ListBox x:Name="Tracks" Background="Transparent" BorderThickness="0"
+                             SelectionMode="Single" DoubleTapped="OnTracksDoubleTapped"/>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

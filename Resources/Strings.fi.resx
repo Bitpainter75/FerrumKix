@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>{0} puuttuvaa raitaa poistettu.</value></data>
+  <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} kanavaa</value></data>
+  <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} tekijältä {1}, järjestelmätekijä {2:0.##}</value></data>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
+    <value>{0} MP3-tiedosto(a) valittu. Kansi: {1}×{1}, JPEG {2} %.</value>
+  </data>
+  <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} prosenttia</value></data>
+  <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} kappaletta luettu.</value></data>
+  <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} kappaletta ei löytynyt.</value></data>
+  <data name="0_von_1_Alben_d5492fcf" xml:space="preserve">
+    <value>{0}/{1} albumia</value>
+  </data>
+  <data name="Abspielen_b2eaf9fd" xml:space="preserve">
+    <value>Toista</value>
+  </data>
+  <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>Aksenttiväri</value></data>
+  <data name="Alben_durchsuchen_47ee6eb5" xml:space="preserve">
+    <value>Hae albumeita</value>
+  </data>
+  <data name="Alben_werden_geladen_02583de6" xml:space="preserve">
+    <value>Albumeita ladataan …</value>
+  </data>
+  <data name="Album_abspielen_9c9d0b34" xml:space="preserve">
+    <value>Toista albumi</value>
+  </data>
+  <data name="Album_Artist_an_Artist_angleichen_ad438087" xml:space="preserve">
+    <value>Yhdenmukaista albumin esittäjä esittäjään</value>
+  </data>
+  <data name="Album_Artist_eb2422e0" xml:space="preserve">
+    <value>Albumin esittäjä</value>
+  </data>
+  <data name="Album_aus_Liste_entfernen_27fbc63a" xml:space="preserve">
+    <value>Poista albumi luettelosta</value>
+  </data>
+  <data name="Album_dfb4c9a1" xml:space="preserve">
+    <value>Albumi</value>
+  </data>
+  <data name="Album_Sortierung_703d67d0" xml:space="preserve">
+    <value>Albumin lajittelu</value>
+  </data>
+  <data name="Album_Sortierung_an_Jahr_angleichen_24bbd557" xml:space="preserve">
+    <value>Yhdenmukaista albumin lajittelu vuoteen</value>
+  </data>
+  <data name="Anhalten_55ba4638" xml:space="preserve"><value>Pysähdy</value></data>
+  <data name="Artist_6c3f3d32" xml:space="preserve">
+    <value>Esittäjä</value>
+  </data>
+  <data name="Audio_CD_8d487111" xml:space="preserve">
+    <value>Ääni-CD</value>
+  </data>
+  <data name="Audio_Konverter_af847a55" xml:space="preserve">
+    <value>Äänimuunnin</value>
+  </data>
+  <data name="Audiodatei_Tags_25b63463" xml:space="preserve">
+    <value>Äänitiedostojen tunnisteet</value>
+  </data>
+  <data name="Auf_oder_zuklappen_1f852885" xml:space="preserve">
+    <value>Laajenna tai tiivistä</value>
+  </data>
+  <data name="Aus_6997e3eb" xml:space="preserve"><value>Pois päältä</value></data>
+  <data name="Aus_Liste_entfernen_f6ae4908" xml:space="preserve">
+    <value>Poista luettelosta</value>
+  </data>
+  <data name="Ausgabe_dbeb8b99" xml:space="preserve">
+    <value>Tuloste</value>
+  </data>
+  <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>Poista valitut kappaleet luettelosta</value></data>
+  <data name="Auslieferung_add9612e" xml:space="preserve"><value>Oletus</value></data>
+  <data name="Automatisch_95b51063" xml:space="preserve"><value>Automaattinen</value></data>
+  <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
+    <value>Tallennettaessa albumin esittäjä ottaa automaattisesti esittäjän arvon.</value>
+  </data>
+  <data name="Beim_Speichern_bernimmt_Album_Sortierung_automat_f126befa" xml:space="preserve">
+    <value>Tallennettaessa albumin lajittelu ottaa automaattisesti vuoden arvon.</value>
+  </data>
+  <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>Jatka alkaessa</value></data>
+  <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
+    <value>Säilyttää vain tarkoitetut ID3v2-kentät ja poistaa ID3v1:n, APEv2:n sekä muut merkinnät.</value>
+  </data>
+  <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>Tietoja FerrumPlaysta</value></data>
+  <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
+    <value>Huolehtii äänentoistosta tiedostoille, ääni-CD-levyille ja Lyrion-virroille.</value>
+  </data>
+  <data name="Bibliothek_aktualisieren_08c49af2" xml:space="preserve">
+    <value>Päivitä kirjasto</value>
+  </data>
+  <data name="Bildkodierung_0e276e0e" xml:space="preserve">
+    <value>Kuvan koodaus</value>
+  </data>
+  <data name="Bitte_zuerst_die_Adresse_des_Lyrion_Media_Server_e8bf5785" xml:space="preserve">
+    <value>Anna ensin Lyrion Media Serverin osoite.</value>
+  </data>
+  <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>Kannen sarakkeen leveys</value></data>
+  <data name="brige_Tags_beim_Speichern_entfernen_307feaab" xml:space="preserve">
+    <value>Poista muut tunnisteet tallennettaessa</value>
+  </data>
+  <data name="Client_Name_61663d15" xml:space="preserve">
+    <value>Asiakkaan nimi</value>
+  </data>
+  <data name="Cover_f_r_das_Taggen_5d4bd4a3" xml:space="preserve">
+    <value>Kansi tunnisteita varten</value>
+  </data>
+  <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
+    <value>Vedä kansi tähän</value>
+  </data>
+  <data name="Darstellung_7058d4fa" xml:space="preserve"><value>Ulkonäkö</value></data>
+  <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
+    <value>Kansikuvaa ei voitu lukea.</value>
+  </data>
+  <data name="Das_Coverbild_konnte_nicht_skaliert_werden_30b3118e" xml:space="preserve">
+    <value>Kansikuvaa ei voitu skaalata.</value>
+  </data>
+  <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>Tiedostojen lukeminen epäonnistui.</value></data>
+  <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>Kansi täyttää ikkunan pehmeästi hämärtyneenä. Pois päältä jää rauhallinen tumma pinta.</value></data>
+  <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Tiedostoa ei löydy: {0}</value></data>
+  <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Lisää tiedostoja</value></data>
+  <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Vedä tiedostot tai kansiot tähän</value></data>
+  <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
+    <value>Tiedostonimi tunnisteita kirjoitettaessa</value>
+  </data>
+  <data name="Der_konfigurierte_Lyrion_Client_ist_nicht_verbun_4bbee169" xml:space="preserve">
+    <value>Määritetty Lyrion-asiakas ei ole yhteydessä.</value>
+  </data>
+  <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>Ääni toistetaan libmpv:n ja siten järjestelmän tulostuslaitteen kautta.</value></data>
+  <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>Tiedosto on poissa. Raita ohitetaan.</value></data>
+  <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>Korostusväri: edistyminen, toistopainike, äänenvoimakkuuden säädin ja nykyisen kappaleen rivi seuraavat sitä.</value></data>
+  <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
+    <value>Paikallinen toisto ei ole vielä valmis.</value>
+  </data>
+  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>Uusi skaalaus tulee voimaan, kun FerrumPlay käynnistetään seuraavan kerran.</value></data>
+  <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>Hiljaisuus tiedoston lopussa ohitetaan, jotta jatkuvasti sekoitettu albumi soi ilman taukoa. Tulee voimaan seuraavasta kappaleesta alkaen.</value></data>
+  <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>Järjestelmä pysäytti toiston.</value></data>
+  <data name="Diese_Anwendung_416efc74" xml:space="preserve">
+    <value>Tämä sovellus</value>
+  </data>
+  <data name="Discnummer_00bed571" xml:space="preserve">
+    <value>Levyn numero</value>
+  </data>
+  <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>Kaksoisnapsautus palauttaa arvoksi 0 dB</value></data>
+  <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>Kaksoisnapsautus palauttaa 100 prosenttiin</value></data>
+  <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>Kaksoisnapsautus palauttaa arvon 300</value></data>
+  <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
+    <value>Selaa Lyrion-kirjastoasi ja toista albumeita suoraan FerrumPlayssa.</value>
+  </data>
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>Erillinen kerroin näyttöä kohden, jos sovellus näyttää siellä liian pieneltä. Tulee voimaan seuraavan käynnistyksen yhteydessä: ikkunajärjestelmä lukee arvon vasta käynnistyksen yhteydessä.</value></data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
+    <value>Yksi laji riviä kohden. Luettelo näkyy valintana MP3-tunnisteita kirjoitettaessa; oma arvo on siellä edelleen mahdollinen.</value>
+  </data>
+  <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Asetukset</value></data>
+  <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>Raitaa ei ole vielä valittu.</value></data>
+  <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Tiedostoja luetaan edelleen.</value></data>
+  <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Poista puuttuvat kappaleet luettelosta</value></data>
+  <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+    <value>FerrumPlay rakentuu näiden hankkeiden varaan. Painikkeet avaavat hankkeen sivun ja lisenssitekstin selaimeen.</value>
+  </data>
+  <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay poimii viimeksi soitetun kappaleen, jossa se keskeytettiin. Kun raita on pois päältä, se vain valitaan, ei aloiteta.</value></data>
+  <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
+    <value>FerrumPlay toistaa valitut kappaleet suoraan palvelimen kautta; erillistä Lyrion-asiakasta ei tarvita.</value>
+  </data>
+  <data name="Genre_2aa31fca" xml:space="preserve">
+    <value>Laji</value>
+  </data>
+  <data name="Genre_Vorgaben_60473851" xml:space="preserve">
+    <value>Lajivalmiit</value>
+  </data>
+  <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
+    <value>Koskee tunnistetta, tunnistemuokkaimen syöttökenttiä ja tiedostonimeä: numeroiden määrä seuraa albumin kappalemäärää, esimerkiksi 01 kymmenellä kappaleella tai 001 sadalla.</value>
+  </data>
+  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>Tasoittaa äänenvoimakkuuden käyttämällä tiedostoihin tallennettuja ReplayGain-arvoja. "Albumin mukaan" pitää albumin hiljaiset ja äänekkäät kohdat, "Automaattinen" käyttää kappaleen arvoa sekoitettuna. Raidat ilman näitä arvoja toistetaan ennallaan.</value></data>
+  <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>Laajenna tai tiivistä ryhmä</value></data>
+  <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>Nostaa tai laskee kaikkia tasoitettuja raitoja samalla määrällä. ReplayGain tähtää melko matalalle; muutama desibeli lisää korvaa sen. mpv estää leikkaamisen itsestään.</value></data>
+  <data name="http_server_9000_oder_https_music_example_lan_b966c9dd" xml:space="preserve">
+    <value>http://palvelin:9000 tai https://music.example.lan</value>
+  </data>
+  <data name="Jahr_956a6e5a" xml:space="preserve">
+    <value>Vuosi</value>
+  </data>
+  <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>Toistettavia tiedostoja ei löytynyt.</value></data>
+  <data name="Keine_Alben_gefunden_e94729f8" xml:space="preserve">
+    <value>Albumeita ei löytynyt.</value>
+  </data>
+  <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>Taukoton toisto</value></data>
+  <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>Voidaan säätää myös vetämällä kannen vieressä olevaa jakajaa.</value></data>
+  <data name="Laufzeitumgebung_6cedefca" xml:space="preserve">
+    <value>Suoritusympäristö</value>
+  </data>
+  <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>Äänenvoimakkuuden tasoitus (ReplayGain)</value></data>
+  <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>Äänenvoimakkuus: vedä, hiiren rulla tai nuolinäppäimet</value></data>
+  <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpv puuttuu</value></data>
+  <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>libmpv löytyi</value></data>
+  <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>FFmpeg löytyi</value></data>
+  <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>FFmpeg puuttuu</value></data>
+  <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>cdparanoia löytyi</value></data>
+  <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>cdparanoia puuttuu</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv:tä ei voi ladata. Ilman sitä FerrumPlay ei voi pelata mitään.</value></data>
+  <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>Tyhjennä lista</value></data>
+  <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
+    <value>Lyrion Media Serveriä ladataan …</value>
+  </data>
+  <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>Maksimoi</value></data>
+  <data name="Minimieren_209bcbdc" xml:space="preserve"><value>Minimoi</value></data>
+  <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
+    <value>MP3-bittinopeus</value>
+  </data>
+  <data name="MP3_Tags_996faa78" xml:space="preserve">
+    <value>MP3-tunnisteet</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
+    <value>Muokkaa MP3-tunnisteita…</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
+    <value>Muokkaa MP3-tunnisteita</value>
+  </data>
+  <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
+    <value>Uudelleennimeämisen malli: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Kohdan %track% alkunollista päättää yllä oleva asetus. Pääte .mp3 tulee itsestään; tyhjä kenttä palauttaa oletuksen.</value>
+  </data>
+  <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>Seuraava kappale</value></data>
+  <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>Albumin mukaan</value></data>
+  <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>Raidan mukaan</value></data>
+  <data name="nderungen_bernehmen_a1fb0120" xml:space="preserve">
+    <value>Ota muutokset käyttöön</value>
+  </data>
+  <data name="nderungen_werden_erst_mit_nderungen_bernehmen_ge_e7ccd1e3" xml:space="preserve">
+    <value>Muutokset kirjoitetaan vasta painikkeella ”Ota muutokset käyttöön”.</value>
+  </data>
+  <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
+    <value>Muutokset on otettu käyttöön.</value>
+  </data>
+  <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
+    <value>Uusi kansi valittu: {0}</value>
+  </data>
+  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
+    <value>Vain MP3-tiedostoihin voi kirjoittaa tunnisteita.</value>
+  </data>
+  <data name="Oberfl_che_ae0be527" xml:space="preserve">
+    <value>Käyttöliittymä</value>
+  </data>
+  <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Lisää kansio</value></data>
+  <data name="Schlie_en_44424b18" xml:space="preserve"><value>Sulje</value></data>
+  <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Pikahaku</value></data>
+  <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Fontin koko</value></data>
+  <data name="Serveradresse_70863d55" xml:space="preserve">
+    <value>Palvelimen osoite</value>
+  </data>
+  <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>Kieli</value></data>
+  <data name="Standardformat_1c812c8e" xml:space="preserve">
+    <value>Oletusmuoto</value>
+  </data>
+  <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>Mykistä</value></data>
+  <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>Järjestelmän kieli</value></data>
+  <data name="Technologie_1d6b9194" xml:space="preserve">
+    <value>Tekniikka</value>
+  </data>
+  <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
+    <value>Tekniikka ja lisenssit</value>
+  </data>
+  <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>Sisällytä kappale toistoon</value></data>
+  <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>Lisää kappaleita</value></data>
+  <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>Ei voi toistaa kappaletta: {0}</value></data>
+  <data name="Titel_und_Tracknummer_a3a490ab" xml:space="preserve">
+    <value>Nimet ja raitanumerot</value>
+  </data>
+  <data name="Tonausgabe_1455f378" xml:space="preserve"><value>Äänilähtö</value></data>
+  <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>Äänitiedostot</value></data>
+  <data name="Tracknummer_mit_Nullen_auff_llen_7fe759d6" xml:space="preserve">
+    <value>Täytä raidan numero nollilla</value>
+  </data>
+  <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>Taustalla epäselvä kansi</value></data>
+  <data name="Variable_Bitrate_VBR_e68beb9e" xml:space="preserve">
+    <value>Muuttuva bittinopeus (VBR)</value>
+  </data>
+  <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>Sovelluksen skaalaus</value></data>
+  <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>Siirtää kaikki käyttöliittymän tekstit samalla määrällä. Ikkunan painikkeiden symbolit pysyvät ennallaan: ne ovat grafiikkaa kiinteässä painikkeen koossa.</value></data>
+  <data name="Version_2da600bf" xml:space="preserve">
+    <value>Versio</value>
+  </data>
+  <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>Käyttää oletusarvoisesti järjestelmän kieltä; Englanti, jos sitä ei tueta.</value></data>
+  <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>Edellinen kappale</value></data>
+  <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>Esivahvistin</value></data>
+  <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>Toisto</value></data>
+  <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
+    <value>Toistetaan FerrumPlayssa: {0}</value>
+  </data>
+  <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>Toista ja tauko</value></data>
+  <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>Soittolista</value></data>
+  <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>Toisto: pois päältä, koko lista, yksi kappale</value></data>
+  <data name="Wird_an_Lyrion_bergeben_4a3e4ad6" xml:space="preserve">
+    <value>Siirretään Lyrionille …</value>
+  </data>
+  <data name="Wird_ben_tigt_um_Audio_CDs_als_Dateien_auszulese_b841d5dc" xml:space="preserve">
+    <value>Tarvitaan ääni-CD-levyjen lukemiseen tiedostoiksi.</value>
+  </data>
+  <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>Tiedostojen lukeminen.</value></data>
+  <data name="Wird_f_r_die_integrierte_Audio_Konvertierung_ver_ef6b54b7" xml:space="preserve">
+    <value>Käytetään sisäänrakennettuun äänimuunnokseen.</value>
+  </data>
+  <data name="Zieldatei_existiert_bereits_0_644a441b" xml:space="preserve">
+    <value>Kohdetiedosto on jo olemassa: {0}</value>
+  </data>
+  <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>Sekoita</value></data>
+  <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>Takaisin toistoon</value></data>
+  <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>Muunna ääni</value></data>
+  <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>Alkuperäiset tiedostot pysyvät ennallaan. Järjestelmä tarjoaa FFmpegin.</value></data>
+  <data name="Zielformat_3f9af674" xml:space="preserve"><value>Tulostusmuoto</value></data>
+  <data name="Ogg_Vorbis_37bb6215" xml:space="preserve"><value>Ogg Vorbis</value></data>
+  <data name="Bitrate_Qualit_t_cae46720" xml:space="preserve"><value>Bittinopeus / laatu</value></data>
+  <data name="Variable_Bitrate_VBR_nur_MP3_8690f777" xml:space="preserve"><value>Muuttuva bittinopeus (vain VBR, MP3)</value></data>
+  <data name="Ausgabeform_a281e59e" xml:space="preserve"><value>Lähtötila</value></data>
+  <data name="Ein_Ergebnis_je_Titel_c314fcaf" xml:space="preserve"><value>Yksi lähtö per raita</value></data>
+  <data name="Gesamtauswahl_zusammenf_hren_83ff5f61" xml:space="preserve"><value>Yhdistä koko valikoima</value></data>
+  <data name="Gesamtauswahl_mit_Kapiteldatei_5e04fe2a" xml:space="preserve"><value>Yhdistä valinta lukutiedostoon</value></data>
+  <data name="Je_Ordner_zusammenf_hren_af500147" xml:space="preserve"><value>Yhdistä jokainen kansio</value></data>
+  <data name="Je_Ordner_mit_Kapiteldatei_9abbc998" xml:space="preserve"><value>Yhdistä jokainen kansio lukutiedostoon</value></data>
+  <data name="Vorhandene_CUE_Datei_in_einzelne_Titel_aufteilen_88ac3275" xml:space="preserve"><value>Jaa olemassa oleva CUE-tiedosto raitoihin</value></data>
+  <data name="Zielordner_ausw_hlen_9366a7d5" xml:space="preserve"><value>Valitse tulostuskansio</value></data>
+  <data name="Ordner_435f23d2" xml:space="preserve"><value>Kansio…</value></data>
+  <data name="Abbrechen_07af7cb3" xml:space="preserve"><value>Peruuta</value></data>
+  <data name="Konvertieren_a3262ed0" xml:space="preserve"><value>Muunna</value></data>
+  <data name="0_Titel_konvertieren_035b7c0e" xml:space="preserve"><value>Muunna {0} raitaa</value></data>
+  <data name="Zielordner_8036bfe3" xml:space="preserve"><value>Tulostuskansio</value></data>
+  <data name="Bitte_zuerst_einen_Zielordner_ausw_hlen_8f6bde6a" xml:space="preserve"><value>Valitse ensin tulostuskansio.</value></data>
+  <data name="Fertig_konvertiert_11f92741" xml:space="preserve"><value>Muunnos valmis.</value></data>
+  <data name="Konvertierung_abgebrochen_b2bffba9" xml:space="preserve"><value>Muunnos peruttu.</value></data>
+  <data name="Keine_Titel_zum_Konvertieren_ausgew_hlt_23590936" xml:space="preserve"><value>Konversioita varten ei ole valittu yhtään kappaletta.</value></data>
+  <data name="Kein_Zielordner_gew_hlt_7432a7fd" xml:space="preserve"><value>Tulostuskansiota ei ole valittu.</value></data>
+  <data name="FFmpeg_wurde_nicht_gefunden_Bitte_installiere_da_0202a9db" xml:space="preserve"><value>FFmpeg ei löytynyt. Asenna ffmpeg-paketti.</value></data>
+  <data name="Titel_werden_zusammengef_hrt_7fe4a686" xml:space="preserve"><value>Yhdistetään kappaleita…</value></data>
+  <data name="Konvertiere_Ordner_0_von_1_744978b5" xml:space="preserve"><value>Muunnetaan kansiota {0}/{1}…</value></data>
+  <data name="Konvertiere_0_von_1_2_87eb0ba9" xml:space="preserve"><value>Muunnetaan {0}/{1}: {2}</value></data>
+  <data name="Audio_CD_Titel_werden_einzeln_gerippt_Bitte_den__5ab38b45" xml:space="preserve"><value>CD-ääniraidat kopioidaan yksitellen. Valitse 'Yksi lähtö per raita'.</value></data>
+  <data name="Die_CUE_Datei_enth_lt_keine_verwertbaren_INDEX_0_42d32749" xml:space="preserve"><value>CUE-tiedosto ei sisällä käyttökelpoisia INDEX 01 -merkintöjä.</value></data>
+  <data name="Teile_CUE_0_von_1_2_2b7a981e" xml:space="preserve"><value>Jaetaan CUE {0}/{1}: {2}</value></data>
+  <data name="Zum_Rippen_einer_Audio_CD_fehlt_cdparanoia_91215ae7" xml:space="preserve"><value>'cdparanoia' vaaditaan ääni-CD-levyn kopioimiseen.</value></data>
+  <data name="Die_Audio_CD_Quelle_ist_ung_ltig_6d01425b" xml:space="preserve"><value>Audio-CD-lähde on virheellinen.</value></data>
+  <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>Muunna albumi…</value></data>
+  <data name="Konvertieren_ce23485e" xml:space="preserve"><value>Muunna…</value></data>
+  <data name="Zum_aktuellen_Titel_springen_84da67c6" xml:space="preserve"><value>Siirry nykyiseen kappaleeseen</value></data>
+  <data name="Zur_ck_zur_Wiedergabeliste_05ea62ef" xml:space="preserve"><value>Takaisin soittolistaan</value></data>
+  <data name="Warteschlange_und_Ausgabe_5ebecdc8" xml:space="preserve"><value>Jono ja lähtö</value></data>
+  <data name="0_Titel_458a8411" xml:space="preserve"><value>{0} kappaletta</value></data>
+  <data name="Wartet_db5b60a5" xml:space="preserve"><value>Odottaa</value></data>
+  <data name="MP3_Qualit_t_058b8ca5" xml:space="preserve"><value>MP3 laatu</value></data>
+  <data name="Bitrate_fa1da0b1" xml:space="preserve"><value>Bittinopeus:</value></data>
+  <data name="Konvertierung_starten_7ba534c7" xml:space="preserve"><value>Aloita muuntaminen</value></data>
+  <data name="Wird_zusammengef_hrt_bb617c26" xml:space="preserve"><value>Yhdistäminen</value></data>
+  <data name="Fertig_708ad54e" xml:space="preserve"><value>Valmis</value></data>
+  <data name="Konvertiert_7600f56a" xml:space="preserve"><value>Muunnetaan</value></data>
+  <data name="0_Titel_von_Audio_CD_verf_gbar_d7a848b6" xml:space="preserve"><value>{0} kappaleita Audio CD:ltä saatavilla.</value></data>
+  <data name="Datei_fehlt_3b100e31" xml:space="preserve"><value>Tiedosto puuttuu</value></data>
+  <data name="Eingelegte_Audio_CD_hinzuf_gen_1d88c85f" xml:space="preserve"><value>Lisää asetettu ääni-CD</value></data>
+  <data name="Interpret_Titel_982dd440" xml:space="preserve"><value>Artisti - otsikko</value></data>
+  <data name="Keine_Audio_CD_gefunden_oder_das_Laufwerk_ist_ni_9b68527c" xml:space="preserve"><value>Audio-CD:tä ei löydy tai asemaa ei voi lukea.</value></data>
+  <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>Avaa kanssa</value></data>
+  <data name="Titel_950701e7" xml:space="preserve"><value>Raita</value></data>
+  <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>Raita {number:00}</value></data>
+  <data name="Zus_tzliche_Werkzeuge_e156402c" xml:space="preserve">
+    <value>Lisätyökalut</value>
+  </data>
+  <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>Yhdistetty</value></data>
+  <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>toista yksi raita</value></data>
+  <data name="kein_Titel_aee2a500" xml:space="preserve"><value>ei raitaa</value></data>
+  <data name="mit_CUE_ec6a9564" xml:space="preserve"><value>CUE:n kanssa</value></data>
+</root>

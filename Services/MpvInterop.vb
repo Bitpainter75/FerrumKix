@@ -1,0 +1,222 @@
+Imports System
+Imports System.Collections.Generic
+Imports System.IO
+Imports System.Reflection
+Imports System.Runtime.InteropServices
+
+Namespace Services
+
+    ''' <summary>Die Aufrufe von libmpv, die ein Tonspieler braucht.
+    '''
+    ''' <para>Uebernommen aus FerrumPix und um alles gekuerzt, was zur Bildausgabe gehoert: eine
+    ''' Zeichenflaeche, ein Ausgabefenster und die Render-Schnittstelle kommen hier nie vor. Was
+    ''' bleibt, ist der Lader, die Ereignisstruktur und eine Handvoll Funktionen.</para></summary>
+    Friend NotInheritable Class MpvInterop
+        Private Sub New()
+        End Sub
+
+        Private Shared _resolverInstalled As Boolean = False
+
+        Shared Sub New()
+            EnsureResolver()
+        End Sub
+
+        Public Shared Sub EnsureResolver()
+            If _resolverInstalled Then Return
+            NativeLibrary.SetDllImportResolver(GetType(MpvInterop).Assembly, AddressOf ResolveLibrary)
+            _resolverInstalled = True
+        End Sub
+
+        ''' <summary>Ob sich libmpv auf diesem System ueberhaupt laden laesst. Die Anwendung fragt
+        ''' das beim Start, damit sie eine Meldung zeigen kann statt beim ersten Titel stumm zu
+        ''' bleiben.</summary>
+        Public Shared Function IsAvailable() As Boolean
+            EnsureResolver()
+            Dim handle As IntPtr
+            If TryLoadPreferSystem(GetType(MpvInterop).Assembly, Nothing, handle) Then
+                NativeLibrary.Free(handle)
+                Return True
+            End If
+            Return False
+        End Function
+
+        Private Shared Function ResolveLibrary(libraryName As String, assembly As Assembly, searchPath As DllImportSearchPath?) As IntPtr
+            If Not String.Equals(libraryName, "libmpv", StringComparison.Ordinal) Then Return IntPtr.Zero
+
+            Dim handle As IntPtr
+            If TryLoadPreferSystem(assembly, searchPath, handle) Then Return handle
+            Return IntPtr.Zero
+        End Function
+
+        ''' <summary>Erst die Bibliothek des Systems, dann die mitgelieferte.
+        '''
+        ''' Die Reihenfolge ist Absicht: eine vom Paketverwalter gepflegte libmpv bekommt
+        ''' Sicherheitsaktualisierungen und passt zu den Codecs und Ausgabepfaden des Systems. Die
+        ''' mitgelieferte Fassung ist der Rueckfall fuer Umgebungen, die keine haben.</summary>
+        Private Shared Function TryLoadPreferSystem(assembly As Assembly, searchPath As DllImportSearchPath?, ByRef handle As IntPtr) As Boolean
+            For Each candidate In LibraryNames()
+                If NativeLibrary.TryLoad(candidate, assembly, searchPath, handle) Then Return True
+            Next
+
+            ' Eine aus dem Finder gestartete .app erbt weder die Shell-Umgebung noch einen
+            ' Homebrew-Pfad. Apple Silicon installiert Homebrew unter /opt/homebrew, Intel-Macs
+            ' ueblicherweise unter /usr/local; beide liegen ausserhalb der Standard-Suchwege des
+            ' .NET-Laders.
+            For Each path In HomebrewLibraryCandidates()
+                If NativeLibrary.TryLoad(path, handle) Then Return True
+            Next
+
+            Return TryLoadBundledLibrary(handle)
+        End Function
+
+        Private Shared Function LibraryNames() As String()
+            If OperatingSystem.IsWindows() Then
+                Return {"mpv-2.dll", "libmpv-2.dll", "mpv-1.dll", "libmpv.dll", "mpv.dll"}
+            ElseIf OperatingSystem.IsMacOS() Then
+                Return {"libmpv.2.dylib", "libmpv.dylib"}
+            End If
+            Return {"libmpv.so.2", "libmpv.so"}
+        End Function
+
+        Private Shared Iterator Function HomebrewLibraryCandidates() As IEnumerable(Of String)
+            If Not OperatingSystem.IsMacOS() Then Return
+
+            For Each prefix In {"/opt/homebrew/lib", "/usr/local/lib"}
+                For Each name In LibraryNames()
+                    Yield Path.Combine(prefix, name)
+                Next
+            Next
+        End Function
+
+        Private Shared Function TryLoadBundledLibrary(ByRef handle As IntPtr) As Boolean
+            For Each path In BundledLibraryCandidates()
+                If NativeLibrary.TryLoad(path, handle) Then Return True
+            Next
+            handle = IntPtr.Zero
+            Return False
+        End Function
+
+        Private Shared Iterator Function BundledLibraryCandidates() As IEnumerable(Of String)
+            Dim baseDir = AppContext.BaseDirectory
+            Dim rid = GetCurrentRuntimeIdentifier()
+
+            For Each name In LibraryNames()
+                Yield Path.Combine(baseDir, name)
+                If Not String.IsNullOrEmpty(rid) Then Yield Path.Combine(baseDir, "runtimes", rid, "native", name)
+            Next
+        End Function
+
+        Private Shared Function GetCurrentRuntimeIdentifier() As String
+            Dim archSuffix As String
+            Select Case RuntimeInformation.ProcessArchitecture
+                Case Architecture.Arm64
+                    archSuffix = "arm64"
+                Case Else
+                    archSuffix = "x64"
+            End Select
+
+            If OperatingSystem.IsWindows() Then Return $"win-{archSuffix}"
+            If OperatingSystem.IsLinux() Then Return $"linux-{archSuffix}"
+            If OperatingSystem.IsMacOS() Then Return $"osx-{archSuffix}"
+            Return ""
+        End Function
+
+        Friend Enum MpvFormat As Integer
+            None = 0
+            [String] = 1
+            OsdString = 2
+            Flag = 3
+            Int64 = 4
+            [Double] = 5
+        End Enum
+
+        Friend Enum MpvEventId As Integer
+            None = 0
+            Shutdown = 1
+            LogMessage = 2
+            GetPropertyReply = 3
+            SetPropertyReply = 4
+            CommandReply = 5
+            StartFile = 6
+            EndFile = 7
+            FileLoaded = 8
+            Idle = 11
+            Seek = 20
+            PlaybackRestart = 21
+            PropertyChange = 22
+            QueueOverflow = 24
+        End Enum
+
+        Friend Enum MpvEndFileReason As Integer
+            Eof = 0
+            [Stop] = 2
+            Quit = 3
+            [Error] = 4
+            Redirect = 5
+        End Enum
+
+        <StructLayout(LayoutKind.Sequential)>
+        Friend Structure MpvEvent
+            Public EventId As MpvEventId
+            Public [Error] As Integer
+            Public ReplyUserData As ULong
+            Public Data As IntPtr
+        End Structure
+
+        <StructLayout(LayoutKind.Sequential)>
+        Friend Structure MpvEventProperty
+            Public Name As IntPtr
+            Public Format As MpvFormat
+            Public Data As IntPtr
+        End Structure
+
+        <StructLayout(LayoutKind.Sequential)>
+        Friend Structure MpvEventEndFile
+            Public Reason As MpvEndFileReason
+            Public [Error] As Integer
+            Public PlaylistEntryId As Long
+            Public PlaylistInsertId As Long
+            Public PlaylistInsertNumEntries As Integer
+        End Structure
+
+        <DllImport("libmpv", EntryPoint:="mpv_create", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Function Create() As IntPtr
+        End Function
+
+        <DllImport("libmpv", EntryPoint:="mpv_initialize", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Function Initialize(handle As IntPtr) As Integer
+        End Function
+
+        <DllImport("libmpv", EntryPoint:="mpv_terminate_destroy", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Sub TerminateDestroy(handle As IntPtr)
+        End Sub
+
+        <DllImport("libmpv", EntryPoint:="mpv_set_option_string", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Function SetOptionString(handle As IntPtr, name As IntPtr, value As IntPtr) As Integer
+        End Function
+
+        <DllImport("libmpv", EntryPoint:="mpv_set_property_string", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Function SetPropertyString(handle As IntPtr, name As IntPtr, value As IntPtr) As Integer
+        End Function
+
+        <DllImport("libmpv", EntryPoint:="mpv_observe_property", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Function ObserveProperty(handle As IntPtr, replyUserData As ULong, name As IntPtr, fileFormat As MpvFormat) As Integer
+        End Function
+
+        <DllImport("libmpv", EntryPoint:="mpv_command", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Function Command(handle As IntPtr, args As IntPtr) As Integer
+        End Function
+
+        ''' <summary>Reiht einen Befehl bei mpv ein, ohne auf dessen Kernfaden zu warten. Fuer Stop
+        ''' und Laden ist das die richtige Form: der Aufrufer will nur, dass der Befehl ankommt, und
+        ''' braucht das Ergebnis nicht.</summary>
+        <DllImport("libmpv", EntryPoint:="mpv_command_async", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Function CommandAsync(handle As IntPtr, replyUserData As ULong, args As IntPtr) As Integer
+        End Function
+
+        <DllImport("libmpv", EntryPoint:="mpv_wait_event", CallingConvention:=CallingConvention.Cdecl)>
+        Friend Shared Function WaitEvent(handle As IntPtr, timeout As Double) As IntPtr
+        End Function
+    End Class
+
+End Namespace
