@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RuntimeIdentifiers>win-x64;win-arm64;linux-x64;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>FerrumPlay</RootNamespace>
+    <AssemblyName>FerrumPlay</AssemblyName>
+    <Version>0.1.0</Version>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <InformationalVersion>0.1.0</InformationalVersion>
+    <Nullable>enable</Nullable>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+    <EnableNETAnalyzers>False</EnableNETAnalyzers>
+    <ApplicationIcon>FerrumPlay_Icon.ico</ApplicationIcon>
+    <!-- Wie in FerrumPix: ohne diesen Schalter uebersetzen spaete Bindung und verengende
+         Umwandlungen stillschweigend, und die Warnungen dazu sind mit abgeschaltet. In VB ist
+         das teuer, weil True zur Zahl -1 wird und nicht zu 1. -->
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.1.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.2" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.2" />
+    <!-- Die Titelangaben und das eingebettete Titelbild kommen aus den Kennzeichen der Datei.
+         TagLibSharp liest ID3v1, ID3v2, Vorbis, APE und MP4 mit einer Schnittstelle und ist rein
+         verwaltet; unter LGPL-2.1 und damit mit der GPL vertraeglich. -->
+    <PackageReference Include="TagLibSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+</Project>

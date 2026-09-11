@@ -1,0 +1,338 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:icons="clr-namespace:FerrumPlay.Controls"
+             x:Class="FerrumPlay.Views.SettingsView"
+             Classes="settings-view"
+             Background="{DynamicResource FP.Bg.Root}">
+
+    <UserControl.Styles>
+        <!-- Ein Eintrag der Bereichsliste. Derselbe Zuschnitt wie in FerrumPix: Symbol, Text,
+             ueber die ganze Breite, linksbuendig. -->
+        <Style Selector="Button.nav">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="14,10"/>
+        </Style>
+        <Style Selector="TextBlock.setting-title">
+            <Setter Property="FontSize" Value="{DynamicResource FP.Font.ItemTitle}"/>
+        </Style>
+        <!-- LINKSBUENDIG, nicht gestreckt: ein gestrecktes Element, das an seiner MaxWidth
+             haengen bleibt, setzt Avalonia MITTIG in den uebrigen Platz. Die Hilfetexte standen
+             dadurch je nach Fensterbreite eingerueckt unter ihrer Ueberschrift. -->
+        <Style Selector="TextBlock.setting-note">
+            <Setter Property="Foreground" Value="{DynamicResource FP.Text.Muted}"/>
+            <Setter Property="FontSize" Value="{DynamicResource FP.Font.Small}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="MaxWidth" Value="520"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style Selector="TextBlock.group-caption">
+            <Setter Property="FontSize" Value="{DynamicResource FP.Font.Title}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid ColumnDefinitions="250,*">
+
+        <!-- Die Bereichsliste kann laenger werden als das Fenster hoch ist. Der Rollbereich zeigt
+             seine Leiste nur, wenn er gebraucht wird; die Ueberschrift bleibt ausserhalb stehen,
+             damit sie beim Rollen nicht verschwindet. -->
+        <Border Grid.Column="0" Classes="sidebar" Padding="12,16,10,16">
+            <DockPanel LastChildFill="True">
+                <TextBlock DockPanel.Dock="Top" Text="Einstellungen"
+                           FontSize="{DynamicResource FP.Font.Title}"
+                           FontWeight="SemiBold" Margin="6,0,0,10"/>
+
+                <Button DockPanel.Dock="Bottom" Classes="ghost nav"
+                        Margin="0,10,0,0"
+                        Command="{Binding ClosePanelCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg"
+                                       Width="16" Height="16"/>
+                        <TextBlock Text="Zurück zur Wiedergabe"/>
+                    </StackPanel>
+                </Button>
+
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="10">
+                        <Button Classes="ghost nav" Tag="AboutSection" Click="OnSectionNavClick">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg"
+                                               Width="16" Height="16"/>
+                                <TextBlock Text="Über FerrumPlay"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="ghost nav" Tag="PlaybackSection" Click="OnSectionNavClick">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/player-play.svg"
+                                               Width="16" Height="16"/>
+                                <TextBlock Text="Wiedergabe"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="ghost nav" Tag="AppearanceSection" Click="OnSectionNavClick">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/adjustments-horizontal.svg"
+                                               Width="16" Height="16"/>
+                                <TextBlock Text="Darstellung"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer Grid.Column="1" x:Name="SectionScroller" Padding="26,20,26,26"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Spacing="18" MaxWidth="820" HorizontalAlignment="Left">
+
+                <!-- Der Abschnitt ueber die Anwendung steht OBEN: Name, Fassung und die Frage, ob
+                     libmpv gefunden wurde, sind das Erste, was man beim Oeffnen sehen soll. -->
+                <Border x:Name="AboutSection" Classes="section">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="avares://FerrumPlay/Assets/FerrumPlay_Icon_256.png"
+                                   Height="46" Stretch="Uniform" HorizontalAlignment="Left"/>
+                            <Image Source="avares://FerrumPlay/Assets/FerrumPlay_TopBar.png"
+                                   Margin="10 4 0 0" Height="46" Stretch="Uniform" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto"
+                              ColumnSpacing="12" RowSpacing="8">
+                            <TextBlock Grid.Row="0" Text="Version" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DisplayVersion}"/>
+
+                            <TextBlock Grid.Row="1" Text="Tonausgabe" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding AudioBackendText}"/>
+
+                            <TextBlock Grid.Row="2" Text="Einstellungen" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SettingsFilePath}"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="3" Text="Wiedergabeliste" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PlaylistFilePath}"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="PlaybackSection" Classes="section">
+                    <StackPanel Spacing="18">
+                        <TextBlock Text="Wiedergabe" Classes="group-caption"/>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Lückenlose Wiedergabe" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Die Stille am Dateiende wird übersprungen, damit ein durchgehend gemischtes Album ohne Bruch läuft. Wirkt ab dem nächsten Titel."/>
+                            </StackPanel>
+                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
+                                          OnContent="" OffContent=""
+                                          IsChecked="{Binding IsGaplessEnabled, Mode=TwoWay}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Lautstärke angleichen (ReplayGain)" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Gleicht die Lautstärke nach den ReplayGain-Angaben in den Dateien an. „Nach Album“ lässt die leisen und lauten Stellen innerhalb eines Albums stehen, „Automatisch“ nimmt bei zufälliger Reihenfolge die Angabe des Titels. Titel ohne diese Angaben spielen unverändert."/>
+                            </StackPanel>
+                            <ComboBox Grid.Column="1" MinWidth="200" VerticalAlignment="Center"
+                                      ItemsSource="{Binding ReplayGainChoices}"
+                                      SelectedItem="{Binding SelectedReplayGain, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+
+                        <!-- Die Vorverstaerkung steht nur da, wenn angeglichen wird: ohne Angleichung
+                             bewirkt sie nichts, und ein Regler ohne Wirkung verwirrt. -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20" IsVisible="{Binding IsReplayGainEnabled}">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Vorverstärkung" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Hebt oder senkt alle angeglichenen Titel um denselben Betrag. ReplayGain zielt eher leise; ein paar Dezibel mehr gleichen das aus. Übersteuern verhindert mpv von sich aus."/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12"
+                                        VerticalAlignment="Center">
+                                <icons:RoundSlider Width="220" Minimum="-15" Maximum="15"
+                                                   Step="0.5" WheelIncrement="0.5" DefaultValue="0"
+                                                   VerticalAlignment="Center"
+                                                   ToolTip.Tip="Doppelklick setzt auf 0 dB zurück"
+                                                   Value="{Binding ReplayGainPreamp, Mode=TwoWay}"/>
+                                <TextBlock Text="{Binding ReplayGainPreampText}"
+                                           VerticalAlignment="Center" MinWidth="64"
+                                           Foreground="{DynamicResource FP.Text.Secondary}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Beim Start fortsetzen" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="FerrumPlay nimmt den zuletzt gespielten Titel an der Stelle wieder auf, an der er unterbrochen wurde. Ausgeschaltet wird der Titel nur ausgewählt und nicht gestartet."/>
+                            </StackPanel>
+                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
+                                          OnContent="" OffContent=""
+                                          IsChecked="{Binding IsResumeOnStart, Mode=TwoWay}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Tonausgabe" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Der Ton läuft über libmpv und damit über das Ausgabegerät des Systems."/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       Text="{Binding AudioBackendText}"
+                                       Foreground="{DynamicResource FP.Text.Secondary}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="AppearanceSection" Classes="section">
+                    <StackPanel Spacing="18">
+                        <TextBlock Text="Darstellung" Classes="group-caption"/>
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Sprache" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Verwendet standardmäßig die Systemsprache; falls nicht unterstützt, Englisch."/>
+                            </StackPanel>
+                            <!-- Die Namen stehen in ihrer eigenen Sprache, wie in FerrumPix: wer die
+                                 Oberflaeche in einer Sprache sieht, die er nicht versteht, findet
+                                 "Deutsch" wieder. -->
+                            <ComboBox Grid.Column="1" MinWidth="200" VerticalAlignment="Center"
+                                      ItemsSource="{Binding LanguageChoices}"
+                                      SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Akzentfarbe" Classes="setting-title"/>
+                            <TextBlock Classes="setting-note"
+                                       Text="Die Farbe der Hervorhebungen: Fortschritt, Wiedergabeknopf, Lautstärkeregler und die Zeile des laufenden Titels wechseln mit."/>
+                            <ItemsControl ItemsSource="{Binding AccentChoices}" Margin="0,4,0,0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Classes="swatch"
+                                                Classes.active="{Binding IsActive}"
+                                                Margin="0,0,8,0"
+                                                Background="{Binding Swatch}"
+                                                Command="{Binding $parent[ItemsControl].DataContext.SetAccentColorCommand}"
+                                                CommandParameter="{Binding HexColor}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Schriftgröße" Classes="setting-title"/>
+                            <TextBlock Classes="setting-note"
+                                       Text="Verschiebt alle Texte der Oberfläche um denselben Betrag. Die Zeichen in den Fensterknöpfen bleiben, wie sie sind: sie sind Grafik in fester Knopfgröße."/>
+                            <ItemsControl ItemsSource="{Binding FontSizeChoices}" Margin="0,4,0,0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- Die Probe steht in GENAU DER Groesse, die der Knopf
+                                             einstellt. Man soll sehen, was man waehlt. -->
+                                        <Button Classes="font-step"
+                                                Classes.active="{Binding IsActive}"
+                                                Margin="0,0,6,0"
+                                                ToolTip.Tip="{Binding Tip}"
+                                                Command="{Binding $parent[ItemsControl].DataContext.SetFontSizeCommand}"
+                                                CommandParameter="{Binding Offset}">
+                                            <TextBlock Text="Aa" FontSize="{Binding SampleSize}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <StackPanel Spacing="8" IsVisible="{Binding AreScreenScalesVisible}">
+                            <TextBlock Text="Vergrößerung der Anwendung" Classes="setting-title"/>
+                            <TextBlock Classes="setting-note"
+                                       Text="Ein eigener Faktor je Bildschirm, für den Fall, dass die Anwendung dort zu klein steht. Wirkt erst beim nächsten Start: das Fenstersystem liest den Wert nur beim Hochfahren."/>
+                            <ItemsControl ItemsSource="{Binding ScreenScales}" Margin="0,4,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20" Margin="0,0,0,10">
+                                            <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding ScreenName}"/>
+                                                <TextBlock Text="{Binding Description}" Classes="muted"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12"
+                                                        VerticalAlignment="Center">
+                                                <icons:RoundSlider Width="220" Minimum="1" Maximum="2.5"
+                                                                   Step="0.05" DefaultValue="1"
+                                                                   VerticalAlignment="Center"
+                                                                   ToolTip.Tip="Doppelklick setzt auf 100 Prozent zurück"
+                                                                   Value="{Binding Scale, Mode=TwoWay}"/>
+                                                <TextBlock Text="{Binding ScaleText}"
+                                                           VerticalAlignment="Center" MinWidth="86"
+                                                           Foreground="{DynamicResource FP.Text.Secondary}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Classes="setting-note"
+                                       Foreground="{DynamicResource FP.Accent}"
+                                       IsVisible="{Binding IsRestartNeeded}"
+                                       Text="Die neue Vergrößerung gilt, sobald FerrumPlay das nächste Mal gestartet wird."/>
+                        </StackPanel>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Unscharfes Titelbild im Hintergrund" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Das Titelbild füllt weichgezeichnet das Fenster. Ausgeschaltet bleibt eine ruhige dunkle Fläche stehen."/>
+                            </StackPanel>
+                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
+                                          OnContent="" OffContent=""
+                                          IsChecked="{Binding IsBlurredBackgroundVisible, Mode=TwoWay}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Breite der Coverspalte" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Lässt sich auch mit der Trennlinie neben dem Titelbild ziehen."/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12"
+                                        VerticalAlignment="Center">
+                                <icons:RoundSlider Width="220" Minimum="220" Maximum="520"
+                                                   Step="1" WheelIncrement="10" DefaultValue="300"
+                                                   VerticalAlignment="Center"
+                                                   ToolTip.Tip="Doppelklick setzt auf 300 zurück"
+                                                   Value="{Binding SidePanelWidth, Mode=TwoWay}"/>
+                                <TextBlock Text="{Binding SidePanelWidth, StringFormat={}{0:0}}"
+                                           VerticalAlignment="Center" MinWidth="34"
+                                           Foreground="{DynamicResource FP.Text.Secondary}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

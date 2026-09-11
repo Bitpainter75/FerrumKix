@@ -23,6 +23,10 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Takes what you give it.** Drag files and whole folders into the window, add them with the buttons below the list, or pass them on the command line.
 - **Shuffle and repeat.** Whole list or a single track. Don't want to hear a track right now? Untick it instead of removing it.
 - **Gapless.** A continuously mixed album plays from track to track without a break.
+- **Evens out loudness.** ReplayGain by track, by album, or automatically: by album while an album plays through, by track when shuffling.
+- **Notices missing files.** Tracks whose file is gone are greyed out and skipped instead of stopping playback. Plug the drive back in and they return; one click removes them all.
+- **Fits into the desktop.** FerrumPlay speaks MPRIS, so Waybar, playerctl, notifications and the media keys reach it even while its window is in the background - with title, artist, album and cover.
+- **Runs once.** Open a file or folder from the file manager while FerrumPlay is running, and the running window takes it over and plays it.
 - **Remembers everything.** Playlist, volume, window position and the last track are back at the next start - and if you like, playback resumes right where it stopped.
 - **Speaks your language.** German and English, following your system by default.
 
@@ -34,7 +38,7 @@ The transport sits on a dark deck at the bottom: the progress bar across the ful
 
 ## Settings
 
-Accent colour, font size, language, the blurred cover background, the width of the cover column, gapless playback and resuming on start. On Linux, the whole interface can also be scaled per screen, for displays where it would otherwise come out too small.
+Accent colour, font size, language, the blurred cover background, the width of the cover column, gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start. On Linux, the whole interface can also be scaled per screen, for displays where it would otherwise come out too small.
 
 ## Installation
 
@@ -59,7 +63,7 @@ Without it FerrumPlay starts, but tells you it cannot play anything.
 
 ### Windows and macOS
 
-The code is prepared for both, but there are no packages yet and they are untested. If you build it there and try it, please let me know how it goes.
+The code is prepared for both, but there are no packages yet and they are untested. MPRIS and the single running instance need the D-Bus session bus and are Linux only. If you build it there and try it, please let me know how it goes.
 
 ## Usage
 
@@ -74,13 +78,15 @@ FerrumPlay ~/Music/Album
 FerrumPlay track.flac another.mp3
 ```
 
+If FerrumPlay is already running, the running instance takes the files and folders over and plays the first track; the new call exits right away without opening a second window. Called without paths, it brings the running window to the front.
+
 `--debug` writes a log for this run.
 
 | Key | Action |
 |---|---|
 | SPACE | Play and pause |
 | ESC | Back from the settings |
-| Media keys | Play, pause, next, previous, stop |
+| Media keys | Play, pause, next, previous, stop - system-wide through MPRIS |
 
 Double-click a track to play it, double-click an album header to collapse or expand the group.
 

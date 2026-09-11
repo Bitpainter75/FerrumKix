@@ -1,0 +1,402 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:icons="clr-namespace:FerrumPlay.Controls"
+             xmlns:vm="clr-namespace:FerrumPlay.ViewModels"
+             x:Class="FerrumPlay.Views.PlayerView">
+
+    <UserControl.Styles>
+        <!-- DIE ZEILEN MALEN IHREN HINTERGRUND SELBST. Vier Zustaende ueberlagern sich: gewoehnlich,
+             ausgewaehlt, unter dem Zeiger und laufend. In Avalonia gewinnt bei gleicher Trefferlage
+             die SPAETER stehende Regel - die Reihenfolge hier unten IST die Rangfolge, und wer sie
+             umstellt, stellt das Verhalten um. Der laufende Titel steht bewusst ganz unten: er soll
+             auch dann zu sehen sein, wenn die Auswahl woanders liegt. -->
+        <Style Selector="Border.track-row">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected Border.track-row">
+            <Setter Property="Background" Value="{DynamicResource FP.Sel.Bg}"/>
+        </Style>
+        <Style Selector="Border.track-row:pointerover">
+            <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected Border.track-row:pointerover">
+            <Setter Property="Background" Value="{DynamicResource FP.Sel.Hover}"/>
+        </Style>
+        <Style Selector="Border.track-row.playing">
+            <Setter Property="Background" Value="{DynamicResource FP.Row.Playing}"/>
+        </Style>
+        <Style Selector="Border.track-row.playing:pointerover">
+            <Setter Property="Background" Value="{DynamicResource FP.Row.PlayingHover}"/>
+        </Style>
+
+        <!-- Ein Titel ohne Datei bleibt stehen, tritt aber zurueck. Die Deckkraft liegt auf den
+             Texten und nicht auf der ganzen Zeile: das Haekchen bleibt voll zu sehen. -->
+        <Style Selector="Border.track-row.missing TextBlock">
+            <Setter Property="Opacity" Value="0.45"/>
+        </Style>
+
+        <Style Selector="Border.group-row">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="Border.group-row:pointerover">
+            <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
+        </Style>
+        <Style Selector="Border.group-row TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource FP.Accent}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="{DynamicResource FP.Font.ItemTitle}"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <!-- DER UNSCHARFE HINTERGRUND. Das Titelbild fuellt das ganze Fenster, ist weichgezeichnet
+             und liegt unter einer dunklen Scheibe. Ohne das Beschneiden traegt die Weichzeichnung
+             das Bild ueber den Rand hinaus. -->
+        <Border ClipToBounds="True" IsVisible="{Binding IsCoverBackdropVisible}">
+            <Image Source="{Binding CurrentCover}"
+                   Stretch="UniformToFill"
+                   Effect="blur(70)"
+                   Opacity="0.5"/>
+        </Border>
+        <Border Background="#CC0B0E11"/>
+
+        <Grid RowDefinitions="*,Auto">
+
+            <!-- Beschnitten, weil die Coverspalte in einem niedrigen Fenster ueber ihre Zeile
+                 hinauslaeuft. Die Fussleiste ist durchscheinend und wuerde den Text sonst zeigen. -->
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*" ClipToBounds="True">
+
+                <!-- Die Coverspalte -->
+                <Border Grid.Column="0"
+                        Width="{Binding SidePanelWidth}"
+                        Padding="22,20,22,20">
+                    <StackPanel Spacing="16" VerticalAlignment="Top">
+
+                        <!-- Quadratisch, damit ein Album mit ungewoehnlichem Seitenverhaeltnis die
+                             Spalte nicht auseinanderzieht. Ohne Bild bleibt ein Platzhalter mit
+                             Notensymbol stehen statt einer Luecke. -->
+                        <Border CornerRadius="6"
+                                ClipToBounds="True"
+                                Width="{Binding CoverSize}"
+                                Height="{Binding CoverSize}"
+                                Background="#22FFFFFF"
+                                BorderBrush="{DynamicResource FP.Border.Subtle}"
+                                BorderThickness="1">
+                            <Panel>
+                                <Image Source="{Binding CurrentCover}"
+                                       Stretch="UniformToFill"
+                                       IsVisible="{Binding HasCover}"/>
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/music.svg"
+                                               Width="56" Height="56"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               IconBrush="{DynamicResource FP.Text.Muted}"
+                                               IsVisible="{Binding !HasCover}"/>
+                            </Panel>
+                        </Border>
+
+                        <StackPanel Spacing="4" IsVisible="{Binding HasCurrentTrack}">
+                            <TextBlock Text="{Binding CurrentTitle}"
+                                       FontSize="{DynamicResource FP.Font.Heading}"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Stretch"/>
+                            <TextBlock Text="{Binding CurrentArtist}"
+                                       Classes="secondary"
+                                       FontSize="{DynamicResource FP.Font.Subtitle}"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentAlbum}"
+                                       Classes="secondary"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentDetail}"
+                                       Classes="muted"
+                                       Margin="0,10,0,0"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Es ist noch kein Titel gewählt."
+                                   Classes="muted"
+                                   TextAlignment="Center"
+                                   IsVisible="{Binding !HasCurrentTrack}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Die Trennlinie zwischen Coverspalte und Liste. Ein Thumb und kein GridSplitter:
+                     der Splitter braucht eine Spalte mit fester oder anteiliger Breite, waehrend
+                     die Coverspalte ihre Breite aus den Einstellungen bezieht. Ueber den Thumb
+                     bleibt die Breite dort, wo sie hingehoert, und wird beim Beenden mitgemerkt. -->
+                <Thumb Grid.Column="1"
+                       x:Name="SidePanelGrip"
+                       Width="5"
+                       Background="Transparent"
+                       BorderThickness="0"
+                       Cursor="SizeWestEast"
+                       DragDelta="OnSidePanelDrag"/>
+
+                <!-- Die Wiedergabeliste -->
+                <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto,Auto" Background="#66101418">
+
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="18,10,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Classes="playlist-tab active" Content="Wiedergabeliste"/>
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Classes="icon-btn"
+                                Command="{Binding OpenSettingsCommand}"
+                                ToolTip.Tip="Einstellungen">
+                            <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/settings.svg"
+                                           Width="16" Height="16"/>
+                        </Button>
+                    </Grid>
+
+                    <ListBox x:Name="PlaylistBox"
+                             Grid.Row="1"
+                             Margin="0,6,0,0"
+                             ItemsSource="{Binding Rows}"
+                             SelectionMode="Multiple"
+                             DoubleTapped="OnPlaylistDoubleTapped">
+                        <ListBox.DataTemplates>
+
+                            <DataTemplate DataType="vm:PlaylistGroupRow">
+                                <Border Classes="group-row" Padding="8,7,16,7">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                        <Button Grid.Column="0"
+                                                Classes="icon-btn"
+                                                Width="22" Height="22"
+                                                Click="OnGroupToggleClick"
+                                                ToolTip.Tip="Gruppe auf- und zuklappen">
+                                            <icons:SvgIcon Source="{Binding ChevronSource}"
+                                                           Width="14" Height="14"
+                                                           IconBrush="{DynamicResource FP.Accent}"/>
+                                        </Button>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Title}"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding SummaryText}"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+
+                            <DataTemplate DataType="vm:PlaylistTrackRow">
+                                <Border Classes="track-row"
+                                        Classes.playing="{Binding IsPlaying}"
+                                        Classes.missing="{Binding IsMissing}"
+                                        Padding="12,5,16,5">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                        <CheckBox Grid.Column="0"
+                                                  IsChecked="{Binding IsEnabled}"
+                                                  VerticalAlignment="Center"
+                                                  ToolTip.Tip="Titel beim Abspielen berücksichtigen"/>
+                                        <StackPanel Grid.Column="1" Spacing="1">
+                                            <TextBlock Text="{Binding NumberedTitle}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       FontSize="{DynamicResource FP.Font.ItemTitle}"/>
+                                            <TextBlock Text="{Binding Track.FormatText}"
+                                                       Classes="muted"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8"
+                                                    VerticalAlignment="Center">
+                                            <!-- Der Rahmen mit durchsichtigem Hintergrund macht die
+                                                 Flaeche fuer den Kurzhinweis greifbar. -->
+                                            <Border Background="Transparent"
+                                                    VerticalAlignment="Center"
+                                                    IsVisible="{Binding IsMissing}"
+                                                    ToolTip.Tip="Die Datei ist nicht mehr da. Der Titel wird übersprungen.">
+                                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/alert-triangle.svg"
+                                                               Width="15" Height="15"
+                                                               IconBrush="{DynamicResource FP.Text.Danger}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding Track.DurationText}"
+                                                       Classes="secondary"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+
+                        </ListBox.DataTemplates>
+                    </ListBox>
+
+                    <!-- Der Hinweis fuer die leere Liste liegt UEBER dem Rollbereich und nicht an
+                         seiner Stelle: so bleibt die Liste an ihrem Platz und springt nicht, sobald
+                         der erste Titel ankommt. -->
+                    <StackPanel Grid.Row="1"
+                                Spacing="10"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"
+                                IsVisible="{Binding IsPlaylistEmpty}">
+                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/playlist.svg"
+                                       Width="42" Height="42"
+                                       HorizontalAlignment="Center"
+                                       IconBrush="{DynamicResource FP.Text.Muted}"/>
+                        <TextBlock Text="Dateien oder Ordner hierher ziehen"
+                                   Classes="secondary"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding PlaylistSummary}"
+                               Classes="muted"
+                               TextAlignment="Center"
+                               Margin="0,8,0,8"/>
+
+                    <Border Grid.Row="3" Classes="toolbar" BorderThickness="0,1,0,0" Padding="14,7">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                            <icons:SvgIcon Grid.Column="0"
+                                           Source="avares://FerrumPlay/Assets/Icons/outline/search.svg"
+                                           Width="15" Height="15"
+                                           VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1"
+                                     Classes="quiet"
+                                     PlaceholderText="Schnellsuche"
+                                     VerticalAlignment="Center"
+                                     Text="{Binding SearchText, Mode=TwoWay}"/>
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="2">
+                                <Button Classes="icon-btn" Width="28" Height="28"
+                                        Click="OnAddFilesClick"
+                                        ToolTip.Tip="Dateien hinzufügen">
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/plus.svg"
+                                                   Width="15" Height="15"/>
+                                </Button>
+                                <Button Classes="icon-btn" Width="28" Height="28"
+                                        Click="OnAddFolderClick"
+                                        ToolTip.Tip="Ordner hinzufügen">
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/folder-plus.svg"
+                                                   Width="15" Height="15"/>
+                                </Button>
+                                <Button Classes="icon-btn" Width="28" Height="28"
+                                        Command="{Binding RemoveMissingTracksCommand}"
+                                        IsVisible="{Binding HasMissingTracks}"
+                                        ToolTip.Tip="Fehlende Titel aus der Liste nehmen">
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/file-x.svg"
+                                                   Width="15" Height="15"/>
+                                </Button>
+                                <Button Classes="icon-btn" Width="28" Height="28"
+                                        Click="OnRemoveSelectedClick"
+                                        ToolTip.Tip="Ausgewählte Titel aus der Liste nehmen">
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/minus.svg"
+                                                   Width="15" Height="15"/>
+                                </Button>
+                                <Button Classes="icon-btn" Width="28" Height="28"
+                                        Command="{Binding ClearPlaylistCommand}"
+                                        ToolTip.Tip="Liste leeren">
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/trash.svg"
+                                                   Width="15" Height="15"/>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <!-- DIE FUSSLEISTE. Ein dunkles Deck unter Cover und Liste, abgesetzt durch eine feine
+                 Kante und einen Schatten nach oben - nicht durch Farbe. Oben laeuft der
+                 Fortschritt ueber die volle Breite, darunter drei Zonen: links die Schalter und die
+                 Meldung, in der Mitte der Transport, rechts die Lautstaerke. Die Mitte sitzt in
+                 einer Auto-Spalte zwischen zwei gleich breiten Sternspalten und steht dadurch in
+                 der Fenstermitte, egal wie lang die Meldung links ist.
+                 Die Leiste ist zugleich Ziehbereich fuer das Fenster - alles Bedienbare darin
+                 gewinnt gegen den Zug, siehe MainWindow.IsInWindowDragArea. -->
+            <Border Grid.Row="1"
+                    Classes="window-drag"
+                    Background="{DynamicResource FP.Footer.Bg}"
+                    BorderBrush="{DynamicResource FP.Footer.Edge}"
+                    BorderThickness="0,1,0,0"
+                    BoxShadow="0 -6 18 0 #59000000"
+                    Padding="18,4,18,10">
+                <Grid RowDefinitions="Auto,Auto" RowSpacing="2">
+
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <TextBlock Grid.Column="0" Text="{Binding PositionText}" Classes="footer-time"
+                                   VerticalAlignment="Center" MinWidth="38"/>
+                        <icons:SeekBar x:Name="Seek"
+                                       Grid.Column="1"
+                                       Height="24"
+                                       BarHeight="4"
+                                       Position="{Binding PositionSeconds}"
+                                       Duration="{Binding DurationSeconds}"
+                                       TrackBrush="{DynamicResource FP.Footer.Track}"
+                                       ProgressBrush="{DynamicResource FP.Accent}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding DurationText}" Classes="footer-time total"
+                                   VerticalAlignment="Center" MinWidth="38" TextAlignment="Right"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*" ColumnSpacing="16">
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4"
+                                    VerticalAlignment="Center">
+                            <Button Classes="transport-toggle"
+                                    Classes.active="{Binding IsShuffle}"
+                                    Command="{Binding ToggleShuffleCommand}"
+                                    ToolTip.Tip="Zufällige Reihenfolge">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/arrows-shuffle.svg"
+                                               Width="17" Height="17"/>
+                            </Button>
+                            <Button Classes="transport-toggle"
+                                    Classes.active="{Binding IsRepeatActive}"
+                                    Command="{Binding CycleRepeatCommand}"
+                                    ToolTip.Tip="Wiederholen: aus, ganze Liste, einzelner Titel">
+                                <icons:SvgIcon Source="{Binding RepeatIconSource}"
+                                               Width="17" Height="17"/>
+                            </Button>
+                        </StackPanel>
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding StatusText}"
+                                   Classes="muted"
+                                   Margin="84,0,0,0"
+                                   VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"/>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6"
+                                    VerticalAlignment="Center">
+                            <Button Classes="transport" Command="{Binding PreviousCommand}"
+                                    ToolTip.Tip="Voriger Titel">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/player-skip-back.svg"
+                                               Width="20" Height="20"/>
+                            </Button>
+                            <Button Classes="transport" Command="{Binding StopCommand}"
+                                    ToolTip.Tip="Anhalten">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/player-stop.svg"
+                                               Width="18" Height="18"/>
+                            </Button>
+                            <Button Classes="transport primary" Command="{Binding PlayPauseCommand}"
+                                    ToolTip.Tip="Wiedergabe und Pause">
+                                <icons:SvgIcon Source="{Binding PlayPauseIconSource}"
+                                               Width="22" Height="22"/>
+                            </Button>
+                            <Button Classes="transport" Command="{Binding NextCommand}"
+                                    ToolTip.Tip="Nächster Titel">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/player-skip-forward.svg"
+                                               Width="20" Height="20"/>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6"
+                                    HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button Classes="transport-toggle"
+                                    Command="{Binding ToggleMuteCommand}"
+                                    ToolTip.Tip="Stumm schalten">
+                                <icons:SvgIcon Source="{Binding VolumeIconSource}" Width="17" Height="17"/>
+                            </Button>
+                            <icons:VolumeKnob Width="40" Height="40"
+                                              Classes.muted="{Binding IsMuted}"
+                                              Value="{Binding Volume, Mode=TwoWay}"
+                                              ToolTip.Tip="Lautstärke: ziehen, Mausrad oder Pfeiltasten"/>
+                            <TextBlock Text="{Binding Volume, StringFormat={}{0:0}}"
+                                       Classes="footer-time"
+                                       MinWidth="24"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

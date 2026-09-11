@@ -1,0 +1,101 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:FerrumPlay.Views"
+        x:Class="FerrumPlay.Views.MainWindow"
+        Title="FerrumPlay"
+        Icon="avares://FerrumPlay/Assets/FerrumPlay_Icon_256.png"
+        Width="1180" Height="780"
+        MinWidth="760" MinHeight="520"
+        CanResize="True"
+        WindowDecorations="None"
+        WindowStartupLocation="Manual"
+        Background="Transparent">
+
+    <Border x:Name="WindowFrame"
+            CornerRadius="8"
+            ClipToBounds="True"
+            Background="{DynamicResource FP.Bg.Root}">
+        <Grid>
+            <Grid RowDefinitions="Auto,*">
+
+                <!-- DIE FENSTERLEISTE. Hier laesst sich das Fenster verschieben; die Hoehe steht an
+                     zwei Stellen zusammen, hier und an den Fensterknoepfen weiter unten. Wer eine
+                     davon aendert, aendert beide. -->
+                <Border x:Name="TopWindowDragArea"
+                        Grid.Row="0"
+                        Classes="toolbar window-drag"
+                        Height="32">
+                    <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                        <!-- Der Namenszug liegt als Bild vor und nicht als Schrift: er traegt
+                             Verlauf und Schattierung, die sich mit einer Schriftart nicht
+                             nachbauen lassen. Die Hoehe haengt an der Leiste darueber. -->
+                        <Image Grid.Column="0"
+                            Source="avares://FerrumPlay/Assets/FerrumPlay_TopBar.png"
+                            Height="24"
+                            Stretch="Uniform"
+                            VerticalAlignment="Center"
+                            Margin="14,0,0,0"
+                            IsHitTestVisible="False"/>
+                        
+                        <!-- Der laufende Titel als Fenstertitel. Ueber ALLE Spalten und darin
+                             zentriert: in Spalte 1 zentriert saesse er nicht in der Fenstermitte,
+                             weil die Spalte erst hinter dem Namenszug beginnt. -->
+                        <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                                   Text="{Binding CurrentTitle}"
+                                   Foreground="{DynamicResource FP.Text.Secondary}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   MaxWidth="420"
+                                   TextTrimming="CharacterEllipsis"
+                                   IsHitTestVisible="False"
+                                   FontSize="{DynamicResource FP.Font.Body}"/>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1">
+                    <views:PlayerView IsVisible="{Binding IsPlayerVisible}"/>
+                    <views:SettingsView IsVisible="{Binding IsSettingsVisible}"/>
+                </Grid>
+            </Grid>
+
+            <!-- Die Knoepfe liegen NICHT in der Leiste, sondern darueber im Fenstergitter: der
+                 obere Rand haelt sie in ihrer Mitte. Bei einer Leiste von 32 und Knoepfen von 24
+                 sind das 4 Punkte oben. -->
+            <Border HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="0,4,8,0">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <Button Classes="wnd-btn" x:Name="MinimizeButton" ToolTip.Tip="Minimieren">
+                        <TextBlock Text="-" FontSize="{DynamicResource FP.Glyph.Medium}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                    <Button Classes="wnd-btn" x:Name="MaximizeButton" ToolTip.Tip="Maximieren">
+                        <TextBlock x:Name="MaximizeGlyph" Text="[ ]" FontSize="{DynamicResource FP.Glyph.Small}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                    <Button Classes="wnd-close" x:Name="CloseButton" ToolTip.Tip="Schließen">
+                        <TextBlock Text="x" FontSize="{DynamicResource FP.Glyph.Medium}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="ResizeTop" Height="5" Background="Transparent"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Top" Cursor="TopSide"/>
+            <Border x:Name="ResizeBottom" Height="5" Background="Transparent"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Cursor="BottomSide"/>
+            <Border x:Name="ResizeLeft" Width="5" Background="Transparent"
+                    HorizontalAlignment="Left" VerticalAlignment="Stretch" Cursor="LeftSide"/>
+            <Border x:Name="ResizeRight" Width="5" Background="Transparent"
+                    HorizontalAlignment="Right" VerticalAlignment="Stretch" Cursor="RightSide"/>
+            <Border x:Name="ResizeTopLeft" Width="14" Height="14" Background="Transparent"
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="TopLeftCorner"/>
+            <Border x:Name="ResizeTopRight" Width="14" Height="14" Background="Transparent"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="TopRightCorner"/>
+            <Border x:Name="ResizeBottomLeft" Width="14" Height="14" Background="Transparent"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="BottomLeftCorner"/>
+            <Border x:Name="ResizeBottomRight" Width="14" Height="14" Background="Transparent"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="BottomRightCorner"/>
+        </Grid>
+    </Border>
+</Window>

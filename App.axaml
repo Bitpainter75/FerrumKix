@@ -1,0 +1,15 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FerrumPlay.App"
+             Name="FerrumPlay"
+             RequestedThemeVariant="Dark">
+    <Application.Styles>
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="#F08A1A"/>
+                <ColorPaletteResources x:Key="Dark" Accent="#F08A1A"/>
+            </FluentTheme.Palettes>
+        </FluentTheme>
+        <StyleInclude Source="avares://FerrumPlay/Styles/FerrumPlayTheme.axaml"/>
+    </Application.Styles>
+</Application>
