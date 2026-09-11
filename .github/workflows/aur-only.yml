@@ -39,14 +39,10 @@ jobs:
             cp packaging/AUR/PKGBUILD packaging/.aur-work/PKGBUILD
             cp packaging/io.github.Bitpainter75.FerrumPlay.desktop packaging/.aur-work/
             cp packaging/icon.png packaging/.aur-work/io.github.Bitpainter75.FerrumPlay.png
-            (cd packaging/.aur-work && makepkg --printsrcinfo) > packaging/.aur-work/.SRCINFO
             git -C packaging/.aur-work init -b master
             git -C packaging/.aur-work config user.name "Bitpainter75"
             git -C packaging/.aur-work config user.email "55985980+Bitpainter75@users.noreply.github.com"
-            git -C packaging/.aur-work add PKGBUILD .SRCINFO io.github.Bitpainter75.FerrumPlay.desktop io.github.Bitpainter75.FerrumPlay.png
-            git -C packaging/.aur-work commit -m "Initial ferrumplay-bin package"
             git -C packaging/.aur-work remote add origin ssh://aur@aur.archlinux.org/ferrumplay-bin.git
-            git -C packaging/.aur-work push -u origin master
           fi
           useradd -m builder
           chown -R builder:builder .
@@ -54,4 +50,10 @@ jobs:
           chown -R builder:builder /home/builder/.ssh
           su builder -c "git config --global user.name 'Bitpainter75'"
           su builder -c "git config --global user.email '55985980+Bitpainter75@users.noreply.github.com'"
+          if ! su builder -c "git -C packaging/.aur-work rev-parse --verify HEAD >/dev/null 2>&1"; then
+            su builder -c "cd packaging/.aur-work && makepkg --printsrcinfo > .SRCINFO"
+            su builder -c "git -C packaging/.aur-work add PKGBUILD .SRCINFO io.github.Bitpainter75.FerrumPlay.desktop io.github.Bitpainter75.FerrumPlay.png"
+            su builder -c "git -C packaging/.aur-work commit -m 'Initial ferrumplay-bin package'"
+            su builder -c "GIT_SSH_COMMAND='ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new' git -C packaging/.aur-work push -u origin master"
+          fi
           su builder -c "GIT_SSH_COMMAND='ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new' packaging/publish-aur.sh"
