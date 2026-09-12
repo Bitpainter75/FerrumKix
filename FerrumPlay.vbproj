@@ -5,10 +5,10 @@
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>FerrumPlay</RootNamespace>
     <AssemblyName>FerrumPlay</AssemblyName>
-    <Version>0.5.0</Version>
-    <AssemblyVersion>0.5.0.0</AssemblyVersion>
-    <FileVersion>0.5.0.0</FileVersion>
-    <InformationalVersion>0.5.0</InformationalVersion>
+    <Version>0.6.0</Version>
+    <AssemblyVersion>0.6.0.0</AssemblyVersion>
+    <FileVersion>0.6.0.0</FileVersion>
+    <InformationalVersion>0.6.0</InformationalVersion>
     <Nullable>enable</Nullable>
     <PublishTrimmed>false</PublishTrimmed>
     <PublishSingleFile>true</PublishSingleFile>
@@ -27,10 +27,15 @@
     <PackageReference Include="Avalonia" Version="12.1.2" />
     <PackageReference Include="Avalonia.Desktop" Version="12.1.2" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.2" />
+    <!-- Wie in FerrumPix das virtualisierende Raster: der ItemsRepeater baut nur die Kacheln, die
+         wirklich im Sichtbereich liegen, und reicht sie beim Rollen weiter. Ohne ihn erzeugt die
+         Alben-Uebersicht des Lyrion-Servers jede Kachel der ganzen Bibliothek auf einmal. -->
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="12.0.0" />
     <!-- Die Titelangaben und das eingebettete Titelbild kommen aus den Kennzeichen der Datei.
          TagLibSharp liest ID3v1, ID3v2, Vorbis, APE und MP4 mit einer Schnittstelle und ist rein
          verwaltet; unter LGPL-2.1 und damit mit der GPL vertraeglich. -->
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
+    <PackageReference Include="SkiaSharp" Version="3.119.4" />
   </ItemGroup>
 
   <ItemGroup>

@@ -74,6 +74,7 @@ Namespace Services
                         track.Year = CInt(tag.Year)
                         track.TrackNumber = CInt(tag.Track)
                         track.DiscNumber = CInt(tag.Disc)
+                        track.AlbumSortOrder = CleanText(tag.AlbumSort)
                     End If
 
                     Dim properties = file.Properties

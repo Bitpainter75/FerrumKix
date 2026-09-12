@@ -7,45 +7,189 @@
   <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>{0} लापता ट्रैक हटा दिए गए।</value></data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} चैनल</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} द्वारा {1}, सिस्टम फ़ैक्टर {2:0.##}</value></data>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
+    <value>{0} MP3 फ़ाइल चुनी गईं। कवर: {1}×{1}, JPEG {2} %।</value>
+  </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} प्रतिशत</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} ट्रैक पढ़े गए.</value></data>
   <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} ट्रैक नहीं मिले.</value></data>
+  <data name="0_von_1_Alben_d5492fcf" xml:space="preserve">
+    <value>{1} में से {0} एल्बम</value>
+  </data>
+  <data name="Abspielen_b2eaf9fd" xml:space="preserve">
+    <value>चलाएँ</value>
+  </data>
   <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>उच्चारण रंग</value></data>
+  <data name="Alben_durchsuchen_47ee6eb5" xml:space="preserve">
+    <value>एल्बम खोजें</value>
+  </data>
+  <data name="Alben_werden_geladen_02583de6" xml:space="preserve">
+    <value>एल्बम लोड हो रहे हैं …</value>
+  </data>
+  <data name="Album_abspielen_9c9d0b34" xml:space="preserve">
+    <value>एल्बम चलाएँ</value>
+  </data>
+  <data name="Album_Artist_an_Artist_angleichen_ad438087" xml:space="preserve">
+    <value>एल्बम कलाकार को कलाकार के अनुरूप करें</value>
+  </data>
+  <data name="Album_Artist_eb2422e0" xml:space="preserve">
+    <value>एल्बम कलाकार</value>
+  </data>
+  <data name="Album_aus_Liste_entfernen_27fbc63a" xml:space="preserve">
+    <value>एल्बम सूची से हटाएँ</value>
+  </data>
+  <data name="Album_dfb4c9a1" xml:space="preserve">
+    <value>एल्बम</value>
+  </data>
+  <data name="Album_Sortierung_703d67d0" xml:space="preserve">
+    <value>एल्बम क्रम</value>
+  </data>
+  <data name="Album_Sortierung_an_Jahr_angleichen_24bbd557" xml:space="preserve">
+    <value>एल्बम क्रम को वर्ष के अनुरूप करें</value>
+  </data>
   <data name="Anhalten_55ba4638" xml:space="preserve"><value>रुकें</value></data>
+  <data name="Artist_6c3f3d32" xml:space="preserve">
+    <value>कलाकार</value>
+  </data>
+  <data name="Audio_CD_8d487111" xml:space="preserve">
+    <value>ऑडियो सीडी</value>
+  </data>
+  <data name="Audio_Konverter_af847a55" xml:space="preserve">
+    <value>ऑडियो कन्वर्टर</value>
+  </data>
+  <data name="Audiodatei_Tags_25b63463" xml:space="preserve">
+    <value>ऑडियो फ़ाइल टैग</value>
+  </data>
+  <data name="Auf_oder_zuklappen_1f852885" xml:space="preserve">
+    <value>फैलाएँ या समेटें</value>
+  </data>
   <data name="Aus_6997e3eb" xml:space="preserve"><value>बंद</value></data>
+  <data name="Aus_Liste_entfernen_f6ae4908" xml:space="preserve">
+    <value>सूची से हटाएँ</value>
+  </data>
+  <data name="Ausgabe_dbeb8b99" xml:space="preserve">
+    <value>आउटपुट</value>
+  </data>
   <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>चयनित ट्रैक को सूची से हटाएँ</value></data>
   <data name="Auslieferung_add9612e" xml:space="preserve"><value>डिफ़ॉल्ट</value></data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>स्वचालित</value></data>
+  <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
+    <value>सहेजते समय एल्बम कलाकार स्वतः कलाकार का मान ले लेता है।</value>
+  </data>
+  <data name="Beim_Speichern_bernimmt_Album_Sortierung_automat_f126befa" xml:space="preserve">
+    <value>सहेजते समय एल्बम क्रम स्वतः वर्ष का मान ले लेता है।</value>
+  </data>
   <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>प्रारंभ पर फिर से शुरू करें</value></data>
+  <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
+    <value>केवल इच्छित ID3v2 फ़ील्ड रखता है और ID3v1, APEv2 तथा अन्य चिह्न हटा देता है।</value>
+  </data>
   <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>फेरमप्ले के बारे में</value></data>
+  <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
+    <value>फ़ाइलों, ऑडियो सीडी और Lyrion स्ट्रीम के लिए ध्वनि निर्गम संभालता है।</value>
+  </data>
+  <data name="Bibliothek_aktualisieren_08c49af2" xml:space="preserve">
+    <value>लाइब्रेरी ताज़ा करें</value>
+  </data>
+  <data name="Bildkodierung_0e276e0e" xml:space="preserve">
+    <value>छवि कूटलेखन</value>
+  </data>
+  <data name="Bitte_zuerst_die_Adresse_des_Lyrion_Media_Server_e8bf5785" xml:space="preserve">
+    <value>कृपया पहले Lyrion Media Server का पता दर्ज करें।</value>
+  </data>
   <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>कवर कॉलम की चौड़ाई</value></data>
+  <data name="brige_Tags_beim_Speichern_entfernen_307feaab" xml:space="preserve">
+    <value>सहेजते समय शेष टैग हटाएँ</value>
+  </data>
+  <data name="Client_Name_61663d15" xml:space="preserve">
+    <value>क्लाइंट नाम</value>
+  </data>
+  <data name="Cover_f_r_das_Taggen_5d4bd4a3" xml:space="preserve">
+    <value>टैग करने के लिए कवर</value>
+  </data>
+  <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
+    <value>कवर यहाँ खींचें</value>
+  </data>
   <data name="Darstellung_7058d4fa" xml:space="preserve"><value>दिखावट</value></data>
+  <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
+    <value>कवर चित्र पढ़ा नहीं जा सका।</value>
+  </data>
+  <data name="Das_Coverbild_konnte_nicht_skaliert_werden_30b3118e" xml:space="preserve">
+    <value>कवर चित्र का आकार नहीं बदला जा सका।</value>
+  </data>
   <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>फ़ाइलें पढ़ना विफल रहा.</value></data>
   <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>कवर खिड़की में भर जाता है, धीरे से धुंधला हो जाता है। बंद होने पर, एक शांत अंधेरी सतह बनी रहती है।</value></data>
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>फ़ाइल नहीं मिली: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>फ़ाइलें जोड़ें</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>फ़ाइलों या फ़ोल्डरों को यहां खींचें</value></data>
+  <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
+    <value>टैग करते समय फ़ाइल नाम</value>
+  </data>
+  <data name="Der_konfigurierte_Lyrion_Client_ist_nicht_verbun_4bbee169" xml:space="preserve">
+    <value>निर्धारित Lyrion क्लाइंट जुड़ा हुआ नहीं है।</value>
+  </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>ऑडियो libmpv के माध्यम से चलता है और इस प्रकार सिस्टम के आउटपुट डिवाइस के माध्यम से चलता है।</value></data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>फ़ाइल चली गयी है. ट्रैक छूट गया है.</value></data>
   <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>हाइलाइट रंग: प्रगति, प्ले बटन, वॉल्यूम नॉब और वर्तमान ट्रैक की पंक्ति इसका अनुसरण करती है।</value></data>
+  <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
+    <value>स्थानीय प्लेबैक अभी तैयार नहीं है।</value>
+  </data>
   <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>अगली बार फेरमप्ले शुरू होने पर नई स्केलिंग लागू होती है।</value></data>
   <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>फ़ाइल के अंत में मौन को छोड़ दिया जाता है ताकि लगातार मिश्रित एल्बम बिना किसी रुकावट के चलता रहे। अगले ट्रैक से प्रभावी होता है.</value></data>
   <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>सिस्टम द्वारा प्लेबैक रोक दिया गया था.</value></data>
+  <data name="Diese_Anwendung_416efc74" xml:space="preserve">
+    <value>यह अनुप्रयोग</value>
+  </data>
+  <data name="Discnummer_00bed571" xml:space="preserve">
+    <value>डिस्क संख्या</value>
+  </data>
   <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>डबल-क्लिक करने से 0 डीबी पर रीसेट हो जाता है</value></data>
   <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>डबल-क्लिक करने से 100 प्रतिशत रीसेट हो जाता है</value></data>
   <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>डबल-क्लिक करने से 300 पर रीसेट हो जाता है</value></data>
+  <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
+    <value>अपनी Lyrion लाइब्रेरी देखें और एल्बम सीधे FerrumPlay में चलाएँ।</value>
+  </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>यदि एप्लिकेशन वहां बहुत छोटा दिखाई देता है तो प्रति स्क्रीन एक अलग कारक। अगली शुरुआत पर प्रभावी होता है: विंडोिंग सिस्टम केवल स्टार्टअप पर ही मान पढ़ता है।</value></data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
+    <value>प्रति पंक्ति एक शैली। यह सूची MP3 टैग करते समय विकल्प के रूप में दिखती है; वहाँ अपना मान भी लिखा जा सकता है।</value>
+  </data>
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>सेटिंग्स</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>अभी तक कोई ट्रैक चयनित नहीं है.</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>फ़ाइलें अभी भी पढ़ी जा रही हैं.</value></data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>सूची से छूटे हुए ट्रैक हटाएँ</value></data>
+  <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+    <value>FerrumPlay इन परियोजनाओं पर आधारित है। बटन परियोजना पृष्ठ और लाइसेंस पाठ ब्राउज़र में खोलते हैं।</value>
+  </data>
   <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>फेरमप्ले आखिरी बार खेले गए ट्रैक को चुनता है जहां यह बाधित हुआ था। बंद होने पर, ट्रैक केवल चयनित होता है, प्रारंभ नहीं।</value></data>
+  <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
+    <value>FerrumPlay चुने गए गीत सीधे सर्वर के माध्यम से चलाता है; अलग से Lyrion क्लाइंट की आवश्यकता नहीं है।</value>
+  </data>
+  <data name="Genre_2aa31fca" xml:space="preserve">
+    <value>शैली</value>
+  </data>
+  <data name="Genre_Vorgaben_60473851" xml:space="preserve">
+    <value>शैली की पूर्वनिर्धारित सूची</value>
+  </data>
+  <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
+    <value>यह टैग, टैग संपादक के इनपुट फ़ील्ड और फ़ाइल नाम पर लागू होता है: अंकों की संख्या एल्बम के गीतों की संख्या पर निर्भर करती है, जैसे 10 गीतों पर 01 और 100 पर 001।</value>
+  </data>
   <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>फ़ाइलों में संग्रहीत रीप्लेगेन मानों का उपयोग करके वॉल्यूम को समतल करता है। "एल्बम द्वारा" एल्बम के भीतर शांत और ऊंचे अंशों को रखता है, "स्वचालित" शफ़ल करते समय ट्रैक मान का उपयोग करता है। इन मानों के बिना ट्रैक अपरिवर्तित चलते हैं।</value></data>
   <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>समूह का विस्तार या पतन करें</value></data>
   <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>सभी समतल ट्रैकों को समान मात्रा में ऊपर या नीचे करता है। रिप्लेगैन का लक्ष्य अपेक्षाकृत कम है; कुछ डेसीबल अधिक इसकी भरपाई कर देते हैं। एमपीवी स्वयं क्लिपिंग को रोकता है।</value></data>
+  <data name="http_server_9000_oder_https_music_example_lan_b966c9dd" xml:space="preserve">
+    <value>http://server:9000 या https://music.example.lan</value>
+  </data>
+  <data name="Jahr_956a6e5a" xml:space="preserve">
+    <value>वर्ष</value>
+  </data>
   <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>कोई चलाने योग्य फ़ाइल नहीं मिली.</value></data>
+  <data name="Keine_Alben_gefunden_e94729f8" xml:space="preserve">
+    <value>कोई एल्बम नहीं मिला।</value>
+  </data>
   <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>गैपलेस प्लेबैक</value></data>
   <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>कवर के बगल में डिवाइडर को खींचकर भी समायोजित किया जा सकता है।</value></data>
+  <data name="Laufzeitumgebung_6cedefca" xml:space="preserve">
+    <value>रनटाइम</value>
+  </data>
   <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>वॉल्यूम लेवलिंग (रीप्लेगेन)</value></data>
   <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>वॉल्यूम: खींचें, माउस व्हील या तीर कुंजियाँ</value></data>
   <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpv गायब है</value></data>
@@ -56,34 +200,109 @@
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>सीडी व्यामोह गायब</value></data>
   <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv लोड नहीं किया जा सकता. इसके बिना, फेरमप्ले कुछ भी नहीं खेल सकता।</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>स्पष्ट सूची</value></data>
+  <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
+    <value>Lyrion Media Server लोड हो रहा है …</value>
+  </data>
   <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>अधिकतम करें</value></data>
   <data name="Minimieren_209bcbdc" xml:space="preserve"><value>न्यूनतम करें</value></data>
+  <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
+    <value>MP3 बिटरेट</value>
+  </data>
+  <data name="MP3_Tags_996faa78" xml:space="preserve">
+    <value>MP3 टैग</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
+    <value>MP3 टैग संपादित करें…</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
+    <value>MP3 टैग संपादित करें</value>
+  </data>
+  <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
+    <value>नाम बदलने का प्रारूप: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%। %track% के आगे के शून्य ऊपर की सेटिंग तय करती है। .mp3 एक्सटेंशन अपने आप जुड़ जाता है; खाली फ़ील्ड डिफ़ॉल्ट लौटा देता है।</value>
+  </data>
   <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>अगला ट्रैक</value></data>
   <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>एल्बम द्वारा</value></data>
   <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>ट्रैक से</value></data>
+  <data name="nderungen_bernehmen_a1fb0120" xml:space="preserve">
+    <value>परिवर्तन लागू करें</value>
+  </data>
+  <data name="nderungen_werden_erst_mit_nderungen_bernehmen_ge_e7ccd1e3" xml:space="preserve">
+    <value>परिवर्तन केवल “परिवर्तन लागू करें” दबाने पर लिखे जाते हैं।</value>
+  </data>
+  <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
+    <value>परिवर्तन लागू कर दिए गए।</value>
+  </data>
+  <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
+    <value>नया कवर चुना गया: {0}</value>
+  </data>
+  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
+    <value>केवल MP3 फ़ाइलों पर टैग लिखे जा सकते हैं।</value>
+  </data>
+  <data name="Oberfl_che_ae0be527" xml:space="preserve">
+    <value>इंटरफ़ेस</value>
+  </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>फ़ोल्डर जोड़ें</value></data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>बंद करें</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>त्वरित खोज</value></data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>फ़ॉन्ट आकार</value></data>
+  <data name="Serveradresse_70863d55" xml:space="preserve">
+    <value>सर्वर पता</value>
+  </data>
   <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>भाषा</value></data>
+  <data name="Standardformat_1c812c8e" xml:space="preserve">
+    <value>डिफ़ॉल्ट प्रारूप</value>
+  </data>
   <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>मूक</value></data>
   <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>सिस्टम भाषा</value></data>
+  <data name="Technologie_1d6b9194" xml:space="preserve">
+    <value>तकनीक</value>
+  </data>
+  <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
+    <value>तकनीक और लाइसेंस</value>
+  </data>
   <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>प्लेबैक में ट्रैक शामिल करें</value></data>
   <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>ट्रैक जोड़ें</value></data>
   <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>ट्रैक नहीं चलाया जा सकता: {0}</value></data>
+  <data name="Titel_und_Tracknummer_a3a490ab" xml:space="preserve">
+    <value>शीर्षक और ट्रैक संख्याएँ</value>
+  </data>
   <data name="Tonausgabe_1455f378" xml:space="preserve"><value>ऑडियो आउटपुट</value></data>
   <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>ऑडियो फ़ाइलें</value></data>
+  <data name="Tracknummer_mit_Nullen_auff_llen_7fe759d6" xml:space="preserve">
+    <value>ट्रैक संख्या को शून्य से भरें</value>
+  </data>
   <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>पृष्ठभूमि में धुंधला कवर</value></data>
+  <data name="Variable_Bitrate_VBR_e68beb9e" xml:space="preserve">
+    <value>परिवर्तनीय बिटरेट (VBR)</value>
+  </data>
   <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>अनुप्रयोग स्केलिंग</value></data>
   <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>इंटरफ़ेस के सभी टेक्स्ट को समान मात्रा में स्थानांतरित करता है। विंडो बटन में प्रतीक वैसे ही रहते हैं: वे एक निश्चित बटन आकार में ग्राफिक्स होते हैं।</value></data>
+  <data name="Version_2da600bf" xml:space="preserve">
+    <value>संस्करण</value>
+  </data>
   <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>डिफ़ॉल्ट रूप से सिस्टम भाषा का उपयोग करता है; यदि अंग्रेजी समर्थित नहीं है।</value></data>
   <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>पिछला ट्रैक</value></data>
   <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>प्रस्तावना</value></data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>प्लेबैक</value></data>
+  <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
+    <value>FerrumPlay में चल रहा है: {0}</value>
+  </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>चलायें और रोकें</value></data>
   <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>प्लेलिस्ट</value></data>
   <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>दोहराएँ: बंद, पूरी सूची, एकल ट्रैक</value></data>
+  <data name="Wird_an_Lyrion_bergeben_4a3e4ad6" xml:space="preserve">
+    <value>Lyrion को सौंपा जा रहा है …</value>
+  </data>
+  <data name="Wird_ben_tigt_um_Audio_CDs_als_Dateien_auszulese_b841d5dc" xml:space="preserve">
+    <value>ऑडियो सीडी को फ़ाइलों के रूप में पढ़ने के लिए आवश्यक है।</value>
+  </data>
   <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>फ़ाइलें पढ़ना.</value></data>
+  <data name="Wird_f_r_die_integrierte_Audio_Konvertierung_ver_ef6b54b7" xml:space="preserve">
+    <value>अंतर्निहित ऑडियो रूपांतरण के लिए उपयोग होता है।</value>
+  </data>
+  <data name="Zieldatei_existiert_bereits_0_644a441b" xml:space="preserve">
+    <value>लक्ष्य फ़ाइल पहले से मौजूद है: {0}</value>
+  </data>
   <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>फेरबदल</value></data>
   <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>प्लेबैक पर वापस जाएँ</value></data>
   <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>ऑडियो कनवर्ट करें</value></data>
@@ -140,6 +359,9 @@
   <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>इसके साथ खोलें</value></data>
   <data name="Titel_950701e7" xml:space="preserve"><value>ट्रैक</value></data>
   <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>ट्रैक {number:00}</value></data>
+  <data name="Zus_tzliche_Werkzeuge_e156402c" xml:space="preserve">
+    <value>अतिरिक्त उपकरण</value>
+  </data>
   <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>मर्ज किया गया</value></data>
   <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>एकल ट्रैक दोहराएँ</value></data>
   <data name="kein_Titel_aee2a500" xml:space="preserve"><value>कोई ट्रैक नहीं</value></data>

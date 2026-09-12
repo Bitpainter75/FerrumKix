@@ -7,45 +7,189 @@
   <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>{0}개의 누락된 트랙이 제거되었습니다.</value></data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0}개 채널</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{1}의 {0}, 시스템 요소 {2:0.##}</value></data>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
+    <value>MP3 파일 {0}개를 선택했습니다. 표지: {1}×{1}, JPEG {2} %.</value>
+  </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0}퍼센트</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0}개의 트랙을 읽었습니다.</value></data>
   <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} 트랙을 찾을 수 없습니다.</value></data>
+  <data name="0_von_1_Alben_d5492fcf" xml:space="preserve">
+    <value>{1}개 중 {0}개 앨범</value>
+  </data>
+  <data name="Abspielen_b2eaf9fd" xml:space="preserve">
+    <value>재생</value>
+  </data>
   <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>악센트 색상</value></data>
+  <data name="Alben_durchsuchen_47ee6eb5" xml:space="preserve">
+    <value>앨범 검색</value>
+  </data>
+  <data name="Alben_werden_geladen_02583de6" xml:space="preserve">
+    <value>앨범을 불러오는 중 …</value>
+  </data>
+  <data name="Album_abspielen_9c9d0b34" xml:space="preserve">
+    <value>앨범 재생</value>
+  </data>
+  <data name="Album_Artist_an_Artist_angleichen_ad438087" xml:space="preserve">
+    <value>앨범 아티스트를 아티스트에 맞추기</value>
+  </data>
+  <data name="Album_Artist_eb2422e0" xml:space="preserve">
+    <value>앨범 아티스트</value>
+  </data>
+  <data name="Album_aus_Liste_entfernen_27fbc63a" xml:space="preserve">
+    <value>목록에서 앨범 제거</value>
+  </data>
+  <data name="Album_dfb4c9a1" xml:space="preserve">
+    <value>앨범</value>
+  </data>
+  <data name="Album_Sortierung_703d67d0" xml:space="preserve">
+    <value>앨범 정렬</value>
+  </data>
+  <data name="Album_Sortierung_an_Jahr_angleichen_24bbd557" xml:space="preserve">
+    <value>앨범 정렬을 연도에 맞추기</value>
+  </data>
   <data name="Anhalten_55ba4638" xml:space="preserve"><value>중지</value></data>
+  <data name="Artist_6c3f3d32" xml:space="preserve">
+    <value>아티스트</value>
+  </data>
+  <data name="Audio_CD_8d487111" xml:space="preserve">
+    <value>오디오 CD</value>
+  </data>
+  <data name="Audio_Konverter_af847a55" xml:space="preserve">
+    <value>오디오 변환기</value>
+  </data>
+  <data name="Audiodatei_Tags_25b63463" xml:space="preserve">
+    <value>오디오 파일 태그</value>
+  </data>
+  <data name="Auf_oder_zuklappen_1f852885" xml:space="preserve">
+    <value>펼치기 또는 접기</value>
+  </data>
   <data name="Aus_6997e3eb" xml:space="preserve"><value>끄기</value></data>
+  <data name="Aus_Liste_entfernen_f6ae4908" xml:space="preserve">
+    <value>목록에서 제거</value>
+  </data>
+  <data name="Ausgabe_dbeb8b99" xml:space="preserve">
+    <value>출력</value>
+  </data>
   <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>목록에서 선택한 트랙 제거</value></data>
   <data name="Auslieferung_add9612e" xml:space="preserve"><value>기본값</value></data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>자동</value></data>
+  <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
+    <value>저장할 때 앨범 아티스트가 아티스트 값을 자동으로 따릅니다.</value>
+  </data>
+  <data name="Beim_Speichern_bernimmt_Album_Sortierung_automat_f126befa" xml:space="preserve">
+    <value>저장할 때 앨범 정렬이 연도 값을 자동으로 따릅니다.</value>
+  </data>
   <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>시작 시 재개</value></data>
+  <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
+    <value>의도한 ID3v2 필드만 남기고 ID3v1, APEv2 및 그 밖의 표시를 제거합니다.</value>
+  </data>
   <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>FerrumPlay 소개</value></data>
+  <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
+    <value>파일, 오디오 CD, Lyrion 스트림의 소리 출력을 맡습니다.</value>
+  </data>
+  <data name="Bibliothek_aktualisieren_08c49af2" xml:space="preserve">
+    <value>라이브러리 새로 고침</value>
+  </data>
+  <data name="Bildkodierung_0e276e0e" xml:space="preserve">
+    <value>이미지 인코딩</value>
+  </data>
+  <data name="Bitte_zuerst_die_Adresse_des_Lyrion_Media_Server_e8bf5785" xml:space="preserve">
+    <value>먼저 Lyrion Media Server 주소를 입력하세요.</value>
+  </data>
   <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>표지 기둥의 너비</value></data>
+  <data name="brige_Tags_beim_Speichern_entfernen_307feaab" xml:space="preserve">
+    <value>저장할 때 나머지 태그 제거</value>
+  </data>
+  <data name="Client_Name_61663d15" xml:space="preserve">
+    <value>클라이언트 이름</value>
+  </data>
+  <data name="Cover_f_r_das_Taggen_5d4bd4a3" xml:space="preserve">
+    <value>태그 작업용 표지</value>
+  </data>
+  <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
+    <value>여기로 표지를 끌어다 놓으세요</value>
+  </data>
   <data name="Darstellung_7058d4fa" xml:space="preserve"><value>외관</value></data>
+  <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
+    <value>표지 이미지를 읽지 못했습니다.</value>
+  </data>
+  <data name="Das_Coverbild_konnte_nicht_skaliert_werden_30b3118e" xml:space="preserve">
+    <value>표지 이미지의 크기를 조정하지 못했습니다.</value>
+  </data>
   <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>파일을 읽는 데 실패했습니다.</value></data>
   <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>커버가 창을 채우고 부드럽게 흐려집니다. 끄면 차분하고 어두운 표면이 남습니다.</value></data>
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>파일을 찾을 수 없습니다: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>파일 추가</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>파일이나 폴더를 여기로 드래그하세요.</value></data>
+  <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
+    <value>태그를 쓸 때의 파일 이름</value>
+  </data>
+  <data name="Der_konfigurierte_Lyrion_Client_ist_nicht_verbun_4bbee169" xml:space="preserve">
+    <value>설정된 Lyrion 클라이언트가 연결되어 있지 않습니다.</value>
+  </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>오디오는 libmpv를 통해 재생되므로 시스템의 출력 장치를 통해 재생됩니다.</value></data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>파일이 사라졌습니다. 트랙을 건너뜁니다.</value></data>
   <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>하이라이트 색상: 진행률, 재생 버튼, 볼륨 노브 및 현재 트랙 행이 그 뒤를 따릅니다.</value></data>
+  <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
+    <value>로컬 재생이 아직 준비되지 않았습니다.</value>
+  </data>
   <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>새로운 스케일링은 다음에 FerrumPlay가 시작될 때 적용됩니다.</value></data>
   <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>파일 끝의 무음 부분을 건너뛰어 믹싱된 앨범이 끊김 없이 계속 재생됩니다. 다음 트랙부터 적용됩니다.</value></data>
   <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>시스템에 의해 재생이 중지되었습니다.</value></data>
+  <data name="Diese_Anwendung_416efc74" xml:space="preserve">
+    <value>이 응용 프로그램</value>
+  </data>
+  <data name="Discnummer_00bed571" xml:space="preserve">
+    <value>디스크 번호</value>
+  </data>
   <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>두 번 클릭하면 0dB로 재설정됩니다.</value></data>
   <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>두 번 클릭하면 100%로 재설정됩니다.</value></data>
   <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>두 번 클릭하면 300으로 재설정됩니다.</value></data>
+  <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
+    <value>Lyrion 라이브러리를 둘러보고 앨범을 FerrumPlay에서 바로 재생하세요.</value>
+  </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>애플리케이션이 너무 작게 표시되는 경우를 대비해 화면당 별도의 요소입니다. 다음 시작 시 적용됩니다. 윈도우 시스템은 시작 시에만 값을 읽습니다.</value></data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
+    <value>한 줄에 장르 하나. 이 목록은 MP3 태그 작업에서 선택 항목으로 나타나며, 직접 입력한 값도 그대로 쓸 수 있습니다.</value>
+  </data>
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>설정</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>아직 선택된 트랙이 없습니다.</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>파일을 아직 읽는 중입니다.</value></data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>목록에서 누락된 트랙 제거</value></data>
+  <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+    <value>FerrumPlay는 이 프로젝트들 위에 만들어졌습니다. 단추를 누르면 프로젝트 페이지와 라이선스 본문이 브라우저에서 열립니다.</value>
+  </data>
   <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay는 중단된 마지막 재생 트랙을 선택합니다. 꺼져 있으면 트랙이 선택되기만 하고 시작되지는 않습니다.</value></data>
-  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>파일에 저장된 ReplayGain 값을 사용하여 볼륨 레벨을 조정합니다. "By album"은 앨범 내에서 조용하고 시끄러운 부분을 유지하고, "Automatic"은 셔플할 때 트랙 값을 사용합니다. 이러한 값이 없는 트랙은 변경되지 않고 재생됩니다.</value></data>
+  <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
+    <value>FerrumPlay는 선택한 곡을 서버를 통해 직접 재생합니다. 별도의 Lyrion 클라이언트는 필요하지 않습니다.</value>
+  </data>
+  <data name="Genre_2aa31fca" xml:space="preserve">
+    <value>장르</value>
+  </data>
+  <data name="Genre_Vorgaben_60473851" xml:space="preserve">
+    <value>장르 기본 목록</value>
+  </data>
+  <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
+    <value>태그, 태그 편집기의 입력란, 파일 이름에 적용됩니다. 자릿수는 앨범의 곡 수를 따르며, 예를 들어 10곡이면 01, 100곡이면 001이 됩니다.</value>
+  </data>
+  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>파일에 저장된 ReplayGain 값을 사용하여 볼륨 레벨을 조정합니다. "앨범별"은 앨범 내에서 조용하고 시끄러운 부분을 유지하고, "자동"은 셔플할 때 트랙 값을 사용합니다. 이러한 값이 없는 트랙은 변경되지 않고 재생됩니다.</value></data>
   <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>그룹 확장 또는 축소</value></data>
   <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>레벨이 지정된 모든 트랙을 같은 양만큼 올리거나 내립니다. ReplayGain은 다소 낮은 목표를 가지고 있습니다. 몇 데시벨이 더 보완됩니다. mpv는 자체적으로 클리핑을 방지합니다.</value></data>
+  <data name="http_server_9000_oder_https_music_example_lan_b966c9dd" xml:space="preserve">
+    <value>http://server:9000 또는 https://music.example.lan</value>
+  </data>
+  <data name="Jahr_956a6e5a" xml:space="preserve">
+    <value>연도</value>
+  </data>
   <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>재생 가능한 파일이 없습니다.</value></data>
+  <data name="Keine_Alben_gefunden_e94729f8" xml:space="preserve">
+    <value>앨범을 찾지 못했습니다.</value>
+  </data>
   <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>끊김 없는 재생</value></data>
   <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>커버 옆의 칸막이를 드래그하여 조절할 수도 있습니다.</value></data>
+  <data name="Laufzeitumgebung_6cedefca" xml:space="preserve">
+    <value>런타임</value>
+  </data>
   <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>볼륨 레벨링(ReplayGain)</value></data>
   <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>볼륨: 드래그, 마우스 휠 또는 화살표 키</value></data>
   <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpv 누락</value></data>
@@ -56,34 +200,109 @@
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>CD 편집증 실종</value></data>
   <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv를 로드할 수 없습니다. 그것이 없으면 FerrumPlay는 아무것도 재생할 수 없습니다.</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>목록 지우기</value></data>
+  <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
+    <value>Lyrion Media Server를 불러오는 중 …</value>
+  </data>
   <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>최대화</value></data>
   <data name="Minimieren_209bcbdc" xml:space="preserve"><value>최소화</value></data>
+  <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
+    <value>MP3 비트 전송률</value>
+  </data>
+  <data name="MP3_Tags_996faa78" xml:space="preserve">
+    <value>MP3 태그</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
+    <value>MP3 태그 편집…</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
+    <value>MP3 태그 편집</value>
+  </data>
+  <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
+    <value>이름 바꾸기 형식: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. %track%의 앞자리 0은 위 설정이 결정합니다. 확장자 .mp3는 저절로 붙으며, 빈 칸으로 두면 기본값으로 돌아갑니다.</value>
+  </data>
   <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>다음 트랙</value></data>
   <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>앨범별</value></data>
   <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>트랙별</value></data>
+  <data name="nderungen_bernehmen_a1fb0120" xml:space="preserve">
+    <value>변경 내용 적용</value>
+  </data>
+  <data name="nderungen_werden_erst_mit_nderungen_bernehmen_ge_e7ccd1e3" xml:space="preserve">
+    <value>변경 내용은 ‘변경 내용 적용’을 눌러야 기록됩니다.</value>
+  </data>
+  <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
+    <value>변경 내용을 적용했습니다.</value>
+  </data>
+  <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
+    <value>새 표지를 선택했습니다: {0}</value>
+  </data>
+  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
+    <value>MP3 파일에만 태그를 쓸 수 있습니다.</value>
+  </data>
+  <data name="Oberfl_che_ae0be527" xml:space="preserve">
+    <value>사용자 인터페이스</value>
+  </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>폴더 추가</value></data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>닫기</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>빠른 검색</value></data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>글꼴 크기</value></data>
+  <data name="Serveradresse_70863d55" xml:space="preserve">
+    <value>서버 주소</value>
+  </data>
   <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>언어</value></data>
+  <data name="Standardformat_1c812c8e" xml:space="preserve">
+    <value>기본 형식</value>
+  </data>
   <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>음소거</value></data>
   <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>시스템 언어</value></data>
+  <data name="Technologie_1d6b9194" xml:space="preserve">
+    <value>기술</value>
+  </data>
+  <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
+    <value>기술 및 라이선스</value>
+  </data>
   <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>재생에 트랙 포함</value></data>
   <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>트랙 추가</value></data>
   <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>트랙을 재생할 수 없습니다: {0}</value></data>
+  <data name="Titel_und_Tracknummer_a3a490ab" xml:space="preserve">
+    <value>제목과 트랙 번호</value>
+  </data>
   <data name="Tonausgabe_1455f378" xml:space="preserve"><value>오디오 출력</value></data>
   <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>오디오 파일</value></data>
+  <data name="Tracknummer_mit_Nullen_auff_llen_7fe759d6" xml:space="preserve">
+    <value>트랙 번호를 0으로 채우기</value>
+  </data>
   <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>배경이 흐릿한 표지</value></data>
+  <data name="Variable_Bitrate_VBR_e68beb9e" xml:space="preserve">
+    <value>가변 비트 전송률 (VBR)</value>
+  </data>
   <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>애플리케이션 확장</value></data>
   <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>인터페이스의 모든 텍스트를 같은 양만큼 이동합니다. 창 버튼의 기호는 그대로 유지됩니다. 고정된 버튼 크기의 그래픽입니다.</value></data>
+  <data name="Version_2da600bf" xml:space="preserve">
+    <value>버전</value>
+  </data>
   <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>기본적으로 시스템 언어를 사용합니다. 지원되지 않는 경우 영어입니다.</value></data>
   <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>이전 트랙</value></data>
   <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>프리앰프</value></data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>재생</value></data>
+  <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
+    <value>FerrumPlay에서 재생 중: {0}</value>
+  </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>재생 및 일시중지</value></data>
   <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>재생목록</value></data>
   <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>반복: 꺼짐, 전체 목록, 단일 트랙</value></data>
+  <data name="Wird_an_Lyrion_bergeben_4a3e4ad6" xml:space="preserve">
+    <value>Lyrion에 넘기는 중 …</value>
+  </data>
+  <data name="Wird_ben_tigt_um_Audio_CDs_als_Dateien_auszulese_b841d5dc" xml:space="preserve">
+    <value>오디오 CD를 파일로 읽어 들이는 데 필요합니다.</value>
+  </data>
   <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>파일을 읽는 중입니다.</value></data>
+  <data name="Wird_f_r_die_integrierte_Audio_Konvertierung_ver_ef6b54b7" xml:space="preserve">
+    <value>내장 오디오 변환에 사용됩니다.</value>
+  </data>
+  <data name="Zieldatei_existiert_bereits_0_644a441b" xml:space="preserve">
+    <value>대상 파일이 이미 있습니다: {0}</value>
+  </data>
   <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>셔플</value></data>
   <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>재생으로 돌아가기</value></data>
   <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>오디오 변환</value></data>
@@ -140,6 +359,9 @@
   <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>연결 프로그램</value></data>
   <data name="Titel_950701e7" xml:space="preserve"><value>트랙</value></data>
   <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>트랙 {number:00}</value></data>
+  <data name="Zus_tzliche_Werkzeuge_e156402c" xml:space="preserve">
+    <value>추가 도구</value>
+  </data>
   <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>병합됨</value></data>
   <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>한 트랙 반복</value></data>
   <data name="kein_Titel_aee2a500" xml:space="preserve"><value>트랙 없음</value></data>

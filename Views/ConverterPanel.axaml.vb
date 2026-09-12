@@ -66,7 +66,23 @@ Namespace Views
             InitializeComponent()
             DataContext = Me
             LocalizationService.ApplyTo(Me)
-            AddHandler LocalizationService.LanguageChanged, Sub(sender, e) LocalizationService.ApplyTo(Me)
+            ApplyDefaults()
+            ' Mit AddressOf statt einer Lambda: nur so laesst sich die Anmeldung beim Verlassen
+            ' wieder loesen. Sonst haelt das statische Ereignis jedes je geoeffnete Panel fest.
+            AddHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
+            AddHandler DetachedFromVisualTree, Sub(sender, e) RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
+        End Sub
+
+        Private Sub OnLanguageChanged(sender As Object, e As EventArgs)
+            LocalizationService.ApplyTo(Me)
+        End Sub
+
+        Private Sub ApplyDefaults()
+            Dim settings = AppSettingsService.Current
+            FindControl(Of RadioButton)(If(settings.ConverterDefaultFormat = 1, "FlacRadio", If(settings.ConverterDefaultFormat = 2, "OggRadio", "Mp3Radio"))).IsChecked = True
+            FindControl(Of RadioButton)(If(settings.ConverterDefaultVbr, "VbrRadio", "CbrRadio")).IsChecked = True
+            FindControl(Of RadioButton)($"B{AppSettingsService.NormalizeConverterBitrate(settings.ConverterDefaultBitrate)}Radio").IsChecked = True
+            FindControl(Of ComboBox)("ModeBox").SelectedIndex = Math.Clamp(settings.ConverterDefaultMode, 0, 2)
         End Sub
 
         Public Sub New(tracks As IEnumerable(Of Track))

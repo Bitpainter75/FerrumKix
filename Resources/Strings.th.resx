@@ -7,45 +7,189 @@
   <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>ลบแทร็กที่หายไป {0} รายการแล้ว</value></data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} ช่อง</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} โดย {1} ปัจจัยระบบ {2:0.##}</value></data>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
+    <value>เลือกไฟล์ MP3 แล้ว {0} ไฟล์ ปก: {1}×{1}, JPEG {2} %</value>
+  </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} เปอร์เซ็นต์</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} แทร็กที่อ่านแล้ว</value></data>
   <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>ไม่พบแทร็ก {0}</value></data>
+  <data name="0_von_1_Alben_d5492fcf" xml:space="preserve">
+    <value>{0} จาก {1} อัลบั้ม</value>
+  </data>
+  <data name="Abspielen_b2eaf9fd" xml:space="preserve">
+    <value>เล่น</value>
+  </data>
   <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>สีเน้น</value></data>
+  <data name="Alben_durchsuchen_47ee6eb5" xml:space="preserve">
+    <value>ค้นหาอัลบั้ม</value>
+  </data>
+  <data name="Alben_werden_geladen_02583de6" xml:space="preserve">
+    <value>กำลังโหลดอัลบั้ม …</value>
+  </data>
+  <data name="Album_abspielen_9c9d0b34" xml:space="preserve">
+    <value>เล่นอัลบั้ม</value>
+  </data>
+  <data name="Album_Artist_an_Artist_angleichen_ad438087" xml:space="preserve">
+    <value>ให้ศิลปินอัลบั้มตามศิลปิน</value>
+  </data>
+  <data name="Album_Artist_eb2422e0" xml:space="preserve">
+    <value>ศิลปินอัลบั้ม</value>
+  </data>
+  <data name="Album_aus_Liste_entfernen_27fbc63a" xml:space="preserve">
+    <value>เอาอัลบั้มออกจากรายการ</value>
+  </data>
+  <data name="Album_dfb4c9a1" xml:space="preserve">
+    <value>อัลบั้ม</value>
+  </data>
+  <data name="Album_Sortierung_703d67d0" xml:space="preserve">
+    <value>การเรียงอัลบั้ม</value>
+  </data>
+  <data name="Album_Sortierung_an_Jahr_angleichen_24bbd557" xml:space="preserve">
+    <value>ให้การเรียงอัลบั้มตามปี</value>
+  </data>
   <data name="Anhalten_55ba4638" xml:space="preserve"><value>หยุด</value></data>
+  <data name="Artist_6c3f3d32" xml:space="preserve">
+    <value>ศิลปิน</value>
+  </data>
+  <data name="Audio_CD_8d487111" xml:space="preserve">
+    <value>ซีดีเสียง</value>
+  </data>
+  <data name="Audio_Konverter_af847a55" xml:space="preserve">
+    <value>ตัวแปลงเสียง</value>
+  </data>
+  <data name="Audiodatei_Tags_25b63463" xml:space="preserve">
+    <value>แท็กของไฟล์เสียง</value>
+  </data>
+  <data name="Auf_oder_zuklappen_1f852885" xml:space="preserve">
+    <value>กางออกหรือพับเก็บ</value>
+  </data>
   <data name="Aus_6997e3eb" xml:space="preserve"><value>ปิด</value></data>
+  <data name="Aus_Liste_entfernen_f6ae4908" xml:space="preserve">
+    <value>เอาออกจากรายการ</value>
+  </data>
+  <data name="Ausgabe_dbeb8b99" xml:space="preserve">
+    <value>เอาต์พุต</value>
+  </data>
   <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>ลบแทร็กที่เลือกออกจากรายการ</value></data>
   <data name="Auslieferung_add9612e" xml:space="preserve"><value>ค่าเริ่มต้น</value></data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>อัตโนมัติ</value></data>
+  <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
+    <value>เมื่อบันทึก ศิลปินอัลบั้มจะรับค่าของศิลปินโดยอัตโนมัติ</value>
+  </data>
+  <data name="Beim_Speichern_bernimmt_Album_Sortierung_automat_f126befa" xml:space="preserve">
+    <value>เมื่อบันทึก การเรียงอัลบั้มจะรับค่าของปีโดยอัตโนมัติ</value>
+  </data>
   <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>ดำเนินการต่อเมื่อเริ่มต้น</value></data>
+  <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
+    <value>คงไว้เฉพาะฟิลด์ ID3v2 ที่กำหนด และลบ ID3v1, APEv2 รวมถึงเครื่องหมายอื่น ๆ</value>
+  </data>
   <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>เกี่ยวกับ FerrumPlay</value></data>
+  <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
+    <value>ดูแลการส่งออกเสียงสำหรับไฟล์ ซีดีเสียง และสตรีม Lyrion</value>
+  </data>
+  <data name="Bibliothek_aktualisieren_08c49af2" xml:space="preserve">
+    <value>รีเฟรชคลัง</value>
+  </data>
+  <data name="Bildkodierung_0e276e0e" xml:space="preserve">
+    <value>การเข้ารหัสภาพ</value>
+  </data>
+  <data name="Bitte_zuerst_die_Adresse_des_Lyrion_Media_Server_e8bf5785" xml:space="preserve">
+    <value>กรุณากรอกที่อยู่ของ Lyrion Media Server ก่อน</value>
+  </data>
   <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>ความกว้างของเสาปก</value></data>
+  <data name="brige_Tags_beim_Speichern_entfernen_307feaab" xml:space="preserve">
+    <value>ลบแท็กอื่นเมื่อบันทึก</value>
+  </data>
+  <data name="Client_Name_61663d15" xml:space="preserve">
+    <value>ชื่อไคลเอนต์</value>
+  </data>
+  <data name="Cover_f_r_das_Taggen_5d4bd4a3" xml:space="preserve">
+    <value>ปกสำหรับการใส่แท็ก</value>
+  </data>
+  <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
+    <value>ลากปกมาที่นี่</value>
+  </data>
   <data name="Darstellung_7058d4fa" xml:space="preserve"><value>ลักษณะที่ปรากฏ</value></data>
+  <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
+    <value>อ่านภาพปกไม่ได้</value>
+  </data>
+  <data name="Das_Coverbild_konnte_nicht_skaliert_werden_30b3118e" xml:space="preserve">
+    <value>ปรับขนาดภาพปกไม่ได้</value>
+  </data>
   <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>การอ่านไฟล์ล้มเหลว</value></data>
   <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>ฝาครอบเต็มหน้าต่างเบลออย่างนุ่มนวล เมื่อปิดแล้ว พื้นผิวสีเข้มอันเงียบสงบจะยังคงอยู่</value></data>
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>ไม่พบไฟล์: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>เพิ่มไฟล์</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>ลากไฟล์หรือโฟลเดอร์มาที่นี่</value></data>
+  <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
+    <value>ชื่อไฟล์เมื่อใส่แท็ก</value>
+  </data>
+  <data name="Der_konfigurierte_Lyrion_Client_ist_nicht_verbun_4bbee169" xml:space="preserve">
+    <value>ไคลเอนต์ Lyrion ที่ตั้งไว้ยังไม่ได้เชื่อมต่อ</value>
+  </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>เสียงเล่นผ่าน libmpv และผ่านอุปกรณ์เอาท์พุตของระบบ</value></data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>ไฟล์หายไป แทร็กถูกข้าม</value></data>
   <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>สีไฮไลต์: ความคืบหน้า ปุ่มเล่น ปุ่มปรับระดับเสียง และแถวของแทร็กปัจจุบันที่ตามมา</value></data>
+  <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
+    <value>การเล่นในเครื่องยังไม่พร้อม</value>
+  </data>
   <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>การปรับขนาดใหม่จะใช้ในครั้งถัดไปที่ FerrumPlay เริ่มทำงาน</value></data>
   <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>ความเงียบที่ส่วนท้ายของไฟล์จะถูกข้ามไป เพื่อให้อัลบั้มที่มิกซ์เล่นอย่างต่อเนื่องโดยไม่หยุดพัก มีผลตั้งแต่เพลงถัดไป</value></data>
   <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>การเล่นถูกหยุดโดยระบบ</value></data>
+  <data name="Diese_Anwendung_416efc74" xml:space="preserve">
+    <value>แอปพลิเคชันนี้</value>
+  </data>
+  <data name="Discnummer_00bed571" xml:space="preserve">
+    <value>หมายเลขแผ่น</value>
+  </data>
   <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>ดับเบิลคลิกรีเซ็ตเป็น 0 dB</value></data>
   <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>ดับเบิลคลิกจะรีเซ็ตเป็น 100 เปอร์เซ็นต์</value></data>
   <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>ดับเบิลคลิกรีเซ็ตเป็น 300</value></data>
+  <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
+    <value>เรียกดูคลัง Lyrion ของคุณและเล่นอัลบั้มใน FerrumPlay ได้โดยตรง</value>
+  </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>ปัจจัยแยกต่างหากต่อหน้าจอ ในกรณีที่แอปพลิเคชันมีขนาดเล็กเกินไป มีผลกับการเริ่มต้นครั้งถัดไป: ระบบหน้าต่างจะอ่านค่าเมื่อเริ่มต้นเท่านั้น</value></data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
+    <value>หนึ่งแนวเพลงต่อบรรทัด รายการนี้จะปรากฏเป็นตัวเลือกเมื่อใส่แท็ก MP3 และยังพิมพ์ค่าของคุณเองได้</value>
+  </data>
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>การตั้งค่า</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>ยังไม่ได้เลือกเพลง</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>ไฟล์ยังคงถูกอ่านอยู่</value></data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>ลบแทร็กที่หายไปออกจากรายการ</value></data>
+  <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+    <value>FerrumPlay สร้างขึ้นบนโครงการเหล่านี้ ปุ่มจะเปิดหน้าโครงการและข้อความสัญญาอนุญาตในเบราว์เซอร์</value>
+  </data>
   <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay จะหยิบแทร็กที่เล่นล่าสุดซึ่งถูกขัดจังหวะ เมื่อปิด แทร็กจะถูกเลือกเท่านั้น ไม่ใช่เริ่ม</value></data>
+  <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
+    <value>FerrumPlay เล่นเพลงที่เลือกผ่านเซิร์ฟเวอร์โดยตรง ไม่จำเป็นต้องมีไคลเอนต์ Lyrion เพิ่ม</value>
+  </data>
+  <data name="Genre_2aa31fca" xml:space="preserve">
+    <value>แนวเพลง</value>
+  </data>
+  <data name="Genre_Vorgaben_60473851" xml:space="preserve">
+    <value>แนวเพลงที่กำหนดไว้</value>
+  </data>
+  <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
+    <value>ใช้กับแท็ก ช่องกรอกในตัวแก้ไขแท็ก และชื่อไฟล์ จำนวนหลักเป็นไปตามจำนวนเพลงในอัลบั้ม เช่น 01 เมื่อมี 10 เพลง หรือ 001 เมื่อมี 100 เพลง</value>
+  </data>
   <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>ปรับระดับเสียงโดยใช้ค่า ReplayGain ที่จัดเก็บไว้ในไฟล์ “ตามอัลบั้ม” จะเก็บข้อความที่เงียบและดังภายในอัลบั้ม ส่วน “อัตโนมัติ” จะใช้ค่าแทร็กเมื่อสับเปลี่ยน แทร็กที่ไม่มีค่าเหล่านี้จะเล่นไม่เปลี่ยนแปลง</value></data>
   <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>ขยายหรือยุบกลุ่ม</value></data>
   <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>เพิ่มหรือลดระดับแทร็กทั้งหมดด้วยจำนวนที่เท่ากัน ReplayGain มีจุดมุ่งหมายค่อนข้างต่ำ เพิ่มอีกสองสามเดซิเบลก็ชดเชยแล้ว mpv ป้องกันการคลิปด้วยตัวเอง</value></data>
+  <data name="http_server_9000_oder_https_music_example_lan_b966c9dd" xml:space="preserve">
+    <value>http://server:9000 หรือ https://music.example.lan</value>
+  </data>
+  <data name="Jahr_956a6e5a" xml:space="preserve">
+    <value>ปี</value>
+  </data>
   <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>ไม่พบไฟล์ที่สามารถเล่นได้</value></data>
+  <data name="Keine_Alben_gefunden_e94729f8" xml:space="preserve">
+    <value>ไม่พบอัลบั้ม</value>
+  </data>
   <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>การเล่นที่ไม่มีช่องว่าง</value></data>
   <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>สามารถปรับได้โดยลากตัวแบ่งที่อยู่ถัดจากปก</value></data>
+  <data name="Laufzeitumgebung_6cedefca" xml:space="preserve">
+    <value>รันไทม์</value>
+  </data>
   <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>ปรับระดับเสียง (ReplayGain)</value></data>
   <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>ระดับเสียง: ลาก ล้อเลื่อนของเมาส์ หรือปุ่มลูกศร</value></data>
   <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpv หายไป</value></data>
@@ -56,34 +200,109 @@
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>ไม่มีความหวาดระแวง</value></data>
   <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>โหลด libmpv ไม่ได้ หากไม่มีมัน FerrumPlay ก็ไม่สามารถเล่นอะไรได้เลย</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>ล้างรายการ</value></data>
+  <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
+    <value>กำลังโหลด Lyrion Media Server …</value>
+  </data>
   <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>ขยายใหญ่สุด</value></data>
   <data name="Minimieren_209bcbdc" xml:space="preserve"><value>ย่อเล็กสุด</value></data>
+  <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
+    <value>บิตเรต MP3</value>
+  </data>
+  <data name="MP3_Tags_996faa78" xml:space="preserve">
+    <value>แท็ก MP3</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
+    <value>แก้ไขแท็ก MP3…</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
+    <value>แก้ไขแท็ก MP3</value>
+  </data>
+  <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
+    <value>รูปแบบการเปลี่ยนชื่อ: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre% ศูนย์นำหน้าของ %track% กำหนดโดยการตั้งค่าด้านบน นามสกุล .mp3 จะเติมให้เอง ช่องว่างจะคืนค่าเริ่มต้น</value>
+  </data>
   <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>แทร็กถัดไป</value></data>
   <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>โดยอัลบั้ม</value></data>
   <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>ตามเส้นทาง</value></data>
+  <data name="nderungen_bernehmen_a1fb0120" xml:space="preserve">
+    <value>ใช้การเปลี่ยนแปลง</value>
+  </data>
+  <data name="nderungen_werden_erst_mit_nderungen_bernehmen_ge_e7ccd1e3" xml:space="preserve">
+    <value>การเปลี่ยนแปลงจะถูกเขียนเมื่อกด “ใช้การเปลี่ยนแปลง” เท่านั้น</value>
+  </data>
+  <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
+    <value>ใช้การเปลี่ยนแปลงแล้ว</value>
+  </data>
+  <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
+    <value>เลือกปกใหม่แล้ว: {0}</value>
+  </data>
+  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
+    <value>ใส่แท็กได้เฉพาะไฟล์ MP3 เท่านั้น</value>
+  </data>
+  <data name="Oberfl_che_ae0be527" xml:space="preserve">
+    <value>ส่วนติดต่อผู้ใช้</value>
+  </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>เพิ่มโฟลเดอร์</value></data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>ปิด</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>ค้นหาอย่างรวดเร็ว</value></data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>ขนาดตัวอักษร</value></data>
+  <data name="Serveradresse_70863d55" xml:space="preserve">
+    <value>ที่อยู่เซิร์ฟเวอร์</value>
+  </data>
   <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>ภาษา</value></data>
+  <data name="Standardformat_1c812c8e" xml:space="preserve">
+    <value>รูปแบบเริ่มต้น</value>
+  </data>
   <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>ปิดเสียง</value></data>
   <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>ภาษาของระบบ</value></data>
+  <data name="Technologie_1d6b9194" xml:space="preserve">
+    <value>เทคโนโลยี</value>
+  </data>
+  <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
+    <value>เทคโนโลยีและสัญญาอนุญาต</value>
+  </data>
   <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>รวมแทร็กในการเล่น</value></data>
   <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>เพิ่มแทร็ก</value></data>
   <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>ไม่สามารถเล่นแทร็ก: {0}</value></data>
+  <data name="Titel_und_Tracknummer_a3a490ab" xml:space="preserve">
+    <value>ชื่อเพลงและหมายเลขแทร็ก</value>
+  </data>
   <data name="Tonausgabe_1455f378" xml:space="preserve"><value>เอาต์พุตเสียง</value></data>
   <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>ไฟล์เสียง</value></data>
+  <data name="Tracknummer_mit_Nullen_auff_llen_7fe759d6" xml:space="preserve">
+    <value>เติมศูนย์หน้าหมายเลขแทร็ก</value>
+  </data>
   <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>ปกเบลอในพื้นหลัง</value></data>
+  <data name="Variable_Bitrate_VBR_e68beb9e" xml:space="preserve">
+    <value>บิตเรตแปรผัน (VBR)</value>
+  </data>
   <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>การปรับขนาดแอปพลิเคชัน</value></data>
   <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>เลื่อนข้อความทั้งหมดของอินเทอร์เฟซด้วยจำนวนที่เท่ากัน สัญลักษณ์ในปุ่มหน้าต่างจะยังคงเหมือนเดิม: เป็นกราฟิกที่มีขนาดปุ่มคงที่</value></data>
+  <data name="Version_2da600bf" xml:space="preserve">
+    <value>รุ่น</value>
+  </data>
   <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>ใช้ภาษาของระบบเป็นค่าเริ่มต้น ภาษาอังกฤษหากไม่รองรับ</value></data>
   <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>เพลงก่อนหน้า</value></data>
   <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>ปรีแอมป์</value></data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>การเล่น</value></data>
+  <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
+    <value>กำลังเล่นใน FerrumPlay: {0}</value>
+  </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>เล่นและหยุดชั่วคราว</value></data>
   <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>เพลย์ลิสต์</value></data>
   <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>ซ้ำ: ปิด, รายการทั้งหมด, แทร็กเดียว</value></data>
+  <data name="Wird_an_Lyrion_bergeben_4a3e4ad6" xml:space="preserve">
+    <value>กำลังส่งต่อให้ Lyrion …</value>
+  </data>
+  <data name="Wird_ben_tigt_um_Audio_CDs_als_Dateien_auszulese_b841d5dc" xml:space="preserve">
+    <value>จำเป็นสำหรับการอ่านซีดีเสียงเป็นไฟล์</value>
+  </data>
   <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>กำลังอ่านไฟล์.</value></data>
+  <data name="Wird_f_r_die_integrierte_Audio_Konvertierung_ver_ef6b54b7" xml:space="preserve">
+    <value>ใช้สำหรับการแปลงเสียงในตัว</value>
+  </data>
+  <data name="Zieldatei_existiert_bereits_0_644a441b" xml:space="preserve">
+    <value>มีไฟล์ปลายทางอยู่แล้ว: {0}</value>
+  </data>
   <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>สับเปลี่ยน</value></data>
   <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>กลับสู่การเล่น</value></data>
   <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>แปลงเสียง</value></data>
@@ -140,6 +359,9 @@
   <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>เปิดด้วย</value></data>
   <data name="Titel_950701e7" xml:space="preserve"><value>แทร็ก</value></data>
   <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>แทร็ก {number:00}</value></data>
+  <data name="Zus_tzliche_Werkzeuge_e156402c" xml:space="preserve">
+    <value>เครื่องมือเพิ่มเติม</value>
+  </data>
   <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>รวมแล้ว</value></data>
   <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>เล่นซ้ำหนึ่งแทร็ก</value></data>
   <data name="kein_Titel_aee2a500" xml:space="preserve"><value>ไม่มีแทร็ก</value></data>

@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:icons="clr-namespace:FerrumPlay.Controls"
+             xmlns:views="clr-namespace:FerrumPlay.Views"
              xmlns:vm="clr-namespace:FerrumPlay.ViewModels"
              x:Class="FerrumPlay.Views.PlayerView">
 
@@ -66,8 +67,15 @@
                  hinauslaeuft. Die Fussleiste ist durchscheinend und wuerde den Text sonst zeigen. -->
             <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*" ClipToBounds="True">
 
-                <!-- Die Coverspalte -->
-                <Border Grid.Column="0"
+                <!-- Die Coverspalte. Waehrend des MP3-Taggens tritt TagCoverPanel an ihre
+                     Stelle - NICHT darueber: was gerade laeuft, hat dort nichts zu suchen. -->
+                <views:TagCoverPanel x:Name="TagCoverPanel"
+                                     Grid.Column="0"
+                                     IsVisible="False"
+                                     Width="{Binding SidePanelWidth}"
+                                     Padding="22,20,22,20"/>
+                <Border x:Name="NowPlayingPanel"
+                        Grid.Column="0"
                         Width="{Binding SidePanelWidth}"
                         Padding="22,20,22,20">
                     <StackPanel Spacing="16" VerticalAlignment="Top">
@@ -75,7 +83,7 @@
                         <!-- Quadratisch, damit ein Album mit ungewoehnlichem Seitenverhaeltnis die
                              Spalte nicht auseinanderzieht. Ohne Bild bleibt ein Platzhalter mit
                              Notensymbol stehen statt einer Luecke. -->
-                        <Border CornerRadius="6"
+                        <Border x:Name="CurrentCoverArea" CornerRadius="6"
                                 ClipToBounds="True"
                                 Width="{Binding CoverSize}"
                                 Height="{Binding CoverSize}"
@@ -109,6 +117,10 @@
                                        Classes="secondary"
                                        TextWrapping="Wrap"
                                        TextAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentYearText}"
+                                       Classes="secondary"
+                                       TextAlignment="Center"
+                                       IsVisible="{Binding HasCurrentYear}"/>
                             <TextBlock Text="{Binding CurrentDetail}"
                                        Classes="muted"
                                        Margin="0,10,0,0"
@@ -144,6 +156,8 @@
                                     Classes.active="{Binding IsFilesPlaylistSelected}"
                                     Command="{Binding ShowFilesPlaylistCommand}"
                                     Content="Wiedergabeliste"/>
+                            <Button Classes="playlist-tab" Content="Lyrion Media Server" Click="OnLyrionClick"
+                                    IsVisible="{Binding HasLyrionServer}"/>
                             <Button Classes="playlist-tab"
                                     Classes.active="{Binding IsAudioCdPlaylistSelected}"
                                     Command="{Binding ShowAudioCdPlaylistCommand}"
@@ -182,6 +196,7 @@
                                         <ContextMenu>
                                             <MenuItem Header="Album abspielen" Tag="{Binding}" Click="OnGroupPlayClick"/>
                                             <MenuItem Header="Album konvertieren…" Tag="{Binding}" Click="OnGroupConvertClick"/>
+                                            <MenuItem Header="MP3-Tags bearbeiten…" Tag="{Binding}" Click="OnGroupTagClick" IsVisible="{Binding !IsAudioCdGroup}"/>
                                             <MenuItem Header="Auf- oder zuklappen" Tag="{Binding}" Click="OnGroupToggleMenuClick"/>
                                             <Separator/>
                                             <MenuItem Header="Album aus Liste entfernen" Tag="{Binding}" Click="OnGroupRemoveClick"/>
@@ -220,6 +235,7 @@
                                         <ContextMenu>
                                             <MenuItem Header="Abspielen" Tag="{Binding}" Click="OnTrackPlayClick"/>
                                             <MenuItem Header="Konvertieren…" Tag="{Binding}" Click="OnTrackConvertClick"/>
+                                            <MenuItem Header="MP3-Tags bearbeiten…" Tag="{Binding}" Click="OnTrackTagClick" IsVisible="{Binding !Track.IsAudioCdTrack}"/>
                                             <Separator/>
                                             <MenuItem Header="Aus Liste entfernen" Tag="{Binding}" Click="OnTrackRemoveClick"/>
                                         </ContextMenu>
@@ -310,12 +326,6 @@
                                         Click="OnAddFolderClick"
                                         ToolTip.Tip="Ordner hinzufügen">
                                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/folder-plus.svg"
-                                                   Width="15" Height="15"/>
-                                </Button>
-                                <Button Classes="icon-btn" Width="28" Height="28"
-                                        Click="OnAddAudioCdClick"
-                                        ToolTip.Tip="Eingelegte Audio-CD hinzufügen">
-                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/disc.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"

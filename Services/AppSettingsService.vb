@@ -5,6 +5,7 @@ Imports System.IO
 Imports System.Linq
 Imports System.Text.Json
 Imports System.Text.Json.Serialization
+Imports System.Text.RegularExpressions
 
 Namespace Services
 
@@ -82,6 +83,26 @@ Namespace Services
         ''' den die Einstellungen auflisten.</summary>
         Public Property ApplicationScaleFactors As New List(Of ScreenScaleSetting)()
 
+        ' MP3-Tagging: Die Werte sind Vorgaben fuer den Album-Workflow, bewusst aber nicht
+        ' persoenlich fest verdrahtet. Sie werden erst vom Tagging-Bereich verwendet.
+        Public Property TagCoverSize As Integer = 800
+        Public Property TagCoverJpegQuality As Integer = 95
+        Public Property TagFileNamePattern As String = AppSettingsService.DefaultTagFileNamePattern
+        Public Property TagAlbumArtistFollowsArtist As Boolean = True
+        Public Property TagAlbumSortFollowsYear As Boolean = True
+        Public Property TagRemoveOtherFields As Boolean = True
+        ''' <summary>Die Tracknummer im erzeugten Dateinamen auf die Stellenzahl des Albums auffuellen.</summary>
+        Public Property TagPadTrackNumberToAlbumLength As Boolean = True
+        Public Property ConverterDefaultFormat As Integer = 0
+        Public Property ConverterDefaultBitrate As Integer = 192
+        Public Property ConverterDefaultVbr As Boolean = False
+        Public Property ConverterDefaultMode As Integer = 0
+        ''' <summary>Eigene Genre-Vorgaben, eine je Zeile im Einstellungsdialog.</summary>
+        Public Property TagGenres As New List(Of String)()
+        ''' <summary>Vollständige LMS-Basisadresse, etwa https://music.example.lan/.</summary>
+        Public Property LyrionServerUrl As String = String.Empty
+        Public Property LyrionClientName As String = "FerrumPlay"
+
     End Class
 
     ''' <summary>Ein Bildschirm und der Faktor, mit dem die Anwendung darauf vergroessert wird.</summary>
@@ -93,6 +114,10 @@ Namespace Services
     Public NotInheritable Class AppSettingsService
         Private Sub New()
         End Sub
+
+        ''' <summary>Das Muster, mit dem getaggte MP3-Dateien umbenannt werden, solange nichts
+        ''' anderes eingestellt ist. Die Schreibweise ist die von Puddletag.</summary>
+        Public Const DefaultTagFileNamePattern As String = "%artist% - %track% - %title%"
 
         Private Shared ReadOnly Gate As New Object()
         Private Shared _current As AppSettings
@@ -135,6 +160,13 @@ Namespace Services
                 loaded.ApplicationScaleFactors = NormalizeScreenScaleFactors(loaded.ApplicationScaleFactors)
                 loaded.ReplayGainMode = Math.Clamp(loaded.ReplayGainMode, 0, 3)
                 loaded.ReplayGainPreamp = NormalizeReplayGainPreamp(loaded.ReplayGainPreamp)
+                loaded.TagCoverSize = Math.Clamp(loaded.TagCoverSize, 64, 3000)
+                loaded.TagCoverJpegQuality = Math.Clamp(loaded.TagCoverJpegQuality, 1, 100)
+                loaded.TagFileNamePattern = NormalizeTagFileNamePattern(loaded.TagFileNamePattern)
+                loaded.ConverterDefaultFormat = Math.Clamp(loaded.ConverterDefaultFormat, 0, 2)
+                loaded.ConverterDefaultMode = Math.Clamp(loaded.ConverterDefaultMode, 0, 2)
+                loaded.ConverterDefaultBitrate = NormalizeConverterBitrate(loaded.ConverterDefaultBitrate)
+                loaded.TagGenres = If(loaded.TagGenres, New List(Of String)()).Select(Function(entry) If(entry, String.Empty).Trim()).Where(Function(entry) entry.Length > 0).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList()
                 Return loaded
             Catch ex As Exception
                 DiagnosticLogService.LogException("Settings.Load", ex)
@@ -162,6 +194,28 @@ Namespace Services
                 DiagnosticLogService.LogException("Settings.Save", ex)
             End Try
         End Sub
+
+        ' Fruehere Fassungen und Puddletag selbst schreiben $num(%track%,2). Die fuehrenden Nullen
+        ' kommen inzwischen aus TagPadTrackNumberToAlbumLength, deshalb bleibt vom Aufruf nur der
+        ' Platzhalter uebrig - ein von dort uebernommenes Muster laeuft damit weiter.
+        Private Shared ReadOnly NumFunction As New Regex("\$num\(\s*([^,()]*?)\s*,\s*\d{1,2}\s*\)", RegexOptions.IgnoreCase Or RegexOptions.Compiled)
+
+        ''' <summary>Ein leeres Muster wuerde zu einem Dateinamen aus nichts fuehren. Dann gilt
+        ''' wieder die Vorgabe.</summary>
+        ''' <summary>Die Bitraten, unter denen der Konverter waehlen laesst. Eine andere Zahl
+        ''' gibt es dort nicht - und eine von Hand eingetragene fand im Konverter kein
+        ''' passendes Feld und liess ihn beim Oeffnen abstuerzen.</summary>
+        Public Shared ReadOnly Property ConverterBitrates As Integer() = {128, 192, 256, 320}
+
+        ''' <summary>Die naechstgelegene angebotene Bitrate zu einem gemerkten Wert.</summary>
+        Public Shared Function NormalizeConverterBitrate(value As Integer) As Integer
+            Return ConverterBitrates.OrderBy(Function(rate) Math.Abs(rate - value)).First()
+        End Function
+
+        Public Shared Function NormalizeTagFileNamePattern(value As String) As String
+            Dim text = NumFunction.Replace(If(value, String.Empty), "$1").Trim()
+            Return If(text.Length = 0, DefaultTagFileNamePattern, text)
+        End Function
 
         ''' <summary>Die Vorverstaerkung in halben Dezibel zwischen -15 und +15. Feiner hoert man es
         ''' nicht, und groeber waere der Regler nicht mehr zu treffen.</summary>

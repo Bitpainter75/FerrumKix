@@ -29,6 +29,11 @@ Namespace ViewModels
         Public ReadOnly Property Title As String
         Public ReadOnly Property TrackCount As Integer
         Public ReadOnly Property TotalSeconds As Double
+        Public ReadOnly Property IsAudioCdGroup As Boolean
+            Get
+                Return FolderPath.StartsWith("Audio-CD (", StringComparison.Ordinal)
+            End Get
+        End Property
 
         ''' <summary>Die Angabe rechts in der Ueberschrift: "8 / 32:21".</summary>
         Public ReadOnly Property SummaryText As String

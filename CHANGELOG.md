@@ -1,5 +1,45 @@
 # Changelog
 
+## 0.6.0
+
+- Added a Lyrion Media Server browser with instant album search, cover grid, album tracks, and
+  direct local playback through the server's HTTP stream.
+- Lyrion albums act as temporary playlists: next, previous, shuffle, repeat, cover art, and
+  “jump to current track” stay within the active Lyrion album.
+- Added the integrated MP3 tag editor for common album metadata, cover replacement, tag cleanup,
+  configurable defaults, and track-by-track titles and numbers.
+- The file-name pattern used when tagging MP3 files is now configurable in the settings
+  (%artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%)
+  with a live example of the resulting name.
+- The zero-padding setting for track numbers now governs the tag, the track-number fields in the
+  tag editor, and the file name alike, so the field shows exactly what gets written.
+- In the tag editor, the album-artist and album-sort fields now follow the artist and year fields
+  live whenever their automatic settings are on, instead of only at save time.
+- The Lyrion album overview is no longer capped at 100 albums: it loads further pages while
+  scrolling and draws its tiles through a virtualizing ItemsRepeater, as the FerrumPix grid does.
+  Covers are fetched per visible tile as server-side thumbnails, cached, and released again when a
+  tile scrolls out of view.
+- While the MP3 tag editor is open, the cover column belongs to the files being tagged: it shows
+  their cover and album details instead of the running playback, and it is where a new cover is
+  dropped — the drop area highlights while an image hangs over it, and the pixel size of the cover
+  currently shown is printed below it. Leaving the tag editor hands the column back to playback.
+- Writing MP3 tags now drops the cached cover art for the affected files, so a newly set cover —
+  and its size — shows up at once instead of after a restart; the playlist and the now-playing
+  details are refreshed along with it.
+- The cover column now shows the year of the current track below the album name.
+- Lyrion tracks now carry year, format, sample rate, bitrate, and file size, so the cover column
+  and the Lyrion track list show the same technical details as local files.
+- The tag editor, the Lyrion browser and the converter now translate themselves: they are built
+  after the window-wide translation pass and used to stay German in every other language.
+- Filled the gaps left in the Chinese and Italian resources, where the whole converter was still
+  showing English, and replaced the English option names that survived inside otherwise translated
+  sentences in eight further languages.
+- Translated the complete 0.6.0 interface — Lyrion browser, tag editor, converter and the new
+  settings — into all supported languages, including the status and error messages the panels
+  produce at runtime.
+- Improved Audio CD playback: the temporary CD playlist is detected automatically, MP3-tag actions
+  are hidden for CD tracks, and the player keeps per-track CD timings instead of disc timings.
+
 ## 0.5.0
 
 - Added the complete FerrumPix language selection, including localized resource files for all

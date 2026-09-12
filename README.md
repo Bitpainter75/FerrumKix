@@ -26,6 +26,11 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Plays Audio CDs.** On Linux, an inserted Audio CD is detected automatically and appears as a
   separate temporary playlist. Its tracks can be selected, searched and played just like files;
   ejecting the disc removes the playlist again.
+- **Browses Lyrion.** Connect a Lyrion Media Server to search its albums as you type, view server
+  artwork, and play an album locally through FerrumPlay. The album becomes a temporary playlist,
+  including next/previous, shuffle, repeat, and jump-to-current-track.
+- **Edits MP3 albums.** Update shared album metadata and per-track titles or numbers, replace the
+  embedded cover, clean up tags, and keep useful defaults for recurring album work.
 - **Converts without another app.** Convert a title or album to MP3 (CBR or VBR), FLAC or Ogg
   Vorbis. Whole selections or individual source folders can become one ordered file, with a live
   queue that follows the title currently being converted.
@@ -48,7 +53,11 @@ The transport sits on a dark deck at the bottom: the progress bar across the ful
 
 ## Settings
 
-Accent colour, font size, language, the blurred cover background, the width of the cover column, gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start. On Linux, the whole interface can also be scaled per screen, for displays where it would otherwise come out too small.
+Accent colour, font size, language, the blurred cover background, the width of the cover column,
+gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start are all
+configurable. The MP3 editor and Lyrion browser also keep their own defaults; entering a Lyrion
+server address makes its player tab available. On Linux, the whole interface can also be scaled
+per screen, for displays where it would otherwise come out too small.
 
 ## Installation
 
@@ -124,4 +133,4 @@ dotnet run --project FerrumPlay.vbproj
 
 FerrumPlay is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI and SkiaSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) and [Tabler Icons](https://github.com/tabler/tabler-icons) (MIT). [libmpv](https://mpv.io/) (GPL-2.0-or-later) is not bundled; it is loaded from your system.
 
-FerrumPlay is at version 0.5.0 and in active development.
+FerrumPlay is at version 0.6.0 and in active development.

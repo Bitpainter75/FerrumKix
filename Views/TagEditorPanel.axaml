@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:icons="clr-namespace:FerrumPlay.Controls" x:Class="FerrumPlay.Views.TagEditorPanel">
+ <Grid RowDefinitions="Auto,*,Auto" Background="#66101418" Margin="18,10,10,10">
+  <Grid ColumnDefinitions="Auto,*,Auto"><Button Grid.Column="0" Classes="icon-btn" Click="OnCloseClick" ToolTip.Tip="Zurück zur Wiedergabeliste"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/></Button><StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center"><TextBlock Text="MP3-Tags bearbeiten" FontSize="{DynamicResource FP.Font.Title}" FontWeight="SemiBold"/><TextBlock x:Name="Hint" Classes="muted" Text="Änderungen werden erst mit „Änderungen übernehmen“ geschrieben."/></StackPanel></Grid>
+  <ScrollViewer Grid.Row="1" Margin="0,18,0,12"><StackPanel Spacing="16">
+   <Grid ColumnDefinitions="*,*" ColumnSpacing="14"><StackPanel Spacing="5"><TextBlock Text="Artist"/><TextBox x:Name="ArtistBox"/></StackPanel><StackPanel x:Name="AlbumArtistField" Grid.Column="1" Spacing="5"><TextBlock Text="Album Artist"/><TextBox x:Name="AlbumArtistBox"/></StackPanel></Grid>
+   <StackPanel Spacing="5"><TextBlock Text="Album"/><TextBox x:Name="AlbumBox"/></StackPanel>
+   <Grid ColumnDefinitions="Auto,*,*,Auto" ColumnSpacing="14"><StackPanel Spacing="5"><TextBlock Text="Jahr"/><TextBox x:Name="YearBox" Width="100"/></StackPanel><StackPanel x:Name="AlbumSortField" Grid.Column="1" Spacing="5"><TextBlock Text="Album-Sortierung"/><TextBox x:Name="SortBox"/></StackPanel><Grid Grid.Column="2" RowDefinitions="Auto,*" RowSpacing="5"><TextBlock Text="Genre"/><ComboBox x:Name="GenreBox" Grid.Row="1" IsEditable="True" HorizontalAlignment="Stretch"/></Grid><StackPanel Grid.Column="3" Spacing="5"><TextBlock Text="Discnummer"/><TextBox x:Name="DiscBox" Width="100"/></StackPanel></Grid>
+   <TextBlock Text="Titel und Tracknummer" FontSize="{DynamicResource FP.Font.ItemTitle}" FontWeight="SemiBold" Margin="0,8,0,0"/><StackPanel x:Name="TrackRows" Spacing="7"/>
+  </StackPanel></ScrollViewer>
+  <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="14"><Button Grid.Column="1" Classes="accent" x:Name="SaveButton" Content="Änderungen übernehmen" Click="OnSaveClick"/></Grid>
+ </Grid>
+</UserControl>

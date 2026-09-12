@@ -7,45 +7,189 @@
   <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>Usunięto {0} brakujących utworów.</value></data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} kanałów</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} o {1}, współczynnik systemowy {2:0.##}</value></data>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
+    <value>Wybrano {0} plik(ów) MP3. Okładka: {1}×{1}, JPEG {2} %.</value>
+  </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} procent</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>Przeczytane utwory: {0}.</value></data>
   <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>Nie znaleziono {0} utworów.</value></data>
+  <data name="0_von_1_Alben_d5492fcf" xml:space="preserve">
+    <value>{0} z {1} albumów</value>
+  </data>
+  <data name="Abspielen_b2eaf9fd" xml:space="preserve">
+    <value>Odtwórz</value>
+  </data>
   <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>Kolor akcentujący</value></data>
+  <data name="Alben_durchsuchen_47ee6eb5" xml:space="preserve">
+    <value>Szukaj albumów</value>
+  </data>
+  <data name="Alben_werden_geladen_02583de6" xml:space="preserve">
+    <value>Wczytywanie albumów …</value>
+  </data>
+  <data name="Album_abspielen_9c9d0b34" xml:space="preserve">
+    <value>Odtwórz album</value>
+  </data>
+  <data name="Album_Artist_an_Artist_angleichen_ad438087" xml:space="preserve">
+    <value>Dopasuj wykonawcę albumu do wykonawcy</value>
+  </data>
+  <data name="Album_Artist_eb2422e0" xml:space="preserve">
+    <value>Wykonawca albumu</value>
+  </data>
+  <data name="Album_aus_Liste_entfernen_27fbc63a" xml:space="preserve">
+    <value>Usuń album z listy</value>
+  </data>
+  <data name="Album_dfb4c9a1" xml:space="preserve">
+    <value>Album</value>
+  </data>
+  <data name="Album_Sortierung_703d67d0" xml:space="preserve">
+    <value>Sortowanie albumu</value>
+  </data>
+  <data name="Album_Sortierung_an_Jahr_angleichen_24bbd557" xml:space="preserve">
+    <value>Dopasuj sortowanie albumu do roku</value>
+  </data>
   <data name="Anhalten_55ba4638" xml:space="preserve"><value>Zatrzymaj się</value></data>
+  <data name="Artist_6c3f3d32" xml:space="preserve">
+    <value>Wykonawca</value>
+  </data>
+  <data name="Audio_CD_8d487111" xml:space="preserve">
+    <value>Płyta audio CD</value>
+  </data>
+  <data name="Audio_Konverter_af847a55" xml:space="preserve">
+    <value>Konwerter audio</value>
+  </data>
+  <data name="Audiodatei_Tags_25b63463" xml:space="preserve">
+    <value>Znaczniki plików dźwiękowych</value>
+  </data>
+  <data name="Auf_oder_zuklappen_1f852885" xml:space="preserve">
+    <value>Rozwiń lub zwiń</value>
+  </data>
   <data name="Aus_6997e3eb" xml:space="preserve"><value>Wyłączone</value></data>
+  <data name="Aus_Liste_entfernen_f6ae4908" xml:space="preserve">
+    <value>Usuń z listy</value>
+  </data>
+  <data name="Ausgabe_dbeb8b99" xml:space="preserve">
+    <value>Wyjście</value>
+  </data>
   <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>Usuń wybrane utwory z listy</value></data>
   <data name="Auslieferung_add9612e" xml:space="preserve"><value>Domyślne</value></data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>Automatyczny</value></data>
+  <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
+    <value>Przy zapisie wykonawca albumu automatycznie przejmuje wartość wykonawcy.</value>
+  </data>
+  <data name="Beim_Speichern_bernimmt_Album_Sortierung_automat_f126befa" xml:space="preserve">
+    <value>Przy zapisie sortowanie albumu automatycznie przejmuje wartość roku.</value>
+  </data>
   <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>Wznów na początku</value></data>
+  <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
+    <value>Zachowuje tylko przewidziane pola ID3v2 i usuwa ID3v1, APEv2 oraz pozostałe oznaczenia.</value>
+  </data>
   <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>O FerrumPlay</value></data>
+  <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
+    <value>Odpowiada za odtwarzanie dźwięku z plików, płyt audio CD i strumieni Lyrion.</value>
+  </data>
+  <data name="Bibliothek_aktualisieren_08c49af2" xml:space="preserve">
+    <value>Odśwież bibliotekę</value>
+  </data>
+  <data name="Bildkodierung_0e276e0e" xml:space="preserve">
+    <value>Kodowanie obrazu</value>
+  </data>
+  <data name="Bitte_zuerst_die_Adresse_des_Lyrion_Media_Server_e8bf5785" xml:space="preserve">
+    <value>Najpierw podaj adres serwera Lyrion Media Server.</value>
+  </data>
   <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>Szerokość kolumny okładki</value></data>
+  <data name="brige_Tags_beim_Speichern_entfernen_307feaab" xml:space="preserve">
+    <value>Usuń pozostałe znaczniki przy zapisie</value>
+  </data>
+  <data name="Client_Name_61663d15" xml:space="preserve">
+    <value>Nazwa klienta</value>
+  </data>
+  <data name="Cover_f_r_das_Taggen_5d4bd4a3" xml:space="preserve">
+    <value>Okładka do znakowania</value>
+  </data>
+  <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
+    <value>Przeciągnij tutaj okładkę</value>
+  </data>
   <data name="Darstellung_7058d4fa" xml:space="preserve"><value>Wygląd</value></data>
+  <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
+    <value>Nie udało się odczytać okładki.</value>
+  </data>
+  <data name="Das_Coverbild_konnte_nicht_skaliert_werden_30b3118e" xml:space="preserve">
+    <value>Nie udało się przeskalować okładki.</value>
+  </data>
   <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>Odczyt plików nie powiódł się.</value></data>
   <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>Okładka wypełnia okno, delikatnie rozmyta. Po wyłączeniu pozostaje spokojna ciemna powierzchnia.</value></data>
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Nie znaleziono pliku: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Dodaj pliki</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Przeciągnij tutaj pliki lub foldery</value></data>
+  <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
+    <value>Nazwa pliku przy znakowaniu</value>
+  </data>
+  <data name="Der_konfigurierte_Lyrion_Client_ist_nicht_verbun_4bbee169" xml:space="preserve">
+    <value>Skonfigurowany klient Lyrion nie jest połączony.</value>
+  </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>Dźwięk jest odtwarzany przez bibliotekę libmpv, a tym samym przez urządzenie wyjściowe systemu.</value></data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>Plik zniknął. Utwór został pominięty.</value></data>
   <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>Podświetlony kolor: postęp, przycisk odtwarzania, pokrętło głośności i rząd bieżącego utworu podążają za nim.</value></data>
+  <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
+    <value>Odtwarzanie lokalne nie jest jeszcze gotowe.</value>
+  </data>
   <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>Nowe skalowanie zostanie zastosowane przy następnym uruchomieniu FerrumPlay.</value></data>
   <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>Cisza na końcu pliku jest pomijana, dzięki czemu album jest odtwarzany w trybie ciągłym, bez przerwy. Obowiązuje od następnego utworu.</value></data>
   <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>Odtwarzanie zostało zatrzymane przez system.</value></data>
+  <data name="Diese_Anwendung_416efc74" xml:space="preserve">
+    <value>Ta aplikacja</value>
+  </data>
+  <data name="Discnummer_00bed571" xml:space="preserve">
+    <value>Numer płyty</value>
+  </data>
   <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>Podwójne kliknięcie resetuje do 0 dB</value></data>
   <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>Dwukrotne kliknięcie resetuje do 100 procent</value></data>
   <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>Dwukrotne kliknięcie resetuje do 300</value></data>
+  <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
+    <value>Przeglądaj swoją bibliotekę Lyrion i odtwarzaj albumy bezpośrednio w FerrumPlay.</value>
+  </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>Oddzielny współczynnik na ekran, na wypadek gdyby aplikacja wydawała się tam za mała. Odnosi się do następnego uruchomienia: system okienkowy odczytuje wartość dopiero przy uruchomieniu.</value></data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
+    <value>Jeden gatunek w wierszu. Ta lista pojawia się jako wybór przy znakowaniu MP3; własna wartość nadal jest tam możliwa.</value>
+  </data>
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Ustawienia</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>Nie wybrano jeszcze żadnego utworu.</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Pliki są nadal odczytywane.</value></data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Usuń brakujące utwory z listy</value></data>
+  <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+    <value>FerrumPlay opiera się na tych projektach. Przyciski otwierają stronę projektu i tekst licencji w przeglądarce.</value>
+  </data>
   <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay rozpoczyna ostatnio odtwarzany utwór w miejscu, w którym został przerwany. Gdy opcja jest wyłączona, utwór jest tylko wybrany, a nie uruchomiony.</value></data>
-  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>Poziomuje głośność przy użyciu wartości ReplayGain zapisanych w plikach. Opcja „By album” zachowuje ciche i głośne fragmenty albumu, opcja „Automatic” wykorzystuje wartość utworu podczas odtwarzania losowego. Utwory bez tych wartości są odtwarzane bez zmian.</value></data>
+  <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
+    <value>FerrumPlay odtwarza wybrane utwory bezpośrednio przez serwer; dodatkowy klient Lyrion nie jest potrzebny.</value>
+  </data>
+  <data name="Genre_2aa31fca" xml:space="preserve">
+    <value>Gatunek</value>
+  </data>
+  <data name="Genre_Vorgaben_60473851" xml:space="preserve">
+    <value>Gotowe gatunki</value>
+  </data>
+  <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
+    <value>Dotyczy znacznika, pól edytora znaczników i nazwy pliku: liczba cyfr zależy od liczby utworów na albumie, na przykład 01 przy 10 utworach lub 001 przy 100.</value>
+  </data>
+  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>Poziomuje głośność przy użyciu wartości ReplayGain zapisanych w plikach. Opcja „Według albumu” zachowuje ciche i głośne fragmenty albumu, opcja „Automatyczny” wykorzystuje wartość utworu podczas odtwarzania losowego. Utwory bez tych wartości są odtwarzane bez zmian.</value></data>
   <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>Rozwiń lub zwiń grupę</value></data>
   <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>Podnosi lub obniża wszystkie wyrównane tory o tę samą wartość. ReplayGain celuje raczej nisko; kilka decybeli więcej to rekompensuje. mpv sam zapobiega przycinaniu.</value></data>
+  <data name="http_server_9000_oder_https_music_example_lan_b966c9dd" xml:space="preserve">
+    <value>http://serwer:9000 lub https://music.example.lan</value>
+  </data>
+  <data name="Jahr_956a6e5a" xml:space="preserve">
+    <value>Rok</value>
+  </data>
   <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>Nie znaleziono plików, które można odtworzyć.</value></data>
+  <data name="Keine_Alben_gefunden_e94729f8" xml:space="preserve">
+    <value>Nie znaleziono albumów.</value>
+  </data>
   <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>Odtwarzanie bez przerw</value></data>
   <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>Można to również dostosować, przeciągając przekładkę obok okładki.</value></data>
+  <data name="Laufzeitumgebung_6cedefca" xml:space="preserve">
+    <value>Środowisko uruchomieniowe</value>
+  </data>
   <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>Poziomowanie głośności (ReplayGain)</value></data>
   <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>Głośność: przeciągnij, kółko myszy lub klawisze strzałek</value></data>
   <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>Brak biblioteki libmpv</value></data>
@@ -56,34 +200,109 @@
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>Brak cdparanoi</value></data>
   <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>Nie można załadować biblioteki libmpv. Bez tego FerrumPlay nie będzie w stanie niczego odtworzyć.</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>Wyczyść listę</value></data>
+  <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
+    <value>Wczytywanie Lyrion Media Server …</value>
+  </data>
   <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>Maksymalizuj</value></data>
   <data name="Minimieren_209bcbdc" xml:space="preserve"><value>Minimalizuj</value></data>
+  <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
+    <value>Przepływność MP3</value>
+  </data>
+  <data name="MP3_Tags_996faa78" xml:space="preserve">
+    <value>Znaczniki MP3</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
+    <value>Edytuj znaczniki MP3…</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
+    <value>Edytuj znaczniki MP3</value>
+  </data>
+  <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
+    <value>Wzorzec zmiany nazwy: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. O zerach wiodących przy %track% decyduje ustawienie powyżej. Rozszerzenie .mp3 dodaje się samo; puste pole przywraca wartość domyślną.</value>
+  </data>
   <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>Następny utwór</value></data>
   <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>Według albumu</value></data>
   <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>Według toru</value></data>
+  <data name="nderungen_bernehmen_a1fb0120" xml:space="preserve">
+    <value>Zastosuj zmiany</value>
+  </data>
+  <data name="nderungen_werden_erst_mit_nderungen_bernehmen_ge_e7ccd1e3" xml:space="preserve">
+    <value>Zmiany zostaną zapisane dopiero przyciskiem „Zastosuj zmiany”.</value>
+  </data>
+  <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
+    <value>Zmiany zostały zastosowane.</value>
+  </data>
+  <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
+    <value>Wybrano nową okładkę: {0}</value>
+  </data>
+  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
+    <value>Znaczniki można zapisywać tylko w plikach MP3.</value>
+  </data>
+  <data name="Oberfl_che_ae0be527" xml:space="preserve">
+    <value>Interfejs</value>
+  </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Dodaj folder</value></data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>Zamknij</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Szybkie wyszukiwanie</value></data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Rozmiar czcionki</value></data>
+  <data name="Serveradresse_70863d55" xml:space="preserve">
+    <value>Adres serwera</value>
+  </data>
   <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>Język</value></data>
+  <data name="Standardformat_1c812c8e" xml:space="preserve">
+    <value>Format domyślny</value>
+  </data>
   <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>Wycisz</value></data>
   <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>Język systemu</value></data>
+  <data name="Technologie_1d6b9194" xml:space="preserve">
+    <value>Technologia</value>
+  </data>
+  <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
+    <value>Technologia i licencje</value>
+  </data>
   <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>Uwzględnij utwór w odtwarzaniu</value></data>
   <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>Dodaj utwory</value></data>
   <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>Nie można odtworzyć utworu: {0}</value></data>
+  <data name="Titel_und_Tracknummer_a3a490ab" xml:space="preserve">
+    <value>Tytuły i numery ścieżek</value>
+  </data>
   <data name="Tonausgabe_1455f378" xml:space="preserve"><value>Wyjście audio</value></data>
   <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>Pliki audio</value></data>
+  <data name="Tracknummer_mit_Nullen_auff_llen_7fe759d6" xml:space="preserve">
+    <value>Uzupełnij numer ścieżki zerami</value>
+  </data>
   <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>W tle rozmazana okładka</value></data>
+  <data name="Variable_Bitrate_VBR_e68beb9e" xml:space="preserve">
+    <value>Zmienna przepływność (VBR)</value>
+  </data>
   <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>Skalowanie aplikacji</value></data>
   <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>Przesuwa wszystkie teksty interfejsu o tę samą wartość. Symbole na przyciskach okna pozostają bez zmian: są to grafiki o stałym rozmiarze przycisku.</value></data>
+  <data name="Version_2da600bf" xml:space="preserve">
+    <value>Wersja</value>
+  </data>
   <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>Domyślnie używa języka systemowego; Angielski, jeśli nie jest obsługiwany.</value></data>
   <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>Poprzedni utwór</value></data>
   <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>Przedwzmacniacz</value></data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>Odtwarzanie</value></data>
+  <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
+    <value>Odtwarzanie w FerrumPlay: {0}</value>
+  </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>Graj i pauzuj</value></data>
   <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>Lista odtwarzania</value></data>
   <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>Powtarzanie: wyłączone, cała lista, pojedynczy utwór</value></data>
+  <data name="Wird_an_Lyrion_bergeben_4a3e4ad6" xml:space="preserve">
+    <value>Przekazywanie do Lyrion …</value>
+  </data>
+  <data name="Wird_ben_tigt_um_Audio_CDs_als_Dateien_auszulese_b841d5dc" xml:space="preserve">
+    <value>Wymagane do odczytu płyt audio CD do plików.</value>
+  </data>
   <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>Czytanie plików.</value></data>
+  <data name="Wird_f_r_die_integrierte_Audio_Konvertierung_ver_ef6b54b7" xml:space="preserve">
+    <value>Używane do wbudowanej konwersji dźwięku.</value>
+  </data>
+  <data name="Zieldatei_existiert_bereits_0_644a441b" xml:space="preserve">
+    <value>Plik docelowy już istnieje: {0}</value>
+  </data>
   <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>Przetasuj</value></data>
   <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>Powrót do odtwarzania</value></data>
   <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>Konwertuj dźwięk</value></data>
@@ -138,6 +357,9 @@
   <data name="Keine_Audio_CD_gefunden_oder_das_Laufwerk_ist_ni_9b68527c" xml:space="preserve"><value>Nie znaleziono płyty audio CD lub nie można odczytać napędu.</value></data>
   <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>Otwórz za pomocą</value></data>
   <data name="Titel_950701e7" xml:space="preserve"><value>Śledź</value></data>
+  <data name="Zus_tzliche_Werkzeuge_e156402c" xml:space="preserve">
+    <value>Dodatkowe narzędzia</value>
+  </data>
   <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>Połączone</value></data>
   <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>powtórz pojedynczy utwór</value></data>
   <data name="kein_Titel_aee2a500" xml:space="preserve"><value>brak utworu</value></data>

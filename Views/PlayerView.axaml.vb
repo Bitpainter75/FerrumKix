@@ -22,12 +22,22 @@ Namespace Views
         Private _focusViewModel As MainWindowViewModel
         Private _draggedTrack As Track
         Private _converterPanel As ConverterPanel
+        Private _tagEditorPanel As TagEditorPanel
+        Private _lyrionPanel As LyrionBrowserPanel
 
         Public Sub New()
             InitializeComponent()
 
             Dim seek = Me.FindControl(Of Controls.SeekBar)("Seek")
             If seek IsNot Nothing Then AddHandler seek.Seeked, AddressOf OnSeeked
+            ' Das Ablegen eines Covers wird HIER angenommen und nicht in der Tag-Coverspalte
+            ' selbst: auf dem Weg zum Fenster kommt das geroutete Ereignis hier verlaesslich
+            ' vorbei, waehrend es innerhalb der Spalte davon abhinge, welches ihrer Elemente
+            ' unter dem Zeiger gerade getroffen wird. Wohin der Zeiger zeigt, entscheidet
+            ' stattdessen die Lage.
+            Me.AddHandler(DragDrop.DragOverEvent, New EventHandler(Of DragEventArgs)(AddressOf OnTagCoverDragOver))
+            Me.AddHandler(DragDrop.DropEvent, New EventHandler(Of DragEventArgs)(AddressOf OnTagCoverDrop))
+            Me.AddHandler(DragDrop.DragLeaveEvent, New EventHandler(Of DragEventArgs)(AddressOf OnTagCoverDragLeave))
             AddHandler DataContextChanged, AddressOf OnViewModelDataContextChanged
         End Sub
 
@@ -69,7 +79,12 @@ Namespace Views
         Private Sub OnJumpToCurrentTrackClick(sender As Object, e As RoutedEventArgs)
             Dim viewModel = Me.ViewModel
             Dim track = viewModel?.CurrentTrack
-            If track IsNot Nothing Then viewModel.FocusTrackInPlaylist(track)
+            If track Is Nothing Then Return
+            If viewModel.IsPlayingLyrion Then
+                ShowLyrionPanel(viewModel.LyrionPlayOrder, track)
+            Else
+                viewModel.FocusTrackInPlaylist(track)
+            End If
         End Sub
 
         Private Sub OnSidePanelDrag(sender As Object, e As VectorEventArgs)
@@ -119,6 +134,9 @@ Namespace Views
             If row Is Nothing Then Return
             ShowConverter(ConversionTracksForContext(row))
         End Sub
+        Private Sub OnTrackTagClick(sender As Object, e As RoutedEventArgs)
+            ShowTagEditor(ConversionTracksForContext(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistTrackRow)))
+        End Sub
 
         Private Sub OnTrackRemoveClick(sender As Object, e As RoutedEventArgs)
             Dim row = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistTrackRow)
@@ -135,6 +153,103 @@ Namespace Views
             ' Wie im Dateimanager gilt das Kontextmenue fuer die ganze Auswahl, sofern die
             ' angeklickte Albumzeile dazugehört. So lassen sich mehrere Alben auf einmal senden.
             ShowConverter(ConversionTracksForContext(group))
+        End Sub
+        Private Sub OnGroupTagClick(sender As Object, e As RoutedEventArgs)
+            ShowTagEditor(ConversionTracksForContext(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow)))
+        End Sub
+
+        Private Sub ShowTagEditor(tracks As IEnumerable(Of Track))
+            Dim selected = tracks?.Where(Function(track) track IsNot Nothing AndAlso String.Equals(IO.Path.GetExtension(track.FilePath), ".mp3", StringComparison.OrdinalIgnoreCase)).ToList()
+            If selected Is Nothing OrElse selected.Count = 0 Then Return
+            _tagEditorPanel = New TagEditorPanel(selected) : AddHandler _tagEditorPanel.CloseRequested, AddressOf OnTagEditorCloseRequested
+            AddHandler _tagEditorPanel.Saved, AddressOf OnTagEditorSaved
+            ' Die Coverspalte gehoert jetzt den Dateien, die getaggt werden, und nicht mehr dem,
+            ' was gerade laeuft. Erst beim Verlassen kommt die Wiedergabe dort zurueck.
+            Dim tagCover = Me.FindControl(Of TagCoverPanel)("TagCoverPanel")
+            AddHandler tagCover.CoverChosen, AddressOf OnTagCoverChosen
+            tagCover.Show(selected)
+            tagCover.IsVisible = True
+            Me.FindControl(Of Border)("NowPlayingPanel").IsVisible = False
+            Dim host = Me.FindControl(Of ContentControl)("ConverterHost") : host.Content = _tagEditorPanel : host.IsVisible = True
+            Me.FindControl(Of Control)("PlaylistHeader").IsVisible = False : Me.FindControl(Of ListBox)("PlaylistBox").IsVisible = False
+            Me.FindControl(Of Control)("PlaylistEmptyHint").IsVisible = False : Me.FindControl(Of Control)("PlaylistSummaryText").IsVisible = False : Me.FindControl(Of Control)("PlaylistToolbar").IsVisible = False
+        End Sub
+        Private Sub OnLyrionClick(sender As Object, e As RoutedEventArgs)
+            ShowLyrionPanel()
+        End Sub
+        Private Sub ShowLyrionPanel(Optional tracks As IEnumerable(Of Track) = Nothing, Optional currentTrack As Track = Nothing)
+            _lyrionPanel = New LyrionBrowserPanel(tracks, currentTrack) : AddHandler _lyrionPanel.CloseRequested, AddressOf OnLyrionCloseRequested
+            AddHandler _lyrionPanel.JumpToCurrentRequested, AddressOf OnLyrionJumpToCurrentRequested
+            Dim host = Me.FindControl(Of ContentControl)("ConverterHost") : host.Content = _lyrionPanel : host.IsVisible = True
+            Me.FindControl(Of Control)("PlaylistHeader").IsVisible = False : Me.FindControl(Of ListBox)("PlaylistBox").IsVisible = False
+            Me.FindControl(Of Control)("PlaylistEmptyHint").IsVisible = False : Me.FindControl(Of Control)("PlaylistSummaryText").IsVisible = False : Me.FindControl(Of Control)("PlaylistToolbar").IsVisible = False
+        End Sub
+        Private Sub OnLyrionCloseRequested(sender As Object, e As EventArgs)
+            OnConverterCloseRequested(sender, e) : _lyrionPanel = Nothing
+        End Sub
+        Private Sub OnLyrionJumpToCurrentRequested(track As Track)
+            OnLyrionCloseRequested(_lyrionPanel, EventArgs.Empty)
+            Dispatcher.UIThread.Post(Sub() ViewModel?.FocusTrackInPlaylist(track))
+        End Sub
+        Private Sub OnTagEditorCloseRequested(sender As Object, e As EventArgs)
+            OnConverterCloseRequested(sender, e) : _tagEditorPanel = Nothing
+        End Sub
+        ''' <summary>Nach dem Schreiben zeigt die Coverspalte das Bild, das jetzt wirklich in den
+        ''' Dateien steht - mit dem Mass, auf das es beim Schreiben gebracht wurde.</summary>
+        Private Sub OnTagEditorSaved(tracks As IReadOnlyList(Of Track))
+            Me.FindControl(Of TagCoverPanel)("TagCoverPanel")?.Show(tracks)
+            ' Auch die Wiedergabeliste und der laufende Titel zeigen sonst weiter die alten
+            ' Angaben - der Titel eines Track-Objekts meldet seine Aenderung nicht von selbst.
+            ViewModel?.RefreshAfterTagging()
+        End Sub
+
+        ''' <summary>Ein Bild wurde auf die Tag-Coverspalte gelegt. Geprueft und gelesen hat sie
+        ''' es schon; hier wird es nur an den Tag-Bereich weitergereicht.</summary>
+        Private Sub OnTagCoverChosen(bytes As Byte(), fileName As String)
+            _tagEditorPanel?.SetCover(bytes, fileName)
+        End Sub
+
+        ''' <summary>Die Tag-Coverspalte, wenn sie sichtbar ist UND der Zeiger ueber ihr steht -
+        ''' sonst Nothing. Damit landet ein Bild nur dort, wo es hingehoert, und ein Titel, der
+        ''' daneben in die Liste gezogen wird, geht weiterhin ans Fenster.</summary>
+        Private Function TagCoverTargetAt(e As DragEventArgs) As TagCoverPanel
+            If _tagEditorPanel Is Nothing Then Return Nothing
+            Dim panel = Me.FindControl(Of TagCoverPanel)("TagCoverPanel")
+            If panel Is Nothing OrElse Not panel.IsVisible Then Return Nothing
+            Dim point = e.GetPosition(panel)
+            If point.X < 0 OrElse point.Y < 0 OrElse point.X > panel.Bounds.Width OrElse point.Y > panel.Bounds.Height Then Return Nothing
+            Return panel
+        End Function
+
+        Private Sub OnTagCoverDragOver(sender As Object, e As DragEventArgs)
+            Dim panel = TagCoverTargetAt(e)
+            ' Auch das Abschalten laeuft hier: zieht der Zeiger von der Spalte herunter, ohne das
+            ' Fenster zu verlassen, gibt es kein DragLeave.
+            Me.FindControl(Of TagCoverPanel)("TagCoverPanel")?.SetDropActive(panel IsNot Nothing)
+            If panel Is Nothing Then Return
+            e.DragEffects = If(e.DataTransfer.Contains(DataFormat.File), DragDropEffects.Copy, DragDropEffects.None)
+            e.Handled = True
+        End Sub
+
+        Private Sub OnTagCoverDragLeave(sender As Object, e As DragEventArgs)
+            Me.FindControl(Of TagCoverPanel)("TagCoverPanel")?.SetDropActive(False)
+        End Sub
+
+        Private Async Sub OnTagCoverDrop(sender As Object, e As DragEventArgs)
+            Dim panel = TagCoverTargetAt(e)
+            If panel Is Nothing Then Return
+            Dim entry = e.DataTransfer.TryGetFiles()?.FirstOrDefault()
+            Dim localPath = entry?.TryGetLocalPath()
+            If String.IsNullOrWhiteSpace(localPath) Then Return
+            ' VOR dem ersten Await: danach ist das Ereignis laengst zum Fenster weitergestiegen,
+            ' und dessen Ablegen-Behandlung haengt das Bild zusaetzlich in die Wiedergabeliste.
+            e.Handled = True
+            panel.SetDropActive(False)
+            Try
+                Await panel.ApplyCoverAsync(localPath)
+            Catch ex As Exception
+                DiagnosticLogService.LogException("TagEditor.CoverDrop", ex)
+            End Try
         End Sub
 
         Private Sub ShowConverter(tracks As IEnumerable(Of Track))
@@ -216,7 +331,19 @@ Namespace Views
             Me.FindControl(Of Control)("PlaylistEmptyHint").IsVisible = ViewModel IsNot Nothing AndAlso ViewModel.IsPlaylistEmpty
             Me.FindControl(Of Control)("PlaylistSummaryText").IsVisible = True
             Me.FindControl(Of Control)("PlaylistToolbar").IsVisible = True
+            ' Die Coverspalte kommt hier zurueck und nicht erst im Tag-Bereich: JEDER Weg aus einem
+            ' eingeblendeten Bereich laeuft hier durch, auch ein ungewoehnlicher.
+            RestoreNowPlayingColumn()
             _converterPanel = Nothing
+        End Sub
+
+        ''' <summary>Gibt die Coverspalte wieder der laufenden Wiedergabe.</summary>
+        Private Sub RestoreNowPlayingColumn()
+            Dim tagCover = Me.FindControl(Of TagCoverPanel)("TagCoverPanel")
+            If tagCover Is Nothing OrElse Not tagCover.IsVisible Then Return
+            RemoveHandler tagCover.CoverChosen, AddressOf OnTagCoverChosen
+            tagCover.IsVisible = False
+            Me.FindControl(Of Border)("NowPlayingPanel").IsVisible = True
         End Sub
 
         Private Sub OnGroupToggleMenuClick(sender As Object, e As RoutedEventArgs)

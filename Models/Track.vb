@@ -21,6 +21,7 @@ Namespace Models
         Public Property Year As Integer
         Public Property TrackNumber As Integer
         Public Property DiscNumber As Integer
+        Public Property AlbumSortOrder As String = String.Empty
 
         ''' <summary>Die Laufzeit in Sekunden. 0 heisst: noch nicht gelesen.</summary>
         Public Property DurationSeconds As Double
@@ -31,6 +32,11 @@ Namespace Models
         Public Property Bitrate As Integer
         Public Property Channels As Integer
         Public Property FileSize As Long
+
+        ''' <summary>Optionales Cover eines gestreamten Titels. Gehört nicht in die gespeicherte
+        ''' lokale Wiedergabeliste und wird nur für die aktuelle Anzeige verwendet.</summary>
+        <JsonIgnore>
+        Public Property RemoteCoverUrl As String = String.Empty
 
         ''' <summary>Wann die Kennzeichen gelesen wurden. Aendert sich die Datei danach, gilt der
         ''' Eintrag in der gespeicherten Liste als veraltet und wird neu gelesen.</summary>
@@ -148,6 +154,9 @@ Namespace Models
                 If FileSize > 0 Then parts.Add(FormatFileSize(FileSize))
 
                 Dim codecText = If(String.IsNullOrWhiteSpace(Codec), FileExtensionLabel(), Codec)
+                ' Ein gestreamter Titel hat weder Endung noch immer eine Formatangabe. Dann bleiben
+                ' die technischen Werte fuer sich, statt hinter einem leeren "::" zu stehen.
+                If codecText.Length = 0 Then Return String.Join(", ", parts)
                 If parts.Count = 0 Then Return codecText
                 Return codecText & " :: " & String.Join(", ", parts)
             End Get
@@ -158,7 +167,8 @@ Namespace Models
         Public ReadOnly Property DetailText As String
             Get
                 Dim parts As New List(Of String)()
-                parts.Add(If(String.IsNullOrWhiteSpace(Codec), FileExtensionLabel(), Codec))
+                Dim codecText = If(String.IsNullOrWhiteSpace(Codec), FileExtensionLabel(), Codec)
+                If codecText.Length > 0 Then parts.Add(codecText)
                 If SampleRate > 0 Then parts.Add($"{CInt(Math.Round(SampleRate / 1000.0))} kHz")
                 If Bitrate > 0 Then parts.Add($"{Bitrate} kbps")
                 Select Case Channels

@@ -77,6 +77,10 @@
                                 <TextBlock Text="Darstellung"/>
                             </StackPanel>
                         </Button>
+                        <Button Classes="ghost nav" Tag="TaggingSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/disc.svg" Width="16" Height="16"/><TextBlock Text="MP3-Tags"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="ConverterSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/arrows-sort.svg" Width="16" Height="16"/><TextBlock Text="Audio-Konverter"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="LyrionSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/music.svg" Width="16" Height="16"/><TextBlock Text="Lyrion Media Server"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="TechnologySection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="16" Height="16"/><TextBlock Text="Technologie &amp; Lizenzen"/></StackPanel></Button>
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>
@@ -96,26 +100,17 @@
                             <Image Source="avares://FerrumPlay/Assets/FerrumPlay_TopBar.png"
                                    Margin="10 4 0 0" Height="46" Stretch="Uniform" HorizontalAlignment="Left"/>
                         </StackPanel>
-                        <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                        <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto"
                               ColumnSpacing="12" RowSpacing="8">
                             <TextBlock Grid.Row="0" Text="Version" Foreground="{DynamicResource FP.Text.Muted}"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DisplayVersion}"/>
 
-                            <TextBlock Grid.Row="1" Text="Tonausgabe" Foreground="{DynamicResource FP.Text.Muted}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding AudioBackendText}"/>
-
-                            <TextBlock Grid.Row="2" Text="FFmpeg" Foreground="{DynamicResource FP.Text.Muted}"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding FfmpegText}"/>
-
-                            <TextBlock Grid.Row="3" Text="cdparanoia" Foreground="{DynamicResource FP.Text.Muted}"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CdParanoiaText}"/>
-
-                            <TextBlock Grid.Row="4" Text="Einstellungen" Foreground="{DynamicResource FP.Text.Muted}"/>
-                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SettingsFilePath}"
+                            <TextBlock Grid.Row="1" Text="Einstellungen" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SettingsFilePath}"
                                        TextWrapping="Wrap"/>
 
-                            <TextBlock Grid.Row="5" Text="Wiedergabeliste" Foreground="{DynamicResource FP.Text.Muted}"/>
-                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding PlaylistFilePath}"
+                            <TextBlock Grid.Row="2" Text="Wiedergabeliste" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PlaylistFilePath}"
                                        TextWrapping="Wrap"/>
                         </Grid>
                     </StackPanel>
@@ -335,6 +330,56 @@
                                            Foreground="{DynamicResource FP.Text.Secondary}"/>
                             </StackPanel>
                         </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="TaggingSection" Classes="section">
+                    <StackPanel Spacing="18">
+                        <TextBlock Text="MP3-Tags" Classes="group-caption"/>
+                        <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="3"><TextBlock Text="Album Artist an Artist angleichen" Classes="setting-title"/><TextBlock Text="Beim Speichern übernimmt Album Artist automatisch den Artist-Wert." Classes="setting-note"/></StackPanel><ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding TagAlbumArtistFollowsArtist, Mode=TwoWay}"/></Grid>
+                        <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="3"><TextBlock Text="Album-Sortierung an Jahr angleichen" Classes="setting-title"/><TextBlock Text="Beim Speichern übernimmt Album-Sortierung automatisch den Jahreswert." Classes="setting-note"/></StackPanel><ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding TagAlbumSortFollowsYear, Mode=TwoWay}"/></Grid>
+                        <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="3"><TextBlock Text="Übrige Tags beim Speichern entfernen" Classes="setting-title"/><TextBlock Text="Belässt nur die vorgesehenen ID3v2-Felder und entfernt ID3v1, APEv2 sowie weitere Kennzeichen." Classes="setting-note"/></StackPanel><ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding TagRemoveOtherFields, Mode=TwoWay}"/></Grid>
+                        <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="3"><TextBlock Text="Tracknummer mit Nullen auffüllen" Classes="setting-title"/><TextBlock Text="Gilt für den Tag, die Eingabefelder im Tag-Editor und den Dateinamen: die Stellenzahl richtet sich nach der Titelzahl des Albums, z. B. 01 bei 10 Titeln oder 001 bei 100." Classes="setting-note"/></StackPanel><ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding TagPadTrackNumberToAlbumLength, Mode=TwoWay}"/></Grid>
+                        <StackPanel Spacing="5"><TextBlock Text="Dateiname beim Taggen" Classes="setting-title"/><TextBlock Text="Muster für die Umbenennung: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Führende Nullen bei %track% regelt die Einstellung darüber. Die Endung .mp3 kommt von selbst dazu; ein leeres Feld stellt die Vorgabe wieder her." Classes="setting-note"/><TextBox PlaceholderText="%artist% - %track% - %title%" Text="{Binding TagFileNamePattern, Mode=TwoWay}"/><TextBlock Text="{Binding TagFileNamePatternPreview, StringFormat='Beispiel: {0}'}" Classes="setting-note"/></StackPanel>
+                        <StackPanel Spacing="5"><TextBlock Text="Genre-Vorgaben" Classes="setting-title"/><TextBlock Text="Ein Genre je Zeile. Diese Liste erscheint als Auswahl beim MP3-Tagging; ein eigener Wert bleibt dort weiterhin möglich." Classes="setting-note"/><TextBox AcceptsReturn="True" MinHeight="100" Text="{Binding TagGenresText, Mode=TwoWay}"/></StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="ConverterSection" Classes="section">
+                    <StackPanel Spacing="18"><TextBlock Text="Audio-Konverter" Classes="group-caption"/>
+                        <Grid ColumnDefinitions="*,Auto"><TextBlock Text="Standardformat" Classes="setting-title"/><ComboBox Grid.Column="1" Width="170" SelectedIndex="{Binding ConverterDefaultFormat, Mode=TwoWay}"><ComboBoxItem Content="MP3"/><ComboBoxItem Content="FLAC"/><ComboBoxItem Content="Ogg"/></ComboBox></Grid>
+                        <Grid ColumnDefinitions="*,Auto"><TextBlock Text="MP3-Bitrate" Classes="setting-title"/><ComboBox Grid.Column="1" Width="170" SelectedIndex="{Binding ConverterDefaultBitrateIndex, Mode=TwoWay}"><ComboBoxItem Content="128 kbit/s"/><ComboBoxItem Content="192 kbit/s"/><ComboBoxItem Content="256 kbit/s"/><ComboBoxItem Content="320 kbit/s"/></ComboBox></Grid>
+                        <Grid ColumnDefinitions="*,Auto"><TextBlock Text="Variable Bitrate (VBR)" Classes="setting-title"/><ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding ConverterDefaultVbr, Mode=TwoWay}"/></Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="LyrionSection" Classes="section"><StackPanel Spacing="16"><TextBlock Text="Lyrion Media Server" Classes="group-caption"/><TextBlock Text="Durchsuche deine Lyrion-Bibliothek und spiele Alben direkt in FerrumPlay ab." Classes="setting-note"/><StackPanel Spacing="5"><TextBlock Text="Serveradresse" Classes="setting-title"/><TextBox Text="{Binding LyrionServerUrl, Mode=TwoWay}" PlaceholderText="http://server:9000 oder https://music.example.lan"/></StackPanel><StackPanel Spacing="5"><TextBlock Text="Client-Name" Classes="setting-title"/><TextBox Text="{Binding LyrionClientName, Mode=TwoWay}" PlaceholderText="FerrumPlay"/><TextBlock Text="FerrumPlay spielt die gewählten Titel direkt über den Server ab; ein zusätzlicher Lyrion-Client ist nicht erforderlich." Classes="setting-note"/></StackPanel></StackPanel></Border>
+
+                <Border x:Name="TechnologySection" Classes="section">
+                    <StackPanel Spacing="14"><StackPanel Spacing="2"><TextBlock Text="Technologie" Classes="group-caption"/><TextBlock Text="FerrumPlay baut auf diesen Projekten auf. Die Schaltflächen öffnen Projektseite und Lizenztext im Browser." Classes="setting-note"/></StackPanel>
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Zusätzliche Werkzeuge" Classes="setting-title"/>
+                            <Grid ColumnDefinitions="150,*" ColumnSpacing="12">
+                                <TextBlock Text="libmpv" Foreground="{DynamicResource FP.Text.Muted}"/>
+                                <StackPanel Grid.Column="1" Spacing="2"><TextBlock Text="{Binding AudioBackendText}"/><TextBlock Text="Übernimmt die Tonausgabe für Dateien, Audio-CDs und Lyrion-Streams." Classes="setting-note"/></StackPanel>
+                            </Grid>
+                            <Grid ColumnDefinitions="150,*" ColumnSpacing="12">
+                                <TextBlock Text="FFmpeg" Foreground="{DynamicResource FP.Text.Muted}"/>
+                                <StackPanel Grid.Column="1" Spacing="2"><TextBlock Text="{Binding FfmpegText}"/><TextBlock Text="Wird für die integrierte Audio-Konvertierung verwendet." Classes="setting-note"/></StackPanel>
+                            </Grid>
+                            <Grid ColumnDefinitions="150,*" ColumnSpacing="12">
+                                <TextBlock Text="cdparanoia" Foreground="{DynamicResource FP.Text.Muted}"/>
+                                <StackPanel Grid.Column="1" Spacing="2"><TextBlock Text="{Binding CdParanoiaText}"/><TextBlock Text="Wird benötigt, um Audio-CDs als Dateien auszulesen." Classes="setting-note"/></StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <UniformGrid Columns="2">
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="FerrumPlay" FontWeight="SemiBold"/><TextBlock Text="Diese Anwendung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/Bitpainter75/FerrumPlay" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://www.gnu.org/licenses/gpl-3.0.html" Click="OnLicenseLinkClick">GPL-3.0</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text=".NET 10" FontWeight="SemiBold"/><TextBlock Text="Laufzeitumgebung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/dotnet/runtime" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/dotnet/runtime/blob/main/LICENSE.TXT" Click="OnLicenseLinkClick">MIT</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="Avalonia UI" FontWeight="SemiBold"/><TextBlock Text="Oberfläche" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/AvaloniaUI/Avalonia" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md" Click="OnLicenseLinkClick">MIT</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="SkiaSharp" FontWeight="SemiBold"/><TextBlock Text="Bildkodierung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/SkiaSharp" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/SkiaSharp/blob/main/LICENSE.md" Click="OnLicenseLinkClick">MIT</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="TagLib#" FontWeight="SemiBold"/><TextBlock Text="Audiodatei-Tags" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/taglib-sharp" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html" Click="OnLicenseLinkClick">LGPL-2.1</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="libmpv" FontWeight="SemiBold"/><TextBlock Text="Wiedergabe" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://mpv.io/" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/mpv-player/mpv/blob/master/Copyright" Click="OnLicenseLinkClick">GPL-2.0+</Button></Grid>
+                        </UniformGrid>
                     </StackPanel>
                 </Border>
 

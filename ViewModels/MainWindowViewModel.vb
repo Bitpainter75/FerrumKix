@@ -1,6 +1,7 @@
 Imports System
 Imports System.Collections.Generic
 Imports System.Collections.ObjectModel
+Imports System.Globalization
 Imports System.IO
 Imports System.Linq
 Imports System.Threading
@@ -42,6 +43,26 @@ Namespace ViewModels
         ''' und die gespeicherte Datei.</summary>
         Private ReadOnly _tracks As New List(Of Track)()
         Private ReadOnly _audioCdTracks As New List(Of Track)()
+        ' Die vom Lyrion-Album gestartete, flüchtige Reihenfolge wird nie gespeichert und tritt
+        ' nur an die Stelle der lokalen Liste, solange einer ihrer Titel läuft.
+        Private ReadOnly _lyrionTracks As New List(Of Track)()
+        Private _lyrionPlayOrder As New List(Of Track)()
+        Public Event LyrionPlayOrderChanged(order As IReadOnlyList(Of Track))
+        Public Event LyrionCurrentTrackChanged(track As Track)
+        Public ReadOnly Property IsPlayingLyrion As Boolean
+            Get
+                Return _currentTrack IsNot Nothing AndAlso _lyrionTracks.Contains(_currentTrack)
+            End Get
+        End Property
+        Public ReadOnly Property LyrionPlayOrder As IReadOnlyList(Of Track)
+            Get
+                Return _lyrionPlayOrder.AsReadOnly()
+            End Get
+        End Property
+        ' mpv liefert bei manchen CD-Laufwerken eine absolute Disc-Zeit statt der Zeit des
+        ' angewählten Tracks. Der erste gemeldete Wert ist dann unser Bezugspunkt.
+        Private _audioCdTimeOffset As Double?
+        Private _audioCdPlaybackLoaded As Boolean
 
         ''' <summary>Die Zeile zu einem Titel. Sie ueberlebt das Neuaufbauen der Anzeige, damit das
         ''' Haekchen vor einem Titel nicht bei jedem Tastendruck im Suchfeld zurueckspringt.</summary>
@@ -301,6 +322,148 @@ Namespace ViewModels
                 AppSettingsService.Current.GaplessPlayback = value
                 _player.SetGapless(value)
                 RaisePropertyChanged()
+            End Set
+        End Property
+
+        Public Property TagAlbumArtistFollowsArtist As Boolean
+            Get
+                Return AppSettingsService.Current.TagAlbumArtistFollowsArtist
+            End Get
+            Set(value As Boolean)
+                AppSettingsService.Current.TagAlbumArtistFollowsArtist = value
+                AppSettingsService.Save()
+            End Set
+        End Property
+        Public Property TagAlbumSortFollowsYear As Boolean
+            Get
+                Return AppSettingsService.Current.TagAlbumSortFollowsYear
+            End Get
+            Set(value As Boolean)
+                AppSettingsService.Current.TagAlbumSortFollowsYear = value
+                AppSettingsService.Save()
+            End Set
+        End Property
+
+        Public Property TagRemoveOtherFields As Boolean
+            Get
+                Return AppSettingsService.Current.TagRemoveOtherFields
+            End Get
+            Set(value As Boolean)
+                AppSettingsService.Current.TagRemoveOtherFields = value
+                AppSettingsService.Save()
+            End Set
+        End Property
+
+        Public Property TagPadTrackNumberToAlbumLength As Boolean
+            Get
+                Return AppSettingsService.Current.TagPadTrackNumberToAlbumLength
+            End Get
+            Set(value As Boolean)
+                AppSettingsService.Current.TagPadTrackNumberToAlbumLength = value
+                AppSettingsService.Save()
+                RaisePropertyChanged(NameOf(TagFileNamePatternPreview))
+            End Set
+        End Property
+
+        ''' <summary>Das Benennungsmuster fuer getaggte Dateien, in der Schreibweise von
+        ''' Puddletag. Siehe <see cref="Mp3TagWriteService.BuildFileName"/>.</summary>
+        Public Property TagFileNamePattern As String
+            Get
+                Return AppSettingsService.Current.TagFileNamePattern
+            End Get
+            Set(value As String)
+                AppSettingsService.Current.TagFileNamePattern = AppSettingsService.NormalizeTagFileNamePattern(value)
+                AppSettingsService.Save()
+                RaisePropertyChanged()
+                RaisePropertyChanged(NameOf(TagFileNamePatternPreview))
+            End Set
+        End Property
+
+        ''' <summary>Ein erfundener Titel, am eingestellten Muster vorgefuehrt. Ein Muster
+        ''' liest sich schlecht; ein Dateiname liest sich sofort.</summary>
+        Public ReadOnly Property TagFileNamePatternPreview As String
+            Get
+                Try
+                    Return Mp3TagWriteService.BuildFileName(TagFileNamePattern, SampleTagValues) & ".mp3"
+                Catch ex As Exception
+                    Return String.Empty
+                End Try
+            End Get
+        End Property
+
+        Private Shared ReadOnly Property SampleTagValues As Mp3TagWriteService.Values
+            Get
+                Return New Mp3TagWriteService.Values With {
+                    .Artist = "Pink Floyd", .AlbumArtist = "Pink Floyd", .Album = "The Dark Side of the Moon",
+                    .Title = "Money", .Genre = "Rock", .Year = 1973,
+                    .TrackNumber = 6, .TotalTracks = 10, .DiscNumber = 1}
+            End Get
+        End Property
+        Public Property ConverterDefaultFormat As Integer
+            Get
+                Return AppSettingsService.Current.ConverterDefaultFormat
+            End Get
+            Set(value As Integer)
+                AppSettingsService.Current.ConverterDefaultFormat = Math.Clamp(value, 0, 2)
+                AppSettingsService.Save()
+            End Set
+        End Property
+        Public Property ConverterDefaultBitrateIndex As Integer
+            Get
+                ' Ueber die gepruefte Bitrate, damit ein fremder Wert in der Einstellungsdatei die
+                ' Auswahlliste nicht leer laesst (Array.IndexOf gaebe -1).
+                Return Array.IndexOf(AppSettingsService.ConverterBitrates, AppSettingsService.NormalizeConverterBitrate(AppSettingsService.Current.ConverterDefaultBitrate))
+            End Get
+            Set(value As Integer)
+                Dim rates = AppSettingsService.ConverterBitrates
+                AppSettingsService.Current.ConverterDefaultBitrate = rates(Math.Clamp(value, 0, rates.Length - 1))
+                AppSettingsService.Save()
+            End Set
+        End Property
+        Public Property ConverterDefaultVbr As Boolean
+            Get
+                Return AppSettingsService.Current.ConverterDefaultVbr
+            End Get
+            Set(value As Boolean)
+                AppSettingsService.Current.ConverterDefaultVbr = value
+                AppSettingsService.Save()
+            End Set
+        End Property
+        Public Property TagGenresText As String
+            Get
+                Return String.Join(Environment.NewLine, AppSettingsService.Current.TagGenres)
+            End Get
+            Set(value As String)
+                AppSettingsService.Current.TagGenres = If(value, String.Empty).Split({Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).
+                    Select(Function(entry) entry.Trim()).Where(Function(entry) entry.Length > 0).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList()
+                AppSettingsService.Save()
+            End Set
+        End Property
+        Public Property LyrionServerUrl As String
+            Get
+                Return AppSettingsService.Current.LyrionServerUrl
+            End Get
+            Set(value As String)
+                AppSettingsService.Current.LyrionServerUrl = If(value, String.Empty).Trim()
+                AppSettingsService.Save()
+                RaisePropertyChanged()
+                RaisePropertyChanged(NameOf(HasLyrionServer))
+            End Set
+        End Property
+        ''' <summary>Die Lyrion-Bibliothek wird erst angeboten, wenn eine Serveradresse
+        ''' hinterlegt ist. So bleibt die Wiedergabeliste ohne unkonfigurierten Leereintrag.</summary>
+        Public ReadOnly Property HasLyrionServer As Boolean
+            Get
+                Return Not String.IsNullOrWhiteSpace(AppSettingsService.Current.LyrionServerUrl)
+            End Get
+        End Property
+        Public Property LyrionClientName As String
+            Get
+                Return AppSettingsService.Current.LyrionClientName
+            End Get
+            Set(value As String)
+                AppSettingsService.Current.LyrionClientName = If(value, String.Empty).Trim()
+                AppSettingsService.Save()
             End Set
         End Property
 
@@ -657,6 +820,21 @@ Namespace ViewModels
             End Get
         End Property
 
+        ''' <summary>Das Jahr unter dem Titelbild. Ohne Jahresangabe bleibt die Zeile leer und
+        ''' verschwindet, statt eine Null zu zeigen.</summary>
+        Public ReadOnly Property CurrentYearText As String
+            Get
+                If _currentTrack Is Nothing OrElse _currentTrack.Year <= 0 Then Return String.Empty
+                Return _currentTrack.Year.ToString(CultureInfo.InvariantCulture)
+            End Get
+        End Property
+
+        Public ReadOnly Property HasCurrentYear As Boolean
+            Get
+                Return CurrentYearText.Length > 0
+            End Get
+        End Property
+
         Public ReadOnly Property HasCurrentTrack As Boolean
             Get
                 Return _currentTrack IsNot Nothing
@@ -758,6 +936,7 @@ Namespace ViewModels
                 If Not SetField(_isShuffle, value) Then Return
                 AppSettingsService.Current.Shuffle = value
                 RebuildPlayOrder()
+                RebuildLyrionPlayOrder()
                 RebuildRows()
                 ' Die automatische Angleichung haengt an der Reihenfolge.
                 ApplyReplayGain()
@@ -804,8 +983,29 @@ Namespace ViewModels
         ''' er sich nicht oeffnen, bleibt es dabei - die Wiedergabe springt dann nicht ungefragt auf
         ''' einen anderen.</summary>
         Public Sub Play(track As Track)
+            If Not _lyrionTracks.Contains(track) Then
+                _lyrionTracks.Clear()
+                ' Mit den Titeln faellt auch ihre Reihenfolge. Sonst gibt LyrionPlayOrder weiter
+                ' eine Warteschlange aus, die niemand mehr spielt, und der Lyrion-Bereich springt
+                ' beim naechsten Blick darauf in ein Album, das gar nicht mehr laeuft.
+                If _lyrionPlayOrder.Count > 0 Then
+                    _lyrionPlayOrder = New List(Of Track)()
+                    RaiseEvent LyrionPlayOrderChanged(_lyrionPlayOrder.AsReadOnly())
+                End If
+            End If
             _consecutiveFailures = 0
             PlayCore(track, skipDirection:=0)
+        End Sub
+
+        Public Sub PlayLyrionAlbum(tracks As IEnumerable(Of Track), selected As Track)
+            Dim queue = If(tracks, Enumerable.Empty(Of Track)()).Where(Function(track) track IsNot Nothing).ToList()
+            If selected Is Nothing OrElse Not queue.Contains(selected) Then Return
+            _lyrionTracks.Clear()
+            _lyrionTracks.AddRange(queue)
+            ' Erst spielen, dann die Reihenfolge bilden: bei zufaelliger Reihenfolge zieht sie den
+            ' LAUFENDEN Titel nach vorn, und der ist bis zum Play noch der vorige.
+            Play(selected)
+            RebuildLyrionPlayOrder()
         End Sub
 
         ''' <summary>Blendet den Titel in der Liste ein und laesst die Ansicht darauf springen.
@@ -828,6 +1028,8 @@ Namespace ViewModels
             Dim restarting = Object.ReferenceEquals(track, _currentTrack) AndAlso Not _isStopped
 
             _currentTrack = track
+            RaisePropertyChanged(NameOf(IsPlayingLyrion))
+            If _lyrionTracks.Contains(track) Then RaiseEvent LyrionCurrentTrackChanged(track)
             _skipDirection = skipDirection
             _isStopped = False
             RaiseCurrentTrackChanged()
@@ -838,12 +1040,17 @@ Namespace ViewModels
             ' Mal meldet, zeigte den Balken des vorigen Titels ueber dem neuen.
             PositionSeconds = 0
             DurationSeconds = track.DurationSeconds
+            _audioCdTimeOffset = Nothing
+            _audioCdPlaybackLoaded = Not track.IsAudioCdTrack
 
             _player.Load(track.FilePath, force:=True)
             _player.Play()
             IsPlaying = True
 
-            AppSettingsService.Current.LastTrackPath = track.FilePath
+            ' Die Adresse eines Lyrion-Streams steht in keiner gespeicherten Liste und liesse
+            ' sich beim naechsten Start zu keiner Zeile machen. Dann bleibt der zuletzt gespielte
+            ' oertliche Titel stehen, und das Fortsetzen landet wieder dort.
+            If Not _lyrionTracks.Contains(track) Then AppSettingsService.Current.LastTrackPath = track.FilePath
             LoadCoverAsync(track)
             If restarting Then _mpris?.NotifySeeked(0)
             PublishMpris()
@@ -1014,9 +1221,30 @@ Namespace ViewModels
         End Sub
 
         Private Function CurrentPlayOrder() As List(Of Track)
+            If _currentTrack IsNot Nothing AndAlso _lyrionTracks.Contains(_currentTrack) Then Return _lyrionPlayOrder
             If _currentTrack IsNot Nothing AndAlso _currentTrack.IsAudioCdTrack Then Return _audioCdTracks
             Return If(_selectedPlaylist = PlaylistKind.AudioCd, _audioCdTracks, _playOrder)
         End Function
+
+        Private Sub RebuildLyrionPlayOrder()
+            _lyrionPlayOrder = New List(Of Track)(_lyrionTracks)
+            If _isShuffle Then
+                For index = _lyrionPlayOrder.Count - 1 To 1 Step -1
+                    Dim swap = _shuffleRandom.Next(index + 1)
+                    Dim temporary = _lyrionPlayOrder(index)
+                    _lyrionPlayOrder(index) = _lyrionPlayOrder(swap)
+                    _lyrionPlayOrder(swap) = temporary
+                Next
+                If _currentTrack IsNot Nothing Then
+                    Dim position = _lyrionPlayOrder.IndexOf(_currentTrack)
+                    If position > 0 Then
+                        _lyrionPlayOrder.RemoveAt(position)
+                        _lyrionPlayOrder.Insert(0, _currentTrack)
+                    End If
+                End If
+            End If
+            RaiseEvent LyrionPlayOrderChanged(_lyrionPlayOrder.AsReadOnly())
+        End Sub
 
         ' Das Titelbild
 
@@ -1034,8 +1262,11 @@ Namespace ViewModels
             Dim exportArt = _mpris IsNot Nothing
 
             Task.Run(Sub()
-                         Dim bitmap = CoverArtService.Load(path)
-                         Dim artFile = If(exportArt, CoverArtService.ExportArtFile(path), String.Empty)
+                         Dim bitmap = If(String.IsNullOrWhiteSpace(track.RemoteCoverUrl), CoverArtService.Load(path), CoverArtService.LoadRemote(track.RemoteCoverUrl))
+                         ' Fuer einen Stream gibt es keine Datei zum Auslagern: ExportArtFile
+                         ' liefe nur ueber TagLib und Verzeichnispruefungen ins Leere und legte
+                         ' die Adresse in seinem Zwischenspeicher ab.
+                         Dim artFile = If(exportArt AndAlso String.IsNullOrWhiteSpace(track.RemoteCoverUrl), CoverArtService.ExportArtFile(path), String.Empty)
                          Dispatcher.UIThread.Post(
                              Sub()
                                  If Volatile.Read(_coverRequest) <> request Then Return
@@ -1048,11 +1279,23 @@ Namespace ViewModels
                      End Sub)
         End Sub
 
+        ''' <summary>Liest Anzeige und Titelbild des laufenden Titels neu. Nach dem Taggen
+        ''' stimmt beides nicht mehr: die Datei traegt jetzt andere Kennzeichen, ein anderes Bild
+        ''' und womoeglich einen anderen Namen.</summary>
+        Public Sub RefreshAfterTagging()
+            RebuildRows()
+            If _currentTrack Is Nothing Then Return
+            RaiseCurrentTrackChanged()
+            LoadCoverAsync(_currentTrack)
+        End Sub
+
         Private Sub RaiseCurrentTrackChanged()
             RaisePropertyChanged(NameOf(CurrentTrack))
             RaisePropertyChanged(NameOf(CurrentTitle))
             RaisePropertyChanged(NameOf(CurrentArtist))
             RaisePropertyChanged(NameOf(CurrentAlbum))
+            RaisePropertyChanged(NameOf(CurrentYearText))
+            RaisePropertyChanged(NameOf(HasCurrentYear))
             RaisePropertyChanged(NameOf(CurrentDetail))
             RaisePropertyChanged(NameOf(HasCurrentTrack))
         End Sub
@@ -1547,8 +1790,25 @@ Namespace ViewModels
 
         Private Sub WirePlayer()
             AddHandler _player.TimeChanged, Sub(seconds) Dispatcher.UIThread.Post(Sub() OnTimeReported(seconds))
+            AddHandler _player.FileLoaded,
+                Sub(path) Dispatcher.UIThread.Post(
+                    Sub()
+                        ' Erst nach diesem Ereignis gehört eine Zeitmeldung sicher zum gerade
+                        ' gewählten CD-Titel und nicht mehr zum vorherigen mpv-Input.
+                        If _currentTrack IsNot Nothing AndAlso _currentTrack.IsAudioCdTrack AndAlso
+                           String.Equals(_currentTrack.FilePath, path, StringComparison.Ordinal) Then
+                            _audioCdTimeOffset = Nothing
+                            _audioCdPlaybackLoaded = True
+                        End If
+                    End Sub)
             AddHandler _player.LoadFailed, Sub(filePath) Dispatcher.UIThread.Post(Sub() HandleUnplayableTrack(filePath, missing:=True))
-            AddHandler _player.DurationChanged, Sub(seconds) Dispatcher.UIThread.Post(Sub() DurationSeconds = seconds)
+            AddHandler _player.DurationChanged,
+                Sub(seconds) Dispatcher.UIThread.Post(
+                    Sub()
+                        ' Die TOC liefert die exakte Dauer des einzelnen CD-Titels. mpv meldet
+                        ' hier dagegen je nach Laufwerk die Dauer der kompletten Disc.
+                        If _currentTrack Is Nothing OrElse Not _currentTrack.IsAudioCdTrack Then DurationSeconds = seconds
+                    End Sub)
             AddHandler _player.PauseChanged, Sub(paused) Dispatcher.UIThread.Post(Sub() IsPlaying = Not paused)
             AddHandler _player.MuteChanged, Sub(muted) Dispatcher.UIThread.Post(Sub() SetField(_isMuted, muted, NameOf(IsMuted)))
             AddHandler _player.EndReached, AddressOf OnEndReached
@@ -1585,6 +1845,21 @@ Namespace ViewModels
         ''' <summary>mpv meldet die Stelle. Ein Titel, der wirklich laeuft, hat eine Datei - auch
         ''' wenn er vorhin als fehlend galt -, und die Zaehlung der Fehlschlaege beginnt neu.</summary>
         Private Sub OnTimeReported(seconds As Double)
+            If _currentTrack IsNot Nothing AndAlso _currentTrack.IsAudioCdTrack Then
+                If Not _audioCdPlaybackLoaded Then Return
+                Dim titleDuration = Math.Max(0, _currentTrack.DurationSeconds)
+                If Not _audioCdTimeOffset.HasValue Then
+                    _audioCdTimeOffset = If(titleDuration > 0 AndAlso seconds > titleDuration, seconds, 0)
+                End If
+                ' Manche Laufwerke melden zuerst 0 (relativ) und wechseln erst beim Anlaufen auf
+                ' die absolute Disc-Zeit. Den Wechsel nicht auf das Ende des Titels klemmen,
+                ' sondern genau dort den Bezugspunkt setzen.
+                If titleDuration > 0 AndAlso _audioCdTimeOffset.Value = 0 AndAlso seconds > titleDuration Then
+                    _audioCdTimeOffset = seconds
+                End If
+                seconds -= _audioCdTimeOffset.Value
+                If titleDuration > 0 Then seconds = Math.Clamp(seconds, 0, titleDuration)
+            End If
             PositionSeconds = seconds
             If seconds <= 0 Then Return
             _consecutiveFailures = 0
@@ -1662,7 +1937,10 @@ Namespace ViewModels
             DisconnectFromSession()
             _shutdown.Cancel()
             _audioCdMonitor?.Dispose()
-            AppSettingsService.Current.LastPositionSeconds = _positionSeconds
+            ' Die Stelle gehoert zum laufenden Titel. Bei einem Lyrion-Stream wurde sein Pfad
+            ' bewusst nicht gemerkt - dann darf auch seine Stelle nicht auf den zuletzt gemerkten
+            ' oertlichen Titel uebergehen.
+            If Not IsPlayingLyrion Then AppSettingsService.Current.LastPositionSeconds = _positionSeconds
             SavePlaylist()
             AppSettingsService.Save()
             _player.Dispose()

@@ -3,6 +3,7 @@ Imports System.Collections.Concurrent
 Imports System.Collections.Generic
 Imports System.IO
 Imports System.Linq
+Imports System.Net.Http
 Imports System.Security.Cryptography
 Imports Avalonia.Media.Imaging
 
@@ -25,6 +26,9 @@ Namespace Services
         Private Shared ReadOnly TrackCovers As New ConcurrentDictionary(Of String, Bitmap)(StringComparer.Ordinal)
         Private Shared ReadOnly FolderCovers As New ConcurrentDictionary(Of String, Bitmap)(StringComparer.Ordinal)
         Private Shared ReadOnly ArtFiles As New ConcurrentDictionary(Of String, String)(StringComparer.Ordinal)
+        ''' <summary>Die Cover gestreamter Titel, nach ihrer Adresse. Siehe <see cref="LoadRemote"/>.</summary>
+        Private Shared ReadOnly RemoteCovers As New ConcurrentDictionary(Of String, Bitmap)(StringComparer.Ordinal)
+        Private Shared ReadOnly HttpClient As New HttpClient With {.Timeout = TimeSpan.FromSeconds(12)}
 
         ''' <summary>Die Namen, unter denen ein Albumbild neben den Titeln liegt. Reihenfolge ist
         ''' Rangfolge.</summary>
@@ -53,6 +57,55 @@ Namespace Services
             ' denselben Titel erneut den ganzen Ordner ab, und das kostet bei Netzlaufwerken.
             TrackCovers(filePath) = bitmap
             Return bitmap
+        End Function
+
+        ''' <summary>Vergisst die gemerkten Bilder zu einer Datei.
+        '''
+        ''' <para>Nach dem Schreiben neuer Tags ist das gemerkte Bild das ALTE, und ohne dieses
+        ''' Vergessen zeigte die Anwendung es weiter - ein frisch gesetztes Cover kaeme erst nach
+        ''' einem Neustart an. Der Dateiname kann sich beim Taggen zudem geaendert haben,
+        ''' deshalb nimmt die Methode mehrere Pfade auf einmal.</para>
+        '''
+        ''' <para>Freigegeben wird dabei NICHTS: das Bild kann noch unter dem Titelbild haengen.
+        ''' Es aus der Liste zu nehmen genuegt, den Rest erledigt die Speicherbereinigung.</para></summary>
+        Public Shared Sub Invalidate(ParamArray filePaths As String())
+            For Each path In If(filePaths, Array.Empty(Of String)())
+                If String.IsNullOrWhiteSpace(path) Then Continue For
+                Dim cover As Bitmap = Nothing
+                TrackCovers.TryRemove(path, cover)
+                Dim artFile As String = Nothing
+                ArtFiles.TryRemove(path, artFile)
+            Next
+        End Sub
+
+        ''' <summary>Lädt ein extern bereitgestelltes Cover für einen Stream. Der Aufrufer führt
+        ''' diese Methode auf einem Arbeitsfaden aus.</summary>
+        Public Shared Function LoadRemote(url As String) As Bitmap
+            If String.IsNullOrWhiteSpace(url) Then Return Nothing
+
+            ' Gemerkt wie ein oertliches Cover: die Titel EINES Albums teilen sich dieselbe
+            ' Adresse, und ohne diesen Zwischenspeicher holt jeder Titelwechsel dasselbe Bild
+            ' erneut ueber das Netz - und liesse das vorige unbenutzt liegen.
+            Dim cached As Bitmap = Nothing
+            If RemoteCovers.TryGetValue(url, cached) Then Return cached
+
+            Dim bitmap As Bitmap = Nothing
+            Try
+                Dim bytes = HttpClient.GetByteArrayAsync(url).GetAwaiter().GetResult()
+                Using stream As New MemoryStream(bytes)
+                    bitmap = New Bitmap(stream)
+                End Using
+            Catch ex As Exception
+                DiagnosticLogService.Log("CoverArt.Remote", $"{url}: {ex.Message}")
+                ' Nur ein Fehlschlag wird NICHT gemerkt: der Server kann beim naechsten Titel
+                ' wieder da sein.
+                Return Nothing
+            End Try
+            ' Hat ein anderer Faden dasselbe Bild zuerst abgelegt, gilt seines - das eigene wird
+            ' dann gleich wieder freigegeben.
+            Dim stored = RemoteCovers.GetOrAdd(url, bitmap)
+            If Not Object.ReferenceEquals(stored, bitmap) Then bitmap.Dispose()
+            Return stored
         End Function
 
         ''' <summary>Das Titelbild als DATEI, fuer MPRIS: dort geht ein Bild als Adresse hinaus und

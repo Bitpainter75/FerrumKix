@@ -1,6 +1,7 @@
 Imports Avalonia.Controls
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
+Imports System.Diagnostics
 
 Namespace Views
 
@@ -26,6 +27,16 @@ Namespace Views
 
             Dim section = Me.FindControl(Of Border)(name)
             section?.BringIntoView()
+        End Sub
+
+        Public Sub OnLicenseLinkClick(sender As Object, e As RoutedEventArgs)
+            Dim url = TryCast(TryCast(sender, Control)?.Tag, String)
+            If String.IsNullOrWhiteSpace(url) Then Return
+            Try
+                Process.Start(New ProcessStartInfo(url) With {.UseShellExecute = True})
+            Catch
+            End Try
+            e.Handled = True
         End Sub
 
     End Class

@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:icons="clr-namespace:FerrumPlay.Controls"
+             x:Class="FerrumPlay.Views.TagCoverPanel"
+             DragDrop.AllowDrop="True"
+             Background="Transparent">
+    <UserControl.Styles>
+        <!-- Waehrend ein Bild ueber der Spalte haengt, zeigt der Rahmen, dass hier abgelegt
+             werden kann. Ohne diese Rueckmeldung ist nicht zu erkennen, ob die Flaeche das
+             Ablegen ueberhaupt annimmt. -->
+        <Style Selector="Border.drop-target">
+            <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+    </UserControl.Styles>
+    <!-- Die Spalte waehrend des Taggens. Sie liegt an der Stelle der laufenden Wiedergabe, zeigt
+         aber ausschliesslich das, was getaggt wird: solange der Tag-Bereich offen ist, hat die
+         Wiedergabe hier nichts verloren. -->
+    <StackPanel Spacing="16" VerticalAlignment="Top">
+        <TextBlock Text="Cover für das Taggen" Classes="muted" TextAlignment="Center"/>
+        <Border x:Name="CoverArea" CornerRadius="6"
+                ClipToBounds="True"
+                Width="{Binding CoverSize}"
+                Height="{Binding CoverSize}"
+                Background="#22FFFFFF"
+                BorderBrush="{DynamicResource FP.Border.Subtle}"
+                BorderThickness="1">
+            <Panel>
+                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/music.svg"
+                               Width="56" Height="56"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               IconBrush="{DynamicResource FP.Text.Muted}"/>
+                <Image x:Name="CoverImage" Stretch="UniformToFill"/>
+            </Panel>
+        </Border>
+        <StackPanel Spacing="4">
+            <TextBlock x:Name="AlbumText"
+                       FontSize="{DynamicResource FP.Font.Heading}"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"/>
+            <TextBlock x:Name="ArtistText"
+                       Classes="secondary"
+                       FontSize="{DynamicResource FP.Font.Subtitle}"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"/>
+            <TextBlock x:Name="CountText"
+                       Classes="secondary"
+                       TextAlignment="Center"/>
+            <!-- Das Mass des Bildes, das gerade im Rahmen steht: "1400 × 1400" und bei einem
+                 abgelegten zusaetzlich seine Dateigroesse. Reine Zahlen, deshalb ohne Ubersetzung. -->
+            <TextBlock x:Name="SizeText"
+                       Classes="muted"
+                       TextAlignment="Center"/>
+        </StackPanel>
+        <TextBlock Text="Cover hierher ziehen"
+                   Classes="muted"
+                   Margin="0,4,0,0"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"/>
+    </StackPanel>
+</UserControl>

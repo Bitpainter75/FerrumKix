@@ -7,45 +7,189 @@
   <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>已移除 {0} 个缺失曲目。</value></data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} 声道</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} × {1}，系统缩放系数 {2:0.##}</value></data>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
+    <value>已选择 {0} 个 MP3 文件。封面：{1}×{1}，JPEG {2} %。</value>
+  </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0}%</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>已读取 {0} 个曲目。</value></data>
   <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>未找到 {0} 个曲目。</value></data>
+  <data name="0_von_1_Alben_d5492fcf" xml:space="preserve">
+    <value>{1} 张专辑中的 {0} 张</value>
+  </data>
+  <data name="Abspielen_b2eaf9fd" xml:space="preserve">
+    <value>播放</value>
+  </data>
   <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>强调色</value></data>
+  <data name="Alben_durchsuchen_47ee6eb5" xml:space="preserve">
+    <value>搜索专辑</value>
+  </data>
+  <data name="Alben_werden_geladen_02583de6" xml:space="preserve">
+    <value>正在载入专辑 …</value>
+  </data>
+  <data name="Album_abspielen_9c9d0b34" xml:space="preserve">
+    <value>播放专辑</value>
+  </data>
+  <data name="Album_Artist_an_Artist_angleichen_ad438087" xml:space="preserve">
+    <value>专辑艺术家跟随艺术家</value>
+  </data>
+  <data name="Album_Artist_eb2422e0" xml:space="preserve">
+    <value>专辑艺术家</value>
+  </data>
+  <data name="Album_aus_Liste_entfernen_27fbc63a" xml:space="preserve">
+    <value>从列表中移除专辑</value>
+  </data>
+  <data name="Album_dfb4c9a1" xml:space="preserve">
+    <value>专辑</value>
+  </data>
+  <data name="Album_Sortierung_703d67d0" xml:space="preserve">
+    <value>专辑排序</value>
+  </data>
+  <data name="Album_Sortierung_an_Jahr_angleichen_24bbd557" xml:space="preserve">
+    <value>专辑排序跟随年份</value>
+  </data>
   <data name="Anhalten_55ba4638" xml:space="preserve"><value>停止</value></data>
+  <data name="Artist_6c3f3d32" xml:space="preserve">
+    <value>艺术家</value>
+  </data>
+  <data name="Audio_CD_8d487111" xml:space="preserve">
+    <value>音频 CD</value>
+  </data>
+  <data name="Audio_Konverter_af847a55" xml:space="preserve">
+    <value>音频转换器</value>
+  </data>
+  <data name="Audiodatei_Tags_25b63463" xml:space="preserve">
+    <value>音频文件标签</value>
+  </data>
+  <data name="Auf_oder_zuklappen_1f852885" xml:space="preserve">
+    <value>展开或折叠</value>
+  </data>
   <data name="Aus_6997e3eb" xml:space="preserve"><value>关闭</value></data>
+  <data name="Aus_Liste_entfernen_f6ae4908" xml:space="preserve">
+    <value>从列表中移除</value>
+  </data>
+  <data name="Ausgabe_dbeb8b99" xml:space="preserve">
+    <value>输出</value>
+  </data>
   <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>从列表中移除选中的曲目</value></data>
   <data name="Auslieferung_add9612e" xml:space="preserve"><value>默认</value></data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>自动</value></data>
+  <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
+    <value>保存时，专辑艺术家自动采用艺术家的值。</value>
+  </data>
+  <data name="Beim_Speichern_bernimmt_Album_Sortierung_automat_f126befa" xml:space="preserve">
+    <value>保存时，专辑排序自动采用年份的值。</value>
+  </data>
   <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>启动时继续播放</value></data>
+  <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
+    <value>只保留预定的 ID3v2 字段，移除 ID3v1、APEv2 以及其他标记。</value>
+  </data>
   <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>关于 FerrumPlay</value></data>
+  <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
+    <value>负责文件、音频 CD 和 Lyrion 流的声音输出。</value>
+  </data>
+  <data name="Bibliothek_aktualisieren_08c49af2" xml:space="preserve">
+    <value>刷新媒体库</value>
+  </data>
+  <data name="Bildkodierung_0e276e0e" xml:space="preserve">
+    <value>图像编码</value>
+  </data>
+  <data name="Bitte_zuerst_die_Adresse_des_Lyrion_Media_Server_e8bf5785" xml:space="preserve">
+    <value>请先填写 Lyrion Media Server 的地址。</value>
+  </data>
   <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>封面列宽度</value></data>
+  <data name="brige_Tags_beim_Speichern_entfernen_307feaab" xml:space="preserve">
+    <value>保存时移除其余标签</value>
+  </data>
+  <data name="Client_Name_61663d15" xml:space="preserve">
+    <value>客户端名称</value>
+  </data>
+  <data name="Cover_f_r_das_Taggen_5d4bd4a3" xml:space="preserve">
+    <value>用于打标签的封面</value>
+  </data>
+  <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
+    <value>将封面拖到这里</value>
+  </data>
   <data name="Darstellung_7058d4fa" xml:space="preserve"><value>外观</value></data>
+  <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
+    <value>无法读取封面图像。</value>
+  </data>
+  <data name="Das_Coverbild_konnte_nicht_skaliert_werden_30b3118e" xml:space="preserve">
+    <value>无法缩放封面图像。</value>
+  </data>
   <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>读取文件失败。</value></data>
   <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>封面以柔焦效果填满窗口。关闭后将显示平静的深色背景。</value></data>
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>未找到文件：{0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>添加文件</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>将文件或文件夹拖到此处</value></data>
+  <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
+    <value>打标签时的文件名</value>
+  </data>
+  <data name="Der_konfigurierte_Lyrion_Client_ist_nicht_verbun_4bbee169" xml:space="preserve">
+    <value>所设置的 Lyrion 客户端未连接。</value>
+  </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>音频通过 libmpv 及系统输出设备播放。</value></data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>文件已不存在，将跳过该曲目。</value></data>
   <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>强调色会应用于进度、播放按钮、音量滑块和当前曲目的行。</value></data>
+  <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
+    <value>本地播放尚未就绪。</value>
+  </data>
   <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>新的缩放比例将在下次启动 FerrumPlay 时生效。</value></data>
   <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>将跳过文件末尾的静音部分，使连续混音的专辑无缝播放。将在下一曲起生效。</value></data>
   <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>播放已被系统停止。</value></data>
+  <data name="Diese_Anwendung_416efc74" xml:space="preserve">
+    <value>本应用程序</value>
+  </data>
+  <data name="Discnummer_00bed571" xml:space="preserve">
+    <value>碟片号</value>
+  </data>
   <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>双击重置为 0 dB</value></data>
   <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>双击重置为 100%</value></data>
   <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>双击重置为 300</value></data>
+  <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
+    <value>浏览你的 Lyrion 媒体库，并在 FerrumPlay 中直接播放专辑。</value>
+  </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>为每个屏幕单独设置缩放系数，以防应用程序显示得过小。将在下次启动时生效：窗口系统仅在启动时读取此值。</value></data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
+    <value>每行一个流派。该列表会在 MP3 打标签时作为选项出现，届时仍可自行输入。</value>
+  </data>
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>设置</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>尚未选择曲目。</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>正在读取文件。</value></data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>从列表中移除缺失的曲目</value></data>
+  <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+    <value>FerrumPlay 建立在这些项目之上。按钮会在浏览器中打开项目页面和许可证文本。</value>
+  </data>
   <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay 会从上次中断的位置继续播放最后播放的曲目。关闭后只会选中该曲目，不会开始播放。</value></data>
+  <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
+    <value>FerrumPlay 直接通过服务器播放所选曲目，无需另外的 Lyrion 客户端。</value>
+  </data>
+  <data name="Genre_2aa31fca" xml:space="preserve">
+    <value>流派</value>
+  </data>
+  <data name="Genre_Vorgaben_60473851" xml:space="preserve">
+    <value>预设流派</value>
+  </data>
+  <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
+    <value>适用于标签、标签编辑器中的输入框以及文件名：位数取决于专辑的曲目数，例如 10 首时为 01，100 首时为 001。</value>
+  </data>
   <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>根据文件中存储的 ReplayGain 值平衡音量。“按专辑”会保留专辑内较安静和较响亮的段落；随机播放时，“自动”会使用曲目值。没有这些值的曲目将原样播放。</value></data>
   <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>展开或折叠组</value></data>
   <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>以相同幅度提高或降低所有已平衡曲目的音量。ReplayGain 的目标音量偏低；提高几分贝即可补偿。mpv 会自行防止削波。</value></data>
+  <data name="http_server_9000_oder_https_music_example_lan_b966c9dd" xml:space="preserve">
+    <value>http://server:9000 或 https://music.example.lan</value>
+  </data>
+  <data name="Jahr_956a6e5a" xml:space="preserve">
+    <value>年份</value>
+  </data>
   <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>未找到可播放的文件。</value></data>
+  <data name="Keine_Alben_gefunden_e94729f8" xml:space="preserve">
+    <value>未找到专辑。</value>
+  </data>
   <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>无缝播放</value></data>
   <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>也可拖动封面旁的分隔线进行调整。</value></data>
+  <data name="Laufzeitumgebung_6cedefca" xml:space="preserve">
+    <value>运行时</value>
+  </data>
   <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>音量平衡（ReplayGain）</value></data>
   <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>音量：拖动、鼠标滚轮或方向键</value></data>
   <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>缺少 libmpv</value></data>
@@ -56,82 +200,157 @@
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>缺少 cdparanoia</value></data>
   <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>无法加载 libmpv。没有它，FerrumPlay 无法播放任何内容。</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>清空列表</value></data>
+  <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
+    <value>正在载入 Lyrion Media Server …</value>
+  </data>
   <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>最大化</value></data>
   <data name="Minimieren_209bcbdc" xml:space="preserve"><value>最小化</value></data>
+  <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
+    <value>MP3 比特率</value>
+  </data>
+  <data name="MP3_Tags_996faa78" xml:space="preserve">
+    <value>MP3 标签</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
+    <value>编辑 MP3 标签…</value>
+  </data>
+  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
+    <value>编辑 MP3 标签</value>
+  </data>
+  <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
+    <value>重命名格式：%artist%、%albumartist%、%album%、%title%、%track%、%totaltracks%、%disc%、%year%、%genre%。%track% 的前导零由上面的设置决定。扩展名 .mp3 会自动加上；留空则恢复默认值。</value>
+  </data>
   <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>下一曲</value></data>
   <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>按专辑</value></data>
   <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>按曲目</value></data>
+  <data name="nderungen_bernehmen_a1fb0120" xml:space="preserve">
+    <value>应用更改</value>
+  </data>
+  <data name="nderungen_werden_erst_mit_nderungen_bernehmen_ge_e7ccd1e3" xml:space="preserve">
+    <value>更改只有按下“应用更改”才会写入。</value>
+  </data>
+  <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
+    <value>更改已应用。</value>
+  </data>
+  <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
+    <value>已选择新封面：{0}</value>
+  </data>
+  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
+    <value>只有 MP3 文件可以写入标签。</value>
+  </data>
+  <data name="Oberfl_che_ae0be527" xml:space="preserve">
+    <value>界面</value>
+  </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>添加文件夹</value></data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>关闭</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>快速搜索</value></data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>字体大小</value></data>
+  <data name="Serveradresse_70863d55" xml:space="preserve">
+    <value>服务器地址</value>
+  </data>
   <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>语言</value></data>
+  <data name="Standardformat_1c812c8e" xml:space="preserve">
+    <value>默认格式</value>
+  </data>
   <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>静音</value></data>
   <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>系统语言</value></data>
+  <data name="Technologie_1d6b9194" xml:space="preserve">
+    <value>技术</value>
+  </data>
+  <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
+    <value>技术与许可</value>
+  </data>
   <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>在播放中包含此曲目</value></data>
   <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>添加曲目</value></data>
   <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>无法播放曲目：{0}</value></data>
+  <data name="Titel_und_Tracknummer_a3a490ab" xml:space="preserve">
+    <value>标题与音轨号</value>
+  </data>
   <data name="Tonausgabe_1455f378" xml:space="preserve"><value>音频输出</value></data>
   <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>音频文件</value></data>
+  <data name="Tracknummer_mit_Nullen_auff_llen_7fe759d6" xml:space="preserve">
+    <value>用零补足音轨号</value>
+  </data>
   <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>背景中的模糊封面</value></data>
+  <data name="Variable_Bitrate_VBR_e68beb9e" xml:space="preserve">
+    <value>可变比特率 (VBR)</value>
+  </data>
   <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>应用程序缩放</value></data>
   <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>以相同幅度调整界面中的所有文字。窗口按钮中的符号保持不变：它们是固定按钮尺寸中的图形。</value></data>
+  <data name="Version_2da600bf" xml:space="preserve">
+    <value>版本</value>
+  </data>
   <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>默认使用系统语言；不受支持时使用英语。</value></data>
   <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>上一曲</value></data>
   <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>前置增益</value></data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>播放</value></data>
+  <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
+    <value>正在 FerrumPlay 中播放：{0}</value>
+  </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>播放/暂停</value></data>
   <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>播放列表</value></data>
   <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>重复：关闭、整个列表、单个曲目</value></data>
+  <data name="Wird_an_Lyrion_bergeben_4a3e4ad6" xml:space="preserve">
+    <value>正在移交给 Lyrion …</value>
+  </data>
+  <data name="Wird_ben_tigt_um_Audio_CDs_als_Dateien_auszulese_b841d5dc" xml:space="preserve">
+    <value>将音频 CD 读取为文件时需要。</value>
+  </data>
   <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>正在读取文件。</value></data>
+  <data name="Wird_f_r_die_integrierte_Audio_Konvertierung_ver_ef6b54b7" xml:space="preserve">
+    <value>用于内置的音频转换。</value>
+  </data>
+  <data name="Zieldatei_existiert_bereits_0_644a441b" xml:space="preserve">
+    <value>目标文件已存在：{0}</value>
+  </data>
   <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>随机播放</value></data>
   <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>返回播放</value></data>
-  <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>Convert audio</value></data>
-  <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>The original files stay unchanged. FFmpeg is provided by the system.</value></data>
-  <data name="Zielformat_3f9af674" xml:space="preserve"><value>Output format</value></data>
+  <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>音频转换</value></data>
+  <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>原始文件保持不变。FFmpeg 由系统提供。</value></data>
+  <data name="Zielformat_3f9af674" xml:space="preserve"><value>输出格式</value></data>
   <data name="Ogg_Vorbis_37bb6215" xml:space="preserve"><value>Ogg Vorbis</value></data>
-  <data name="Bitrate_Qualit_t_cae46720" xml:space="preserve"><value>Bitrate / quality</value></data>
-  <data name="Variable_Bitrate_VBR_nur_MP3_8690f777" xml:space="preserve"><value>Variable bitrate (VBR, MP3 only)</value></data>
-  <data name="Ausgabeform_a281e59e" xml:space="preserve"><value>Output mode</value></data>
-  <data name="Ein_Ergebnis_je_Titel_c314fcaf" xml:space="preserve"><value>One output per track</value></data>
-  <data name="Gesamtauswahl_zusammenf_hren_83ff5f61" xml:space="preserve"><value>Merge entire selection</value></data>
-  <data name="Gesamtauswahl_mit_Kapiteldatei_5e04fe2a" xml:space="preserve"><value>Merge selection with chapter file</value></data>
-  <data name="Je_Ordner_zusammenf_hren_af500147" xml:space="preserve"><value>Merge each folder</value></data>
-  <data name="Je_Ordner_mit_Kapiteldatei_9abbc998" xml:space="preserve"><value>Merge each folder with chapter file</value></data>
-  <data name="Vorhandene_CUE_Datei_in_einzelne_Titel_aufteilen_88ac3275" xml:space="preserve"><value>Split an existing CUE file into tracks</value></data>
-  <data name="Zielordner_ausw_hlen_9366a7d5" xml:space="preserve"><value>Choose output folder</value></data>
-  <data name="Ordner_435f23d2" xml:space="preserve"><value>Folder…</value></data>
-  <data name="Abbrechen_07af7cb3" xml:space="preserve"><value>Cancel</value></data>
-  <data name="Konvertieren_a3262ed0" xml:space="preserve"><value>Convert</value></data>
-  <data name="0_Titel_konvertieren_035b7c0e" xml:space="preserve"><value>Convert {0} tracks</value></data>
-  <data name="Zielordner_8036bfe3" xml:space="preserve"><value>Output folder</value></data>
-  <data name="Bitte_zuerst_einen_Zielordner_ausw_hlen_8f6bde6a" xml:space="preserve"><value>Please choose an output folder first.</value></data>
-  <data name="Fertig_konvertiert_11f92741" xml:space="preserve"><value>Conversion complete.</value></data>
-  <data name="Konvertierung_abgebrochen_b2bffba9" xml:space="preserve"><value>Conversion cancelled.</value></data>
-  <data name="Keine_Titel_zum_Konvertieren_ausgew_hlt_23590936" xml:space="preserve"><value>No tracks selected for conversion.</value></data>
-  <data name="Kein_Zielordner_gew_hlt_7432a7fd" xml:space="preserve"><value>No output folder selected.</value></data>
-  <data name="FFmpeg_wurde_nicht_gefunden_Bitte_installiere_da_0202a9db" xml:space="preserve"><value>FFmpeg was not found. Please install the 'ffmpeg' package.</value></data>
-  <data name="Titel_werden_zusammengef_hrt_7fe4a686" xml:space="preserve"><value>Merging tracks …</value></data>
-  <data name="Konvertiere_Ordner_0_von_1_744978b5" xml:space="preserve"><value>Converting folder {0} of {1} …</value></data>
-  <data name="Konvertiere_0_von_1_2_87eb0ba9" xml:space="preserve"><value>Converting {0} of {1}: {2}</value></data>
-  <data name="Audio_CD_Titel_werden_einzeln_gerippt_Bitte_den__5ab38b45" xml:space="preserve"><value>Audio CD tracks are ripped individually. Please choose 'One output per track'.</value></data>
-  <data name="Die_CUE_Datei_enth_lt_keine_verwertbaren_INDEX_0_42d32749" xml:space="preserve"><value>The CUE file contains no usable INDEX 01 entries.</value></data>
-  <data name="Teile_CUE_0_von_1_2_2b7a981e" xml:space="preserve"><value>Splitting CUE {0} of {1}: {2}</value></data>
-  <data name="Zum_Rippen_einer_Audio_CD_fehlt_cdparanoia_91215ae7" xml:space="preserve"><value>'cdparanoia' is required to rip an Audio CD.</value></data>
-  <data name="Die_Audio_CD_Quelle_ist_ung_ltig_6d01425b" xml:space="preserve"><value>The Audio CD source is invalid.</value></data>
-  <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>Convert album…</value></data>
-  <data name="Konvertieren_ce23485e" xml:space="preserve"><value>Convert…</value></data>
-  <data name="Zum_aktuellen_Titel_springen_84da67c6" xml:space="preserve"><value>Jump to current track</value></data>
-  <data name="Zur_ck_zur_Wiedergabeliste_05ea62ef" xml:space="preserve"><value>Back to playlist</value></data>
-  <data name="Warteschlange_und_Ausgabe_5ebecdc8" xml:space="preserve"><value>Queue and output</value></data>
-  <data name="0_Titel_458a8411" xml:space="preserve"><value>{0} tracks</value></data>
-  <data name="Wartet_db5b60a5" xml:space="preserve"><value>Waiting</value></data>
-  <data name="MP3_Qualit_t_058b8ca5" xml:space="preserve"><value>MP3 quality</value></data>
-  <data name="Bitrate_fa1da0b1" xml:space="preserve"><value>Bitrate:</value></data>
-  <data name="Konvertierung_starten_7ba534c7" xml:space="preserve"><value>Start conversion</value></data>
-  <data name="Wird_zusammengef_hrt_bb617c26" xml:space="preserve"><value>Merging</value></data>
-  <data name="Fertig_708ad54e" xml:space="preserve"><value>Done</value></data>
-  <data name="Konvertiert_7600f56a" xml:space="preserve"><value>Converting</value></data>
+  <data name="Bitrate_Qualit_t_cae46720" xml:space="preserve"><value>比特率 / 质量</value></data>
+  <data name="Variable_Bitrate_VBR_nur_MP3_8690f777" xml:space="preserve"><value>可变比特率（VBR，仅 MP3）</value></data>
+  <data name="Ausgabeform_a281e59e" xml:space="preserve"><value>输出方式</value></data>
+  <data name="Ein_Ergebnis_je_Titel_c314fcaf" xml:space="preserve"><value>每首曲目一个文件</value></data>
+  <data name="Gesamtauswahl_zusammenf_hren_83ff5f61" xml:space="preserve"><value>合并全部所选</value></data>
+  <data name="Gesamtauswahl_mit_Kapiteldatei_5e04fe2a" xml:space="preserve"><value>合并所选并生成章节文件</value></data>
+  <data name="Je_Ordner_zusammenf_hren_af500147" xml:space="preserve"><value>按文件夹合并</value></data>
+  <data name="Je_Ordner_mit_Kapiteldatei_9abbc998" xml:space="preserve"><value>按文件夹合并并生成章节文件</value></data>
+  <data name="Vorhandene_CUE_Datei_in_einzelne_Titel_aufteilen_88ac3275" xml:space="preserve"><value>将现有 CUE 文件拆分为单曲</value></data>
+  <data name="Zielordner_ausw_hlen_9366a7d5" xml:space="preserve"><value>选择输出文件夹</value></data>
+  <data name="Ordner_435f23d2" xml:space="preserve"><value>文件夹…</value></data>
+  <data name="Abbrechen_07af7cb3" xml:space="preserve"><value>取消</value></data>
+  <data name="Konvertieren_a3262ed0" xml:space="preserve"><value>转换</value></data>
+  <data name="0_Titel_konvertieren_035b7c0e" xml:space="preserve"><value>转换 {0} 首曲目</value></data>
+  <data name="Zielordner_8036bfe3" xml:space="preserve"><value>输出文件夹</value></data>
+  <data name="Bitte_zuerst_einen_Zielordner_ausw_hlen_8f6bde6a" xml:space="preserve"><value>请先选择输出文件夹。</value></data>
+  <data name="Fertig_konvertiert_11f92741" xml:space="preserve"><value>转换完成。</value></data>
+  <data name="Konvertierung_abgebrochen_b2bffba9" xml:space="preserve"><value>转换已取消。</value></data>
+  <data name="Keine_Titel_zum_Konvertieren_ausgew_hlt_23590936" xml:space="preserve"><value>未选择要转换的曲目。</value></data>
+  <data name="Kein_Zielordner_gew_hlt_7432a7fd" xml:space="preserve"><value>未选择输出文件夹。</value></data>
+  <data name="FFmpeg_wurde_nicht_gefunden_Bitte_installiere_da_0202a9db" xml:space="preserve"><value>未找到 FFmpeg。请安装“ffmpeg”软件包。</value></data>
+  <data name="Titel_werden_zusammengef_hrt_7fe4a686" xml:space="preserve"><value>正在合并曲目 …</value></data>
+  <data name="Konvertiere_Ordner_0_von_1_744978b5" xml:space="preserve"><value>正在转换第 {0}/{1} 个文件夹 …</value></data>
+  <data name="Konvertiere_0_von_1_2_87eb0ba9" xml:space="preserve"><value>正在转换第 {0}/{1} 项：{2}</value></data>
+  <data name="Audio_CD_Titel_werden_einzeln_gerippt_Bitte_den__5ab38b45" xml:space="preserve"><value>音频 CD 曲目按单曲抓取。请选择“每首曲目一个文件”。</value></data>
+  <data name="Die_CUE_Datei_enth_lt_keine_verwertbaren_INDEX_0_42d32749" xml:space="preserve"><value>该 CUE 文件不含可用的 INDEX 01 条目。</value></data>
+  <data name="Teile_CUE_0_von_1_2_2b7a981e" xml:space="preserve"><value>正在拆分 CUE 第 {0}/{1} 项：{2}</value></data>
+  <data name="Zum_Rippen_einer_Audio_CD_fehlt_cdparanoia_91215ae7" xml:space="preserve"><value>抓取音频 CD 需要“cdparanoia”。</value></data>
+  <data name="Die_Audio_CD_Quelle_ist_ung_ltig_6d01425b" xml:space="preserve"><value>音频 CD 源无效。</value></data>
+  <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>转换专辑…</value></data>
+  <data name="Konvertieren_ce23485e" xml:space="preserve"><value>转换…</value></data>
+  <data name="Zum_aktuellen_Titel_springen_84da67c6" xml:space="preserve"><value>跳到当前曲目</value></data>
+  <data name="Zur_ck_zur_Wiedergabeliste_05ea62ef" xml:space="preserve"><value>返回播放列表</value></data>
+  <data name="Warteschlange_und_Ausgabe_5ebecdc8" xml:space="preserve"><value>队列与输出</value></data>
+  <data name="0_Titel_458a8411" xml:space="preserve"><value>{0} 首曲目</value></data>
+  <data name="Wartet_db5b60a5" xml:space="preserve"><value>等待中</value></data>
+  <data name="MP3_Qualit_t_058b8ca5" xml:space="preserve"><value>MP3 质量</value></data>
+  <data name="Bitrate_fa1da0b1" xml:space="preserve"><value>比特率：</value></data>
+  <data name="Konvertierung_starten_7ba534c7" xml:space="preserve"><value>开始转换</value></data>
+  <data name="Wird_zusammengef_hrt_bb617c26" xml:space="preserve"><value>合并中</value></data>
+  <data name="Fertig_708ad54e" xml:space="preserve"><value>完成</value></data>
+  <data name="Konvertiert_7600f56a" xml:space="preserve"><value>转换中</value></data>
   <data name="0_Titel_von_Audio_CD_verf_gbar_d7a848b6" xml:space="preserve"><value>可用的音频 CD 曲目：{0}</value></data>
   <data name="Datei_fehlt_3b100e31" xml:space="preserve"><value>文件缺失</value></data>
   <data name="Eingelegte_Audio_CD_hinzuf_gen_1d88c85f" xml:space="preserve"><value>添加已插入的音频 CD</value></data>
@@ -140,6 +359,9 @@
   <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>打开方式</value></data>
   <data name="Titel_950701e7" xml:space="preserve"><value>曲目</value></data>
   <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>曲目 {number:00}</value></data>
+  <data name="Zus_tzliche_Werkzeuge_e156402c" xml:space="preserve">
+    <value>额外工具</value>
+  </data>
   <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>已合并</value></data>
   <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>重复单个曲目</value></data>
   <data name="kein_Titel_aee2a500" xml:space="preserve"><value>无曲目</value></data>
