@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>Odebráno {0} chybějících stop.</value></data>
+  <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} kanálů</value></data>
+  <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} od {1}, systémový faktor {2:0.##}</value></data>
+  <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} procent</value></data>
+  <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>Přečtené stopy: {0}.</value></data>
+  <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>Počet nenalezených stop: {0}.</value></data>
+  <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>Barva přízvuku</value></data>
+  <data name="Anhalten_55ba4638" xml:space="preserve"><value>Přestaň</value></data>
+  <data name="Aus_6997e3eb" xml:space="preserve"><value>Vypnuto</value></data>
+  <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>Odebrat vybrané skladby ze seznamu</value></data>
+  <data name="Auslieferung_add9612e" xml:space="preserve"><value>Výchozí</value></data>
+  <data name="Automatisch_95b51063" xml:space="preserve"><value>Automaticky</value></data>
+  <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>Obnovit na začátku</value></data>
+  <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>O FerrumPlay</value></data>
+  <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>Šířka krycího sloupku</value></data>
+  <data name="Darstellung_7058d4fa" xml:space="preserve"><value>Vzhled</value></data>
+  <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>Čtení souborů se nezdařilo.</value></data>
+  <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>Kryt vyplňuje okno, jemně rozmazané. Když je vypnutý, zůstává klidná tmavá hladina.</value></data>
+  <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Soubor nenalezen: {0}</value></data>
+  <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Přidat soubory</value></data>
+  <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Sem přetáhněte soubory nebo složky</value></data>
+  <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>Zvuk se přehrává přes libmpv a tedy přes výstupní zařízení systému.</value></data>
+  <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>Soubor je pryč. Stopa je přeskočena.</value></data>
+  <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>Barva zvýraznění: postup, tlačítko přehrávání, knoflík hlasitosti a řádek aktuální stopy následují.</value></data>
+  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>Nové škálování se použije při příštím spuštění FerrumPlay.</value></data>
+  <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>Ticho na konci souboru je přeskočeno, aby se nepřetržitě míchané album přehrávalo bez přestávky. Použije se od další stopy.</value></data>
+  <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>Přehrávání bylo zastaveno systémem.</value></data>
+  <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>Dvojité kliknutí se resetuje na 0 dB</value></data>
+  <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>Poklepáním se obnoví 100 procent</value></data>
+  <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>Dvojité kliknutí se resetuje na 300</value></data>
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>Samostatný faktor na obrazovku pro případ, že by se tam aplikace zdála příliš malá. Projeví se při příštím spuštění: okenní systém načte hodnotu pouze při spuštění.</value></data>
+  <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Nastavení</value></data>
+  <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>Zatím není vybrána žádná stopa.</value></data>
+  <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Soubory se stále čtou.</value></data>
+  <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Odstraňte chybějící skladby ze seznamu</value></data>
+  <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay převezme poslední přehrávanou skladbu, kde byla přerušena. Když je vypnuto, stopa je pouze vybrána, nikoli spuštěna.</value></data>
+  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>Vyrovnává hlasitost pomocí hodnot ReplayGain uložených v souborech. „Podle alba“ zachovává tiché a hlasité pasáže v albu, „Automatic“ používá hodnotu skladby při náhodném přehrávání. Skladby bez těchto hodnot se přehrají beze změny.</value></data>
+  <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>Rozbalit nebo sbalit skupinu</value></data>
+  <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>Zvyšuje nebo snižuje všechny vyrovnané stopy o stejnou hodnotu. ReplayGain míří spíše nízko; pár decibelů navíc to vynahrazuje. mpv samo o sobě zabraňuje ořezávání.</value></data>
+  <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>Nebyly nalezeny žádné přehrávatelné soubory.</value></data>
+  <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>Přehrávání bez mezer</value></data>
+  <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>Lze také upravit přetažením přepážky vedle krytu.</value></data>
+  <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>Vyrovnání hlasitosti (ReplayGain)</value></data>
+  <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>Hlasitost: tažení, kolečko myši nebo klávesy se šipkami</value></data>
+  <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpv chybí</value></data>
+  <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>libmpv nalezen</value></data>
+  <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>FFmpeg nalezen</value></data>
+  <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>Chybí FFmpeg</value></data>
+  <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>cdparanoia nalezena</value></data>
+  <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>cdparanoia chybí</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv nelze načíst. Bez něj nemůže FerrumPlay nic přehrát.</value></data>
+  <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>Přehledný seznam</value></data>
+  <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>Maximalizovat</value></data>
+  <data name="Minimieren_209bcbdc" xml:space="preserve"><value>Minimalizovat</value></data>
+  <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>Další skladba</value></data>
+  <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>Podle alba</value></data>
+  <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>Podle stopy</value></data>
+  <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Přidat složku</value></data>
+  <data name="Schlie_en_44424b18" xml:space="preserve"><value>Zavřít</value></data>
+  <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Rychlé vyhledávání</value></data>
+  <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Velikost písma</value></data>
+  <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>Jazyk</value></data>
+  <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>Ztlumit</value></data>
+  <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>Jazyk systému</value></data>
+  <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>Zahrnout stopu do přehrávání</value></data>
+  <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>Přidat stopy</value></data>
+  <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>Nelze přehrát stopu: {0}</value></data>
+  <data name="Tonausgabe_1455f378" xml:space="preserve"><value>Zvukový výstup</value></data>
+  <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>Zvukové soubory</value></data>
+  <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>Rozmazaný kryt v pozadí</value></data>
+  <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>Škálování aplikace</value></data>
+  <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>Posune všechny texty rozhraní o stejnou hodnotu. Symboly v tlačítkách okna zůstanou tak, jak jsou: jedná se o grafiku s pevnou velikostí tlačítka.</value></data>
+  <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>Ve výchozím nastavení používá jazyk systému; Angličtina, pokud není podporována.</value></data>
+  <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>Předchozí skladba</value></data>
+  <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>Předzesilovač</value></data>
+  <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>Přehrávání</value></data>
+  <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>Přehrát a pozastavit</value></data>
+  <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>Seznam skladeb</value></data>
+  <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>Opakování: vypnuto, celý seznam, jedna stopa</value></data>
+  <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>Čtení souborů.</value></data>
+  <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>Zamíchat</value></data>
+  <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>Zpět k přehrávání</value></data>
+  <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>Převést zvuk</value></data>
+  <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>Původní soubory zůstanou nezměněny. FFmpeg je poskytován systémem.</value></data>
+  <data name="Zielformat_3f9af674" xml:space="preserve"><value>Výstupní formát</value></data>
+  <data name="Ogg_Vorbis_37bb6215" xml:space="preserve"><value>Ogg Vorbis</value></data>
+  <data name="Bitrate_Qualit_t_cae46720" xml:space="preserve"><value>Bitrate / kvalita</value></data>
+  <data name="Variable_Bitrate_VBR_nur_MP3_8690f777" xml:space="preserve"><value>Variabilní datový tok (pouze VBR, MP3)</value></data>
+  <data name="Ausgabeform_a281e59e" xml:space="preserve"><value>Výstupní režim</value></data>
+  <data name="Ein_Ergebnis_je_Titel_c314fcaf" xml:space="preserve"><value>Jeden výstup na stopu</value></data>
+  <data name="Gesamtauswahl_zusammenf_hren_83ff5f61" xml:space="preserve"><value>Sloučit celý výběr</value></data>
+  <data name="Gesamtauswahl_mit_Kapiteldatei_5e04fe2a" xml:space="preserve"><value>Sloučit výběr se souborem kapitoly</value></data>
+  <data name="Je_Ordner_zusammenf_hren_af500147" xml:space="preserve"><value>Sloučit každou složku</value></data>
+  <data name="Je_Ordner_mit_Kapiteldatei_9abbc998" xml:space="preserve"><value>Sloučit každou složku se souborem kapitoly</value></data>
+  <data name="Vorhandene_CUE_Datei_in_einzelne_Titel_aufteilen_88ac3275" xml:space="preserve"><value>Rozdělte existující soubor CUE na stopy</value></data>
+  <data name="Zielordner_ausw_hlen_9366a7d5" xml:space="preserve"><value>Vyberte výstupní složku</value></data>
+  <data name="Ordner_435f23d2" xml:space="preserve"><value>Složka…</value></data>
+  <data name="Abbrechen_07af7cb3" xml:space="preserve"><value>Zrušit</value></data>
+  <data name="Konvertieren_a3262ed0" xml:space="preserve"><value>Převést</value></data>
+  <data name="0_Titel_konvertieren_035b7c0e" xml:space="preserve"><value>Převést {0} stop</value></data>
+  <data name="Zielordner_8036bfe3" xml:space="preserve"><value>Výstupní složka</value></data>
+  <data name="Bitte_zuerst_einen_Zielordner_ausw_hlen_8f6bde6a" xml:space="preserve"><value>Nejprve prosím vyberte výstupní složku.</value></data>
+  <data name="Fertig_konvertiert_11f92741" xml:space="preserve"><value>Konverze dokončena.</value></data>
+  <data name="Konvertierung_abgebrochen_b2bffba9" xml:space="preserve"><value>Konverze zrušena.</value></data>
+  <data name="Keine_Titel_zum_Konvertieren_ausgew_hlt_23590936" xml:space="preserve"><value>Pro konverzi nejsou vybrány žádné stopy.</value></data>
+  <data name="Kein_Zielordner_gew_hlt_7432a7fd" xml:space="preserve"><value>Není vybrána žádná výstupní složka.</value></data>
+  <data name="FFmpeg_wurde_nicht_gefunden_Bitte_installiere_da_0202a9db" xml:space="preserve"><value>FFmpeg nebyl nalezen. Nainstalujte si prosím balíček 'ffmpeg'.</value></data>
+  <data name="Titel_werden_zusammengef_hrt_7fe4a686" xml:space="preserve"><value>Sloučení skladeb…</value></data>
+  <data name="Konvertiere_Ordner_0_von_1_744978b5" xml:space="preserve"><value>Převádí se složka {0} z {1}…</value></data>
+  <data name="Konvertiere_0_von_1_2_87eb0ba9" xml:space="preserve"><value>Konverze {0} z {1}: {2}</value></data>
+  <data name="Audio_CD_Titel_werden_einzeln_gerippt_Bitte_den__5ab38b45" xml:space="preserve"><value>Zvukové CD stopy jsou ripovány jednotlivě. Vyberte prosím „Jeden výstup na stopu“.</value></data>
+  <data name="Die_CUE_Datei_enth_lt_keine_verwertbaren_INDEX_0_42d32749" xml:space="preserve"><value>Soubor CUE neobsahuje žádné použitelné položky INDEX 01.</value></data>
+  <data name="Teile_CUE_0_von_1_2_2b7a981e" xml:space="preserve"><value>Rozdělení CUE {0} z {1}: {2}</value></data>
+  <data name="Zum_Rippen_einer_Audio_CD_fehlt_cdparanoia_91215ae7" xml:space="preserve"><value>'cdparanoia' je vyžadováno pro ripování zvukového CD.</value></data>
+  <data name="Die_Audio_CD_Quelle_ist_ung_ltig_6d01425b" xml:space="preserve"><value>Zdroj Audio CD je neplatný.</value></data>
+  <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>Převést album…</value></data>
+  <data name="Konvertieren_ce23485e" xml:space="preserve"><value>Převést…</value></data>
+  <data name="Zum_aktuellen_Titel_springen_84da67c6" xml:space="preserve"><value>Přejít na aktuální skladbu</value></data>
+  <data name="Zur_ck_zur_Wiedergabeliste_05ea62ef" xml:space="preserve"><value>Zpět na seznam skladeb</value></data>
+  <data name="Warteschlange_und_Ausgabe_5ebecdc8" xml:space="preserve"><value>Fronta a výstup</value></data>
+  <data name="0_Titel_458a8411" xml:space="preserve"><value>Počet skladeb: {0}</value></data>
+  <data name="Wartet_db5b60a5" xml:space="preserve"><value>Čekání</value></data>
+  <data name="MP3_Qualit_t_058b8ca5" xml:space="preserve"><value>MP3 kvalita</value></data>
+  <data name="Bitrate_fa1da0b1" xml:space="preserve"><value>Bitová rychlost:</value></data>
+  <data name="Konvertierung_starten_7ba534c7" xml:space="preserve"><value>Spusťte konverzi</value></data>
+  <data name="Wird_zusammengef_hrt_bb617c26" xml:space="preserve"><value>Sloučení</value></data>
+  <data name="Fertig_708ad54e" xml:space="preserve"><value>Hotovo</value></data>
+  <data name="Konvertiert_7600f56a" xml:space="preserve"><value>Konverze</value></data>
+  <data name="Datei_fehlt_3b100e31" xml:space="preserve"><value>Chybí soubor</value></data>
+  <data name="Eingelegte_Audio_CD_hinzuf_gen_1d88c85f" xml:space="preserve"><value>Přidejte vložené zvukové CD</value></data>
+  <data name="Interpret_Titel_982dd440" xml:space="preserve"><value>Umělec - titul</value></data>
+  <data name="Keine_Audio_CD_gefunden_oder_das_Laufwerk_ist_ni_9b68527c" xml:space="preserve"><value>Nebylo nalezeno žádné zvukové CD nebo nelze jednotku přečíst.</value></data>
+  <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>Otevřít pomocí</value></data>
+  <data name="Titel_950701e7" xml:space="preserve"><value>Sledovat</value></data>
+  <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>Sloučeno</value></data>
+  <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>opakovat jednu skladbu</value></data>
+  <data name="kein_Titel_aee2a500" xml:space="preserve"><value>žádná stopa</value></data>
+  <data name="mit_CUE_ec6a9564" xml:space="preserve"><value>s CUE</value></data>
+  <data name="0_Titel_von_Audio_CD_verf_gbar_d7a848b6" xml:space="preserve"><value>{0} skladeb z audio CD je k dispozici.</value></data>
+  <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>Skladba {number:00}</value></data>
+</root>

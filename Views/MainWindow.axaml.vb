@@ -144,7 +144,7 @@ Namespace Views
 
         Private Sub UpdateMaximizeGlyph()
             Dim glyph = Me.FindControl(Of TextBlock)("MaximizeGlyph")
-            If glyph IsNot Nothing Then glyph.Text = If(WindowState = WindowState.Maximized, "] [", "[ ]")
+            If glyph IsNot Nothing Then glyph.Text = If(WindowState = WindowState.Maximized, "❐", "□")
         End Sub
 
         ' Fensterlage

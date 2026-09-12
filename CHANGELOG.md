@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+
+- Added the complete FerrumPix language selection, including localized resource files for all
+  supported languages.
+- The About section now reports whether libmpv, FFmpeg, and cdparanoia are available.
+- Aligned the custom window-control glyphs with FerrumPix.
+
 ## 0.4.2
 
 - `Ctrl+A` selects every track in the playlist.

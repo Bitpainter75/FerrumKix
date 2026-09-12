@@ -96,7 +96,7 @@
                             <Image Source="avares://FerrumPlay/Assets/FerrumPlay_TopBar.png"
                                    Margin="10 4 0 0" Height="46" Stretch="Uniform" HorizontalAlignment="Left"/>
                         </StackPanel>
-                        <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto"
+                        <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
                               ColumnSpacing="12" RowSpacing="8">
                             <TextBlock Grid.Row="0" Text="Version" Foreground="{DynamicResource FP.Text.Muted}"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DisplayVersion}"/>
@@ -104,12 +104,18 @@
                             <TextBlock Grid.Row="1" Text="Tonausgabe" Foreground="{DynamicResource FP.Text.Muted}"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding AudioBackendText}"/>
 
-                            <TextBlock Grid.Row="2" Text="Einstellungen" Foreground="{DynamicResource FP.Text.Muted}"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SettingsFilePath}"
+                            <TextBlock Grid.Row="2" Text="FFmpeg" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding FfmpegText}"/>
+
+                            <TextBlock Grid.Row="3" Text="cdparanoia" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CdParanoiaText}"/>
+
+                            <TextBlock Grid.Row="4" Text="Einstellungen" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SettingsFilePath}"
                                        TextWrapping="Wrap"/>
 
-                            <TextBlock Grid.Row="3" Text="Wiedergabeliste" Foreground="{DynamicResource FP.Text.Muted}"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PlaylistFilePath}"
+                            <TextBlock Grid.Row="5" Text="Wiedergabeliste" Foreground="{DynamicResource FP.Text.Muted}"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding PlaylistFilePath}"
                                        TextWrapping="Wrap"/>
                         </Grid>
                     </StackPanel>

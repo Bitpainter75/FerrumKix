@@ -58,6 +58,15 @@ Namespace Services
             End Set
         End Property
 
+        ''' <summary>Die Kultur der gewählten Sprache. Englisch nutzt die neutrale Ressource,
+        ''' Deutsch bleibt der deutsche Quelltext.</summary>
+        Public Shared ReadOnly Property EffectiveCulture As CultureInfo
+            Get
+                Dim code = ResolveCultureCode(_languageMode)
+                Return If(String.IsNullOrEmpty(code), CultureInfo.InvariantCulture, CultureInfo.GetCultureInfo(code))
+            End Get
+        End Property
+
         ''' <summary>Die waehlbaren Sprachen, mit ihrem Namen in der jeweiligen Sprache SELBST: wer
         ''' die Oberflaeche in einer Sprache sieht, die er nicht versteht, findet "Deutsch" wieder.
         ''' Der leere Name steht fuer die Systemsprache und wird in der Anzeige uebersetzt.</summary>
@@ -66,7 +75,26 @@ Namespace Services
                 Return {
                     ("System", ""),
                     ("German", "Deutsch"),
-                    ("English", "English")}
+                    ("English", "English"),
+                    ("Dutch", "Nederlands"),
+                    ("Swedish", "Svenska"),
+                    ("Danish", "Dansk"),
+                    ("Norwegian", "Norsk bokmål"),
+                    ("Finnish", "Suomi"),
+                    ("Spanish", "Español"),
+                    ("French", "Français"),
+                    ("Italian", "Italiano"),
+                    ("Portuguese", "Português"),
+                    ("Polish", "Polski"),
+                    ("Czech", "Čeština"),
+                    ("Russian", "Русский"),
+                    ("Chinese", "简体中文"),
+                    ("Japanese", "日本語"),
+                    ("Korean", "한국어"),
+                    ("Indonesian", "Bahasa Indonesia"),
+                    ("Turkish", "Türkçe"),
+                    ("Thai", "ไทย"),
+                    ("Hindi", "हिन्दी")}
             End Get
         End Property
 
@@ -89,7 +117,8 @@ Namespace Services
         Public Shared Function T(text As String) As String
             If String.IsNullOrEmpty(text) OrElse IsSourceLanguage Then Return text
             Try
-                Dim translated = Strings.GetString(MakeKey(text), CultureInfo.InvariantCulture)
+                Dim translated = Strings.GetString(MakeKey(text), EffectiveCulture)
+                If String.IsNullOrEmpty(translated) Then translated = Strings.GetString(MakeKey(text), CultureInfo.InvariantCulture)
                 Return If(String.IsNullOrEmpty(translated), text, translated)
             Catch ex As MissingManifestResourceException
                 Return text
@@ -190,21 +219,56 @@ Namespace Services
 
         ' Welche Sprache gilt
 
-        ''' <summary>"de" fuer Deutsch, "" fuer Englisch. Die Systemsprache wird aus der Kultur und
-        ''' unter Linux aus LANGUAGE, LC_MESSAGES und LANG gelesen; alles, was nicht Deutsch ist,
-        ''' wird Englisch.</summary>
+        ''' <summary>Ordnet die Sprachwahl den Ressourcenkulturen zu. Chinesisch braucht eine
+        ''' Region; für Norwegisch wird die vorhandene Bokmål-Ressource verwendet.</summary>
         Private Shared Function ResolveCultureCode(mode As String) As String
             Select Case NormalizeLanguageMode(mode)
                 Case "German" : Return "de"
+                Case "Dutch" : Return "nl"
+                Case "Swedish" : Return "sv"
+                Case "Danish" : Return "da"
+                Case "Norwegian" : Return "nb"
+                Case "Finnish" : Return "fi"
+                Case "Spanish" : Return "es"
+                Case "French" : Return "fr"
+                Case "Italian" : Return "it"
+                Case "Portuguese" : Return "pt"
+                Case "Polish" : Return "pl"
+                Case "Czech" : Return "cs"
+                Case "Russian" : Return "ru"
+                Case "Chinese" : Return "zh-CN"
+                Case "Japanese" : Return "ja"
+                Case "Korean" : Return "ko"
+                Case "Indonesian" : Return "id"
+                Case "Turkish" : Return "tr"
+                Case "Thai" : Return "th"
+                Case "Hindi" : Return "hi"
                 Case "English" : Return ""
                 Case Else
-                    If CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase) Then Return "de"
+                    Dim current = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant()
+                    If IsSupportedCultureCode(current) Then Return ResourceCultureFor(current)
                     For Each variableName In {"LANGUAGE", "LC_MESSAGES", "LANG"}
                         Dim code = ExtractCultureCode(Environment.GetEnvironmentVariable(variableName))
-                        If code = "de" Then Return "de"
-                        If code.Length > 0 Then Return ""
+                        If IsSupportedCultureCode(code) Then Return ResourceCultureFor(code)
                     Next
                     Return ""
+            End Select
+        End Function
+
+        Private Shared Function IsSupportedCultureCode(code As String) As Boolean
+            Select Case If(code, "").ToLowerInvariant()
+                Case "de", "nl", "sv", "da", "nb", "nn", "no", "fi", "es", "fr", "it", "pt", "pl", "cs", "ru", "zh", "ja", "ko", "id", "tr", "th", "hi"
+                    Return True
+                Case Else
+                    Return False
+            End Select
+        End Function
+
+        Private Shared Function ResourceCultureFor(code As String) As String
+            Select Case If(code, "").ToLowerInvariant()
+                Case "zh" : Return "zh-CN"
+                Case "no", "nn" : Return "nb"
+                Case Else : Return code
             End Select
         End Function
 

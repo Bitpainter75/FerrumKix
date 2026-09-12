@@ -153,6 +153,18 @@
   <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve">
     <value>libmpv found</value>
   </data>
+  <data name="FFmpeg_gefunden_586b6929" xml:space="preserve">
+    <value>FFmpeg found</value>
+  </data>
+  <data name="FFmpeg_fehlt_091228ca" xml:space="preserve">
+    <value>FFmpeg missing</value>
+  </data>
+  <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve">
+    <value>cdparanoia found</value>
+  </data>
+  <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve">
+    <value>cdparanoia missing</value>
+  </data>
   <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve">
     <value>libmpv cannot be loaded. Without it, FerrumPlay cannot play anything.</value>
   </data>
@@ -295,4 +307,16 @@
   <data name="Wird_zusammengef_hrt_bb617c26" xml:space="preserve"><value>Merging</value></data>
   <data name="Fertig_708ad54e" xml:space="preserve"><value>Done</value></data>
   <data name="Konvertiert_7600f56a" xml:space="preserve"><value>Converting</value></data>
+  <data name="0_Titel_von_Audio_CD_verf_gbar_d7a848b6" xml:space="preserve"><value>{0} tracks from Audio CD available.</value></data>
+  <data name="Datei_fehlt_3b100e31" xml:space="preserve"><value>File missing</value></data>
+  <data name="Eingelegte_Audio_CD_hinzuf_gen_1d88c85f" xml:space="preserve"><value>Add inserted Audio CD</value></data>
+  <data name="Interpret_Titel_982dd440" xml:space="preserve"><value>Artist - title</value></data>
+  <data name="Keine_Audio_CD_gefunden_oder_das_Laufwerk_ist_ni_9b68527c" xml:space="preserve"><value>No Audio CD found or the drive cannot be read.</value></data>
+  <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>Open with</value></data>
+  <data name="Titel_950701e7" xml:space="preserve"><value>Track</value></data>
+  <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>Track {number:00}</value></data>
+  <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>Merged</value></data>
+  <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>repeat single track</value></data>
+  <data name="kein_Titel_aee2a500" xml:space="preserve"><value>no track</value></data>
+  <data name="mit_CUE_ec6a9564" xml:space="preserve"><value>with CUE</value></data>
 </root>

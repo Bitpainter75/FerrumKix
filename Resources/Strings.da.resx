@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>{0} manglende spor blev fjernet.</value></data>
+  <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} kanaler</value></data>
+  <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} med {1}, systemfaktor {2:0.##}</value></data>
+  <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} procent</value></data>
+  <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} spor læst.</value></data>
+  <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} numre blev ikke fundet.</value></data>
+  <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>Accent farve</value></data>
+  <data name="Anhalten_55ba4638" xml:space="preserve"><value>Stop</value></data>
+  <data name="Aus_6997e3eb" xml:space="preserve"><value>Fra</value></data>
+  <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>Fjern valgte numre fra listen</value></data>
+  <data name="Auslieferung_add9612e" xml:space="preserve"><value>Standard</value></data>
+  <data name="Automatisch_95b51063" xml:space="preserve"><value>Automatisk</value></data>
+  <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>Genoptag ved start</value></data>
+  <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>Om FerrumPlay</value></data>
+  <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>Dæksøjlens bredde</value></data>
+  <data name="Darstellung_7058d4fa" xml:space="preserve"><value>Udseende</value></data>
+  <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>Læsning af filerne mislykkedes.</value></data>
+  <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>Dækslet fylder vinduet, blødt sløret. Når den er slukket, forbliver en rolig mørk overflade.</value></data>
+  <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Filen blev ikke fundet: {0}</value></data>
+  <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Tilføj filer</value></data>
+  <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Træk filer eller mapper hertil</value></data>
+  <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>Lyden afspilles gennem libmpv og dermed gennem systemets outputenhed.</value></data>
+  <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>Filen er væk. Sporet springes over.</value></data>
+  <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>Fremhævsfarven: fremskridt, afspilningsknap, lydstyrkeknap og rækken af ​​det aktuelle nummer følger den.</value></data>
+  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>Den nye skalering gælder næste gang FerrumPlay startes.</value></data>
+  <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>Stilheden i slutningen af ​​en fil springes over, så et kontinuerligt blandet album afspilles uden pause. Træder i kraft fra næste nummer.</value></data>
+  <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>Afspilningen blev stoppet af systemet.</value></data>
+  <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>Dobbeltklik nulstiller til 0 dB</value></data>
+  <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>Dobbeltklik nulstilles til 100 procent</value></data>
+  <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>Dobbeltklik nulstiller til 300</value></data>
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>En separat faktor pr. skærm, hvis applikationen ser for lille ud der. Træder i kraft ved næste start: vinduessystemet læser først værdien ved opstart.</value></data>
+  <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Indstillinger</value></data>
+  <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>Der er ikke valgt noget spor endnu.</value></data>
+  <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Filer læses stadig.</value></data>
+  <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Fjern manglende numre fra listen</value></data>
+  <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay opfanger det sidst afspillede nummer, hvor det blev afbrudt. Når den er slukket, er sporet kun valgt, ikke startet.</value></data>
+  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>Justerer lydstyrken ved hjælp af ReplayGain-værdierne, der er gemt i filerne. "By album" holder de stille og højlydte passager i et album, "Automatic" bruger nummerværdien, når der blandes. Spor uden disse værdier afspilles uændret.</value></data>
+  <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>Udvid eller skjul gruppe</value></data>
+  <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>Hæver eller sænker alle nivellerede spor med samme mængde. ReplayGain sigter ret lavt; et par decibel mere kompenserer for det. mpv forhindrer klipning af sig selv.</value></data>
+  <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>Ingen afspilbare filer fundet.</value></data>
+  <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>Afspilning uden gab</value></data>
+  <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>Kan også justeres ved at trække skillevæggen ved siden af dækslet.</value></data>
+  <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>Lydstyrkeniveau (ReplayGain)</value></data>
+  <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>Lydstyrke: træk, musehjul eller piletaster</value></data>
+  <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpv mangler</value></data>
+  <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>libmpv fundet</value></data>
+  <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>FFmpeg fundet</value></data>
+  <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>FFmpeg mangler</value></data>
+  <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>cdparanoia fundet</value></data>
+  <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>cdparanoia mangler</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv kan ikke indlæses. Uden den kan FerrumPlay ikke spille noget.</value></data>
+  <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>Ryd liste</value></data>
+  <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>Maksimer</value></data>
+  <data name="Minimieren_209bcbdc" xml:space="preserve"><value>Minimer</value></data>
+  <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>Næste nummer</value></data>
+  <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>Efter album</value></data>
+  <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>Efter spor</value></data>
+  <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Tilføj mappe</value></data>
+  <data name="Schlie_en_44424b18" xml:space="preserve"><value>Luk</value></data>
+  <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Hurtig søgning</value></data>
+  <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Skriftstørrelse</value></data>
+  <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>Sprog</value></data>
+  <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>Lydløs</value></data>
+  <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>Systemsprog</value></data>
+  <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>Inkluder spor i afspilning</value></data>
+  <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>Tilføj numre</value></data>
+  <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>Kan ikke afspille nummer: {0}</value></data>
+  <data name="Tonausgabe_1455f378" xml:space="preserve"><value>Lydudgang</value></data>
+  <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>Lydfiler</value></data>
+  <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>Sløret omslag i baggrunden</value></data>
+  <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>Applikationsskalering</value></data>
+  <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>Forskyder alle tekster i grænsefladen med samme mængde. Symbolerne i vinduesknapperne forbliver som de er: de er grafik i en fast knapstørrelse.</value></data>
+  <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>Bruger systemsproget som standard; engelsk, hvis det ikke er understøttet.</value></data>
+  <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>Forrige nummer</value></data>
+  <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>Forforstærker</value></data>
+  <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>Afspilning</value></data>
+  <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>Spil og pause</value></data>
+  <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>Afspilningsliste</value></data>
+  <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>Gentag: fra, hele listen, enkelt spor</value></data>
+  <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>Læser filer.</value></data>
+  <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>Bland</value></data>
+  <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>Tilbage til afspilning</value></data>
+  <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>Konverter lyd</value></data>
+  <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>De originale filer forbliver uændrede. FFmpeg leveres af systemet.</value></data>
+  <data name="Zielformat_3f9af674" xml:space="preserve"><value>Outputformat</value></data>
+  <data name="Ogg_Vorbis_37bb6215" xml:space="preserve"><value>Ogg Vorbis</value></data>
+  <data name="Bitrate_Qualit_t_cae46720" xml:space="preserve"><value>Bitrate / kvalitet</value></data>
+  <data name="Variable_Bitrate_VBR_nur_MP3_8690f777" xml:space="preserve"><value>Variabel bitrate (kun VBR, MP3)</value></data>
+  <data name="Ausgabeform_a281e59e" xml:space="preserve"><value>Udgangstilstand</value></data>
+  <data name="Ein_Ergebnis_je_Titel_c314fcaf" xml:space="preserve"><value>Ét output pr. spor</value></data>
+  <data name="Gesamtauswahl_zusammenf_hren_83ff5f61" xml:space="preserve"><value>Flet hele markeringen sammen</value></data>
+  <data name="Gesamtauswahl_mit_Kapiteldatei_5e04fe2a" xml:space="preserve"><value>Flet markering med kapitelfil</value></data>
+  <data name="Je_Ordner_zusammenf_hren_af500147" xml:space="preserve"><value>Flet hver mappe</value></data>
+  <data name="Je_Ordner_mit_Kapiteldatei_9abbc998" xml:space="preserve"><value>Flet hver mappe med kapitelfil</value></data>
+  <data name="Vorhandene_CUE_Datei_in_einzelne_Titel_aufteilen_88ac3275" xml:space="preserve"><value>Opdel en eksisterende CUE-fil i spor</value></data>
+  <data name="Zielordner_ausw_hlen_9366a7d5" xml:space="preserve"><value>Vælg outputmappe</value></data>
+  <data name="Ordner_435f23d2" xml:space="preserve"><value>Mappe...</value></data>
+  <data name="Abbrechen_07af7cb3" xml:space="preserve"><value>Annuller</value></data>
+  <data name="Konvertieren_a3262ed0" xml:space="preserve"><value>Konverter</value></data>
+  <data name="0_Titel_konvertieren_035b7c0e" xml:space="preserve"><value>Konverter {0} spor</value></data>
+  <data name="Zielordner_8036bfe3" xml:space="preserve"><value>Output mappe</value></data>
+  <data name="Bitte_zuerst_einen_Zielordner_ausw_hlen_8f6bde6a" xml:space="preserve"><value>Vælg venligst en outputmappe først.</value></data>
+  <data name="Fertig_konvertiert_11f92741" xml:space="preserve"><value>Konvertering fuldført.</value></data>
+  <data name="Konvertierung_abgebrochen_b2bffba9" xml:space="preserve"><value>Konvertering annulleret.</value></data>
+  <data name="Keine_Titel_zum_Konvertieren_ausgew_hlt_23590936" xml:space="preserve"><value>Ingen spor valgt til konvertering.</value></data>
+  <data name="Kein_Zielordner_gew_hlt_7432a7fd" xml:space="preserve"><value>Der er ikke valgt nogen outputmappe.</value></data>
+  <data name="FFmpeg_wurde_nicht_gefunden_Bitte_installiere_da_0202a9db" xml:space="preserve"><value>FFmpeg blev ikke fundet. Installer venligst 'ffmpeg'-pakken.</value></data>
+  <data name="Titel_werden_zusammengef_hrt_7fe4a686" xml:space="preserve"><value>Fletter spor...</value></data>
+  <data name="Konvertiere_Ordner_0_von_1_744978b5" xml:space="preserve"><value>Konverterer mappe {0} af {1} …</value></data>
+  <data name="Konvertiere_0_von_1_2_87eb0ba9" xml:space="preserve"><value>Konvertering af {0} af {1}: {2}</value></data>
+  <data name="Audio_CD_Titel_werden_einzeln_gerippt_Bitte_den__5ab38b45" xml:space="preserve"><value>Lyd-cd-spor rippes individuelt. Vælg venligst 'Én udgang pr. spor'.</value></data>
+  <data name="Die_CUE_Datei_enth_lt_keine_verwertbaren_INDEX_0_42d32749" xml:space="preserve"><value>CUE-filen indeholder ingen brugbare INDEX 01-poster.</value></data>
+  <data name="Teile_CUE_0_von_1_2_2b7a981e" xml:space="preserve"><value>Opdeling af CUE {0} af {1}: {2}</value></data>
+  <data name="Zum_Rippen_einer_Audio_CD_fehlt_cdparanoia_91215ae7" xml:space="preserve"><value>'cdparanoia' er påkrævet for at rippe en lyd-cd.</value></data>
+  <data name="Die_Audio_CD_Quelle_ist_ung_ltig_6d01425b" xml:space="preserve"><value>Lyd-cd-kilden er ugyldig.</value></data>
+  <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>Konverter album...</value></data>
+  <data name="Konvertieren_ce23485e" xml:space="preserve"><value>Konverter...</value></data>
+  <data name="Zum_aktuellen_Titel_springen_84da67c6" xml:space="preserve"><value>Hop til det aktuelle spor</value></data>
+  <data name="Zur_ck_zur_Wiedergabeliste_05ea62ef" xml:space="preserve"><value>Tilbage til afspilningslisten</value></data>
+  <data name="Warteschlange_und_Ausgabe_5ebecdc8" xml:space="preserve"><value>Kø og output</value></data>
+  <data name="0_Titel_458a8411" xml:space="preserve"><value>{0} spor</value></data>
+  <data name="Wartet_db5b60a5" xml:space="preserve"><value>Venter</value></data>
+  <data name="MP3_Qualit_t_058b8ca5" xml:space="preserve"><value>MP3-kvalitet</value></data>
+  <data name="Bitrate_fa1da0b1" xml:space="preserve"><value>Bitrate:</value></data>
+  <data name="Konvertierung_starten_7ba534c7" xml:space="preserve"><value>Start konvertering</value></data>
+  <data name="Wird_zusammengef_hrt_bb617c26" xml:space="preserve"><value>Sammenlægning</value></data>
+  <data name="Fertig_708ad54e" xml:space="preserve"><value>Færdig</value></data>
+  <data name="Konvertiert_7600f56a" xml:space="preserve"><value>Konvertering</value></data>
+  <data name="0_Titel_von_Audio_CD_verf_gbar_d7a848b6" xml:space="preserve"><value>{0} spor fra lyd-cd tilgængelige.</value></data>
+  <data name="Datei_fehlt_3b100e31" xml:space="preserve"><value>Fil mangler</value></data>
+  <data name="Eingelegte_Audio_CD_hinzuf_gen_1d88c85f" xml:space="preserve"><value>Tilføj indsat lyd-cd</value></data>
+  <data name="Interpret_Titel_982dd440" xml:space="preserve"><value>Kunstner - titel</value></data>
+  <data name="Keine_Audio_CD_gefunden_oder_das_Laufwerk_ist_ni_9b68527c" xml:space="preserve"><value>Ingen lyd-cd fundet, eller drevet kan ikke læses.</value></data>
+  <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>Åbn med</value></data>
+  <data name="Titel_950701e7" xml:space="preserve"><value>Spor</value></data>
+  <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>Spor {number:00}</value></data>
+  <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>Sammenlagt</value></data>
+  <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>gentage enkelt spor</value></data>
+  <data name="kein_Titel_aee2a500" xml:space="preserve"><value>intet spor</value></data>
+  <data name="mit_CUE_ec6a9564" xml:space="preserve"><value>med CUE</value></data>
+</root>

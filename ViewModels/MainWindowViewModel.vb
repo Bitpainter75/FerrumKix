@@ -449,6 +449,8 @@ Namespace ViewModels
             Next
             RaisePropertyChanged(NameOf(ReplayGainPreampText))
             RaisePropertyChanged(NameOf(AudioBackendText))
+            RaisePropertyChanged(NameOf(FfmpegText))
+            RaisePropertyChanged(NameOf(CdParanoiaText))
             RaisePropertyChanged(NameOf(CurrentDetail))
             StatusText = String.Empty
         End Sub
@@ -566,6 +568,20 @@ Namespace ViewModels
         Public ReadOnly Property AudioBackendText As String
             Get
                 Return LocalizationService.T(If(MpvInterop.IsAvailable(), "libmpv gefunden", "libmpv fehlt"))
+            End Get
+        End Property
+
+        ''' <summary>Zeigt in den Einstellungen, ob FFmpeg für die Konvertierung verfügbar ist.</summary>
+        Public ReadOnly Property FfmpegText As String
+            Get
+                Return LocalizationService.T(If(AudioConversionService.IsFfmpegAvailable(), "FFmpeg gefunden", "FFmpeg fehlt"))
+            End Get
+        End Property
+
+        ''' <summary>Zeigt in den Einstellungen, ob cdparanoia zum Auslesen von Audio-CDs verfügbar ist.</summary>
+        Public ReadOnly Property CdParanoiaText As String
+            Get
+                Return LocalizationService.T(If(AudioConversionService.IsCdParanoiaAvailable(), "cdparanoia gefunden", "cdparanoia fehlt"))
             End Get
         End Property
 

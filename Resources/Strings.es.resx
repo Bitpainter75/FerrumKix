@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>Se eliminaron {0} pistas faltantes.</value></data>
+  <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} canales</value></data>
+  <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} por {1}, factor del sistema {2:0.##}</value></data>
+  <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} por ciento</value></data>
+  <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} pistas leídas.</value></data>
+  <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} pistas no encontradas.</value></data>
+  <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>Color de acento</value></data>
+  <data name="Anhalten_55ba4638" xml:space="preserve"><value>Detener</value></data>
+  <data name="Aus_6997e3eb" xml:space="preserve"><value>Apagado</value></data>
+  <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>Eliminar pistas seleccionadas de la lista</value></data>
+  <data name="Auslieferung_add9612e" xml:space="preserve"><value>Predeterminado</value></data>
+  <data name="Automatisch_95b51063" xml:space="preserve"><value>Automático</value></data>
+  <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>Reanudar al inicio</value></data>
+  <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>Acerca de FerrumPlay</value></data>
+  <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>Ancho de la columna de portada</value></data>
+  <data name="Darstellung_7058d4fa" xml:space="preserve"><value>Apariencia</value></data>
+  <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>Error al leer los archivos.</value></data>
+  <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>La cubierta llena la ventana, suavemente difuminada. Cuando está apagado, permanece una superficie oscura y tranquila.</value></data>
+  <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Archivo no encontrado: {0}</value></data>
+  <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Agregar archivos</value></data>
+  <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Arrastre archivos o carpetas aquí</value></data>
+  <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>El audio se reproduce a través de libmpv y, por tanto, a través del dispositivo de salida del sistema.</value></data>
+  <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>El archivo desapareció. Se salta la pista.</value></data>
+  <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>El color resaltado: el progreso, el botón de reproducción, la perilla de volumen y la fila de la pista actual lo siguen.</value></data>
+  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>La nueva escala se aplica la próxima vez que se inicia FerrumPlay.</value></data>
+  <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>El silencio al final de un archivo se omite para que un álbum mezclado continuamente se reproduzca sin interrupción. Tiene efecto a partir de la siguiente pista.</value></data>
+  <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>El sistema detuvo la reproducción.</value></data>
+  <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>Al hacer doble clic se restablece a 0 dB.</value></data>
+  <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>Al hacer doble clic se restablece el 100 por ciento.</value></data>
+  <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>Al hacer doble clic se restablece a 300</value></data>
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>Un factor separado por pantalla, en caso de que la aplicación parezca demasiado pequeña allí. Tiene efecto en el siguiente inicio: el sistema de ventanas lee el valor sólo en el inicio.</value></data>
+  <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Configuración</value></data>
+  <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>Aún no se ha seleccionado ninguna pista.</value></data>
+  <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Los archivos todavía se están leyendo.</value></data>
+  <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Eliminar pistas faltantes de la lista</value></data>
+  <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay retoma la última pista reproducida donde fue interrumpida. Cuando está desactivado, la pista sólo se selecciona, no se inicia.</value></data>
+  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>Nivela el volumen utilizando los valores de ReplayGain almacenados en los archivos. “Por álbum” mantiene los pasajes silenciosos y ruidosos dentro de un álbum, “Automático” usa el valor de la pista al realizar la reproducción aleatoria. Las pistas sin estos valores se reproducen sin cambios.</value></data>
+  <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>Expandir o contraer grupo</value></data>
+  <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>Sube o baja todas las pistas niveladas en la misma cantidad. ReplayGain apunta bastante bajo; unos decibelios más lo compensan. mpv evita el recorte por sí solo.</value></data>
+  <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>No se encontraron archivos reproducibles.</value></data>
+  <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>Reproducción sin pausas</value></data>
+  <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>También se puede ajustar arrastrando el divisor al lado de la cubierta.</value></data>
+  <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>Nivelación de volumen (ReplayGain)</value></data>
+  <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>Volumen: arrastrar, rueda del ratón o teclas de flecha</value></data>
+  <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>falta libmpv</value></data>
+  <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>libmpv encontrado</value></data>
+  <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>FFmpeg encontrado</value></data>
+  <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>Falta FFmpeg</value></data>
+  <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>cdparanoia encontrada</value></data>
+  <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>falta cdparanoia</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv no se puede cargar. Sin él, FerrumPlay no puede reproducir nada.</value></data>
+  <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>Borrar lista</value></data>
+  <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>maximizar</value></data>
+  <data name="Minimieren_209bcbdc" xml:space="preserve"><value>minimizar</value></data>
+  <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>Siguiente pista</value></data>
+  <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>Por álbum</value></data>
+  <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>Por pista</value></data>
+  <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Agregar carpeta</value></data>
+  <data name="Schlie_en_44424b18" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>búsqueda rápida</value></data>
+  <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Tamaño de fuente</value></data>
+  <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>Silenciar</value></data>
+  <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>Idioma del sistema</value></data>
+  <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>Incluir pista en la reproducción</value></data>
+  <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>Agregar pistas</value></data>
+  <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>No se puede reproducir la pista: {0}</value></data>
+  <data name="Tonausgabe_1455f378" xml:space="preserve"><value>Salida de audio</value></data>
+  <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>Archivos de audio</value></data>
+  <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>Portada borrosa en el fondo</value></data>
+  <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>Escalado de aplicaciones</value></data>
+  <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>Cambia todos los textos de la interfaz en la misma cantidad. Los símbolos en los botones de la ventana permanecen como están: son gráficos en un tamaño de botón fijo.</value></data>
+  <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>Utiliza el idioma del sistema de forma predeterminada; Inglés si no es compatible.</value></data>
+  <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>Pista anterior</value></data>
+  <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>Preamplificador</value></data>
+  <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>Reproducción</value></data>
+  <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>Reproducir y pausar</value></data>
+  <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>Lista de reproducción</value></data>
+  <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>Repetir: desactivado, lista completa, pista única</value></data>
+  <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>Lectura de archivos.</value></data>
+  <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>barajar</value></data>
+  <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>Volver a la reproducción</value></data>
+  <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>convertir audio</value></data>
+  <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>Los archivos originales permanecen sin cambios. FFmpeg lo proporciona el sistema.</value></data>
+  <data name="Zielformat_3f9af674" xml:space="preserve"><value>Formato de salida</value></data>
+  <data name="Ogg_Vorbis_37bb6215" xml:space="preserve"><value>Ogg Vorbis</value></data>
+  <data name="Bitrate_Qualit_t_cae46720" xml:space="preserve"><value>Tasa de bits / calidad</value></data>
+  <data name="Variable_Bitrate_VBR_nur_MP3_8690f777" xml:space="preserve"><value>Velocidad de bits variable (solo VBR, MP3)</value></data>
+  <data name="Ausgabeform_a281e59e" xml:space="preserve"><value>Modo de salida</value></data>
+  <data name="Ein_Ergebnis_je_Titel_c314fcaf" xml:space="preserve"><value>Una salida por pista</value></data>
+  <data name="Gesamtauswahl_zusammenf_hren_83ff5f61" xml:space="preserve"><value>Fusionar toda la selección</value></data>
+  <data name="Gesamtauswahl_mit_Kapiteldatei_5e04fe2a" xml:space="preserve"><value>Fusionar selección con archivo de capítulo</value></data>
+  <data name="Je_Ordner_zusammenf_hren_af500147" xml:space="preserve"><value>Fusionar cada carpeta</value></data>
+  <data name="Je_Ordner_mit_Kapiteldatei_9abbc998" xml:space="preserve"><value>Fusionar cada carpeta con el archivo de capítulo</value></data>
+  <data name="Vorhandene_CUE_Datei_in_einzelne_Titel_aufteilen_88ac3275" xml:space="preserve"><value>Dividir un archivo CUE existente en pistas</value></data>
+  <data name="Zielordner_ausw_hlen_9366a7d5" xml:space="preserve"><value>Elija la carpeta de salida</value></data>
+  <data name="Ordner_435f23d2" xml:space="preserve"><value>Carpeta…</value></data>
+  <data name="Abbrechen_07af7cb3" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Konvertieren_a3262ed0" xml:space="preserve"><value>Convertir</value></data>
+  <data name="0_Titel_konvertieren_035b7c0e" xml:space="preserve"><value>Convertir {0} pistas</value></data>
+  <data name="Zielordner_8036bfe3" xml:space="preserve"><value>Carpeta de salida</value></data>
+  <data name="Bitte_zuerst_einen_Zielordner_ausw_hlen_8f6bde6a" xml:space="preserve"><value>Primero elija una carpeta de salida.</value></data>
+  <data name="Fertig_konvertiert_11f92741" xml:space="preserve"><value>Conversión completa.</value></data>
+  <data name="Konvertierung_abgebrochen_b2bffba9" xml:space="preserve"><value>Conversión cancelada.</value></data>
+  <data name="Keine_Titel_zum_Konvertieren_ausgew_hlt_23590936" xml:space="preserve"><value>No hay pistas seleccionadas para la conversión.</value></data>
+  <data name="Kein_Zielordner_gew_hlt_7432a7fd" xml:space="preserve"><value>No se seleccionó ninguna carpeta de salida.</value></data>
+  <data name="FFmpeg_wurde_nicht_gefunden_Bitte_installiere_da_0202a9db" xml:space="preserve"><value>No se encontró FFmpeg. Instale el paquete 'ffmpeg'.</value></data>
+  <data name="Titel_werden_zusammengef_hrt_7fe4a686" xml:space="preserve"><value>Fusionando pistas...</value></data>
+  <data name="Konvertiere_Ordner_0_von_1_744978b5" xml:space="preserve"><value>Convirtiendo la carpeta {0} de {1}…</value></data>
+  <data name="Konvertiere_0_von_1_2_87eb0ba9" xml:space="preserve"><value>Convirtiendo {0} de {1}: {2}</value></data>
+  <data name="Audio_CD_Titel_werden_einzeln_gerippt_Bitte_den__5ab38b45" xml:space="preserve"><value>Las pistas de CD de audio se copian individualmente. Elija 'Una salida por pista'.</value></data>
+  <data name="Die_CUE_Datei_enth_lt_keine_verwertbaren_INDEX_0_42d32749" xml:space="preserve"><value>El archivo CUE no contiene entradas INDEX 01 utilizables.</value></data>
+  <data name="Teile_CUE_0_von_1_2_2b7a981e" xml:space="preserve"><value>Dividiendo CUE {0} de {1}: {2}</value></data>
+  <data name="Zum_Rippen_einer_Audio_CD_fehlt_cdparanoia_91215ae7" xml:space="preserve"><value>Se requiere 'cdparanoia' para extraer un CD de audio.</value></data>
+  <data name="Die_Audio_CD_Quelle_ist_ung_ltig_6d01425b" xml:space="preserve"><value>La fuente del CD de audio no es válida.</value></data>
+  <data name="Album_konvertieren_748da2ff" xml:space="preserve"><value>Convertir álbum…</value></data>
+  <data name="Konvertieren_ce23485e" xml:space="preserve"><value>Convertir…</value></data>
+  <data name="Zum_aktuellen_Titel_springen_84da67c6" xml:space="preserve"><value>Saltar a la pista actual</value></data>
+  <data name="Zur_ck_zur_Wiedergabeliste_05ea62ef" xml:space="preserve"><value>Volver a la lista de reproducción</value></data>
+  <data name="Warteschlange_und_Ausgabe_5ebecdc8" xml:space="preserve"><value>Cola y salida</value></data>
+  <data name="0_Titel_458a8411" xml:space="preserve"><value>{0} pistas</value></data>
+  <data name="Wartet_db5b60a5" xml:space="preserve"><value>esperando</value></data>
+  <data name="MP3_Qualit_t_058b8ca5" xml:space="preserve"><value>calidad MP3</value></data>
+  <data name="Bitrate_fa1da0b1" xml:space="preserve"><value>Tasa de bits:</value></data>
+  <data name="Konvertierung_starten_7ba534c7" xml:space="preserve"><value>Iniciar conversión</value></data>
+  <data name="Wird_zusammengef_hrt_bb617c26" xml:space="preserve"><value>Fusionando</value></data>
+  <data name="Fertig_708ad54e" xml:space="preserve"><value>hecho</value></data>
+  <data name="Konvertiert_7600f56a" xml:space="preserve"><value>Convirtiendo</value></data>
+  <data name="0_Titel_von_Audio_CD_verf_gbar_d7a848b6" xml:space="preserve"><value>Pistas {0} de CD de audio disponibles.</value></data>
+  <data name="Datei_fehlt_3b100e31" xml:space="preserve"><value>Falta el archivo</value></data>
+  <data name="Eingelegte_Audio_CD_hinzuf_gen_1d88c85f" xml:space="preserve"><value>Agregar CD de audio insertado</value></data>
+  <data name="Interpret_Titel_982dd440" xml:space="preserve"><value>Artista - título</value></data>
+  <data name="Keine_Audio_CD_gefunden_oder_das_Laufwerk_ist_ni_9b68527c" xml:space="preserve"><value>No se encontró ningún CD de audio o no se puede leer la unidad.</value></data>
+  <data name="Oeffnen_mit_eb875a6d" xml:space="preserve"><value>abrir con</value></data>
+  <data name="Titel_950701e7" xml:space="preserve"><value>Seguimiento</value></data>
+  <data name="Titel_number_00_21a621f4" xml:space="preserve"><value>Seguimiento {number:00}</value></data>
+  <data name="Zusammengef_hrt_f67acbd5" xml:space="preserve"><value>Fusionado</value></data>
+  <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>repetir una sola pista</value></data>
+  <data name="kein_Titel_aee2a500" xml:space="preserve"><value>sin pista</value></data>
+  <data name="mit_CUE_ec6a9564" xml:space="preserve"><value>con señal</value></data>
+</root>
