@@ -4,88 +4,88 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
-  <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>{0} missing tracks removed.</value></data>
-  <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} channels</value></data>
-  <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} by {1}, system factor {2:0.##}</value></data>
-  <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} percent</value></data>
-  <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} tracks read.</value></data>
-  <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} tracks not found.</value></data>
-  <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>Accent color</value></data>
-  <data name="Anhalten_55ba4638" xml:space="preserve"><value>Stop</value></data>
-  <data name="Aus_6997e3eb" xml:space="preserve"><value>Off</value></data>
-  <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>Remove selected tracks from the list</value></data>
-  <data name="Auslieferung_add9612e" xml:space="preserve"><value>Default</value></data>
-  <data name="Automatisch_95b51063" xml:space="preserve"><value>Automatic</value></data>
-  <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>Resume on start</value></data>
-  <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>About FerrumPlay</value></data>
-  <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>Width of the cover column</value></data>
-  <data name="Darstellung_7058d4fa" xml:space="preserve"><value>Appearance</value></data>
-  <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>Reading the files failed.</value></data>
-  <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>The cover fills the window, softly blurred. When off, a calm dark surface remains.</value></data>
-  <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>File not found: {0}</value></data>
-  <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Add files</value></data>
-  <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Drag files or folders here</value></data>
-  <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>Audio plays through libmpv and thus through the system's output device.</value></data>
-  <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>The file is gone. The track is skipped.</value></data>
-  <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>The highlight color: progress, play button, volume knob and the row of the current track follow it.</value></data>
-  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>The new scaling applies the next time FerrumPlay is started.</value></data>
-  <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>The silence at the end of a file is skipped so that a continuously mixed album plays without a break. Takes effect from the next track.</value></data>
-  <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>Playback was stopped by the system.</value></data>
-  <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>Double-click resets to 0 dB</value></data>
-  <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>Double-click resets to 100 percent</value></data>
-  <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>Double-click resets to 300</value></data>
-  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>A separate factor per screen, in case the application appears too small there. Takes effect on the next start: the windowing system reads the value only at startup.</value></data>
-  <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Settings</value></data>
-  <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>No track selected yet.</value></data>
-  <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Files are still being read.</value></data>
-  <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Remove missing tracks from the list</value></data>
-  <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay picks up the last played track where it was interrupted. When off, the track is only selected, not started.</value></data>
-  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>Levels the volume using the ReplayGain values stored in the files. “By album” keeps the quiet and loud passages within an album, “Automatic” uses the track value when shuffling. Tracks without these values play unchanged.</value></data>
-  <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>Expand or collapse group</value></data>
-  <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>Raises or lowers all leveled tracks by the same amount. ReplayGain aims rather low; a few decibels more make up for it. mpv prevents clipping on its own.</value></data>
-  <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>No playable files found.</value></data>
-  <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>Gapless playback</value></data>
-  <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>Can also be adjusted by dragging the divider next to the cover.</value></data>
-  <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>Volume leveling (ReplayGain)</value></data>
-  <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>Volume: drag, mouse wheel or arrow keys</value></data>
-  <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpv missing</value></data>
-  <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>libmpv found</value></data>
-  <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>FFmpeg found</value></data>
-  <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>FFmpeg missing</value></data>
-  <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>cdparanoia found</value></data>
-  <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>cdparanoia missing</value></data>
-  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv cannot be loaded. Without it, FerrumPlay cannot play anything.</value></data>
-  <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>Clear list</value></data>
-  <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>Maximize</value></data>
-  <data name="Minimieren_209bcbdc" xml:space="preserve"><value>Minimize</value></data>
-  <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>Next track</value></data>
-  <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>By album</value></data>
-  <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>By track</value></data>
-  <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Add folder</value></data>
-  <data name="Schlie_en_44424b18" xml:space="preserve"><value>Close</value></data>
-  <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Quick search</value></data>
-  <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Font size</value></data>
-  <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>Language</value></data>
-  <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>Mute</value></data>
-  <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>System language</value></data>
-  <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>Include track in playback</value></data>
-  <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>Add tracks</value></data>
-  <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>Cannot play track: {0}</value></data>
-  <data name="Tonausgabe_1455f378" xml:space="preserve"><value>Audio output</value></data>
-  <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>Audio files</value></data>
-  <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>Blurred cover in the background</value></data>
-  <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>Application scaling</value></data>
-  <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>Shifts all texts of the interface by the same amount. The symbols in the window buttons stay as they are: they are graphics in a fixed button size.</value></data>
-  <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>Uses the system language by default; English if it is not supported.</value></data>
-  <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>Previous track</value></data>
-  <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>Preamp</value></data>
-  <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>Playback</value></data>
-  <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>Play and pause</value></data>
-  <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>Playlist</value></data>
-  <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>Repeat: off, whole list, single track</value></data>
-  <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>Reading files.</value></data>
-  <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>Shuffle</value></data>
-  <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>Back to playback</value></data>
+  <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>已移除 {0} 个缺失曲目。</value></data>
+  <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} 声道</value></data>
+  <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} × {1}，系统缩放系数 {2:0.##}</value></data>
+  <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0}%</value></data>
+  <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>已读取 {0} 个曲目。</value></data>
+  <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>未找到 {0} 个曲目。</value></data>
+  <data name="Akzentfarbe_d8839e9b" xml:space="preserve"><value>强调色</value></data>
+  <data name="Anhalten_55ba4638" xml:space="preserve"><value>停止</value></data>
+  <data name="Aus_6997e3eb" xml:space="preserve"><value>关闭</value></data>
+  <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>从列表中移除选中的曲目</value></data>
+  <data name="Auslieferung_add9612e" xml:space="preserve"><value>默认</value></data>
+  <data name="Automatisch_95b51063" xml:space="preserve"><value>自动</value></data>
+  <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>启动时继续播放</value></data>
+  <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>关于 FerrumPlay</value></data>
+  <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>封面列宽度</value></data>
+  <data name="Darstellung_7058d4fa" xml:space="preserve"><value>外观</value></data>
+  <data name="Das_Einlesen_ist_fehlgeschlagen_f43a23bb" xml:space="preserve"><value>读取文件失败。</value></data>
+  <data name="Das_Titelbild_f_llt_weichgezeichnet_das_Fenster__26314da5" xml:space="preserve"><value>封面以柔焦效果填满窗口。关闭后将显示平静的深色背景。</value></data>
+  <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>未找到文件：{0}</value></data>
+  <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>添加文件</value></data>
+  <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>将文件或文件夹拖到此处</value></data>
+  <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>音频通过 libmpv 及系统输出设备播放。</value></data>
+  <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>文件已不存在，将跳过该曲目。</value></data>
+  <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>强调色会应用于进度、播放按钮、音量滑块和当前曲目的行。</value></data>
+  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>新的缩放比例将在下次启动 FerrumPlay 时生效。</value></data>
+  <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>将跳过文件末尾的静音部分，使连续混音的专辑无缝播放。将在下一曲起生效。</value></data>
+  <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>播放已被系统停止。</value></data>
+  <data name="Doppelklick_setzt_auf_0_dB_zur_ck_98eef07c" xml:space="preserve"><value>双击重置为 0 dB</value></data>
+  <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>双击重置为 100%</value></data>
+  <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>双击重置为 300</value></data>
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>为每个屏幕单独设置缩放系数，以防应用程序显示得过小。将在下次启动时生效：窗口系统仅在启动时读取此值。</value></data>
+  <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>设置</value></data>
+  <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>尚未选择曲目。</value></data>
+  <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>正在读取文件。</value></data>
+  <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>从列表中移除缺失的曲目</value></data>
+  <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay 会从上次中断的位置继续播放最后播放的曲目。关闭后只会选中该曲目，不会开始播放。</value></data>
+  <data name="Gleicht_die_Lautst_rke_nach_den_ReplayGain_Angab_97578dba" xml:space="preserve"><value>根据文件中存储的 ReplayGain 值平衡音量。“按专辑”会保留专辑内较安静和较响亮的段落；随机播放时，“自动”会使用曲目值。没有这些值的曲目将原样播放。</value></data>
+  <data name="Gruppe_auf_und_zuklappen_886a8864" xml:space="preserve"><value>展开或折叠组</value></data>
+  <data name="Hebt_oder_senkt_alle_angeglichenen_Titel_um_dens_ca3d7347" xml:space="preserve"><value>以相同幅度提高或降低所有已平衡曲目的音量。ReplayGain 的目标音量偏低；提高几分贝即可补偿。mpv 会自行防止削波。</value></data>
+  <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>未找到可播放的文件。</value></data>
+  <data name="L_ckenlose_Wiedergabe_5832b2da" xml:space="preserve"><value>无缝播放</value></data>
+  <data name="L_sst_sich_auch_mit_der_Trennlinie_neben_dem_Tit_0ff7fb5b" xml:space="preserve"><value>也可拖动封面旁的分隔线进行调整。</value></data>
+  <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>音量平衡（ReplayGain）</value></data>
+  <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>音量：拖动、鼠标滚轮或方向键</value></data>
+  <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>缺少 libmpv</value></data>
+  <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>已找到 libmpv</value></data>
+  <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>已找到 FFmpeg</value></data>
+  <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>缺少 FFmpeg</value></data>
+  <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>已找到 cdparanoia</value></data>
+  <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>缺少 cdparanoia</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>无法加载 libmpv。没有它，FerrumPlay 无法播放任何内容。</value></data>
+  <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>清空列表</value></data>
+  <data name="Maximieren_a1c4dde2" xml:space="preserve"><value>最大化</value></data>
+  <data name="Minimieren_209bcbdc" xml:space="preserve"><value>最小化</value></data>
+  <data name="N_chster_Titel_4828575e" xml:space="preserve"><value>下一曲</value></data>
+  <data name="Nach_Album_7f5e854a" xml:space="preserve"><value>按专辑</value></data>
+  <data name="Nach_Titel_d5eb329e" xml:space="preserve"><value>按曲目</value></data>
+  <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>添加文件夹</value></data>
+  <data name="Schlie_en_44424b18" xml:space="preserve"><value>关闭</value></data>
+  <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>快速搜索</value></data>
+  <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>字体大小</value></data>
+  <data name="Sprache_3d9f5cb4" xml:space="preserve"><value>语言</value></data>
+  <data name="Stumm_schalten_3176fcce" xml:space="preserve"><value>静音</value></data>
+  <data name="Systemsprache_ef9a107d" xml:space="preserve"><value>系统语言</value></data>
+  <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>在播放中包含此曲目</value></data>
+  <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>添加曲目</value></data>
+  <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>无法播放曲目：{0}</value></data>
+  <data name="Tonausgabe_1455f378" xml:space="preserve"><value>音频输出</value></data>
+  <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>音频文件</value></data>
+  <data name="Unscharfes_Titelbild_im_Hintergrund_6bfabf5b" xml:space="preserve"><value>背景中的模糊封面</value></data>
+  <data name="Vergr_erung_der_Anwendung_6d294a50" xml:space="preserve"><value>应用程序缩放</value></data>
+  <data name="Verschiebt_alle_Texte_der_Oberfl_che_um_denselbe_9ffaeec7" xml:space="preserve"><value>以相同幅度调整界面中的所有文字。窗口按钮中的符号保持不变：它们是固定按钮尺寸中的图形。</value></data>
+  <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>默认使用系统语言；不受支持时使用英语。</value></data>
+  <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>上一曲</value></data>
+  <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>前置增益</value></data>
+  <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>播放</value></data>
+  <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>播放/暂停</value></data>
+  <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>播放列表</value></data>
+  <data name="Wiederholen_aus_ganze_Liste_einzelner_Titel_90729e6e" xml:space="preserve"><value>重复：关闭、整个列表、单个曲目</value></data>
+  <data name="Wird_eingelesen_9f7d88cf" xml:space="preserve"><value>正在读取文件。</value></data>
+  <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>随机播放</value></data>
+  <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>返回播放</value></data>
   <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>Convert audio</value></data>
   <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>The original files stay unchanged. FFmpeg is provided by the system.</value></data>
   <data name="Zielformat_3f9af674" xml:space="preserve"><value>Output format</value></data>
