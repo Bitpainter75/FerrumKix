@@ -44,6 +44,8 @@ The window is split into three areas. The cover column on the left shows the art
 
 The transport sits on a dark deck at the bottom: the progress bar across the full width, shuffle and repeat on the left, previous, stop, play and next in the middle, and the volume on the right. The volume is a rotary knob, taken from the FerrumPlay logo - drag it up or to the right to turn it up, or use the mouse wheel or the arrow keys.
 
+<img src="AudioConverter.png" height="550" />
+
 ## Settings
 
 Accent colour, font size, language, the blurred cover background, the width of the cover column, gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start. On Linux, the whole interface can also be scaled per screen, for displays where it would otherwise come out too small.
