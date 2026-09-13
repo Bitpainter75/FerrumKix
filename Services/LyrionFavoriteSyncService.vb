@@ -87,109 +87,53 @@ Namespace Services
 
 #Region "Der eine Lauf der Anwendung"
 
-        ''' <summary>In welchem Zustand der Abgleich steckt.</summary>
-        Public Enum SyncState
-            Idle = 0
-            Running = 1
-            ''' <summary>Abbruch angefordert, der Lauf raeumt noch auf. Ein laufender Download
-            ''' braucht dafuer einen Augenblick, und genau dieser Augenblick ist der, in dem eine
-            ''' Ansicht ohne eigenen Zustand ratlos dasteht.</summary>
-            Stopping = 2
-        End Enum
-
         ' Der Abgleich gehoert der ANWENDUNG und nicht der Lyrion-Ansicht: die wird bei jedem
         ' Oeffnen neu gebaut (PlayerView.ShowLyrionPanel). Haengt der Zustand am Panel, ist ein
         ' laufender Abgleich nach einem Blick auf die Wiedergabeliste unsichtbar - und der
         ' naechste Klick startet einen ZWEITEN Lauf auf denselben Ordner. Zwei Laeufe holen
         ' dieselbe Datei in dieselbe ".part"-Datei und loeschen nach dem Plan, den jeder fuer
         ' sich gefasst hat.
-        Private Shared ReadOnly StateGate As New Object()
-        Private Shared _state As SyncState = SyncState.Idle
-        Private Shared _cancel As CancellationTokenSource
-        Private Shared _status As String = String.Empty
+        '
+        ' Gehalten wird er in LyrionTaskState, gemeinsam mit dem Durchsuchen der Serverbibliothek:
+        ' auch die beiden duerfen nicht nebeneinander laufen, denn waehrend der Server liest, sind
+        ' Alben- und Titelliste in Bewegung.
+        Private Shared ReadOnly UnresolvedGate As New Object()
         ''' <summary>Die Favoriteneintraege ohne passendes Album aus dem LETZTEN Lauf. Sie werden
         ''' zu Beginn jedes Laufs geleert: eine Liste von vorgestern verleitete sonst dazu,
         ''' Eintraege zu loeschen, die es inzwischen wieder gibt.</summary>
         Private Shared _unresolved As New List(Of LyrionMediaServerService.FavoriteEntry)()
 
-        ''' <summary>Meldet jede Aenderung an Zustand ODER Meldungstext. Wird aus einem
-        ''' Hintergrundfaden ausgeloest - wer die Oberflaeche anfasst, muss selbst auf den
-        ''' Oberflaechenfaden wechseln.</summary>
-        Public Shared Event StateChanged As EventHandler
-
-        Public Shared ReadOnly Property State As SyncState
-            Get
-                SyncLock StateGate
-                    Return _state
-                End SyncLock
-            End Get
-        End Property
-
-        Public Shared ReadOnly Property IsBusy As Boolean
-            Get
-                Return State <> SyncState.Idle
-            End Get
-        End Property
-
-        ''' <summary>Die letzte Meldung. Sie bleibt nach dem Lauf stehen: wer die Ansicht
-        ''' zwischendurch geschlossen hatte, sieht beim naechsten Oeffnen, was herausgekommen
-        ''' ist.</summary>
-        Public Shared ReadOnly Property Status As String
-            Get
-                SyncLock StateGate
-                    Return _status
-                End SyncLock
-            End Get
-        End Property
-
         ''' <summary>Was der letzte Lauf an Favoriten NICHT aufloesen konnte. Daraus baut die
         ''' Ansicht ihre Nachfrage, ob diese Eintraege aus den Favoriten sollen.</summary>
         Public Shared ReadOnly Property Unresolved As IReadOnlyList(Of LyrionMediaServerService.FavoriteEntry)
             Get
-                SyncLock StateGate
+                SyncLock UnresolvedGate
                     Return _unresolved.ToArray()
                 End SyncLock
             End Get
         End Property
 
-        ''' <summary>Startet den Abgleich, oder bricht den laufenden ab. EIN Knopf, EIN Lauf.
-        ''' Entschieden wird unter der Sperre, gemeldet und gearbeitet ausserhalb.</summary>
+        ''' <summary>Startet den Abgleich, oder bricht den laufenden ab. EIN Knopf, EIN Lauf.</summary>
         Public Shared Sub Toggle()
-            Dim toCancel As CancellationTokenSource = Nothing
-            Dim target As String = Nothing
-            Dim token As CancellationToken
+            ' Nur der eigene Vorgang wird abgebrochen: der Abgleichknopf soll kein Durchsuchen
+            ' der Serverbibliothek beenden.
+            If LyrionTaskState.RequestCancel(LyrionTaskState.Kind.Sync,
+                                             LocalizationService.T("Abgleich wird abgebrochen …")) Then Return
 
-            SyncLock StateGate
-                Select Case _state
-                    Case SyncState.Stopping
-                        ' Der Abbruch laeuft schon. Ein weiterer Klick soll ihn nicht wiederholen
-                        ' und erst recht keinen neuen Lauf starten.
-                        Return
-                    Case SyncState.Running
-                        _state = SyncState.Stopping
-                        toCancel = _cancel
-                    Case Else
-                        Dim configured = AppSettingsService.Current.LyrionSyncTargetPath
-                        If Not String.IsNullOrWhiteSpace(configured) Then
-                            target = configured
-                            _cancel = New CancellationTokenSource()
-                            token = _cancel.Token
-                            _state = SyncState.Running
-                        End If
-                End Select
-            End SyncLock
-
-            If toCancel IsNot Nothing Then
-                ' Der Abbruch braucht einen Augenblick - ein laufender Download muss erst
-                ' abreissen. Ohne diese Meldung stuende so lange die letzte Fortschrittszeile da,
-                ' und der Klick saehe folgenlos aus.
-                SetStatus(LocalizationService.T("Abgleich wird abgebrochen …"))
-                toCancel.Cancel()
+            ' Erst fragen, OB ueberhaupt gestartet werden darf. Stuende die Pruefung auf den
+            ' Zielordner davor, loeschte ein Klick bei fehlendem Ordner die Fortschrittszeile
+            ' eines laufenden Durchsuchens - eine Ablehnung darf keinen fremden Vorgang
+            ' uebermalen.
+            Dim source = LyrionTaskState.TryBegin(LyrionTaskState.Kind.Sync)
+            If source Is Nothing Then
+                LyrionTaskState.SetStatus(LocalizationService.T("Es läuft gerade ein anderer Lyrion-Vorgang."))
                 Return
             End If
 
-            If target Is Nothing Then
-                SetStatus(LocalizationService.T("Bitte zuerst einen Zielordner für den Favoritenabgleich wählen."))
+            Dim target = AppSettingsService.Current.LyrionSyncTargetPath
+            If String.IsNullOrWhiteSpace(target) Then
+                LyrionTaskState.SetStatus(LocalizationService.T("Bitte zuerst einen Zielordner für den Favoritenabgleich wählen."))
+                LyrionTaskState.Finish()
                 Return
             End If
 
@@ -198,7 +142,7 @@ Namespace Services
             ' tausenden Dateien und durchlaeuft den ganzen Zielordner, und die Antwort des Servers
             ' sind gut 20 MB JSON. Auf dem Oberflaechenfaden steht waehrenddessen das Fenster -
             ' und ein stehendes Fenster ist die unklarste Rueckmeldung von allen.
-            Task.Run(Function() RunOnceAsync(target, token))
+            Task.Run(Function() RunOnceAsync(target, source.Token))
         End Sub
 
         ''' <summary>Nimmt die Favoriteneintraege, die der letzte Lauf keinem Album zuordnen
@@ -210,19 +154,19 @@ Namespace Services
         ''' und ruft erst danach.</para></summary>
         Public Shared Sub StartUnresolvedCleanup()
             Dim entries As List(Of LyrionMediaServerService.FavoriteEntry)
-            Dim token As CancellationToken
-
-            SyncLock StateGate
-                If _state <> SyncState.Idle Then Return
+            SyncLock UnresolvedGate
                 entries = _unresolved.ToList()
-                If entries.Count = 0 Then Return
-                _cancel = New CancellationTokenSource()
-                token = _cancel.Token
-                _state = SyncState.Running
             End SyncLock
+            If entries.Count = 0 Then Return
+
+            Dim source = LyrionTaskState.TryBegin(LyrionTaskState.Kind.Cleanup)
+            If source Is Nothing Then
+                LyrionTaskState.SetStatus(LocalizationService.T("Es läuft gerade ein anderer Lyrion-Vorgang."))
+                Return
+            End If
 
             SetStatus(LocalizationService.Format("{0} Favoriten werden entfernt …", entries.Count))
-            Task.Run(Function() CleanUpOnceAsync(entries, token))
+            Task.Run(Function() CleanUpOnceAsync(entries, source.Token))
         End Sub
 
         Private Shared Async Function CleanUpOnceAsync(entries As List(Of LyrionMediaServerService.FavoriteEntry),
@@ -260,37 +204,29 @@ Namespace Services
                 SetStatus(ex.Message)
                 DiagnosticLogService.LogException("Lyrion.Sync", ex)
             Finally
-                Dim source As CancellationTokenSource
-                SyncLock StateGate
+                SyncLock UnresolvedGate
                     ' Nur die wirklich erledigten fallen aus der Liste. Was uebrig bleibt, steht
                     ' beim naechsten Versuch wieder da - und nicht als stillschweigend erledigt.
                     _unresolved = _unresolved.Where(Function(entry) Not done.Contains(entry.Url)).ToList()
-                    source = _cancel
-                    _cancel = Nothing
-                    _state = SyncState.Idle
                 End SyncLock
-                source?.Dispose()
-                RaiseEvent StateChanged(Nothing, EventArgs.Empty)
+                LyrionTaskState.Finish()
             End Try
         End Function
 
         Private Shared Sub SetStatus(text As String)
-            SyncLock StateGate
-                _status = If(text, String.Empty)
-            End SyncLock
-            RaiseEvent StateChanged(Nothing, EventArgs.Empty)
+            LyrionTaskState.SetStatus(text)
         End Sub
 
         ''' <summary>Der ganze Lauf mit seinen Meldungen. Faengt ALLES: ein Fehlschlag darf hier
         ''' nicht als unbeachtete Ausnahme eines Hintergrundfadens enden, sondern gehoert in die
         ''' Statuszeile.</summary>
         Private Shared Async Function RunOnceAsync(targetRoot As String, token As CancellationToken) As Task
-            SyncLock StateGate
+            SyncLock UnresolvedGate
                 _unresolved.Clear()
             End SyncLock
             Try
                 Dim plan = Await BuildPlanAsync(targetRoot, AddressOf SetStatus, token)
-                SyncLock StateGate
+                SyncLock UnresolvedGate
                     _unresolved = plan.Unresolved.ToList()
                 End SyncLock
 
@@ -328,14 +264,7 @@ Namespace Services
                 SetStatus(ex.Message)
                 DiagnosticLogService.LogException("Lyrion.Sync", ex)
             Finally
-                Dim source As CancellationTokenSource
-                SyncLock StateGate
-                    source = _cancel
-                    _cancel = Nothing
-                    _state = SyncState.Idle
-                End SyncLock
-                source?.Dispose()
-                RaiseEvent StateChanged(Nothing, EventArgs.Empty)
+                LyrionTaskState.Finish()
             End Try
         End Function
 

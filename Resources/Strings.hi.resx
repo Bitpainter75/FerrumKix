@@ -486,4 +486,28 @@
   <data name="Favoriten_ohne_passendes_Album_aus_den_Favoriten_45e61bc2" xml:space="preserve">
     <value>बिना मेल खाते एल्बम वाले पसंदीदा हटाएँ</value>
   </data>
+  <data name="Serverbibliothek_wird_durchsucht_288f7951" xml:space="preserve">
+    <value>सर्वर लाइब्रेरी स्कैन हो रही है …</value>
+  </data>
+  <data name="Serverbibliothek_wird_durchsucht_0_8171dc7d" xml:space="preserve">
+    <value>सर्वर लाइब्रेरी स्कैन हो रही है: {0}</value>
+  </data>
+  <data name="Serverbibliothek_durchsucht_0_75c3bb75" xml:space="preserve">
+    <value>सर्वर लाइब्रेरी स्कैन हो गई ({0})।</value>
+  </data>
+  <data name="Serverbibliothek_durchsucht_c4a856f1" xml:space="preserve">
+    <value>सर्वर लाइब्रेरी स्कैन हो गई।</value>
+  </data>
+  <data name="Durchsuchen_wird_abgebrochen_c808d816" xml:space="preserve">
+    <value>स्कैन रद्द किया जा रहा है …</value>
+  </data>
+  <data name="Durchsuchen_abgebrochen_8d433df4" xml:space="preserve">
+    <value>स्कैन रद्द किया गया।</value>
+  </data>
+  <data name="Durchsuchen_abbrechen_005a4e5c" xml:space="preserve">
+    <value>स्कैन रद्द करें</value>
+  </data>
+  <data name="Es_l_uft_gerade_ein_anderer_Lyrion_Vorgang_a04d644a" xml:space="preserve">
+    <value>एक अन्य Lyrion कार्य पहले से चल रहा है।</value>
+  </data>
 </root>

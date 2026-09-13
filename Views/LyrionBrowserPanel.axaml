@@ -126,7 +126,7 @@
                         ToolTip.Tip="Favoriten in den Zielordner abgleichen">
                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/download.svg" Width="16" Height="16"/>
                 </Button>
-                <Button Classes="icon-btn" Click="OnReloadClick" ToolTip.Tip="Bibliothek aktualisieren">
+                <Button x:Name="ReloadButton" Classes="icon-btn" Click="OnReloadClick" ToolTip.Tip="Bibliothek aktualisieren">
                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/repeat.svg" Width="16" Height="16"/>
                 </Button>
             </StackPanel>

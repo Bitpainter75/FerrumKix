@@ -486,4 +486,28 @@
   <data name="Favoriten_ohne_passendes_Album_aus_den_Favoriten_45e61bc2" xml:space="preserve">
     <value>Usuń ulubione bez pasującego albumu</value>
   </data>
+  <data name="Serverbibliothek_wird_durchsucht_288f7951" xml:space="preserve">
+    <value>Przeszukiwanie biblioteki serwera …</value>
+  </data>
+  <data name="Serverbibliothek_wird_durchsucht_0_8171dc7d" xml:space="preserve">
+    <value>Przeszukiwanie biblioteki serwera: {0}</value>
+  </data>
+  <data name="Serverbibliothek_durchsucht_0_75c3bb75" xml:space="preserve">
+    <value>Przeszukano bibliotekę serwera ({0}).</value>
+  </data>
+  <data name="Serverbibliothek_durchsucht_c4a856f1" xml:space="preserve">
+    <value>Przeszukano bibliotekę serwera.</value>
+  </data>
+  <data name="Durchsuchen_wird_abgebrochen_c808d816" xml:space="preserve">
+    <value>Przerywanie przeszukiwania …</value>
+  </data>
+  <data name="Durchsuchen_abgebrochen_8d433df4" xml:space="preserve">
+    <value>Przeszukiwanie przerwane.</value>
+  </data>
+  <data name="Durchsuchen_abbrechen_005a4e5c" xml:space="preserve">
+    <value>Przerwij przeszukiwanie</value>
+  </data>
+  <data name="Es_l_uft_gerade_ein_anderer_Lyrion_Vorgang_a04d644a" xml:space="preserve">
+    <value>Trwa już inne zadanie Lyriona.</value>
+  </data>
 </root>

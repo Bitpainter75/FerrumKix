@@ -486,4 +486,28 @@
   <data name="Favoriten_ohne_passendes_Album_aus_den_Favoriten_45e61bc2" xml:space="preserve">
     <value>Hapus favorit tanpa album yang cocok</value>
   </data>
+  <data name="Serverbibliothek_wird_durchsucht_288f7951" xml:space="preserve">
+    <value>Memindai pustaka server …</value>
+  </data>
+  <data name="Serverbibliothek_wird_durchsucht_0_8171dc7d" xml:space="preserve">
+    <value>Memindai pustaka server: {0}</value>
+  </data>
+  <data name="Serverbibliothek_durchsucht_0_75c3bb75" xml:space="preserve">
+    <value>Pustaka server dipindai ({0}).</value>
+  </data>
+  <data name="Serverbibliothek_durchsucht_c4a856f1" xml:space="preserve">
+    <value>Pustaka server dipindai.</value>
+  </data>
+  <data name="Durchsuchen_wird_abgebrochen_c808d816" xml:space="preserve">
+    <value>Membatalkan pemindaian …</value>
+  </data>
+  <data name="Durchsuchen_abgebrochen_8d433df4" xml:space="preserve">
+    <value>Pemindaian dibatalkan.</value>
+  </data>
+  <data name="Durchsuchen_abbrechen_005a4e5c" xml:space="preserve">
+    <value>Batalkan pemindaian</value>
+  </data>
+  <data name="Es_l_uft_gerade_ein_anderer_Lyrion_Vorgang_a04d644a" xml:space="preserve">
+    <value>Tugas Lyrion lain sedang berjalan.</value>
+  </data>
 </root>

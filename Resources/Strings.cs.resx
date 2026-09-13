@@ -486,4 +486,28 @@
   <data name="Favoriten_ohne_passendes_Album_aus_den_Favoriten_45e61bc2" xml:space="preserve">
     <value>Odstranit oblíbené bez odpovídajícího alba</value>
   </data>
+  <data name="Serverbibliothek_wird_durchsucht_288f7951" xml:space="preserve">
+    <value>Prohledává se knihovna serveru …</value>
+  </data>
+  <data name="Serverbibliothek_wird_durchsucht_0_8171dc7d" xml:space="preserve">
+    <value>Prohledává se knihovna serveru: {0}</value>
+  </data>
+  <data name="Serverbibliothek_durchsucht_0_75c3bb75" xml:space="preserve">
+    <value>Knihovna serveru prohledána ({0}).</value>
+  </data>
+  <data name="Serverbibliothek_durchsucht_c4a856f1" xml:space="preserve">
+    <value>Knihovna serveru prohledána.</value>
+  </data>
+  <data name="Durchsuchen_wird_abgebrochen_c808d816" xml:space="preserve">
+    <value>Prohledávání se přerušuje …</value>
+  </data>
+  <data name="Durchsuchen_abgebrochen_8d433df4" xml:space="preserve">
+    <value>Prohledávání přerušeno.</value>
+  </data>
+  <data name="Durchsuchen_abbrechen_005a4e5c" xml:space="preserve">
+    <value>Přerušit prohledávání</value>
+  </data>
+  <data name="Es_l_uft_gerade_ein_anderer_Lyrion_Vorgang_a04d644a" xml:space="preserve">
+    <value>Právě běží jiná úloha Lyrionu.</value>
+  </data>
 </root>

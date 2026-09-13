@@ -204,6 +204,68 @@ Namespace Services
             Return tracks
         End Function
 
+        ''' <summary>Wie weit der Server mit dem Durchsuchen seiner Bibliothek ist.</summary>
+        Public NotInheritable Class ScanProgress
+            Public Property Running As Boolean
+            ''' <summary>Was der Server zum laufenden Schritt sagt - in SEINER Sprache, nicht in
+            ''' der von FerrumPlay. Der Server kennt die Sprache der Anwendung nicht, und einen
+            ''' Schrittnamen wie "discovering_directory" selbst zu uebersetzen hiesse, eine Liste
+            ''' zu pflegen, die mit jeder Servererweiterung veraltet. Der Rahmen um diesen Text
+            ''' herum ist uebersetzt, der Text selbst kommt, wie er kommt.</summary>
+            Public Property Description As String = String.Empty
+            ''' <summary>Der laufende Schritt in Prozent, -1 wenn der Server es noch nicht sagen
+            ''' kann. Beim Erkunden der Verzeichnisse steht dort -1, weil die Gesamtzahl noch
+            ''' nicht feststeht.</summary>
+            Public Property Percent As Integer = -1
+            ''' <summary>Die bisher verstrichene Zeit, wie der Server sie schreibt: "00:00:16".</summary>
+            Public Property TotalTime As String = String.Empty
+        End Class
+
+        ''' <summary>Laesst den Server nach NEUEN UND GEAENDERTEN Titeln sehen. Das ist der
+        ''' sparsame Lauf; "rescan full" wuerde die Bibliothek verwerfen und alles neu einlesen,
+        ''' was bei 78000 Titeln weit laenger dauert und hier nicht gemeint ist.</summary>
+        Public Shared Async Function StartRescanAsync(cancellationToken As CancellationToken) As Task
+            Await RequestAsync("", {"rescan"}, cancellationToken)
+        End Function
+
+        ''' <summary>Bricht einen laufenden Durchlauf ab. Ohne diesen Befehl liefe der Server
+        ''' weiter, und ein "abgebrochen" in der Anwendung waere nur das Wegsehen.</summary>
+        Public Shared Async Function AbortScanAsync(cancellationToken As CancellationToken) As Task
+            Await RequestAsync("", {"abortscan"}, cancellationToken)
+        End Function
+
+        ''' <summary>Der Stand des Durchlaufs.
+        '''
+        ''' <para>Der Server nennt in "steps" die bisher begonnenen Schritte durch Komma getrennt
+        ''' und legt zu JEDEM ein Feld gleichen Namens mit dem Prozentwert dazu. Der LETZTE der
+        ''' Liste ist der laufende. Aufgenommen an LMS 9.1.2:</para>
+        ''' <code>steps:"discovering_directory,directory_deleted,directory_new,plugin_fulltext"
+        ''' discovering_directory:100  directory_deleted:100  directory_new:100
+        ''' plugin_fulltext:16  fullname:"Dateien/Verzeichnisse werden erkannt: /music"
+        ''' info:"/music/S/Sweet Cheater/..."  totaltime:"00:00:08"  rescan:1</code>
+        ''' <para>Laeuft nichts, kommt nur <c>rescan:0</c> zurueck - dann fehlen alle uebrigen
+        ''' Felder, und genau deshalb wird jedes einzeln und nachsichtig gelesen.</para></summary>
+        Public Shared Async Function GetScanProgressAsync(cancellationToken As CancellationToken) As Task(Of ScanProgress)
+            Dim result = Await RequestAsync("", {"rescanprogress"}, cancellationToken)
+            Dim progress As New ScanProgress With {.Running = Text(result, "rescan") = "1",
+                                                   .TotalTime = Text(result, "totaltime")}
+            If Not progress.Running Then Return progress
+
+            Dim steps = Text(result, "steps").Split(","c)
+            Dim current = If(steps.Length > 0, steps(steps.Length - 1).Trim(), String.Empty)
+            If current.Length > 0 Then
+                Dim percent As Integer
+                If Integer.TryParse(Text(result, current), NumberStyles.Integer, CultureInfo.InvariantCulture, percent) Then
+                    progress.Percent = If(percent < 0 OrElse percent > 100, -1, percent)
+                End If
+            End If
+            ' "fullname" ist der ganze Satz, "info" die Einzelheit daneben. Fehlen beide, bleibt
+            ' der Schrittname - haesslich, aber immer noch besser als eine leere Zeile.
+            progress.Description = FirstText(result, "fullname", "info")
+            If progress.Description.Length = 0 Then progress.Description = current
+            Return progress
+        End Function
+
         ''' <summary>Die Adresse, unter der der Server eine Titeldatei unveraendert herausgibt. Sie
         ''' liefert dieselben Bytes wie die Datei in der Ablage.</summary>
         Public Shared Function DownloadUrl(trackId As String) As String

@@ -51,10 +51,12 @@ Namespace Views
    ' Der Abgleich laeuft im Dienst und nicht hier: dieses Panel wird bei jedem Oeffnen neu
    ' gebaut, ein laufender Lauf ueberlebt das. Beim Anmelden holt sich die Ansicht sofort den
    ' aktuellen Stand - sonst saehe ein neu geoeffnetes Panel einen laufenden Abgleich nicht.
-   AddHandler LyrionFavoriteSyncService.StateChanged, AddressOf OnSyncStateChanged
+   AddHandler LyrionTaskState.Changed, AddressOf OnSyncStateChanged
+   AddHandler LyrionLibraryScanService.Completed, AddressOf OnLibraryScanCompleted
    AddHandler DetachedFromVisualTree, Sub(sender, e)
                                         RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
-                                        RemoveHandler LyrionFavoriteSyncService.StateChanged, AddressOf OnSyncStateChanged
+                                        RemoveHandler LyrionTaskState.Changed, AddressOf OnSyncStateChanged
+                                        RemoveHandler LyrionLibraryScanService.Completed, AddressOf OnLibraryScanCompleted
                                       End Sub
    FillSortBox()
    RenderSyncState()
@@ -348,10 +350,32 @@ Namespace Views
    LoadAlbumsAsync()
   End Sub
 
+  ''' <summary>Aktualisieren heisst zweierlei, und die Reihenfolge ist der Punkt: erst laesst der
+  ''' SERVER nach neuen und geaenderten Titeln sehen, dann wird seine Antwort geholt. Nur die
+  ''' Liste noch einmal zu holen zeigte denselben Stand - eine eben hinzugekommene Platte kennt
+  ''' der Server ja noch gar nicht.
+  '''
+  ''' <para>Laeuft der Durchlauf, kommt die Liste erst, wenn er fertig ist (siehe
+  ''' OnLibraryScanCompleted). Konnte er nicht anfangen, weil ein anderer Vorgang laeuft, wird
+  ''' wenigstens die Liste geholt - ein Klick darf nicht folgenlos bleiben.</para></summary>
   Private Sub OnReloadClick(sender As Object, e As RoutedEventArgs)
    If _shownAlbum IsNot Nothing Then ShowAlbumAsync(_shownAlbum) : Return
-   ' Von Hand aktualisiert heisst: alles noch einmal. Auch die Favoriten koennen sich anderswo
-   ' geaendert haben, und ein Cover kann ein anderes geworden sein.
+   Select Case LyrionLibraryScanService.Toggle()
+    Case LyrionLibraryScanService.StartResult.Started, LyrionLibraryScanService.StartResult.Cancelling
+     RenderSyncState()
+     Return
+   End Select
+   ReloadLibrary()
+  End Sub
+
+  ''' <summary>Der Server ist durch - jetzt lohnt die Liste. Von einem Hintergrundfaden.</summary>
+  Private Sub OnLibraryScanCompleted(sender As Object, e As EventArgs)
+   Avalonia.Threading.Dispatcher.UIThread.Post(AddressOf ReloadLibrary)
+  End Sub
+
+  ''' <summary>Alles noch einmal. Auch die Favoriten koennen sich anderswo geaendert haben, und
+  ''' ein Cover kann ein anderes geworden sein.</summary>
+  Private Sub ReloadLibrary()
    _favoritesLoaded = False
    _tilesById.Clear()
    LoadAlbumsAsync()
@@ -366,7 +390,7 @@ Namespace Views
   ''' <summary>Nimmt die Schlussmeldung weg. Einen LAUFENDEN Abgleich beendet dieser Knopf nicht -
   ''' waehrend des Laufs steht er deshalb gar nicht da.</summary>
   Private Sub OnSyncDismissClick(sender As Object, e As RoutedEventArgs)
-   If LyrionFavoriteSyncService.IsBusy Then Return
+   If LyrionTaskState.IsBusy Then Return
    _syncDismissed = True
    RenderSyncState()
   End Sub
@@ -387,11 +411,11 @@ Namespace Views
    Dim dismiss = FindControl(Of Button)("SyncDismissButton")
    If box Is Nothing OrElse line Is Nothing OrElse button Is Nothing OrElse dismiss Is Nothing Then Return
 
-   Dim state = LyrionFavoriteSyncService.State
-   Dim busy = state <> LyrionFavoriteSyncService.SyncState.Idle
+   Dim running = LyrionTaskState.Running
+   Dim busy = LyrionTaskState.IsBusy
    ' Ein neuer Lauf bringt eine weggeklickte Meldung zurueck.
    If busy Then _syncDismissed = False
-   Dim text = LyrionFavoriteSyncService.Status
+   Dim text = LyrionTaskState.Status
 
    ' Die Zeile bleibt stehen, solange es unaufloesbare Favoriten gibt: sie traegt den einzigen
    ' Knopf, mit dem sich daran etwas machen laesst.
@@ -406,13 +430,30 @@ Namespace Views
    SetClass(line, "sync-busy", busy)
    dismiss.IsVisible = Not busy
 
-   SetClass(button, "active", busy)
+   ' Hervorgehoben wird der Knopf, dem der laufende Vorgang GEHOERT - und nur der. Sonst saehe
+   ' es aus, als liesse sich ein Durchsuchen ueber den Abgleichknopf beenden.
+   Dim syncing = running = LyrionTaskState.Kind.Sync OrElse running = LyrionTaskState.Kind.Cleanup
+   Dim scanning = running = LyrionTaskState.Kind.Scan
+   SetClass(button, "active", syncing)
    ' Das angehaengte Leerzeichen macht es LocalizationService.ApplyTo nach: bei krummer
    ' Skalierung fehlt dem Hinweis sonst beim Anordnen ein Bruchteil, und das letzte Zeichen
    ' verschwindet.
-   ToolTip.SetTip(button, If(busy,
+   ToolTip.SetTip(button, If(syncing,
                              LocalizationService.T("Abgleich abbrechen"),
                              LocalizationService.T("Favoriten in den Zielordner abgleichen")) & " ")
+
+   Dim reload = FindControl(Of Button)("ReloadButton")
+   If reload IsNot Nothing Then
+    SetClass(reload, "active", scanning)
+    ToolTip.SetTip(reload, If(scanning,
+                              LocalizationService.T("Durchsuchen abbrechen"),
+                              LocalizationService.T("Bibliothek aktualisieren")) & " ")
+    ' Gesperrt, solange der ANDERE Vorgang laeuft. Ein Knopf, dessen Klick nur eine Absage
+    ' einbraechte, sagt das besser, indem er sich gar nicht erst druecken laesst - und die
+    ' Absage kann dann auch keine fremde Fortschrittszeile uebermalen.
+    reload.IsEnabled = Not syncing
+   End If
+   button.IsEnabled = Not scanning
   End Sub
 
   ''' <summary>Nimmt die Favoriteneintraege, zu denen es kein Album mehr gibt, beim Server aus
@@ -421,7 +462,7 @@ Namespace Views
   Private Async Sub OnRemoveUnresolvedClick(sender As Object, e As RoutedEventArgs)
    Dim entries = LyrionFavoriteSyncService.Unresolved
    Dim viewModel = TryCast(DataContext, MainWindowViewModel)
-   If entries.Count = 0 OrElse viewModel Is Nothing OrElse LyrionFavoriteSyncService.IsBusy Then Return
+   If entries.Count = 0 OrElse viewModel Is Nothing OrElse LyrionTaskState.IsBusy Then Return
 
    Dim listed = String.Join(Environment.NewLine,
                             entries.Select(Function(entry) "· " & If(String.IsNullOrWhiteSpace(entry.Name),
