@@ -99,6 +99,8 @@ Namespace ViewModels
             Dim key = String.Join("|", status.Title, status.Artist, status.Album, status.ArtworkTrackId)
             If _remoteTrack Is Nothing OrElse Not String.Equals(key, _remoteKey, StringComparison.Ordinal) Then
                 _remoteKey = key
+                ' Die Kennung ist die des laufenden Titels: der Server gibt sowohl seinen Stream
+                ' als auch sein Titelbild unter ihr heraus (/music/{id}/download bzw. cover.jpg).
                 _remoteTrack = New Track With {
                     .FilePath = LyrionMediaServerService.StreamUrl(status.ArtworkTrackId),
                     .Title = status.Title, .Artist = status.Artist,
@@ -108,6 +110,10 @@ Namespace ViewModels
                 _currentTrack = _remoteTrack
                 RaiseCurrentTrackChanged()
                 UpdatePlayingRow()
+                ' Ohne diesen Aufruf bliebe die Coverspalte links leer: das Bild kommt nicht mit
+                ' dem Titel, es wird eigens geholt. Bei oertlicher Wiedergabe erledigt das
+                ' PlayCore - der Weg hierher geht daran vorbei.
+                LoadCoverAsync(_remoteTrack)
             End If
 
             IsPlaying = status.IsPlaying
