@@ -462,9 +462,6 @@
   <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
     <value>Technology &amp; licences</value>
   </data>
-  <data name="Titel_0_von_1_wird_geholt_2_0d374c1f" xml:space="preserve">
-    <value>Fetching track {0} of {1}: {2}</value>
-  </data>
   <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve">
     <value>Include track in playback</value>
   </data>
@@ -549,9 +546,6 @@
   <data name="Zielordner_f_r_den_Favoriten_Abgleich_96a880a6" xml:space="preserve">
     <value>Target folder for the favorites sync</value>
   </data>
-  <data name="Zielordner_wird_verglichen_9500b01c" xml:space="preserve">
-    <value>Comparing target folder …</value>
-  </data>
   <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve">
     <value>Shuffle</value>
   </data>
@@ -622,4 +616,49 @@
   <data name="einzelnen_Titel_wiederholen_7d8f2e32" xml:space="preserve"><value>repeat single track</value></data>
   <data name="kein_Titel_aee2a500" xml:space="preserve"><value>no track</value></data>
   <data name="mit_CUE_ec6a9564" xml:space="preserve"><value>with CUE</value></data>
+  <data name="Abgleich_wird_vorbereitet_0f5789da" xml:space="preserve">
+    <value>Preparing sync …</value>
+  </data>
+  <data name="Abgleich_wird_abgebrochen_3605f2f4" xml:space="preserve">
+    <value>Cancelling sync …</value>
+  </data>
+  <data name="Abgleich_abgebrochen_0_geholt_1_2_entfernt_0aa65e9c" xml:space="preserve">
+    <value>Sync cancelled: {0} fetched ({1}), {2} removed.</value>
+  </data>
+  <data name="Der_Server_hat_nicht_rechtzeitig_geantwortet_Der_73ced782" xml:space="preserve">
+    <value>The server did not answer in time. The sync was not carried out.</value>
+  </data>
+  <data name="Zielordner_wird_verglichen_0_Titel_1fb24cac" xml:space="preserve">
+    <value>Comparing target folder ({0} tracks) …</value>
+  </data>
+  <data name="Titel_0_von_1_2_von_3_4_52c60dd1" xml:space="preserve">
+    <value>Track {0} of {1} · {2} of {3} · {4}</value>
+  </data>
+  <data name="0_berz_hlige_Dateien_werden_entfernt_e9d46f47" xml:space="preserve">
+    <value>Removing {0} surplus files …</value>
+  </data>
+  <data name="Abgleich_abbrechen_ea5b4c12" xml:space="preserve">
+    <value>Cancel sync</value>
+  </data>
+  <data name="Meldung_ausblenden_340aedc2" xml:space="preserve">
+    <value>Hide message</value>
+  </data>
+  <data name="0_Favoriten_werden_entfernt_a964d74e" xml:space="preserve">
+    <value>Removing {0} favorites …</value>
+  </data>
+  <data name="0_Favoriten_entfernt_1f8c377e" xml:space="preserve">
+    <value>{0} favorites removed.</value>
+  </data>
+  <data name="Favoriten_ohne_passendes_Album_entfernen_4eef749d" xml:space="preserve">
+    <value>Remove favorites without a matching album?</value>
+  </data>
+  <data name="Zu_diesen_0_Favoriteneintr_gen_gibt_es_kein_Albu_fceaa15e" xml:space="preserve">
+    <value>There is no album left for these {0} favorite entries: renamed, re-tagged or deleted. Remove them from the favorites on the server? The music itself is not touched.</value>
+  </data>
+  <data name="Aus_Favoriten_entfernen_ffcbb223" xml:space="preserve">
+    <value>Remove from favorites</value>
+  </data>
+  <data name="Favoriten_ohne_passendes_Album_aus_den_Favoriten_45e61bc2" xml:space="preserve">
+    <value>Remove favorites without a matching album</value>
+  </data>
 </root>

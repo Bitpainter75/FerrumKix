@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FerrumPlay.Views.ConfirmDialogOverlay">
+
+    <!-- Die Sicherheitsabfrage des Fensters, uebernommen aus FerrumPix (DialogOverlayView):
+         eine Decke ueber dem ganzen Inhalt statt eines eigenen Fensters. FerrumPlay traegt seine
+         Fensterleiste selbst; ein zweites Fenster braechte seine eigene mit.
+
+         Die dunkle Flaeche hat einen Hintergrund und faengt damit jeden Klick ab - was darunter
+         liegt, ist waehrend der Frage nicht bedienbar. -->
+    <Border Background="#B8000000" ZIndex="500"
+            IsVisible="{Binding IsDialogOpen}">
+        <Border MaxWidth="620" MinWidth="420"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Margin="24"
+                Background="{DynamicResource FP.Bg.Panel}"
+                BorderBrush="{DynamicResource FP.Border.Strong}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="22">
+            <Grid RowDefinitions="Auto,Auto,*,Auto">
+                <TextBlock Text="{Binding DialogTitle}" Classes="no-translate"
+                           FontSize="{DynamicResource FP.Font.Heading}" FontWeight="SemiBold"
+                           TextWrapping="Wrap"/>
+                <TextBlock Grid.Row="1" Text="{Binding DialogMessage}" Classes="no-translate"
+                           Foreground="{DynamicResource FP.Text.Secondary}"
+                           TextWrapping="Wrap" LineHeight="18" Margin="0,10,0,0"/>
+
+                <!-- Die Auflistung rollt und ist hoehenbegrenzt: bei zweihundert Eintraegen
+                     wuechse die Karte sonst ueber den Bildschirm hinaus und die Knoepfe darunter
+                     waeren nicht mehr erreichbar. Genau der Fehler, den FerrumPix im
+                     Export-Dialog einmal hatte. -->
+                <Border Grid.Row="2" IsVisible="{Binding HasDialogDetails}"
+                        Background="{DynamicResource FP.Bg.Elevated}"
+                        CornerRadius="6" Padding="12,9" Margin="0,16,0,0"
+                        MaxHeight="260">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <TextBlock Text="{Binding DialogDetails}" Classes="no-translate"
+                                   TextWrapping="Wrap" LineHeight="19"
+                                   FontSize="{DynamicResource FP.Font.Small}"/>
+                    </ScrollViewer>
+                </Border>
+
+                <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="8"
+                            HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <Button Classes="ghost no-translate" Content="{Binding DialogCancelText}"
+                            Click="OnCancelClick"/>
+                    <Button Classes="no-translate" Content="{Binding DialogConfirmText}"
+                            Click="OnConfirmClick"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Border>
+</UserControl>

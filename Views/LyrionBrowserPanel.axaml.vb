@@ -36,6 +36,9 @@ Namespace Views
   ''' diese Sperre laedt jeder Sprachwechsel die Bibliothek neu.</summary>
   Private _suppressSortChange As Boolean
   Private ReadOnly _searchDebounce As New Avalonia.Threading.DispatcherTimer With {.Interval = TimeSpan.FromMilliseconds(300)}
+  ''' <summary>Die Schlussmeldung des Abgleichs bleibt stehen, bis sie weggeklickt wird. Nur
+  ''' dieses Panel merkt sich das - der naechste Lauf zeigt sie wieder.</summary>
+  Private _syncDismissed As Boolean
   Public Sub New()
    Me.New(Nothing, Nothing)
   End Sub
@@ -45,8 +48,16 @@ Namespace Views
    ' Fensters, also laeuft er hier noch einmal und bei jedem Sprachwechsel erneut.
    LocalizationService.ApplyTo(Me)
    AddHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
-   AddHandler DetachedFromVisualTree, Sub(sender, e) RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
+   ' Der Abgleich laeuft im Dienst und nicht hier: dieses Panel wird bei jedem Oeffnen neu
+   ' gebaut, ein laufender Lauf ueberlebt das. Beim Anmelden holt sich die Ansicht sofort den
+   ' aktuellen Stand - sonst saehe ein neu geoeffnetes Panel einen laufenden Abgleich nicht.
+   AddHandler LyrionFavoriteSyncService.StateChanged, AddressOf OnSyncStateChanged
+   AddHandler DetachedFromVisualTree, Sub(sender, e)
+                                        RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
+                                        RemoveHandler LyrionFavoriteSyncService.StateChanged, AddressOf OnSyncStateChanged
+                                      End Sub
    FillSortBox()
+   RenderSyncState()
    UpdateSortDirection()
    AddHandler _searchDebounce.Tick, AddressOf OnSearchDebounceTick
    AddHandler DataContextChanged, AddressOf OnPanelDataContextChanged
@@ -61,6 +72,9 @@ Namespace Views
    LocalizationService.ApplyTo(Me)
    ' Das Auswahlfeld wird aus Code gefuellt, der Durchlauf ueber den Baum erreicht es nicht.
    FillSortBox()
+   ' Ebenso der Kurzhinweis des Abgleichknopfes: er wechselt zwischen Starten und Abbrechen und
+   ' wird deshalb gesetzt, nicht uebersetzt.
+   RenderSyncState()
   End Sub
 
   Private Sub ShowExistingTracks(tracks As List(Of Track), currentTrack As Track)
@@ -336,71 +350,100 @@ Namespace Views
 
   Private Sub OnReloadClick(sender As Object, e As RoutedEventArgs)
    If _shownAlbum IsNot Nothing Then ShowAlbumAsync(_shownAlbum) : Return
-   ''' Von Hand aktualisiert heisst: alles noch einmal. Auch die Favoriten koennen sich
-   ''' anderswo geaendert haben, und ein Cover kann ein anderes geworden sein.
+   ' Von Hand aktualisiert heisst: alles noch einmal. Auch die Favoriten koennen sich anderswo
+   ' geaendert haben, und ein Cover kann ein anderes geworden sein.
    _favoritesLoaded = False
    _tilesById.Clear()
    LoadAlbumsAsync()
   End Sub
-  ''' <summary>Laeuft gerade ein Abgleich? Dann bricht ein zweiter Klick ihn ab, statt einen
-  ''' zweiten zu starten - zwei Laeufe auf denselben Ordner kaemen sich in die Quere.</summary>
-  Private _syncCancel As Threading.CancellationTokenSource
-
-  Private Async Sub OnSyncClick(sender As Object, e As RoutedEventArgs)
-   If _syncCancel IsNot Nothing Then
-    _syncCancel.Cancel()
-    Return
-   End If
-
-   Dim target = AppSettingsService.Current.LyrionSyncTargetPath
-   If String.IsNullOrWhiteSpace(target) Then
-    SyncStatus(LocalizationService.T("Bitte zuerst einen Zielordner für den Favoritenabgleich wählen."))
-    Return
-   End If
-
-   Dim source As New Threading.CancellationTokenSource()
-   _syncCancel = source
-   FindControl(Of Button)("SyncButton").Classes.Add("active")
-   Try
-    Dim report As Action(Of String) = Sub(line) Avalonia.Threading.Dispatcher.UIThread.Post(Sub() SyncStatus(line))
-    Dim plan = Await LyrionFavoriteSyncService.BuildPlanAsync(target, report, source.Token)
-
-    If plan.Unresolved.Count > 0 Then
-     DiagnosticLogService.Log("Lyrion.Sync", $"Ohne Album: {String.Join(", ", plan.Unresolved)}")
-    End If
-
-    If Not plan.HasWork Then
-     SyncStatus(LocalizationService.Format("Abgleich: nichts zu tun, {0} Titel sind aktuell.", plan.UpToDate))
-     Return
-    End If
-
-    SyncStatus(LocalizationService.Format("Abgleich: {0} Titel holen ({1}), {2} entfernen …",
-                                          plan.Fetch.Count, LyrionFavoriteSyncService.FormatBytes(plan.BytesToFetch), plan.Remove.Count))
-    Dim result = Await LyrionFavoriteSyncService.RunAsync(plan, report, source.Token)
-
-    Dim text = LocalizationService.Format("Abgleich fertig: {0} geholt ({1}), {2} entfernt.",
-                                          result.Fetched, LyrionFavoriteSyncService.FormatBytes(result.BytesFetched), result.Removed)
-    If result.Failed > 0 Then text &= " " & LocalizationService.Format("{0} fehlgeschlagen, siehe Protokoll.", result.Failed)
-    If plan.Unresolved.Count > 0 Then text &= " " & LocalizationService.Format("{0} Favoriten ohne passendes Album übersprungen.", plan.Unresolved.Count)
-    SyncStatus(text)
-   Catch ex As OperationCanceledException
-    SyncStatus(LocalizationService.T("Abgleich abgebrochen."))
-   Catch ex As Exception
-    SyncStatus(ex.Message)
-    DiagnosticLogService.LogException("Lyrion.Sync", ex)
-   Finally
-    _syncCancel = Nothing
-    source.Dispose()
-    FindControl(Of Button)("SyncButton").Classes.Remove("active")
-   End Try
+  ''' <summary>Ein Knopf fuer beides: er startet den Abgleich, und waehrend er laeuft bricht er
+  ''' ihn ab. Die Entscheidung faellt im Dienst, weil dort der Lauf liegt - dieses Panel wird bei
+  ''' jedem Oeffnen neu gebaut und wuesste von einem laufenden Abgleich sonst nichts.</summary>
+  Private Sub OnSyncClick(sender As Object, e As RoutedEventArgs)
+   LyrionFavoriteSyncService.Toggle()
   End Sub
 
-  ''' <summary>Der Abgleich schreibt in dieselbe Statuszeile wie die Uebersicht. Steht gerade die
-  ''' Titelliste eines Albums offen, gehoert die Zeile dieser Liste - dann bleibt die Meldung aus,
-  ''' statt die Angaben zum Album zu ueberschreiben.</summary>
-  Private Sub SyncStatus(text As String)
-   If _shownAlbum IsNot Nothing Then Return
-   FindControl(Of TextBlock)("Status").Text = text
+  ''' <summary>Nimmt die Schlussmeldung weg. Einen LAUFENDEN Abgleich beendet dieser Knopf nicht -
+  ''' waehrend des Laufs steht er deshalb gar nicht da.</summary>
+  Private Sub OnSyncDismissClick(sender As Object, e As RoutedEventArgs)
+   If LyrionFavoriteSyncService.IsBusy Then Return
+   _syncDismissed = True
+   RenderSyncState()
+  End Sub
+
+  ''' <summary>Der Dienst meldet sich aus einem Hintergrundfaden - der Wechsel auf den
+  ''' Oberflaechenfaden gehoert hierher.</summary>
+  Private Sub OnSyncStateChanged(sender As Object, e As EventArgs)
+   Avalonia.Threading.Dispatcher.UIThread.Post(AddressOf RenderSyncState)
+  End Sub
+
+  ''' <summary>Zeichnet den Stand des Abgleichs: die eigene Meldungszeile, die Farbe des
+  ''' Abgleichknopfes und sein Kurzhinweis. Einziger Ort, an dem das geschieht - so steht nach
+  ''' jedem Ereignis dasselbe da, egal ob die Ansicht gerade neu gebaut wurde.</summary>
+  Private Sub RenderSyncState()
+   Dim box = FindControl(Of Border)("SyncStatusBox")
+   Dim line = FindControl(Of TextBlock)("SyncStatus")
+   Dim button = FindControl(Of Button)("SyncButton")
+   Dim dismiss = FindControl(Of Button)("SyncDismissButton")
+   If box Is Nothing OrElse line Is Nothing OrElse button Is Nothing OrElse dismiss Is Nothing Then Return
+
+   Dim state = LyrionFavoriteSyncService.State
+   Dim busy = state <> LyrionFavoriteSyncService.SyncState.Idle
+   ' Ein neuer Lauf bringt eine weggeklickte Meldung zurueck.
+   If busy Then _syncDismissed = False
+   Dim text = LyrionFavoriteSyncService.Status
+
+   ' Die Zeile bleibt stehen, solange es unaufloesbare Favoriten gibt: sie traegt den einzigen
+   ' Knopf, mit dem sich daran etwas machen laesst.
+   Dim cleanup = FindControl(Of Button)("SyncCleanupButton")
+   Dim unresolved = LyrionFavoriteSyncService.Unresolved.Count
+   If cleanup IsNot Nothing Then cleanup.IsVisible = Not busy AndAlso unresolved > 0
+   If unresolved > 0 Then _syncDismissed = False
+
+   box.IsVisible = Not _syncDismissed AndAlso Not String.IsNullOrEmpty(text)
+   line.Text = text
+   ' Die Farbe sagt, ob noch etwas geschieht: das ist der Unterschied, um den es geht.
+   SetClass(line, "sync-busy", busy)
+   dismiss.IsVisible = Not busy
+
+   SetClass(button, "active", busy)
+   ' Das angehaengte Leerzeichen macht es LocalizationService.ApplyTo nach: bei krummer
+   ' Skalierung fehlt dem Hinweis sonst beim Anordnen ein Bruchteil, und das letzte Zeichen
+   ' verschwindet.
+   ToolTip.SetTip(button, If(busy,
+                             LocalizationService.T("Abgleich abbrechen"),
+                             LocalizationService.T("Favoriten in den Zielordner abgleichen")) & " ")
+  End Sub
+
+  ''' <summary>Nimmt die Favoriteneintraege, zu denen es kein Album mehr gibt, beim Server aus
+  ''' den Favoriten - nach Rueckfrage MIT Auflistung. Beim Server geloescht ist geloescht, und die
+  ''' blosse Anzahl sagt nicht, was verschwindet.</summary>
+  Private Async Sub OnRemoveUnresolvedClick(sender As Object, e As RoutedEventArgs)
+   Dim entries = LyrionFavoriteSyncService.Unresolved
+   Dim viewModel = TryCast(DataContext, MainWindowViewModel)
+   If entries.Count = 0 OrElse viewModel Is Nothing OrElse LyrionFavoriteSyncService.IsBusy Then Return
+
+   Dim listed = String.Join(Environment.NewLine,
+                            entries.Select(Function(entry) "· " & If(String.IsNullOrWhiteSpace(entry.Name),
+                                                                     entry.Url, entry.Name)))
+   Dim confirmed = Await viewModel.ShowConfirmAsync(
+    LocalizationService.T("Favoriten ohne passendes Album entfernen?"),
+    LocalizationService.Format("Zu diesen {0} Favoriteneinträgen gibt es kein Album mehr: umbenannt, neu getaggt oder gelöscht. Sollen sie beim Server aus den Favoriten genommen werden? An der Musik ändert das nichts.", entries.Count),
+    listed,
+    LocalizationService.T("Aus Favoriten entfernen"),
+    LocalizationService.T("Abbrechen"))
+   If Not confirmed Then Return
+   LyrionFavoriteSyncService.StartUnresolvedCleanup()
+  End Sub
+
+  ''' <summary>Setzt oder nimmt eine Klasse. RenderSyncState laeuft bei jeder Meldung erneut;
+  ''' ein blosses Classes.Add legte die Klasse dann ein ums andere Mal nach.</summary>
+  Private Shared Sub SetClass(target As Control, name As String, wanted As Boolean)
+   If wanted Then
+    If Not target.Classes.Contains(name) Then target.Classes.Add(name)
+   Else
+    target.Classes.Remove(name)
+   End If
   End Sub
 
   Private Sub OnJumpToCurrentTrackClick(sender As Object, e As RoutedEventArgs)

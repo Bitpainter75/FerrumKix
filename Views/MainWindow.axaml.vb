@@ -231,6 +231,17 @@ Namespace Views
             Dim viewModel = Me.ViewModel
             If viewModel Is Nothing Then Return
 
+            ' Steht eine Sicherheitsabfrage offen, gehoert ihr die Tastatur - und zwar GANZ.
+            ' Ohne dieses Handled hielte die Leertaste hinter der Frage die Wiedergabe an.
+            If viewModel.IsDialogOpen Then
+                Select Case e.Key
+                    Case Key.Escape : viewModel.CancelDialog()
+                    Case Key.Enter : viewModel.ConfirmDialog()
+                End Select
+                e.Handled = True
+                Return
+            End If
+
             ' In einem Eingabefeld gehoert jede Taste dem Feld. Sonst hielte die Leertaste die
             ' Wiedergabe an, statt ein Leerzeichen in die Suche zu schreiben.
             If TypeOf TopLevel.GetTopLevel(Me)?.FocusManager?.GetFocusedElement() Is TextBox Then Return

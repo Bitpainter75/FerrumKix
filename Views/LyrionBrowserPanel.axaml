@@ -29,6 +29,16 @@
         <Style Selector="Button.fav-badge:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="#CC000000"/>
         </Style>
+        <!-- Die Meldungszeile des Favoritenabgleichs. Die FARBE sagt, ob noch etwas geschieht:
+             im Akzent, solange der Lauf arbeitet, danach gedaempft wie jede andere Angabe. Genau
+             diese Unterscheidung fehlte, solange der Abgleich sich die Statuszeile mit der
+             Uebersicht teilte. -->
+        <Style Selector="TextBlock#SyncStatus">
+            <Setter Property="Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
+        </Style>
+        <Style Selector="TextBlock#SyncStatus.sync-busy">
+            <Setter Property="Foreground" Value="{DynamicResource FP.Accent}"/>
+        </Style>
         <!-- Gleiche Flächen für Hover und Auswahl wie in der normalen Wiedergabeliste. -->
         <Style Selector="ListBoxItem.lyrion-track">
             <Setter Property="Background" Value="Transparent"/>
@@ -140,9 +150,40 @@
             </Button>
         </Grid>
 
-        <Grid Grid.Row="2" RowDefinitions="Auto,*">
+        <Grid Grid.Row="2" RowDefinitions="Auto,Auto,*">
             <TextBlock x:Name="Status" Classes="muted" Text="Lyrion Media Server wird geladen …" Margin="2,0,0,8"/>
-            <Grid Grid.Row="1">
+            <!-- Der Favoritenabgleich bekommt eine EIGENE Zeile. Teilte er sie sich mit der
+                 Statuszeile darueber, loeschte jeder Handgriff in der Uebersicht - umsortieren,
+                 filtern, ein Album oeffnen - seinen Fortschritt weg, und nach dem Lauf waere das
+                 Ergebnis beim naechsten Neuaufbau der Liste verschwunden. Sie steht nur da, wenn
+                 es etwas zu sagen gibt, und ihr Text kommt ausschliesslich aus dem Dienst
+                 (LyrionFavoriteSyncService.Status), nicht aus diesem Panel. -->
+            <Border x:Name="SyncStatusBox" Grid.Row="1" IsVisible="False"
+                    Background="{DynamicResource FP.Bg.Elevated}" CornerRadius="6"
+                    Padding="10,6" Margin="0,0,0,8">
+                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                    <TextBlock x:Name="SyncStatus" Classes="no-translate"
+                               VerticalAlignment="Center" TextWrapping="Wrap"/>
+                    <!-- Steht nur da, wenn der letzte Lauf Favoriten ohne passendes Album
+                         gefunden hat. Der Klick fragt erst nach und zeigt dabei, um welche
+                         Eintraege es geht - geloescht wird beim Server, das ist nicht
+                         zurueckzunehmen. -->
+                    <Button x:Name="SyncCleanupButton" Grid.Column="1" Classes="icon-btn"
+                            Width="22" Height="22" IsVisible="False"
+                            Click="OnRemoveUnresolvedClick"
+                            ToolTip.Tip="Favoriten ohne passendes Album aus den Favoriten nehmen">
+                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/trash.svg"
+                                       Width="13" Height="13"/>
+                    </Button>
+                    <Button x:Name="SyncDismissButton" Grid.Column="2" Classes="icon-btn"
+                            Width="22" Height="22" Click="OnSyncDismissClick"
+                            ToolTip.Tip="Meldung ausblenden">
+                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/x.svg"
+                                       Width="12" Height="12"/>
+                    </Button>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="2">
                 <!-- Die Alben und die Titel eines Albums haben je einen eigenen Rollbereich: der
                      Repeater bekommt sein Sichtfenster vom ScrollViewer, in dem er steckt, und
                      kann sich zwei Ansichten nicht mit einer Liste teilen. -->

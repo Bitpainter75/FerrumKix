@@ -24,7 +24,10 @@ Namespace Services
     ''' <para>Was im Zielordner liegt und nicht mehr zu den Favoriten gehoert, wird geloescht, leer
     ''' gewordene Ordner verschwinden mit. Der Zielordner traegt danach den Stand der Favoriten und
     ''' nichts sonst. Geloescht wird ausschliesslich UNTERHALB des Zielordners, geprueft am
-    ''' aufgeloesten Pfad.</para></summary>
+    ''' aufgeloesten Pfad.</para>
+    '''
+    ''' <para>DER LAUF GEHOERT DER ANWENDUNG, nicht der Ansicht: siehe
+    ''' <see cref="Toggle"/>.</para></summary>
     Public NotInheritable Class LyrionFavoriteSyncService
 
         Private Sub New()
@@ -54,8 +57,10 @@ Namespace Services
             ''' <summary>Titel, die schon richtig im Zielordner liegen.</summary>
             Public Property UpToDate As Integer
             Public Property FavoriteAlbums As Integer
-            ''' <summary>Favoriteneintraege ohne passendes Album - meist umbenannt oder neu getaggt.</summary>
-            Public Property Unresolved As New List(Of String)()
+            ''' <summary>Favoriteneintraege ohne passendes Album - meist umbenannt oder neu
+            ''' getaggt. MIT Adresse, nicht nur mit Namen: ueber die Adresse fuehrt der Server sie,
+            ''' und nur mit ihr lassen sie sich wieder aus den Favoriten nehmen.</summary>
+            Public Property Unresolved As New List(Of LyrionMediaServerService.FavoriteEntry)()
 
             Public ReadOnly Property BytesToFetch As Long
                 Get
@@ -75,7 +80,279 @@ Namespace Services
             Public Property Removed As Integer
             Public Property Failed As Integer
             Public Property BytesFetched As Long
+            ''' <summary>Der Lauf wurde abgebrochen und hat nur einen Teil geschafft. Die Zahlen
+            ''' oben gelten trotzdem: sie sagen, was schon im Zielordner liegt.</summary>
+            Public Property Cancelled As Boolean
         End Class
+
+#Region "Der eine Lauf der Anwendung"
+
+        ''' <summary>In welchem Zustand der Abgleich steckt.</summary>
+        Public Enum SyncState
+            Idle = 0
+            Running = 1
+            ''' <summary>Abbruch angefordert, der Lauf raeumt noch auf. Ein laufender Download
+            ''' braucht dafuer einen Augenblick, und genau dieser Augenblick ist der, in dem eine
+            ''' Ansicht ohne eigenen Zustand ratlos dasteht.</summary>
+            Stopping = 2
+        End Enum
+
+        ' Der Abgleich gehoert der ANWENDUNG und nicht der Lyrion-Ansicht: die wird bei jedem
+        ' Oeffnen neu gebaut (PlayerView.ShowLyrionPanel). Haengt der Zustand am Panel, ist ein
+        ' laufender Abgleich nach einem Blick auf die Wiedergabeliste unsichtbar - und der
+        ' naechste Klick startet einen ZWEITEN Lauf auf denselben Ordner. Zwei Laeufe holen
+        ' dieselbe Datei in dieselbe ".part"-Datei und loeschen nach dem Plan, den jeder fuer
+        ' sich gefasst hat.
+        Private Shared ReadOnly StateGate As New Object()
+        Private Shared _state As SyncState = SyncState.Idle
+        Private Shared _cancel As CancellationTokenSource
+        Private Shared _status As String = String.Empty
+        ''' <summary>Die Favoriteneintraege ohne passendes Album aus dem LETZTEN Lauf. Sie werden
+        ''' zu Beginn jedes Laufs geleert: eine Liste von vorgestern verleitete sonst dazu,
+        ''' Eintraege zu loeschen, die es inzwischen wieder gibt.</summary>
+        Private Shared _unresolved As New List(Of LyrionMediaServerService.FavoriteEntry)()
+
+        ''' <summary>Meldet jede Aenderung an Zustand ODER Meldungstext. Wird aus einem
+        ''' Hintergrundfaden ausgeloest - wer die Oberflaeche anfasst, muss selbst auf den
+        ''' Oberflaechenfaden wechseln.</summary>
+        Public Shared Event StateChanged As EventHandler
+
+        Public Shared ReadOnly Property State As SyncState
+            Get
+                SyncLock StateGate
+                    Return _state
+                End SyncLock
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property IsBusy As Boolean
+            Get
+                Return State <> SyncState.Idle
+            End Get
+        End Property
+
+        ''' <summary>Die letzte Meldung. Sie bleibt nach dem Lauf stehen: wer die Ansicht
+        ''' zwischendurch geschlossen hatte, sieht beim naechsten Oeffnen, was herausgekommen
+        ''' ist.</summary>
+        Public Shared ReadOnly Property Status As String
+            Get
+                SyncLock StateGate
+                    Return _status
+                End SyncLock
+            End Get
+        End Property
+
+        ''' <summary>Was der letzte Lauf an Favoriten NICHT aufloesen konnte. Daraus baut die
+        ''' Ansicht ihre Nachfrage, ob diese Eintraege aus den Favoriten sollen.</summary>
+        Public Shared ReadOnly Property Unresolved As IReadOnlyList(Of LyrionMediaServerService.FavoriteEntry)
+            Get
+                SyncLock StateGate
+                    Return _unresolved.ToArray()
+                End SyncLock
+            End Get
+        End Property
+
+        ''' <summary>Startet den Abgleich, oder bricht den laufenden ab. EIN Knopf, EIN Lauf.
+        ''' Entschieden wird unter der Sperre, gemeldet und gearbeitet ausserhalb.</summary>
+        Public Shared Sub Toggle()
+            Dim toCancel As CancellationTokenSource = Nothing
+            Dim target As String = Nothing
+            Dim token As CancellationToken
+
+            SyncLock StateGate
+                Select Case _state
+                    Case SyncState.Stopping
+                        ' Der Abbruch laeuft schon. Ein weiterer Klick soll ihn nicht wiederholen
+                        ' und erst recht keinen neuen Lauf starten.
+                        Return
+                    Case SyncState.Running
+                        _state = SyncState.Stopping
+                        toCancel = _cancel
+                    Case Else
+                        Dim configured = AppSettingsService.Current.LyrionSyncTargetPath
+                        If Not String.IsNullOrWhiteSpace(configured) Then
+                            target = configured
+                            _cancel = New CancellationTokenSource()
+                            token = _cancel.Token
+                            _state = SyncState.Running
+                        End If
+                End Select
+            End SyncLock
+
+            If toCancel IsNot Nothing Then
+                ' Der Abbruch braucht einen Augenblick - ein laufender Download muss erst
+                ' abreissen. Ohne diese Meldung stuende so lange die letzte Fortschrittszeile da,
+                ' und der Klick saehe folgenlos aus.
+                SetStatus(LocalizationService.T("Abgleich wird abgebrochen …"))
+                toCancel.Cancel()
+                Return
+            End If
+
+            If target Is Nothing Then
+                SetStatus(LocalizationService.T("Bitte zuerst einen Zielordner für den Favoritenabgleich wählen."))
+                Return
+            End If
+
+            SetStatus(LocalizationService.T("Abgleich wird vorbereitet …"))
+            ' Alles Weitere gehoert auf einen Hintergrundfaden: der Plan liest die Angaben zu
+            ' tausenden Dateien und durchlaeuft den ganzen Zielordner, und die Antwort des Servers
+            ' sind gut 20 MB JSON. Auf dem Oberflaechenfaden steht waehrenddessen das Fenster -
+            ' und ein stehendes Fenster ist die unklarste Rueckmeldung von allen.
+            Task.Run(Function() RunOnceAsync(target, token))
+        End Sub
+
+        ''' <summary>Nimmt die Favoriteneintraege, die der letzte Lauf keinem Album zuordnen
+        ''' konnte, beim Server aus den Favoriten. Laeuft ueber DENSELBEN Zustand wie der Abgleich:
+        ''' zwei Vorgaenge, die beide an der Favoritenliste des Servers arbeiten, duerfen nicht
+        ''' nebeneinander laufen.
+        '''
+        ''' <para>Gefragt wird NICHT hier - der Dienst kennt keine Oberflaeche. Die Ansicht fragt
+        ''' und ruft erst danach.</para></summary>
+        Public Shared Sub StartUnresolvedCleanup()
+            Dim entries As List(Of LyrionMediaServerService.FavoriteEntry)
+            Dim token As CancellationToken
+
+            SyncLock StateGate
+                If _state <> SyncState.Idle Then Return
+                entries = _unresolved.ToList()
+                If entries.Count = 0 Then Return
+                _cancel = New CancellationTokenSource()
+                token = _cancel.Token
+                _state = SyncState.Running
+            End SyncLock
+
+            SetStatus(LocalizationService.Format("{0} Favoriten werden entfernt …", entries.Count))
+            Task.Run(Function() CleanUpOnceAsync(entries, token))
+        End Sub
+
+        Private Shared Async Function CleanUpOnceAsync(entries As List(Of LyrionMediaServerService.FavoriteEntry),
+                                                       token As CancellationToken) As Task
+            Dim removed = 0
+            Dim missing = 0
+            Dim failed = 0
+            Dim done As New HashSet(Of String)(StringComparer.Ordinal)
+            Try
+                For Each entry In entries
+                    If token.IsCancellationRequested Then Exit For
+                    Try
+                        ' Einzeln und jedes Mal frisch nachgeschlagen: die Nummer eines Eintrags
+                        ' ist seine STELLE in der Liste und verschiebt sich mit jedem Loeschen
+                        ' davor. Siehe LyrionMediaServerService.DeleteFavoriteAsync.
+                        If Await LyrionMediaServerService.DeleteFavoriteAsync(entry.Url, token) Then
+                            removed += 1
+                        Else
+                            ' Schon weg - anderswo entfernt. Zaehlt trotzdem als erledigt.
+                            missing += 1
+                        End If
+                        done.Add(entry.Url)
+                    Catch ex As OperationCanceledException When token.IsCancellationRequested
+                        Exit For
+                    Catch ex As Exception
+                        failed += 1
+                        DiagnosticLogService.LogAlways("Lyrion.Sync", $"{entry.Name} [{entry.Url}]: {ex.Message}")
+                    End Try
+                Next
+
+                Dim text = LocalizationService.Format("{0} Favoriten entfernt.", removed + missing)
+                If failed > 0 Then text &= " " & LocalizationService.Format("{0} fehlgeschlagen, siehe Protokoll.", failed)
+                SetStatus(text)
+            Catch ex As Exception
+                SetStatus(ex.Message)
+                DiagnosticLogService.LogException("Lyrion.Sync", ex)
+            Finally
+                Dim source As CancellationTokenSource
+                SyncLock StateGate
+                    ' Nur die wirklich erledigten fallen aus der Liste. Was uebrig bleibt, steht
+                    ' beim naechsten Versuch wieder da - und nicht als stillschweigend erledigt.
+                    _unresolved = _unresolved.Where(Function(entry) Not done.Contains(entry.Url)).ToList()
+                    source = _cancel
+                    _cancel = Nothing
+                    _state = SyncState.Idle
+                End SyncLock
+                source?.Dispose()
+                RaiseEvent StateChanged(Nothing, EventArgs.Empty)
+            End Try
+        End Function
+
+        Private Shared Sub SetStatus(text As String)
+            SyncLock StateGate
+                _status = If(text, String.Empty)
+            End SyncLock
+            RaiseEvent StateChanged(Nothing, EventArgs.Empty)
+        End Sub
+
+        ''' <summary>Der ganze Lauf mit seinen Meldungen. Faengt ALLES: ein Fehlschlag darf hier
+        ''' nicht als unbeachtete Ausnahme eines Hintergrundfadens enden, sondern gehoert in die
+        ''' Statuszeile.</summary>
+        Private Shared Async Function RunOnceAsync(targetRoot As String, token As CancellationToken) As Task
+            SyncLock StateGate
+                _unresolved.Clear()
+            End SyncLock
+            Try
+                Dim plan = Await BuildPlanAsync(targetRoot, AddressOf SetStatus, token)
+                SyncLock StateGate
+                    _unresolved = plan.Unresolved.ToList()
+                End SyncLock
+
+                If plan.Unresolved.Count > 0 Then
+                    ' LogAlways und nicht Log: das Protokoll ist ab Werk aus, und eine Meldung, die
+                    ' auf ein leeres Protokoll verweist, ist schlimmer als gar keine.
+                    DiagnosticLogService.LogAlways("Lyrion.Sync",
+                        $"{plan.Unresolved.Count} Favoriten ohne passendes Album: " &
+                        String.Join(", ", plan.Unresolved.Select(Function(entry) $"{entry.Name} [{entry.Url}]")))
+                End If
+
+                If Not plan.HasWork Then
+                    SetStatus(WithNotes(LocalizationService.Format("Abgleich: nichts zu tun, {0} Titel sind aktuell.", plan.UpToDate), plan, Nothing))
+                    Return
+                End If
+
+                SetStatus(LocalizationService.Format("Abgleich: {0} Titel holen ({1}), {2} entfernen …",
+                                                     plan.Fetch.Count, FormatBytes(plan.BytesToFetch), plan.Remove.Count))
+                Dim result = Await RunAsync(plan, AddressOf SetStatus, token)
+
+                Dim template = If(result.Cancelled,
+                                  "Abgleich abgebrochen: {0} geholt ({1}), {2} entfernt.",
+                                  "Abgleich fertig: {0} geholt ({1}), {2} entfernt.")
+                SetStatus(WithNotes(LocalizationService.Format(template, result.Fetched, FormatBytes(result.BytesFetched), result.Removed), plan, result))
+            Catch ex As OperationCanceledException When token.IsCancellationRequested
+                ' Abgebrochen, bevor der Plan stand - geholt wurde dann noch nichts.
+                SetStatus(LocalizationService.T("Abgleich abgebrochen."))
+            Catch ex As OperationCanceledException
+                ' KEIN Abbruch: HttpClient meldet sein eigenes Zeitlimit als abgebrochenen Vorgang.
+                ' Ohne diese Unterscheidung stuende "Abgleich abgebrochen." da, obwohl niemand
+                ' abgebrochen hat - die Meldung, ueber die man am laengsten raetselt.
+                SetStatus(LocalizationService.T("Der Server hat nicht rechtzeitig geantwortet. Der Abgleich wurde nicht ausgeführt."))
+                DiagnosticLogService.LogException("Lyrion.Sync", ex)
+            Catch ex As Exception
+                SetStatus(ex.Message)
+                DiagnosticLogService.LogException("Lyrion.Sync", ex)
+            Finally
+                Dim source As CancellationTokenSource
+                SyncLock StateGate
+                    source = _cancel
+                    _cancel = Nothing
+                    _state = SyncState.Idle
+                End SyncLock
+                source?.Dispose()
+                RaiseEvent StateChanged(Nothing, EventArgs.Empty)
+            End Try
+        End Function
+
+        ''' <summary>Haengt an eine Schlussmeldung an, was sonst unter den Tisch fiele: gescheiterte
+        ''' Dateien und Favoriten ohne Album. Beides steht auch bei "nichts zu tun" da - sonst
+        ''' meldet ein zweiter Lauf Ruhe, obwohl zwei Favoriten weiterhin niemand aufloest.</summary>
+        Private Shared Function WithNotes(text As String, plan As SyncPlan, result As SyncResult) As String
+            If result IsNot Nothing AndAlso result.Failed > 0 Then
+                text &= " " & LocalizationService.Format("{0} fehlgeschlagen, siehe Protokoll.", result.Failed)
+            End If
+            If plan IsNot Nothing AndAlso plan.Unresolved.Count > 0 Then
+                text &= " " & LocalizationService.Format("{0} Favoriten ohne passendes Album übersprungen.", plan.Unresolved.Count)
+            End If
+            Return text
+        End Function
+
+#End Region
 
         ''' <summary>Stellt fest, was zu tun ist. Fasst nichts an.</summary>
         Public Shared Async Function BuildPlanAsync(targetRoot As String, report As Action(Of String), cancellationToken As CancellationToken) As Task(Of SyncPlan)
@@ -85,14 +362,14 @@ Namespace Services
             End If
 
             report(LocalizationService.T("Alben werden gelesen …"))
-            Dim albums = Await LyrionMediaServerService.GetAlbumsAsync(String.Empty, LyrionMediaServerService.AlbumSort.ArtistYear, cancellationToken)
+            Dim albums = Await LyrionMediaServerService.GetAlbumsAsync(String.Empty, LyrionMediaServerService.AlbumSort.ArtistYear, cancellationToken, bulk:=True)
             Dim albumByFavoriteUrl As New Dictionary(Of String, String)(StringComparer.Ordinal)
             For Each album In albums
                 If album.FavoritesUrl.Length > 0 AndAlso album.Id.Length > 0 Then albumByFavoriteUrl(album.FavoritesUrl) = album.Id
             Next
 
             report(LocalizationService.T("Favoriten werden gelesen …"))
-            Dim favorites = Await LyrionMediaServerService.GetFavoriteEntriesAsync(cancellationToken)
+            Dim favorites = Await LyrionMediaServerService.GetFavoriteEntriesAsync(cancellationToken, bulk:=True)
             Dim wantedAlbums As New HashSet(Of String)(StringComparer.Ordinal)
             For Each entry In favorites
                 Dim albumId As String = Nothing
@@ -102,13 +379,13 @@ Namespace Services
                     ' Kommt vor, wenn ein Album seit dem Merken umbenannt oder neu getaggt wurde:
                     ' die Favoritenadresse traegt Titel und Interpret, und beides stimmt dann nicht
                     ' mehr. Der Lauf geht weiter und meldet es.
-                    plan.Unresolved.Add(entry.Name)
+                    plan.Unresolved.Add(entry)
                 End If
             Next
             plan.FavoriteAlbums = wantedAlbums.Count
-            ''' Ohne diese Sperre haette eine Stoerung beim Server - Favoritenliste vorruebergehend
-            ''' leer, Albenabfrage ohne Ergebnis - zur Folge, dass der Sollstand leer ist und der
-            ''' Lauf den ganzen Zielordner als ueberfluessig ansieht und loescht.
+            ' Ohne diese Sperre haette eine Stoerung beim Server - Favoritenliste vorruebergehend
+            ' leer, Albenabfrage ohne Ergebnis - zur Folge, dass der Sollstand leer ist und der
+            ' Lauf den ganzen Zielordner als ueberfluessig ansieht und loescht.
             If wantedAlbums.Count = 0 Then
                 Throw New InvalidOperationException(LocalizationService.T("Der Server meldet kein einziges Favoritenalbum. Der Abgleich bricht ab, damit der Zielordner nicht geleert wird."))
             End If
@@ -116,6 +393,7 @@ Namespace Services
             report(LocalizationService.T("Titel werden gelesen …"))
             Dim mediaDirs = Await LyrionMediaServerService.GetMediaDirsAsync(cancellationToken)
             Dim tracks = Await LyrionMediaServerService.GetAllLibraryTracksAsync(cancellationToken)
+            cancellationToken.ThrowIfCancellationRequested()
 
             ' Der Sollstand: voller Zielpfad je Titel. Auf Linux wird zwischen Gross- und
             ' Kleinschreibung unterschieden, der Vergleich also Ordinal.
@@ -128,7 +406,7 @@ Namespace Services
                 Try
                     full = Path.GetFullPath(Path.Combine(plan.TargetRoot, relative))
                 Catch ex As Exception
-                    DiagnosticLogService.Log("Lyrion.Sync", $"{track.Url}: {ex.Message}")
+                    DiagnosticLogService.LogAlways("Lyrion.Sync", $"{track.Url}: {ex.Message}")
                     Continue For
                 End Try
                 ' Ein ".." in der Serveradresse duerfte nie aus dem Zielordner herausfuehren.
@@ -138,8 +416,9 @@ Namespace Services
                 End If
             Next
 
-            report(LocalizationService.T("Zielordner wird verglichen …"))
+            report(LocalizationService.Format("Zielordner wird verglichen ({0} Titel) …", wanted.Count))
             For Each pair In wanted
+                cancellationToken.ThrowIfCancellationRequested()
                 Dim info As New FileInfo(pair.Key)
                 If info.Exists AndAlso info.Length = pair.Value.Size AndAlso ToUnix(info.LastWriteTimeUtc) = pair.Value.ModifiedUnix Then
                     plan.UpToDate += 1
@@ -149,47 +428,71 @@ Namespace Services
             Next
 
             If Directory.Exists(plan.TargetRoot) Then
-                For Each file In Directory.EnumerateFiles(plan.TargetRoot, "*", SearchOption.AllDirectories)
-                    Dim full = Path.GetFullPath(file)
-                    If Not wanted.ContainsKey(full) Then plan.Remove.Add(full)
-                Next
+                Try
+                    For Each file In Directory.EnumerateFiles(plan.TargetRoot, "*", SearchOption.AllDirectories)
+                        cancellationToken.ThrowIfCancellationRequested()
+                        Dim full = Path.GetFullPath(file)
+                        If Not wanted.ContainsKey(full) Then plan.Remove.Add(full)
+                    Next
+                Catch ex As OperationCanceledException
+                    Throw
+                Catch ex As Exception
+                    ' Ein unlesbarer Unterordner darf den Lauf nicht kippen. Er wuerde sonst gar
+                    ' nichts holen, weil der Plan nie fertig wird - und der Grund stuende nur als
+                    ' nackte Ausnahme in der Statuszeile.
+                    DiagnosticLogService.LogAlways("Lyrion.Sync", $"{plan.TargetRoot}: {ex.Message}")
+                End Try
             End If
             Return plan
         End Function
 
         ''' <summary>Fuehrt den Plan aus: erst holen, dann aufraeumen. In dieser Reihenfolge, damit
-        ''' ein Abbruch mitten im Lauf nichts loescht, was noch nicht ersetzt wurde.</summary>
+        ''' ein Abbruch mitten im Lauf nichts loescht, was noch nicht ersetzt wurde.
+        '''
+        ''' <para>Ein Abbruch WIRFT NICHT, sondern gibt zurueck, was bis dahin geschafft wurde:
+        ''' "Abgleich abgebrochen." allein laesst offen, ob dabei schon etwas im Zielordner
+        ''' gelandet ist.</para></summary>
         Public Shared Async Function RunAsync(plan As SyncPlan, report As Action(Of String), cancellationToken As CancellationToken) As Task(Of SyncResult)
             Dim result As New SyncResult()
             Directory.CreateDirectory(plan.TargetRoot)
 
             Dim done = 0
+            Dim total = plan.BytesToFetch
+            Dim bytesDone As Long = 0
             For Each track In plan.Fetch
-                cancellationToken.ThrowIfCancellationRequested()
+                If cancellationToken.IsCancellationRequested Then result.Cancelled = True : Return result
                 done += 1
-                report(LocalizationService.Format("Titel {0} von {1} wird geholt: {2}", done, plan.Fetch.Count, Path.GetFileName(track.RelativePath)))
+                ' Die Datenmenge steht mit in der Zeile: bei einem grossen Titel bleibt die
+                ' Titelnummer sekundenlang stehen, und ohne einen zweiten Wert daneben ist nicht
+                ' zu sehen, ob der Lauf noch arbeitet.
+                report(LocalizationService.Format("Titel {0} von {1} · {2} von {3} · {4}",
+                                                  done, plan.Fetch.Count, FormatBytes(bytesDone), FormatBytes(total),
+                                                  Path.GetFileName(track.RelativePath)))
                 Try
                     Await FetchAsync(plan.TargetRoot, track, cancellationToken)
                     result.Fetched += 1
                     result.BytesFetched += track.Size
-                Catch ex As OperationCanceledException
-                    Throw
+                Catch ex As OperationCanceledException When cancellationToken.IsCancellationRequested
+                    result.Cancelled = True
+                    Return result
                 Catch ex As Exception
                     ' Ein einzelner Fehlschlag bricht den Lauf nicht ab; die Datei wird beim
                     ' naechsten Mal erneut versucht, weil sie weiterhin fehlt.
                     result.Failed += 1
-                    DiagnosticLogService.Log("Lyrion.Sync", $"{track.RelativePath}: {ex.Message}")
+                    DiagnosticLogService.LogAlways("Lyrion.Sync", $"{track.RelativePath}: {ex.Message}")
                 End Try
+                bytesDone += track.Size
             Next
 
+            If plan.Remove.Count > 0 Then report(LocalizationService.Format("{0} überzählige Dateien werden entfernt …", plan.Remove.Count))
             For Each obsolete In plan.Remove
-                cancellationToken.ThrowIfCancellationRequested()
+                If cancellationToken.IsCancellationRequested Then result.Cancelled = True : Return result
                 If Not IsInside(plan.TargetRoot, obsolete) Then Continue For
                 Try
                     File.Delete(obsolete)
                     result.Removed += 1
                 Catch ex As Exception
-                    DiagnosticLogService.Log("Lyrion.Sync", $"{obsolete}: {ex.Message}")
+                    DiagnosticLogService.LogAlways("Lyrion.Sync", $"{obsolete}: {ex.Message}")
                 End Try
             Next
             PruneEmptyDirectories(plan.TargetRoot)
@@ -266,11 +569,11 @@ Namespace Services
                     Try
                         If Not Directory.EnumerateFileSystemEntries(folder).Any() Then Directory.Delete(folder)
                     Catch ex As Exception
-                        DiagnosticLogService.Log("Lyrion.Sync", $"{folder}: {ex.Message}")
+                        DiagnosticLogService.LogAlways("Lyrion.Sync", $"{folder}: {ex.Message}")
                     End Try
                 Next
             Catch ex As Exception
-                DiagnosticLogService.Log("Lyrion.Sync", ex.Message)
+                DiagnosticLogService.LogAlways("Lyrion.Sync", ex.Message)
             End Try
         End Sub
 

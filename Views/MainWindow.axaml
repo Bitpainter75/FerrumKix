@@ -96,6 +96,11 @@
                     HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="BottomLeftCorner"/>
             <Border x:Name="ResizeBottomRight" Width="14" Height="14" Background="Transparent"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="BottomRightCorner"/>
+
+            <!-- Die Sicherheitsabfrage liegt als LETZTES Kind ueber allem: ueber dem Inhalt, den
+                 Fensterknoepfen und den Anfassern zum Groessenaendern. Solange nichts gefragt
+                 wird, ist sie unsichtbar und faengt nichts ab. -->
+            <views:ConfirmDialogOverlay/>
         </Grid>
     </Border>
 </Window>

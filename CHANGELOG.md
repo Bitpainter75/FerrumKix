@@ -18,6 +18,29 @@
   mount or rsync is needed. Only what is missing or has changed is transferred, compared by size
   *and* modification time, and anything in the folder that is no longer a favorite is removed,
   empty directories along with it.
+- The favorites sync now belongs to the application instead of the Lyrion view, and it says what
+  it is doing. The view is rebuilt every time it is opened, so a running sync used to become
+  invisible the moment you glanced at the playlist — and the next click started a *second* run on
+  the same folder, with both runs fetching into the same `.part` file and deleting by the plan each
+  had made for itself. The run now survives the view: reopening it shows the running sync, its
+  progress and its result. Progress and result have their own line under the status line, so
+  re-sorting, filtering or opening an album no longer wipes them, and the result stays readable
+  until it is dismissed.
+- Fixed: a sync that had never been cancelled reported “Sync cancelled”. `HttpClient` reports its
+  own timeout as a cancelled operation, and the whole library listing — some 20 MB — went through
+  the short timeout meant for library queries. The bulk queries now have their own long timeout,
+  and a timeout is told apart from a cancellation and named as such.
+- Fixed: the sync did its planning on the UI thread — reading the details of thousands of files,
+  walking the whole target folder and parsing 20 MB of JSON — so the window stood still for the
+  duration. It now runs on a background thread.
+- Cancelling the sync is acknowledged straight away instead of leaving the last progress line
+  standing, and a cancelled run reports what it had already fetched and removed.
+- Favorite entries with no matching album — renamed, re-tagged or deleted since they were
+  bookmarked — can now be taken out of the server's favorites. The button appears on the sync line
+  once a run found any, and asks first, listing every entry by name. The music itself is never
+  touched.
+- Fixed: “N failed, see log” and the note about unresolvable favorites pointed at a log that is off
+  unless the application is started with `--debug`. Sync failures are now always written.
 - The Lyrion overview now loads the library in one go instead of page by page. The server hands
   over 6500 albums in a fraction of a second, the scrollbar is honest from the start, and sorting
   or filtering no longer has to ask the server again.

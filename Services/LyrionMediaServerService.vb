@@ -45,6 +45,12 @@ Namespace Services
             Public Property Name As String = String.Empty
         End Class
         Private Shared ReadOnly Client As New HttpClient With {.Timeout = TimeSpan.FromSeconds(12)}
+        ''' <summary>Fuer die GROSSEN Abfragen des Favoritenabgleichs. Die Titelliste der ganzen
+        ''' Bibliothek sind gut 20 MB; ueber eine langsame Leitung ist sie mit dem kurzen Zeitlimit
+        ''' der Bibliotheksabfragen nicht zu holen. Und ein ueberschrittenes Zeitlimit meldet
+        ''' HttpClient als ABGEBROCHENEN Vorgang - der Abgleich stuende danach als "abgebrochen"
+        ''' da, obwohl niemand ihn abgebrochen hat.</summary>
+        Private Shared ReadOnly BulkClient As New HttpClient With {.Timeout = TimeSpan.FromMinutes(5)}
         ''' <summary>Wonach die Albenuebersicht sortiert. Bis auf <see cref="AlbumSort.AlbumTitle"/>
         ''' sortiert der Server selbst: er kennt die Sortiernamen der Bibliothek und stellt "The
         ''' Beatles" unter B. Nach dem Albumtitel kann er nicht sortieren, das uebernimmt die
@@ -66,13 +72,13 @@ Namespace Services
         '''
         ''' <para>Erst wird nur gezaehlt: die Anzahl steht im Kopf der Antwort, und ohne sie muesste
         ''' die Abfrage eine Obergrenze raten.</para></summary>
-        Public Shared Async Function GetAlbumsAsync(search As String, sort As AlbumSort, cancellationToken As CancellationToken) As Task(Of List(Of Album))
+        Public Shared Async Function GetAlbumsAsync(search As String, sort As AlbumSort, cancellationToken As CancellationToken, Optional bulk As Boolean = False) As Task(Of List(Of Album))
             Dim albums As New List(Of Album)()
-            Dim probe = Await RequestAsync("", AlbumCommand(0, sort, search), cancellationToken)
+            Dim probe = Await RequestAsync("", AlbumCommand(0, sort, search), cancellationToken, bulk)
             Dim total As Integer
             If Not Integer.TryParse(Text(probe, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) OrElse total <= 0 Then Return albums
 
-            Dim result = Await RequestAsync("", AlbumCommand(total, sort, search), cancellationToken)
+            Dim result = Await RequestAsync("", AlbumCommand(total, sort, search), cancellationToken, bulk)
             Dim rows As JsonElement
             If Not result.TryGetProperty("albums_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return albums
             For Each row In rows.EnumerateArray()
@@ -112,8 +118,8 @@ Namespace Services
 
         ''' <summary>Die Adressen der als Favorit gemerkten Alben, fuer den Filter in der
         ''' Uebersicht. Wer auch die Namen braucht, nimmt <see cref="GetFavoriteEntriesAsync"/>.</summary>
-        Public Shared Async Function GetFavoriteAlbumUrlsAsync(cancellationToken As CancellationToken) As Task(Of HashSet(Of String))
-            Dim entries = Await GetFavoriteEntriesAsync(cancellationToken)
+        Public Shared Async Function GetFavoriteAlbumUrlsAsync(cancellationToken As CancellationToken, Optional bulk As Boolean = False) As Task(Of HashSet(Of String))
+            Dim entries = Await GetFavoriteEntriesAsync(cancellationToken, bulk)
             Return New HashSet(Of String)(entries.Select(Function(entry) entry.Url), StringComparer.Ordinal)
         End Function
 
@@ -137,13 +143,13 @@ Namespace Services
 
         ''' <summary>Die Favoriteneintraege, die ALBEN sind. Einzelne Titel und Radiosender stehen
         ''' in derselben Liste und tragen andere Adressen.</summary>
-        Public Shared Async Function GetFavoriteEntriesAsync(cancellationToken As CancellationToken) As Task(Of List(Of FavoriteEntry))
+        Public Shared Async Function GetFavoriteEntriesAsync(cancellationToken As CancellationToken, Optional bulk As Boolean = False) As Task(Of List(Of FavoriteEntry))
             Dim entries As New List(Of FavoriteEntry)()
-            Dim probe = Await RequestAsync("", {"favorites", "items", "0", "0"}, cancellationToken)
+            Dim probe = Await RequestAsync("", {"favorites", "items", "0", "0"}, cancellationToken, bulk)
             Dim total As Integer
             If Not Integer.TryParse(Text(probe, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) OrElse total <= 0 Then Return entries
 
-            Dim result = Await RequestAsync("", {"favorites", "items", "0", total.ToString(CultureInfo.InvariantCulture), "want_url:1"}, cancellationToken)
+            Dim result = Await RequestAsync("", {"favorites", "items", "0", total.ToString(CultureInfo.InvariantCulture), "want_url:1"}, cancellationToken, bulk)
             Dim rows As JsonElement
             If Not result.TryGetProperty("loop_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return entries
             For Each row In rows.EnumerateArray()
@@ -159,7 +165,7 @@ Namespace Services
         ''' serverseitige Teil eines Titelpfades abschneiden, ohne ihn irgendwo einzutragen.</summary>
         Public Shared Async Function GetMediaDirsAsync(cancellationToken As CancellationToken) As Task(Of List(Of String))
             Dim folders As New List(Of String)()
-            Dim result = Await RequestAsync("", {"pref", "mediadirs", "?"}, cancellationToken)
+            Dim result = Await RequestAsync("", {"pref", "mediadirs", "?"}, cancellationToken, bulk:=True)
             Dim value As JsonElement
             If Not result.TryGetProperty("_p2", value) Then Return folders
             If value.ValueKind = JsonValueKind.Array Then
@@ -180,11 +186,11 @@ Namespace Services
         ''' aber nur fuer den Abgleich gebraucht und danach wieder freigegeben.</para></summary>
         Public Shared Async Function GetAllLibraryTracksAsync(cancellationToken As CancellationToken) As Task(Of List(Of LibraryTrack))
             Dim tracks As New List(Of LibraryTrack)()
-            Dim probe = Await RequestAsync("", {"tracks", "0", "0", "tags:u"}, cancellationToken)
+            Dim probe = Await RequestAsync("", {"tracks", "0", "0", "tags:u"}, cancellationToken, bulk:=True)
             Dim total As Integer
             If Not Integer.TryParse(Text(probe, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) OrElse total <= 0 Then Return tracks
 
-            Dim result = Await RequestAsync("", {"tracks", "0", total.ToString(CultureInfo.InvariantCulture), "tags:unfe"}, cancellationToken)
+            Dim result = Await RequestAsync("", {"tracks", "0", total.ToString(CultureInfo.InvariantCulture), "tags:unfe"}, cancellationToken, bulk:=True)
             Dim rows As JsonElement
             If Not result.TryGetProperty("titles_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return tracks
             For Each row In rows.EnumerateArray()
@@ -215,12 +221,25 @@ Namespace Services
                 Await RequestAsync("", {"favorites", "add", "url:" & album.FavoritesUrl, "title:" & album.Title}, cancellationToken)
                 Return True
             End If
-            Dim existing = Await RequestAsync("", {"favorites", "exists", album.FavoritesUrl}, cancellationToken)
+            Await DeleteFavoriteAsync(album.FavoritesUrl, cancellationToken)
+            Return False
+        End Function
+
+        ''' <summary>Loescht einen Favoriteneintrag ueber seine Adresse. Gibt True zurueck, wenn
+        ''' wirklich einer weg ist, und False, wenn der Server unter dieser Adresse keinen fuehrt.
+        '''
+        ''' <para>Die Nummer wird JEDES MAL frisch geholt: sie ist die STELLE in der
+        ''' Favoritenliste, nicht die Kennung des Eintrags. Sie verschiebt sich, sobald davor ein
+        ''' Eintrag wegfaellt - wer eine Reihe von Eintraegen nach einer einmal geholten
+        ''' Nummernliste loescht, trifft ab dem zweiten den falschen.</para></summary>
+        Public Shared Async Function DeleteFavoriteAsync(favoritesUrl As String, cancellationToken As CancellationToken) As Task(Of Boolean)
+            If String.IsNullOrWhiteSpace(favoritesUrl) Then Return False
+            Dim existing = Await RequestAsync("", {"favorites", "exists", favoritesUrl}, cancellationToken)
             If Text(existing, "exists") <> "1" Then Return False
             Dim index = Text(existing, "index")
-            If String.IsNullOrWhiteSpace(index) Then Return True
+            If String.IsNullOrWhiteSpace(index) Then Return False
             Await RequestAsync("", {"favorites", "delete", "item_id:" & index}, cancellationToken)
-            Return False
+            Return True
         End Function
 
         Public Shared Async Function GetAlbumSongsAsync(albumId As String, cancellationToken As CancellationToken) As Task(Of List(Of Song))
@@ -270,11 +289,13 @@ Namespace Services
             If String.IsNullOrWhiteSpace(baseUrl) OrElse String.IsNullOrWhiteSpace(songId) Then Return String.Empty
             Return baseUrl & "/music/" & Uri.EscapeDataString(songId) & "/download"
         End Function
-        Friend Shared Async Function RequestAsync(playerId As String, command As String(), cancellationToken As CancellationToken) As Task(Of JsonElement)
+        ''' <summary>Eine Abfrage an den Server. <paramref name="bulk"/> nimmt den Client mit dem
+        ''' langen Zeitlimit - fuer die Abfragen des Abgleichs, die Megabyte am Stueck holen.</summary>
+        Friend Shared Async Function RequestAsync(playerId As String, command As String(), cancellationToken As CancellationToken, Optional bulk As Boolean = False) As Task(Of JsonElement)
             Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
             If String.IsNullOrWhiteSpace(baseUrl) Then Throw New InvalidOperationException(LocalizationService.T("Bitte zuerst die Adresse des Lyrion Media Server eintragen."))
             Dim body = JsonSerializer.Serialize(New With {.id = 3, .method = "slim.request", .params = New Object() {playerId, command}})
-            Using response = Await Client.PostAsync(baseUrl & "/jsonrpc.js", New StringContent(body, Encoding.UTF8, "application/json"), cancellationToken)
+            Using response = Await If(bulk, BulkClient, Client).PostAsync(baseUrl & "/jsonrpc.js", New StringContent(body, Encoding.UTF8, "application/json"), cancellationToken)
                 response.EnsureSuccessStatusCode()
                 Using document = JsonDocument.Parse(Await response.Content.ReadAsStringAsync(cancellationToken))
                     Return document.RootElement.GetProperty("result").Clone()
