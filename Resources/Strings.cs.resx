@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>Údaje k audio CD pocházejí z MusicBrainz a jsou volným dílem (CC0). Obaly z Cover Art Archive nikoli: patří svým držitelům práv a jsou pouze zobrazovány.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Vymazat hledání</value>
+  </data>
 </root>

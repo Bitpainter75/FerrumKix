@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>De gegevens over audio-cd’s komen van MusicBrainz en zijn publiek domein (CC0). De hoesafbeeldingen van het Cover Art Archive niet: die behoren toe aan hun rechthebbenden en worden alleen getoond.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Zoekopdracht wissen</value>
+  </data>
 </root>

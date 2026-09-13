@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>Opplysningene om lyd-CD-er kommer fra MusicBrainz og er allemannseie (CC0). Coverbildene fra Cover Art Archive er det ikke: de tilhører sine respektive rettighetshavere og blir bare vist.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Tøm søket</value>
+  </data>
 </root>

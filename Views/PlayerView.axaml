@@ -316,6 +316,16 @@
                                      VerticalAlignment="Center"
                                      Text="{Binding SearchText, Mode=TwoWay}"/>
                             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="2">
+                                <!-- Wie in FerrumPix (GalleryView): das Kreuz steht nur da, wenn
+                                     auch etwas zum Wegnehmen da ist. Ein immer sichtbares waere
+                                     ein Knopf, der die meiste Zeit nichts tut. -->
+                                <Button Classes="icon-btn" Width="28" Height="28"
+                                        Command="{Binding ClearSearchCommand}"
+                                        IsVisible="{Binding HasSearchText}"
+                                        ToolTip.Tip="Suche zurücksetzen">
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/x.svg"
+                                                   Width="12" Height="12" Opacity="0.75"/>
+                                </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"
                                         Click="OnAddFilesClick"
                                         ToolTip.Tip="Dateien hinzufügen">

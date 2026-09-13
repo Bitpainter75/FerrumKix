@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>Ääni-CD:iden tiedot tulevat MusicBrainzista ja ovat vapaasti käytettävissä (CC0). Cover Art Archiven kansikuvat eivät ole: ne kuuluvat oikeudenhaltijoilleen ja ne vain näytetään.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Tyhjennä haku</value>
+  </data>
 </root>

@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>ऑडियो सीडी की जानकारी MusicBrainz से आती है और सार्वजनिक डोमेन (CC0) में है। Cover Art Archive के कवर चित्र नहीं: वे अपने संबंधित अधिकार धारकों के हैं और केवल दिखाए जाते हैं।</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>खोज साफ़ करें</value>
+  </data>
 </root>

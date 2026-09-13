@@ -432,8 +432,19 @@ Namespace Views
   ''' veraltet sind.</summary>
   Private Sub OnSearchTextChanged(sender As Object, e As TextChangedEventArgs)
    _shownAlbum = Nothing
+   Dim clear = FindControl(Of Button)("SearchClearButton")
+   If clear IsNot Nothing Then clear.IsVisible = Not String.IsNullOrEmpty(FindControl(Of TextBox)("SearchBox")?.Text)
    _searchDebounce.Stop()
    _searchDebounce.Start()
+  End Sub
+
+  ''' <summary>Nimmt den Suchbegriff weg. Das Leeren loest TextChanged aus und damit die
+  ''' Entprellung - die Liste kommt also auf demselben Weg zurueck wie nach jedem Tippen.</summary>
+  Private Sub OnClearSearchClick(sender As Object, e As RoutedEventArgs)
+   Dim box = FindControl(Of TextBox)("SearchBox")
+   If box Is Nothing OrElse String.IsNullOrEmpty(box.Text) Then Return
+   box.Text = String.Empty
+   box.Focus()
   End Sub
   Private Sub OnSearchDebounceTick(sender As Object, e As EventArgs)
    _searchDebounce.Stop()

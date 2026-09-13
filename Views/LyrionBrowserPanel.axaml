@@ -140,7 +140,22 @@
             <ComboBox x:Name="TargetBox" MinWidth="168" VerticalAlignment="Stretch"
                       SelectionChanged="OnPlaybackTargetChanged"
                       ToolTip.Tip="Wo die Wiedergabe läuft"/>
-            <TextBox x:Name="SearchBox" Grid.Column="1" PlaceholderText="Alben durchsuchen" TextChanged="OnSearchTextChanged"/>
+            <!-- Das Kreuz liegt IM Feld, rechts innen: die Suche ist hier nicht an den Bauplan
+                 gebunden, deshalb setzt der Behandler seine Sichtbarkeit (OnSearchTextChanged).
+                 Gleiche Geste wie in FerrumPix, nur ohne Bindung. -->
+            <Panel Grid.Column="1">
+                <!-- Rechts Platz fuer das Kreuz: die Vorgabe des Themes ist 10,6, und ohne die
+                     breitere rechte Seite liefe ein langer Begriff darunter durch. -->
+                <TextBox x:Name="SearchBox" PlaceholderText="Alben durchsuchen"
+                         Padding="10,6,32,6" TextChanged="OnSearchTextChanged"/>
+                <Button x:Name="SearchClearButton" Classes="icon-btn" IsVisible="False"
+                        Width="22" Height="22" Margin="0,0,6,0"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Click="OnClearSearchClick" ToolTip.Tip="Suche zurücksetzen">
+                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/x.svg"
+                                   Width="12" Height="12" Opacity="0.75"/>
+                </Button>
+            </Panel>
             <ComboBox x:Name="SortBox" Grid.Column="2" MinWidth="184" VerticalAlignment="Stretch"
                       SelectionChanged="OnSortChanged"/>
             <Button x:Name="SortDirectionButton" Grid.Column="3" Classes="icon-btn"

@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>Dane o płytach audio pochodzą z MusicBrainz i są w domenie publicznej (CC0). Okładki z Cover Art Archive nie: należą do swoich posiadaczy praw i są jedynie wyświetlane.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Wyczyść wyszukiwanie</value>
+  </data>
 </root>

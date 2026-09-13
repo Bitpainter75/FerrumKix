@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>오디오 CD의 정보는 MusicBrainz에서 오며 퍼블릭 도메인(CC0)입니다. Cover Art Archive의 커버 이미지는 그렇지 않습니다: 각 권리자에게 속하며 표시만 됩니다.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>검색 지우기</value>
+  </data>
 </root>

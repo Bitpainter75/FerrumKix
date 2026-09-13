@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>Uppgifterna om ljud-cd kommer från MusicBrainz och är allmän egendom (CC0). Omslagsbilderna från Cover Art Archive är det inte: de tillhör sina respektive rättighetsinnehavare och visas bara.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Rensa sökningen</value>
+  </data>
 </root>

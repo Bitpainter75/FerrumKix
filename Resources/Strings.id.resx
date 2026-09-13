@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>Data CD audio berasal dari MusicBrainz dan berstatus domain publik (CC0). Sampul dari Cover Art Archive tidak: gambar itu milik pemegang haknya masing-masing dan hanya ditampilkan.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Bersihkan pencarian</value>
+  </data>
 </root>

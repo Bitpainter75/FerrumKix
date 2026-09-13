@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>Les informations sur les CD audio proviennent de MusicBrainz et relèvent du domaine public (CC0). Les pochettes du Cover Art Archive, non : elles appartiennent à leurs ayants droit respectifs et sont seulement affichées.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Effacer la recherche</value>
+  </data>
 </root>

@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>Os dados dos CD de áudio vêm do MusicBrainz e são de domínio público (CC0). As capas do Cover Art Archive não: pertencem aos respetivos titulares de direitos e são apenas apresentadas.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Limpar a pesquisa</value>
+  </data>
 </root>

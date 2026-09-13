@@ -766,4 +766,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>The details for audio CDs come from MusicBrainz and are in the public domain (CC0). The cover art from the Cover Art Archive is not: it belongs to its respective rights holders and is only displayed.</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>Clear the search</value>
+  </data>
 </root>

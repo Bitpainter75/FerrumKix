@@ -11,6 +11,9 @@
   album were shuffled; the CD handed out its tracks in disc order no matter what the switch said.
   It now has a play order of its own, built the same way. Repeat was never affected - it does not
   depend on the order but on the wrap in FindNeighbour.
+- Both search fields now carry a cross to clear the term, as in FerrumPix. It appears only when
+  there is something to clear. The playlist quick search had the command for it all along but no
+  button to reach it.
 - Fixed: after stopping, the play button restarted whatever had played last, even if you had
   meanwhile opened a different Lyrion album or switched to another list. It now starts what is on
   screen. Stopping in the middle of an album and pressing play still resumes that same track - the

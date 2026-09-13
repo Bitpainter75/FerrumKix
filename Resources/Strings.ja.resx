@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>オーディオ CD の情報は MusicBrainz から来ており、パブリックドメイン (CC0) です。Cover Art Archive のカバー画像はそうではなく、それぞれの権利者に帰属し、表示されるだけです。</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>検索をクリア</value>
+  </data>
 </root>

@@ -591,4 +591,7 @@
   <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
     <value>ข้อมูลของแผ่นซีดีเสียงมาจาก MusicBrainz และเป็นสาธารณสมบัติ (CC0) ส่วนภาพปกจาก Cover Art Archive ไม่ใช่ ภาพเหล่านั้นเป็นของผู้ถือสิทธิ์แต่ละราย และเพียงถูกแสดงเท่านั้น</value>
   </data>
+  <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
+    <value>ล้างการค้นหา</value>
+  </data>
 </root>
