@@ -510,4 +510,10 @@
   <data name="Es_l_uft_gerade_ein_anderer_Lyrion_Vorgang_a04d644a" xml:space="preserve">
     <value>En annan Lyrion-uppgift pågår.</value>
   </data>
+  <data name="0_Treffer_9bcfdb2a" xml:space="preserve">
+    <value>{0} träffar</value>
+  </data>
+  <data name="0_Treffer_zuletzt_hinzugef_gt_gilt_f_r_eine_Such_386bdd72" xml:space="preserve">
+    <value>{0} träffar · ”Senast tillagda” gäller inte för en sökning</value>
+  </data>
 </root>

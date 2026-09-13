@@ -102,6 +102,12 @@ Namespace Services
         ''' <summary>Vollständige LMS-Basisadresse, etwa https://music.example.lan/.</summary>
         Public Property LyrionServerUrl As String = String.Empty
         Public Property LyrionClientName As String = "FerrumPlay"
+        ''' <summary>Das Lyrion-Geraet, das ferngesteuert wird. LEER heisst: oertlich abspielen.
+        ''' Gemerkt wird die Kennung, denn nur sie ist eindeutig; der Name steht daneben, damit die
+        ''' Ansicht beim Start etwas anzuzeigen hat, bevor die Geraeteliste geholt ist.</summary>
+        Public Property LyrionRemotePlayerId As String = String.Empty
+        Public Property LyrionRemotePlayerName As String = String.Empty
+
         ''' <summary>Der Ordner, in den der Favoritenabgleich schreibt. Leer heisst: kein Abgleich.
         ''' Er ist die EINZIGE Angabe dafuer - woher die Dateien kommen und wie der Serverpfad
         ''' abzuschneiden ist, erfragt der Abgleich beim Server.</summary>

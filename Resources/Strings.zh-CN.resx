@@ -510,4 +510,10 @@
   <data name="Es_l_uft_gerade_ein_anderer_Lyrion_Vorgang_a04d644a" xml:space="preserve">
     <value>已有另一个 Lyrion 任务在运行。</value>
   </data>
+  <data name="0_Treffer_9bcfdb2a" xml:space="preserve">
+    <value>{0} 个匹配</value>
+  </data>
+  <data name="0_Treffer_zuletzt_hinzugef_gt_gilt_f_r_eine_Such_386bdd72" xml:space="preserve">
+    <value>{0} 个匹配 · 搜索不适用“最近添加”</value>
+  </data>
 </root>

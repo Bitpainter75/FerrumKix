@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.8.0
+
+- Fixed: the album order was ignored whenever the list was filtered by a search term. The server
+  accepts `sort:` together with `search:` and then returns its own full-text ranking regardless -
+  measured against LMS 9.1.2, the same term gave the identical order line for line under
+  artist/year, year/album and recently added. Search results are now ordered in the application.
+  One limit stays and is stated in the status line: "recently added" cannot be reproduced, because
+  the album query does not say when an album entered the library. A second, smaller one: the server
+  knows the library's sort names and files "The Beatles" under B, while a locally ordered search
+  result files it under T.
+- "Refresh library" now asks the server to look for new and changed music first, and only then
+  fetches the list. Refetching alone showed the same state: a record added a minute ago is one the
+  server does not know about yet. Progress is reported per scan step, the run can be cancelled -
+  which tells the server to stop as well, rather than merely looking away - and the album list is
+  refetched once the server is done. The step description comes from the server and is therefore
+  in the server's language; the sentence around it is translated.
+- The Lyrion favorites sync, the favorites cleanup and the library scan now share one slot: at most
+  one of them runs at a time. This is not tidiness but necessity - while the server is scanning,
+  its album and track lists are in motion, and a sync reading into that would fetch a state that
+  never existed. The button belonging to the running task cancels it; the other is disabled while
+  it runs, so a refused click cannot paint over a running task's progress.
+
 ## 0.7.0
 
 - The Lyrion album overview can now be sorted: recently added, artist/year, album, or year/album,
@@ -35,17 +57,6 @@
   duration. It now runs on a background thread.
 - Cancelling the sync is acknowledged straight away instead of leaving the last progress line
   standing, and a cancelled run reports what it had already fetched and removed.
-- "Refresh library" now asks the server to look for new and changed music first, and only then
-  fetches the list. Refetching alone showed the same state: a record added a minute ago is one the
-  server does not know about yet. Progress is reported per scan step, the run can be cancelled -
-  which tells the server to stop as well, rather than merely looking away - and the album list is
-  refetched once the server is done. The step description comes from the server and is therefore
-  in the server's language; the sentence around it is translated.
-- The Lyrion favorites sync, the favorites cleanup and the library scan now share one slot: at most
-  one of them runs at a time. This is not tidiness but necessity - while the server is scanning,
-  its album and track lists are in motion, and a sync reading into that would fetch a state that
-  never existed. The button belonging to the running task cancels it; the other is disabled while
-  it runs, so a refused click cannot paint over a running task's progress.
 - Favorite entries with no matching album — renamed, re-tagged or deleted since they were
   bookmarked — can now be taken out of the server's favorites. The button appears on the sync line
   once a run found any, and asks first, listing every entry by name. The music itself is never

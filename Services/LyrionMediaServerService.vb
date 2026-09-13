@@ -85,11 +85,50 @@ Namespace Services
                 albums.Add(New Album With {.Id = Text(row, "id"), .Title = FirstText(row, "album", "title"), .Artist = FirstText(row, "artist", "albumartist"),
                                            .Year = Text(row, "year"), .ArtworkTrackId = Text(row, "artwork_track_id"), .FavoritesUrl = Text(row, "favorites_url")})
             Next
-            If sort = AlbumSort.AlbumTitle Then
-                albums = albums.OrderBy(Function(album) album.Title, StringComparer.CurrentCultureIgnoreCase).
-                                ThenBy(Function(album) album.Artist, StringComparer.CurrentCultureIgnoreCase).ToList()
+            ' MIT einem Suchbegriff sortiert der Server NICHT. Er nimmt "sort:" entgegen und gibt
+            ' fuer artflow, yearalbum und new dieselbe Reihenfolge heraus - die seiner
+            ' Volltextsuche. Geprueft an LMS 9.1.2: derselbe Begriff, 35 Treffer, drei
+            ' Sortierungen, Zeile fuer Zeile dieselbe Folge. Dann wird hier sortiert.
+            If sort = AlbumSort.AlbumTitle OrElse Not String.IsNullOrWhiteSpace(search) Then
+                albums = SortAlbums(albums, sort)
             End If
             Return albums
+        End Function
+
+        ''' <summary>Sortiert eine geholte Liste selbst. Gebraucht fuer den Albumtitel, den der
+        ''' Server gar nicht kann, und fuer JEDE Reihenfolge, sobald ein Suchbegriff im Spiel ist.
+        '''
+        ''' <para>Eine Einschraenkung, die bleibt: der Server kennt die SORTIERNAMEN der
+        ''' Bibliothek und stellt "The Beatles" unter B. Hier steht nur der angezeigte Name, also
+        ''' unter T. Das betrifft allein Suchergebnisse und ist immer noch besser als eine
+        ''' Reihenfolge, die gar nicht der gewaehlten entspricht.</para>
+        '''
+        ''' <para><see cref="AlbumSort.Recent"/> laesst sich NICHT nachbilden: zu welchem Zeitpunkt
+        ''' ein Album in die Bibliothek kam, sagt die Albenabfrage nicht. Die Liste bleibt dann in
+        ''' der Reihenfolge des Servers, und die Statuszeile sagt es.</para></summary>
+        Friend Shared Function SortAlbums(albums As List(Of Album), sort As AlbumSort) As List(Of Album)
+            Select Case sort
+                Case AlbumSort.Recent
+                    Return albums
+                Case AlbumSort.YearAlbum
+                    Return albums.OrderBy(AddressOf YearNumber).
+                                  ThenBy(Function(album) album.Title, StringComparer.CurrentCultureIgnoreCase).ToList()
+                Case AlbumSort.AlbumTitle
+                    Return albums.OrderBy(Function(album) album.Title, StringComparer.CurrentCultureIgnoreCase).
+                                  ThenBy(Function(album) album.Artist, StringComparer.CurrentCultureIgnoreCase).ToList()
+                Case Else
+                    Return albums.OrderBy(Function(album) album.Artist, StringComparer.CurrentCultureIgnoreCase).
+                                  ThenBy(AddressOf YearNumber).
+                                  ThenBy(Function(album) album.Title, StringComparer.CurrentCultureIgnoreCase).ToList()
+            End Select
+        End Function
+
+        ''' <summary>Das Jahr als Zahl. Ein fehlendes oder unsinniges Jahr wird 0 und steht damit
+        ''' vorn - genau dort, wo der Server es ohne Suche auch hinstellt.</summary>
+        Private Shared Function YearNumber(album As Album) As Integer
+            Dim parsed As Integer
+            If Integer.TryParse(If(album?.Year, String.Empty), NumberStyles.Integer, CultureInfo.InvariantCulture, parsed) Then Return parsed
+            Return 0
         End Function
 
         ''' <summary>"l" liefert den Albumnamen. Ohne dieses Tag kommen nur Cover und Metadaten an,
@@ -438,6 +477,16 @@ Namespace Services
             Finally
                 ThumbnailGate.Release()
             End Try
+        End Function
+
+        ''' <summary>Fuer die Nachbarklassen im selben Namensraum - der Fernsteuerungsdienst liest
+        ''' dieselben Antworten.</summary>
+        Friend Shared Function TextOf(element As JsonElement, name As String) As String
+            Return Text(element, name)
+        End Function
+
+        Friend Shared Function FirstTextOf(element As JsonElement, ParamArray names As String()) As String
+            Return FirstText(element, names)
         End Function
 
         Private Shared Function Text(element As JsonElement, name As String) As String

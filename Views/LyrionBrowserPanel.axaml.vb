@@ -218,10 +218,25 @@ Namespace Views
   Private Function StatusText(count As Integer) As String
    If count = 0 Then Return LocalizationService.T("Keine Alben gefunden.")
    If _favoritesOnly Then Return LocalizationService.Format("{0} von {1} Alben", count, _albums.Count)
+   If IsSearching() Then
+    ' KEINE typografischen Anfuehrungszeichen in diesem Text: VB nimmt " und " als
+    ' Zeichenkettengrenze an und beendet die Zeichenkette mittendrin. Siehe
+    ' FALLEN_UND_ENTSCHEIDUNGEN.md.
+    ' Bei einer Suche sortiert der Dienst selbst - bis auf "zuletzt hinzugefuegt". Wann ein Album
+    ' in die Bibliothek kam, sagt die Albenabfrage nicht, also bleibt die Reihenfolge des Servers
+    ' stehen. Das gehoert gesagt, statt eine Reihenfolge vorzutaeuschen.
+    If _sort = LyrionMediaServerService.AlbumSort.Recent Then Return LocalizationService.Format("{0} Treffer · zuletzt hinzugefügt gilt für eine Suche nicht", count)
+    Return LocalizationService.Format("{0} Treffer", count)
+   End If
    ' Bei "Zuletzt hinzugefuegt" ist die Zahl NICHT die Bibliothek: der Server gibt davon nur so
    ' viele heraus, wie seine Einstellung browseagelimit erlaubt.
    If _sort = LyrionMediaServerService.AlbumSort.Recent Then Return LocalizationService.Format("{0} zuletzt hinzugefügte Alben", count)
    Return LocalizationService.Format("{0} Alben", count)
+  End Function
+
+  ''' <summary>Ob gerade nach einem Begriff gefiltert wird.</summary>
+  Private Function IsSearching() As Boolean
+   Return Not String.IsNullOrWhiteSpace(FindControl(Of TextBox)("SearchBox")?.Text)
   End Function
 
   ''' <summary>Der Repeater hat eine Kachel gebaut - erst jetzt lohnt sich ihr Cover. Und erst
