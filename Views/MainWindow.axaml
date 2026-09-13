@@ -101,6 +101,24 @@
                  Fensterknoepfen und den Anfassern zum Groessenaendern. Solange nichts gefragt
                  wird, ist sie unsichtbar und faengt nichts ab. -->
             <views:ConfirmDialogOverlay/>
+
+            <!-- Konvertierung und CD-Rippen duerfen nicht durch Aktionen in Wiedergabe, Liste
+                 oder Einstellungen unterbrochen werden. Die Decke liegt auch ueber den
+                 Fensterknopfen und faengt jeden Zeiger ab; die Tastatur wird in MainWindow
+                 ebenfalls behandelt. -->
+            <Border Background="#B8000000" ZIndex="600"
+                    IsVisible="{Binding IsConversionRunning}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="14">
+                    <ProgressBar Width="180" Height="6" IsIndeterminate="True"/>
+                    <TextBlock Text="Konvertierung läuft …"
+                               HorizontalAlignment="Center"
+                               FontSize="{DynamicResource FP.Font.Heading}"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Währenddessen sind keine weiteren Aktionen möglich."
+                               Classes="secondary"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Border>
 </Window>

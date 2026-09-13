@@ -52,9 +52,15 @@ Namespace Views
         End Property
 
         Private Sub OnViewModelDataContextChanged(sender As Object, e As EventArgs)
-            If _focusViewModel IsNot Nothing Then RemoveHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
+            If _focusViewModel IsNot Nothing Then
+                RemoveHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
+                RemoveHandler _focusViewModel.AudioCdRemoved, AddressOf OnAudioCdRemoved
+            End If
             _focusViewModel = ViewModel
-            If _focusViewModel IsNot Nothing Then AddHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
+            If _focusViewModel IsNot Nothing Then
+                AddHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
+                AddHandler _focusViewModel.AudioCdRemoved, AddressOf OnAudioCdRemoved
+            End If
             ' RestorePlaylist laeuft vor dem Anhaengen der Ansicht. Erst danach ist die ListBox
             ' vorhanden und kann den zuletzt gewaehlten Titel wirklich sichtbar machen.
             Dispatcher.UIThread.Post(Sub()
@@ -70,6 +76,10 @@ Namespace Views
             If row Is Nothing Then Return
             list.SelectedItem = row
             list.ScrollIntoView(row)
+        End Sub
+
+        Private Sub OnAudioCdRemoved(sender As Object, e As EventArgs)
+            _converterPanel?.CloseForRemovedAudioCd()
         End Sub
 
         Private Sub OnSeeked(seconds As Double)
@@ -266,6 +276,7 @@ Namespace Views
             If selected Is Nothing OrElse selected.Count = 0 Then Return
             _converterPanel = New ConverterPanel(selected)
             AddHandler _converterPanel.CloseRequested, AddressOf OnConverterCloseRequested
+            AddHandler _converterPanel.ProcessingChanged, AddressOf OnConversionProcessingChanged
             Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
             host.Content = _converterPanel
             host.IsVisible = True
@@ -333,6 +344,9 @@ Namespace Views
 
         Private Sub OnConverterCloseRequested(sender As Object, e As EventArgs)
             ClearStatus()
+            Dim panel = TryCast(sender, ConverterPanel)
+            If panel IsNot Nothing Then RemoveHandler panel.ProcessingChanged, AddressOf OnConversionProcessingChanged
+            If ViewModel IsNot Nothing Then ViewModel.IsConversionRunning = False
             Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
             host.Content = Nothing
             host.IsVisible = False
@@ -345,6 +359,10 @@ Namespace Views
             ' eingeblendeten Bereich laeuft hier durch, auch ein ungewoehnlicher.
             RestoreNowPlayingColumn()
             _converterPanel = Nothing
+        End Sub
+
+        Private Sub OnConversionProcessingChanged(isRunning As Boolean)
+            If ViewModel IsNot Nothing Then ViewModel.IsConversionRunning = isRunning
         End Sub
 
         ''' <summary>Gibt die Coverspalte wieder der laufenden Wiedergabe.</summary>

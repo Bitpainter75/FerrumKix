@@ -58,7 +58,9 @@ Namespace Views
         Inherits UserControl
         Private _tracks As List(Of Track) = New List(Of Track)()
         Private _cancel As CancellationTokenSource
+        Private _closeWhenFinished As Boolean
         Public Event CloseRequested As EventHandler
+        Public Event ProcessingChanged(isRunning As Boolean)
         Public ReadOnly Property Queue As New ObservableCollection(Of ConversionQueueRow)()
         Public ReadOnly Property DisplayRows As New ObservableCollection(Of Object)()
 
@@ -152,6 +154,7 @@ Namespace Views
             _cancel = New CancellationTokenSource()
             FindControl(Of Button)("ConvertButton").IsEnabled = False
             FindControl(Of ProgressBar)("Progress").IsVisible = True
+            RaiseEvent ProcessingChanged(True)
             For Each row In Queue : row.Status = LocalizationService.T("Wartet") : Next
             Try
                 Await AudioConversionService.ConvertAsync(New AudioConversionService.Request With {
@@ -172,7 +175,22 @@ Namespace Views
                 FindControl(Of ProgressBar)("Progress").IsVisible = False
                 FindControl(Of Button)("ConvertButton").IsEnabled = True
                 _cancel?.Dispose() : _cancel = Nothing
+                RaiseEvent ProcessingChanged(False)
+                If _closeWhenFinished Then RaiseEvent CloseRequested(Me, EventArgs.Empty)
             End Try
+        End Sub
+
+        ''' <summary>Eine entfernte CD macht jede CDDA-Quelle unlesbar. Der laufende Rip wird
+        ''' abgebrochen; erst nach dem Aufraeumen schliesst sich das Panel, damit die lokale
+        ''' Wiedergabeliste wieder sichtbar wird.</summary>
+        Public Sub CloseForRemovedAudioCd()
+            If Not _tracks.Any(Function(track) track IsNot Nothing AndAlso track.IsAudioCdTrack) Then Return
+            If _cancel Is Nothing Then
+                RaiseEvent CloseRequested(Me, EventArgs.Empty)
+                Return
+            End If
+            _closeWhenFinished = True
+            _cancel.Cancel()
         End Sub
 
         Private Function SelectedMode() As AudioConversionService.ConversionMode

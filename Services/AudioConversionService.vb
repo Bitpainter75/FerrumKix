@@ -101,10 +101,17 @@ Namespace Services
                     request.ItemProgress?.Invoke(index, LocalizationService.T("Konvertiert"))
                     Dim input = Await GetInputAsync(track, request.OutputDirectory, cancellationToken)
                     Try
-                        Dim target = UniquePath(request.OutputDirectory, SafeFileName($"{TrackPrefix(track)}{track.DisplayTitle}") & ExtensionFor(request.Format))
+                        Dim target = UniquePath(request.OutputDirectory, OutputFileName(track, request.Format))
                         ' Bei einer Audio-CD traegt die Zwischendatei keine Kennzeichen; sie kommen
                         ' aus dem Titel, den die Erkennung gefuellt hat - Titelbild inbegriffen.
                         Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track, coverFile:=coverFile)
+                        ' Der MP3-Schreiber ist die einzige Stelle, die die ID3v2-Regeln vollstaendig
+                        ' kennt (aufgefuellte TRCK-Nummer, Album-Sortierung, alte Tags entfernen).
+                        ' Beim Rippen wird er daher nach FFmpeg nochmals angewandt; sein Name ist
+                        ' zugleich derselbe wie im MP3-Tag-Editor.
+                        If track.IsAudioCdTrack AndAlso request.Format = OutputFormat.Mp3 Then
+                            target = Mp3TagWriteService.Write(target, CdTagValues(track))
+                        End If
                         request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig"))
                     Finally
                         DeleteTemporaryCdWav(input)
@@ -165,18 +172,23 @@ Namespace Services
         ''' Kennzeichen bekommt.</para></summary>
         Private Shared Sub AddMetadata(psi As ProcessStartInfo, track As Track)
             If track Is Nothing Then Return
+            Dim cdValues = If(track.IsAudioCdTrack, CdTagValues(track), Nothing)
             Add(psi, "title", track.Title, track.IsAudioCdTrack)
             Add(psi, "artist", track.Artist, False)
             Add(psi, "album", track.Album, track.IsAudioCdTrack)
-            Add(psi, "album_artist", track.AlbumArtist, False)
+            Add(psi, "album_artist", If(cdValues Is Nothing, track.AlbumArtist, cdValues.AlbumArtist), False)
             If track.TrackNumber > 0 Then
-                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("track=" & track.TrackNumber.ToString(CultureInfo.InvariantCulture))
+                Dim number = If(cdValues Is Nothing, track.TrackNumber.ToString(CultureInfo.InvariantCulture), Mp3TagWriteService.FormatTrackNumber(track.TrackNumber, cdValues.TotalTracks))
+                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("track=" & number)
             End If
             If track.Year > 0 Then
                 psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("date=" & track.Year.ToString(CultureInfo.InvariantCulture))
             End If
             If Not String.IsNullOrWhiteSpace(track.Genre) Then
                 psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("genre=" & track.Genre.Trim())
+            End If
+            If cdValues IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(cdValues.AlbumSortOrder) Then
+                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("albumsort=" & cdValues.AlbumSortOrder)
             End If
         End Sub
 
@@ -191,7 +203,7 @@ Namespace Services
         ''' kein Text fuer den Nutzer, und nur deshalb laesst sich hier verlaesslich erkennen, dass
         ''' nichts dasteht, was in die Kennzeichen gehoert.</summary>
         Private Shared Function IsCdPlaceholder(value As String) As Boolean
-            Dim trimmed = value.Trim()
+            Dim trimmed = If(value, String.Empty).Trim()
             If String.Equals(trimmed, "Audio-CD", StringComparison.Ordinal) Then Return True
             If Not trimmed.StartsWith("Titel ", StringComparison.Ordinal) Then Return False
             Dim rest = trimmed.Substring("Titel ".Length)
@@ -301,7 +313,10 @@ Namespace Services
             If endSeconds.HasValue AndAlso startSeconds.HasValue Then
                 psi.ArgumentList.Add("-t") : psi.ArgumentList.Add((endSeconds.Value - startSeconds.Value).ToString("0.000", CultureInfo.InvariantCulture))
             End If
-            psi.ArgumentList.Add("-map_metadata") : psi.ArgumentList.Add("0") : psi.ArgumentList.Add("-map") : psi.ArgumentList.Add("0:a:0")
+            ' CDDA wird als WAV ausgelesen und hat ohnehin keine Tags. Die explizite Wahl macht
+            ' die Einstellung dennoch wirksam und verhindert, dass ein Werkzeug Metadaten aus
+            ' einer Zwischenquelle uebernimmt.
+            psi.ArgumentList.Add("-map_metadata") : psi.ArgumentList.Add(If(tags IsNot Nothing AndAlso tags.IsAudioCdTrack AndAlso AppSettingsService.Current.TagRemoveOtherFields, "-1", "0")) : psi.ArgumentList.Add("-map") : psi.ArgumentList.Add("0:a:0")
             If withCover Then
                 ' "attached_pic" macht aus der zweiten Eingabe ein eingebettetes Titelbild und
                 ' keine abzuspielende Bildspur. Ohne diese Kennzeichnung haelt mancher Abspieler
@@ -354,6 +369,32 @@ Namespace Services
 
         Private Shared Function TrackPrefix(track As Track) As String
             Return If(track.TrackNumber > 0, track.TrackNumber.ToString("00", CultureInfo.InvariantCulture) & " - ", String.Empty)
+        End Function
+
+        ''' <summary>Wendet beim CD-Rip dieselben Benennungs- und Standardisierungsregeln an wie
+        ''' der MP3-Tag-Editor. Andere Konvertierungen behalten bewusst ihre bisherige Benennung.</summary>
+        Private Shared Function OutputFileName(track As Track, format As OutputFormat) As String
+            If Not track.IsAudioCdTrack Then Return SafeFileName($"{TrackPrefix(track)}{track.DisplayTitle}") & ExtensionFor(format)
+            Dim name = Mp3TagWriteService.BuildFileName(AppSettingsService.Current.TagFileNamePattern, CdTagValues(track))
+            Return SafeFileName(If(String.IsNullOrWhiteSpace(name), $"{TrackPrefix(track)}{track.DisplayTitle}", name)) & ExtensionFor(format)
+        End Function
+
+        Private Shared Function CdTagValues(track As Track) As Mp3TagWriteService.Values
+            Dim device As String = Nothing, number As Integer, lastTrack As Integer
+            Track.TryGetAudioCdSource(track.FilePath, device, number, lastTrack)
+            Dim artist = If(track.Artist, String.Empty).Trim()
+            Dim year = Math.Max(0, track.Year)
+            Return New Mp3TagWriteService.Values With {
+                .Artist = artist,
+                .AlbumArtist = If(AppSettingsService.Current.TagAlbumArtistFollowsArtist, artist, If(track.AlbumArtist, String.Empty).Trim()),
+                .Album = If(IsCdPlaceholder(track.Album), String.Empty, If(track.Album, String.Empty).Trim()),
+                .Year = year,
+                .Genre = If(track.Genre, String.Empty).Trim(),
+                .AlbumSortOrder = If(AppSettingsService.Current.TagAlbumSortFollowsYear, If(year = 0, String.Empty, year.ToString(CultureInfo.InvariantCulture)), If(track.AlbumSortOrder, String.Empty).Trim()),
+                .DiscNumber = Math.Max(0, track.DiscNumber),
+                .Title = If(IsCdPlaceholder(track.Title), String.Empty, If(track.Title, String.Empty).Trim()),
+                .TrackNumber = If(track.TrackNumber > 0, track.TrackNumber, number),
+                .TotalTracks = Math.Max(0, lastTrack)}
         End Function
 
         Private Shared Function SafeFileName(value As String) As String

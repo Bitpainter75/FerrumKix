@@ -577,6 +577,8 @@
   <data name="Bitte_zuerst_einen_Zielordner_ausw_hlen_8f6bde6a" xml:space="preserve"><value>Please choose an output folder first.</value></data>
   <data name="Fertig_konvertiert_11f92741" xml:space="preserve"><value>Conversion complete.</value></data>
   <data name="Konvertierung_abgebrochen_b2bffba9" xml:space="preserve"><value>Conversion cancelled.</value></data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve"><value>Conversion in progress …</value></data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve"><value>No further actions are available while this is in progress.</value></data>
   <data name="Keine_Titel_zum_Konvertieren_ausgew_hlt_23590936" xml:space="preserve"><value>No tracks selected for conversion.</value></data>
   <data name="Kein_Zielordner_gew_hlt_7432a7fd" xml:space="preserve"><value>No output folder selected.</value></data>
   <data name="FFmpeg_wurde_nicht_gefunden_Bitte_installiere_da_0202a9db" xml:space="preserve"><value>FFmpeg was not found. Please install the 'ffmpeg' package.</value></data>

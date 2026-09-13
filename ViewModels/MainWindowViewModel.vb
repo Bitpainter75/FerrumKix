@@ -43,6 +43,9 @@ Namespace ViewModels
         ''' und die gespeicherte Datei.</summary>
         Private ReadOnly _tracks As New List(Of Track)()
         Private ReadOnly _audioCdTracks As New List(Of Track)()
+        ''' <summary>Wird ausgelöst, wenn eine zuvor vorhandene Audio-CD entfernt wurde. Ansichten
+        ''' können damit einen laufenden Rip-Vorgang beenden, bevor sie zur lokalen Liste gehen.</summary>
+        Public Event AudioCdRemoved As EventHandler
         ' Die vom Lyrion-Album gestartete, flüchtige Reihenfolge wird nie gespeichert und tritt
         ' nur an die Stelle der lokalen Liste, solange einer ihrer Titel läuft.
         Private ReadOnly _lyrionTracks As New List(Of Track)()
@@ -91,6 +94,10 @@ Namespace ViewModels
         Private _mode As AppMode = AppMode.Player
         Private _searchText As String = String.Empty
         Private _statusText As String = String.Empty
+        ' Konvertieren und CD-Rippen beanspruchen dieselben Laufwerke und Dateien wie die
+        ' Wiedergabeliste. Dieser Zustand wird von der Fensterdecke verwendet, damit waehrend
+        ' des Vorgangs keine weitere Bedienaktion dazwischenfunkt.
+        Private _isConversionRunning As Boolean
 
         Private _positionSeconds As Double
         Private _durationSeconds As Double
@@ -105,6 +112,16 @@ Namespace ViewModels
         ''' <summary>Laeuft gerade ein Ordner-Einlesen. Zwei gleichzeitig waeren erlaubt, aber der
         ''' Balken kann nur eines zeigen, und die Reihenfolge in der Liste wuerde sich mischen.</summary>
         Private _isScanning As Boolean
+
+        ''' <summary>True, solange eine Audio-Konvertierung oder ein CD-Rip aktiv ist.</summary>
+        Public Property IsConversionRunning As Boolean
+            Get
+                Return _isConversionRunning
+            End Get
+            Set(value As Boolean)
+                SetField(_isConversionRunning, value)
+            End Set
+        End Property
 
         ''' <summary>Ein Vergroesserungsfaktor wurde in dieser Sitzung verstellt.</summary>
         Private _restartNeeded As Boolean
@@ -1588,6 +1605,7 @@ Namespace ViewModels
         Private Sub SetAudioCdTracks(tracks As List(Of Track), selectPlaylist As Boolean)
             If _shutdown.IsCancellationRequested Then Return
             tracks = If(tracks, New List(Of Track)())
+            Dim hadAudioCd = _audioCdTracks.Count > 0
             Dim unchanged = tracks.Count = _audioCdTracks.Count AndAlso
                             tracks.Select(Function(track) track.FilePath).SequenceEqual(_audioCdTracks.Select(Function(track) track.FilePath), StringComparer.Ordinal)
             If unchanged Then Return
@@ -1602,6 +1620,15 @@ Namespace ViewModels
             Next
             RaisePropertyChanged(NameOf(HasAudioCd))
             RebuildAudioCdPlayOrder()
+
+            ' Ohne Scheibe darf die Ansicht nicht auf einer nun leeren CD-Liste stehen bleiben.
+            ' Der eigene Hinweis erreicht den Konverter, damit cdparanoia abgebrochen und dessen
+            ' Decke anschliessend geschlossen wird.
+            If _audioCdTracks.Count = 0 Then
+                If _selectedPlaylist = PlaylistKind.AudioCd OrElse selectPlaylist Then SelectedPlaylist = PlaylistKind.Files
+                If hadAudioCd Then RaiseEvent AudioCdRemoved(Me, EventArgs.Empty)
+                Return
+            End If
 
             If _selectedPlaylist = PlaylistKind.AudioCd OrElse selectPlaylist Then
                 SelectedPlaylist = PlaylistKind.AudioCd
