@@ -30,7 +30,8 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
   "Track 01" — and they go into the tags, along with the cover art, when the CD is converted.
 - **Browses Lyrion.** Connect a Lyrion Media Server to search its albums as you type, view server
   artwork, and play an album locally through FerrumPlay. The album becomes a temporary playlist,
-  including next/previous, shuffle, repeat, and jump-to-current-track. Sort the overview by
+  including next/previous, shuffle, repeat, and jump-to-current-track. Unchecking a track leaves it
+  out of that playback, the same way it works in the playlist. Sort the overview by
   recently added, artist/year, album or year/album, in either direction, and filter it down to
   your favorites. "Refresh library" asks the server to look for new and changed music first,
   rather than showing the same state again.
@@ -72,9 +73,10 @@ gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on st
 configurable. The MP3 editor and Lyrion browser also keep their own defaults; entering a Lyrion
 server address makes its player tab available, and a target folder there enables the favorites
 sync. The MP3 section also sets the edge length cover art is brought to, which governs the image
-fetched for an identified CD as well, and there is a target folder for ripping audio CDs that
-defaults to your music folder. On Linux, the whole interface can also be scaled
-per screen, for displays where it would otherwise come out too small.
+fetched for an identified CD as well, and the audio converter section holds the target folder for
+ripping audio CDs, which defaults to your music folder. The version is shown there too, with a
+link to the release page whenever a newer one is published. On Linux, the whole interface can also
+be scaled per screen, for displays where it would otherwise come out too small.
 
 ## Installation
 
@@ -163,4 +165,4 @@ come from [MusicBrainz](https://musicbrainz.org) and are core data under
 their respective copyright owners. Only the disc id, computed from the track lengths, is sent; the
 disc itself is never read for the lookup.
 
-FerrumPlay is at version 0.8.0 and in active development.
+FerrumPlay is at version 0.8.1 and in active development.

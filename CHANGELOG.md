@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.8.1
+
+- Ripping an audio CD now writes the MP3 tags through the same writer as the tag editor. FFmpeg
+  alone knew nothing of the ID3v2 conventions the editor follows - a track number padded against
+  the total, an album sort order, and old tags cleared out when that setting is on - so a ripped
+  track and a tagged one ended up carrying different tags for the same album. The file name now
+  comes from the same tag values as well, so the identified title reaches the file name too.
+- A conversion or rip can be stopped. The back arrow of the converter turns into "Cancel" while a
+  run is going, and what is already written stays; only the file in flight is discarded.
+- A run now covers the window while it lasts. Converting reads the CD and writes files in one long
+  stretch, and an action taken meanwhile - switching the view, ejecting the disc, starting a second
+  run - would have pulled the ground out from under it. The cover says what is happening and takes
+  every pointer and key until the run ends.
+- The check mark in a Lyrion track list does something now. It sat there looking like a switch and
+  was decoration - fixed, checked and dead - so that the row lined up with the playlist next to it.
+  Unchecking a track now takes it out of playback in FerrumPlay, just as in the playlist; the state
+  is remembered per track of the server, so sorting or reopening the album keeps it. On a device
+  the check marks are greyed out: there the server loads the whole album and runs the order itself,
+  and a switch that cannot do anything should not pretend otherwise.
+- The target folder for ripping sat in the Lyrion Media Server section of the settings, where it
+  has nothing to do: it belongs to the audio converter, and that is where it now is.
+- The version in the settings is the one from the VERSION file, the same file the build and the
+  packages take their number from - including the package revision, which the three-part assembly
+  number could not carry. Opening the settings asks GitHub once per session which version is
+  published; if it differs from the running one, a link to the release page appears next to the
+  version. Nothing but that file is fetched, and a failed request stays silent.
+- The number field for the cover edge length was square on its right side and its arrows were
+  black on a dark ground. Its styling had never taken effect: the two spinner buttons live in the
+  template of the spinner *inside* the template of the number field, and the rules were written for
+  one level only.
+
 ## 0.8.0
 
 - FerrumPlay can now act as a remote control for the Lyrion server. A picker next to the album
