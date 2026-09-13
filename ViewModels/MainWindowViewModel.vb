@@ -1179,7 +1179,24 @@ Namespace ViewModels
         Public Sub SeekTo(seconds As Double)
             If RemoteSeek(seconds) Then Return
             If _currentTrack Is Nothing Then Return
-            _player.Seek(seconds)
+
+            ' Bei einer Audio-CD rechnet die Anzeige in TITELZEIT, mpv aber in DISC-ZEIT: die CD
+            ' laeuft als ganze Scheibe mit start=#N, und time-pos zaehlt vom Anfang der Scheibe.
+            ' OnTimeReported zieht dafuer _audioCdTimeOffset ab - beim Suchlauf muss derselbe
+            ' Betrag wieder drauf.
+            '
+            ' Ohne das landete ein Klick bei 0:30 im dritten Titel bei Sekunde 30 der SCHEIBE,
+            ' also mitten im ersten. Die Anzeige rechnete danach 30 minus Titelanfang, bekam eine
+            ' negative Zahl, klemmte sie auf 0 - und die Laufleiste stand auf 0:00 fest, bis die
+            ' Wiedergabe den Titelanfang wieder erreicht haette.
+            Dim target = seconds
+            If _currentTrack.IsAudioCdTrack Then
+                Dim titleDuration = Math.Max(0, _currentTrack.DurationSeconds)
+                If titleDuration > 0 Then target = Math.Clamp(target, 0, titleDuration)
+                target += If(_audioCdTimeOffset.HasValue, _audioCdTimeOffset.Value, 0)
+            End If
+
+            _player.Seek(target)
             PositionSeconds = seconds
             _mpris?.NotifySeeked(seconds)
         End Sub

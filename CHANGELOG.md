@@ -2,6 +2,11 @@
 
 ## 0.8.0
 
+- Fixed: clicking into the seek bar on an audio CD left the time reading 0:00 and the bar empty.
+  A CD runs in mpv as the whole disc with start=#N, so its clock counts from the start of the disc
+  while the display counts within the track. The seek handed over the track-relative position
+  unchanged, which landed at that many seconds into the *disc* - the display then subtracted the
+  track's start, got a negative number, clamped it to zero, and stayed there.
 - Fixed: shuffle had no effect on an audio CD. Only the file playlist and, since 0.7.0, the Lyrion
   album were shuffled; the CD handed out its tracks in disc order no matter what the switch said.
   It now has a play order of its own, built the same way. Repeat was never affected - it does not
