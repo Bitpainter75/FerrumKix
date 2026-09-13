@@ -80,12 +80,18 @@ per screen, for displays where it would otherwise come out too small.
 
 ### Linux
 
-| Package | For | Download |
+| Package | For | Get it |
 |---|---|---|
+| AUR | Arch, CachyOS, Manjaro, EndeavourOS | `paru -S ferrumplay-bin` (or `yay -S ferrumplay-bin`) |
 | AppImage | Any distribution, runs without installing | [FerrumPlay-x86_64.AppImage](https://github.com/Bitpainter75/FerrumPlay/releases/download/latest/FerrumPlay-x86_64.AppImage) |
-| ZIP | Portable, unpack and run (x64) | [Releases](https://github.com/Bitpainter75/FerrumPlay/releases/latest) |
+| DEB | Debian, Ubuntu, Mint | [FerrumPlay-amd64.deb](https://github.com/Bitpainter75/FerrumPlay/releases/download/latest/FerrumPlay-amd64.deb) |
+| RPM | Fedora, openSUSE | [FerrumPlay-x86_64.rpm](https://github.com/Bitpainter75/FerrumPlay/releases/download/latest/FerrumPlay-x86_64.rpm) |
+| ZIP | Portable, unpack and run (x64) | [FerrumPlay-linux-x64.zip](https://github.com/Bitpainter75/FerrumPlay/releases/download/latest/FerrumPlay-linux-x64.zip) |
 
-The AppImage carries update information, so tools that manage AppImages find new versions on their own.
+[`ferrumplay-bin`](https://aur.archlinux.org/packages/ferrumplay-bin) tracks each release and pulls
+in the dependencies below on its own. The download addresses above stay the same from version to
+version, so a bookmark or an update script keeps working; the AppImage also carries update
+information, so tools that manage AppImages find new versions by themselves.
 
 The packages are self-contained and bring the .NET runtime with them. **libmpv is needed** and comes from your distribution:
 
