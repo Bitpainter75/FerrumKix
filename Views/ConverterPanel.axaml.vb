@@ -90,8 +90,12 @@ Namespace Views
             _tracks = tracks.Where(Function(track) track IsNot Nothing).ToList()
             AddQueueRows()
             FindControl(Of TextBlock)("CountText").Text = LocalizationService.Format("{0} Titel", _tracks.Count)
+            ' Bei Dateien liegt der Ordner der Dateien nahe. Eine Audio-CD hat keinen - dafuer
+            ' gibt es die Einstellung, und ohne sie den Musikordner des Nutzers.
             Dim firstFile = _tracks.FirstOrDefault(Function(track) Not track.IsAudioCdTrack)
-            FindControl(Of TextBox)("FolderBox").Text = If(firstFile Is Nothing, AppSettingsService.Current.LastBrowseFolder, Path.GetDirectoryName(firstFile.FilePath))
+            FindControl(Of TextBox)("FolderBox").Text = If(firstFile Is Nothing,
+                                                          AppSettingsService.ResolvedCdRipTarget,
+                                                          Path.GetDirectoryName(firstFile.FilePath))
         End Sub
 
         Private Sub InitializeComponent()

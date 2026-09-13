@@ -30,6 +30,33 @@ Namespace ViewModels
         Private _remoteVolumeUntil As Date = Date.MinValue
         Private _remoteSeekUntil As Date = Date.MinValue
 
+        ''' <summary>Ob das GERAET gerade das ist, was man hoert.
+        '''
+        ''' <para>Ein gewaehltes Geraet allein genuegt nicht. Eine Audio-CD oder eine Datei laeuft
+        ''' weiterhin oertlich, auch wenn ein Geraet eingestellt ist - und dann gehoert die
+        ''' Transportleiste dieser Wiedergabe und nicht dem Geraet. Ohne diese Unterscheidung ging
+        ''' der Anhalten-Knopf waehrend einer CD ans Geraet, und die CD spielte weiter.</para>
+        '''
+        ''' <para>Gesetzt wird es beim Umschalten auf ein Geraet und beim Starten eines Albums
+        ''' darauf; geloescht von <see cref="PlayCore"/>, also von jeder oertlichen Wiedergabe.</para></summary>
+        Private _remoteOwnsPlayback As Boolean
+
+        ''' <summary>Die eine Frage, an der jeder Transportbefehl haengt: geht er ans Geraet?</summary>
+        Private ReadOnly Property IsRemoteActive As Boolean
+            Get
+                Return LyrionRemoteService.IsRemote AndAlso _remoteOwnsPlayback
+            End Get
+        End Property
+
+        ''' <summary>Meldet, dass jetzt wieder oertlich gespielt wird. Ruft PlayCore.</summary>
+        Friend Sub LocalPlaybackTookOver()
+            If Not _remoteOwnsPlayback Then Return
+            _remoteOwnsPlayback = False
+            _remoteTrack = Nothing
+            _remoteKey = String.Empty
+            RaisePropertyChanged(NameOf(IsRemoteControl))
+        End Sub
+
         ''' <summary>Meldet sich beim Fernsteuerungsdienst an und nimmt ein gemerktes Geraet wieder
         ''' auf. Wird beim Aufbau des Fensters aufgerufen.</summary>
         Friend Sub HookLyrionRemote()
@@ -66,6 +93,7 @@ Namespace ViewModels
             If LyrionRemoteService.IsRemote Then
                 ' Zwei Tonquellen auf einmal will niemand: wer auf ein Geraet umschaltet, will dort
                 ' hoeren und nicht auch noch hier.
+                _remoteOwnsPlayback = True
                 _player.Stop()
                 _isStopped = True
                 IsPlaying = False
@@ -73,6 +101,7 @@ Namespace ViewModels
             Else
                 ' Zurueck zur oertlichen Wiedergabe: der Titel des Geraets gehoert nicht mehr
                 ' hierher, und es laeuft auch nichts mehr.
+                _remoteOwnsPlayback = False
                 _remoteTrack = Nothing
                 _remoteKey = String.Empty
                 _currentTrack = Nothing
@@ -91,7 +120,9 @@ Namespace ViewModels
 
         ''' <summary>Uebernimmt den Zustand des Geraets in die Anzeige.</summary>
         Private Sub ApplyRemoteStatus()
-            If Not LyrionRemoteService.IsRemote Then Return
+            ' Nur wenn das Geraet auch das ist, was man hoert. Sonst ueberschriebe die Abfrage im
+            ' Sekundentakt die Anzeige einer laufenden CD.
+            If Not IsRemoteActive Then Return
             Dim status = LyrionRemoteService.Status
             If status Is Nothing OrElse Not status.Reachable Then Return
 
@@ -153,31 +184,31 @@ Namespace ViewModels
         ' erst danach kommt der oertliche Weg.
 
         Private Function RemoteTogglePlayPause() As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             RemoteCall(AddressOf LyrionRemoteService.PlayPauseAsync)
             Return True
         End Function
 
         Private Function RemoteStop() As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             RemoteCall(AddressOf LyrionRemoteService.StopAsync)
             Return True
         End Function
 
         Private Function RemoteNext() As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             RemoteCall(AddressOf LyrionRemoteService.NextAsync)
             Return True
         End Function
 
         Private Function RemotePrevious() As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             RemoteCall(AddressOf LyrionRemoteService.PreviousAsync)
             Return True
         End Function
 
         Private Function RemoteSeek(seconds As Double) As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             _remoteSeekUntil = Date.UtcNow.AddSeconds(2)
             PositionSeconds = seconds
             RemoteCall(Function(token) LyrionRemoteService.SeekAsync(seconds, token))
@@ -185,28 +216,28 @@ Namespace ViewModels
         End Function
 
         Private Function RemoteSetVolume(percent As Double) As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             _remoteVolumeUntil = Date.UtcNow.AddSeconds(2)
             RemoteCall(Function(token) LyrionRemoteService.SetVolumeAsync(percent, token))
             Return True
         End Function
 
         Private Function RemoteSetMuted(muted As Boolean) As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             _remoteVolumeUntil = Date.UtcNow.AddSeconds(2)
             RemoteCall(Function(token) LyrionRemoteService.SetMutedAsync(muted, token))
             Return True
         End Function
 
         Private Function RemoteSetShuffle(shuffle As Boolean) As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             RemoteCall(Function(token) LyrionRemoteService.SetShuffleAsync(shuffle, token))
             Return True
         End Function
 
         ''' <summary>FerrumPlay kennt aus, einen Titel, alle; der Server ebenso (0, 1, 2).</summary>
         Private Function RemoteSetRepeat(mode As RepeatMode) As Boolean
-            If Not LyrionRemoteService.IsRemote Then Return False
+            If Not IsRemoteActive Then Return False
             Dim serverMode = Select_RepeatMode(mode)
             RemoteCall(Function(token) LyrionRemoteService.SetRepeatAsync(serverMode, token))
             Return True
@@ -224,6 +255,10 @@ Namespace ViewModels
         ''' Wiedergabe, sobald ein Geraet gewaehlt ist.</summary>
         Public Sub PlayLyrionAlbumRemote(albumId As String, trackIndex As Integer)
             If Not LyrionRemoteService.IsRemote Then Return
+            ' Ab jetzt hoert man das Geraet - die Transportleiste gehoert ihm.
+            _remoteOwnsPlayback = True
+            _player.Stop()
+            _isStopped = True
             RemoteCall(Function(token) LyrionRemoteService.PlayAlbumAsync(albumId, trackIndex, token))
         End Sub
 

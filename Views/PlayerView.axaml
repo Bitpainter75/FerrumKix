@@ -328,6 +328,16 @@
                                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/folder-plus.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
+                                <!-- Die CD bei MusicBrainz nachschlagen. Steht nur da, wenn eine
+                                     CD im Laufwerk ist; ein zweiter Klick fragt noch einmal, um
+                                     bei mehreren Ausgaben eine andere zu waehlen. -->
+                                <Button Classes="icon-btn" Width="28" Height="28"
+                                        Command="{Binding IdentifyAudioCdCommand}"
+                                        IsVisible="{Binding CanIdentifyAudioCd}"
+                                        ToolTip.Tip="Audio-CD bei MusicBrainz nachschlagen">
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/disc.svg"
+                                                   Width="15" Height="15"/>
+                                </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"
                                         Command="{Binding RemoveMissingTracksCommand}"
                                         IsVisible="{Binding HasMissingTracks}"

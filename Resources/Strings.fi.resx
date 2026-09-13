@@ -534,4 +534,43 @@
   <data name="Dieses_Album_l_sst_sich_nicht_an_das_Ger_t_berge_bb85dcc0" xml:space="preserve">
     <value>Tätä albumia ei voi välittää laitteelle.</value>
   </data>
+  <data name="Audio_CD_wird_erkannt_9c5b4292" xml:space="preserve">
+    <value>Tunnistetaan ääni-CD:tä …</value>
+  </data>
+  <data name="Die_CD_ist_bei_MusicBrainz_nicht_verzeichnet_8cea9fcc" xml:space="preserve">
+    <value>CD:tä ei ole MusicBrainzissa.</value>
+  </data>
+  <data name="Die_CD_konnte_nicht_nachgeschlagen_werden_5855e3f3" xml:space="preserve">
+    <value>CD:tä ei voitu hakea.</value>
+  </data>
+  <data name="Die_Audio_CD_bleibt_ohne_Angaben_480874a1" xml:space="preserve">
+    <value>Ääni-CD jää ilman tietoja.</value>
+  </data>
+  <data name="Welche_Ausgabe_ist_es_9eeb1c70" xml:space="preserve">
+    <value>Mikä laitos tämä on?</value>
+  </data>
+  <data name="Zu_dieser_CD_passen_0_Ausgaben_Sie_haben_dieselb_2fd65d57" xml:space="preserve">
+    <value>Tähän CD:hen sopii {0} laitosta. Niillä on samat raitojen pituudet, eikä niitä voi siksi erottaa.</value>
+  </data>
+  <data name="bernehmen_59430842" xml:space="preserve">
+    <value>Käytä</value>
+  </data>
+  <data name="Audio_CD_erkannt_0_1_2_Titel_46712662" xml:space="preserve">
+    <value>Ääni-CD tunnistettu: {0} – {1} ({2} kappaletta).</value>
+  </data>
+  <data name="Audio_CD_bei_MusicBrainz_nachschlagen_adecc94e" xml:space="preserve">
+    <value>Hae ääni-CD MusicBrainzista</value>
+  </data>
+  <data name="Audio_CD_Zielordner_f_rs_Rippen_4ca9fbf2" xml:space="preserve">
+    <value>Ääni-CD: kohdekansio kopiointiin</value>
+  </data>
+  <data name="Musikordner_des_Benutzers_2ac338a5" xml:space="preserve">
+    <value>Käyttäjän musiikkikansio</value>
+  </data>
+  <data name="Zielordner_f_rs_Rippen_6def66d5" xml:space="preserve">
+    <value>Kohdekansio kopiointiin</value>
+  </data>
+  <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
+    <value>Ilman omaa asetusta: {0}</value>
+  </data>
 </root>

@@ -102,6 +102,11 @@ Namespace Services
         ''' <summary>Vollständige LMS-Basisadresse, etwa https://music.example.lan/.</summary>
         Public Property LyrionServerUrl As String = String.Empty
         Public Property LyrionClientName As String = "FerrumPlay"
+        ''' <summary>Wohin eine Audio-CD gerippt wird. LEER heisst: der Musikordner des Nutzers -
+        ''' siehe <see cref="AppSettingsService.ResolvedCdRipTarget"/>. Gemerkt wird der leere Wert
+        ''' und nicht der aufgeloeste Pfad: zieht der Musikordner um, zieht das Ziel mit.</summary>
+        Public Property CdRipTargetPath As String = String.Empty
+
         ''' <summary>Das Lyrion-Geraet, das ferngesteuert wird. LEER heisst: oertlich abspielen.
         ''' Gemerkt wird die Kennung, denn nur sie ist eindeutig; der Name steht daneben, damit die
         ''' Ansicht beim Start etwas anzuzeigen hat, bevor die Geraeteliste geholt ist.</summary>
@@ -183,6 +188,20 @@ Namespace Services
                 Return New AppSettings()
             End Try
         End Function
+
+        ''' <summary>Der Zielordner fuers Rippen, mit Vorgabe. Ohne eigene Einstellung der
+        ''' Musikordner des Nutzers; unter Linux ist das der aus <c>user-dirs.dirs</c>, sonst
+        ''' <c>~/Music</c>. Laesst sich auch der nicht bestimmen, bleibt das Heimatverzeichnis -
+        ''' ein leerer Vorschlag waere keiner.</summary>
+        Public Shared ReadOnly Property ResolvedCdRipTarget As String
+            Get
+                Dim configured = Current.CdRipTargetPath
+                If Not String.IsNullOrWhiteSpace(configured) Then Return configured.Trim()
+                Dim music = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)
+                If Not String.IsNullOrWhiteSpace(music) Then Return music
+                Return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+            End Get
+        End Property
 
         Public Shared Sub Save()
             Try

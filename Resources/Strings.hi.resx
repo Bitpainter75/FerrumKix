@@ -534,4 +534,43 @@
   <data name="Dieses_Album_l_sst_sich_nicht_an_das_Ger_t_berge_bb85dcc0" xml:space="preserve">
     <value>यह एल्बम डिवाइस को नहीं भेजा जा सकता।</value>
   </data>
+  <data name="Audio_CD_wird_erkannt_9c5b4292" xml:space="preserve">
+    <value>ऑडियो सीडी पहचानी जा रही है …</value>
+  </data>
+  <data name="Die_CD_ist_bei_MusicBrainz_nicht_verzeichnet_8cea9fcc" xml:space="preserve">
+    <value>यह सीडी MusicBrainz में दर्ज नहीं है।</value>
+  </data>
+  <data name="Die_CD_konnte_nicht_nachgeschlagen_werden_5855e3f3" xml:space="preserve">
+    <value>सीडी नहीं खोजी जा सकी।</value>
+  </data>
+  <data name="Die_Audio_CD_bleibt_ohne_Angaben_480874a1" xml:space="preserve">
+    <value>ऑडियो सीडी बिना विवरण के रहती है।</value>
+  </data>
+  <data name="Welche_Ausgabe_ist_es_9eeb1c70" xml:space="preserve">
+    <value>यह कौन सा संस्करण है?</value>
+  </data>
+  <data name="Zu_dieser_CD_passen_0_Ausgaben_Sie_haben_dieselb_2fd65d57" xml:space="preserve">
+    <value>इस सीडी से {0} संस्करण मेल खाते हैं। इनकी ट्रैक अवधि समान है और इससे इन्हें अलग नहीं किया जा सकता।</value>
+  </data>
+  <data name="bernehmen_59430842" xml:space="preserve">
+    <value>लागू करें</value>
+  </data>
+  <data name="Audio_CD_erkannt_0_1_2_Titel_46712662" xml:space="preserve">
+    <value>ऑडियो सीडी पहचानी गई: {0} – {1} ({2} ट्रैक)।</value>
+  </data>
+  <data name="Audio_CD_bei_MusicBrainz_nachschlagen_adecc94e" xml:space="preserve">
+    <value>ऑडियो सीडी को MusicBrainz में खोजें</value>
+  </data>
+  <data name="Audio_CD_Zielordner_f_rs_Rippen_4ca9fbf2" xml:space="preserve">
+    <value>ऑडियो सीडी: रिप करने का लक्ष्य फ़ोल्डर</value>
+  </data>
+  <data name="Musikordner_des_Benutzers_2ac338a5" xml:space="preserve">
+    <value>उपयोगकर्ता का संगीत फ़ोल्डर</value>
+  </data>
+  <data name="Zielordner_f_rs_Rippen_6def66d5" xml:space="preserve">
+    <value>रिप करने का लक्ष्य फ़ोल्डर</value>
+  </data>
+  <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
+    <value>अपनी सेटिंग के बिना: {0}</value>
+  </data>
 </root>

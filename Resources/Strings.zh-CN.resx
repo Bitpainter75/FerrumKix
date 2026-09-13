@@ -534,4 +534,43 @@
   <data name="Dieses_Album_l_sst_sich_nicht_an_das_Ger_t_berge_bb85dcc0" xml:space="preserve">
     <value>无法将此专辑交给设备。</value>
   </data>
+  <data name="Audio_CD_wird_erkannt_9c5b4292" xml:space="preserve">
+    <value>正在识别音频 CD …</value>
+  </data>
+  <data name="Die_CD_ist_bei_MusicBrainz_nicht_verzeichnet_8cea9fcc" xml:space="preserve">
+    <value>MusicBrainz 中没有这张 CD。</value>
+  </data>
+  <data name="Die_CD_konnte_nicht_nachgeschlagen_werden_5855e3f3" xml:space="preserve">
+    <value>无法查询该 CD。</value>
+  </data>
+  <data name="Die_Audio_CD_bleibt_ohne_Angaben_480874a1" xml:space="preserve">
+    <value>音频 CD 保持无信息。</value>
+  </data>
+  <data name="Welche_Ausgabe_ist_es_9eeb1c70" xml:space="preserve">
+    <value>是哪个版本？</value>
+  </data>
+  <data name="Zu_dieser_CD_passen_0_Ausgaben_Sie_haben_dieselb_2fd65d57" xml:space="preserve">
+    <value>有 {0} 个版本与这张 CD 匹配。它们的音轨长度相同，无法据此区分。</value>
+  </data>
+  <data name="bernehmen_59430842" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="Audio_CD_erkannt_0_1_2_Titel_46712662" xml:space="preserve">
+    <value>已识别音频 CD：{0} – {1}（{2} 首）。</value>
+  </data>
+  <data name="Audio_CD_bei_MusicBrainz_nachschlagen_adecc94e" xml:space="preserve">
+    <value>在 MusicBrainz 中查询音频 CD</value>
+  </data>
+  <data name="Audio_CD_Zielordner_f_rs_Rippen_4ca9fbf2" xml:space="preserve">
+    <value>音频 CD：抓取目标文件夹</value>
+  </data>
+  <data name="Musikordner_des_Benutzers_2ac338a5" xml:space="preserve">
+    <value>用户的音乐文件夹</value>
+  </data>
+  <data name="Zielordner_f_rs_Rippen_6def66d5" xml:space="preserve">
+    <value>抓取目标文件夹</value>
+  </data>
+  <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
+    <value>未自行设置时：{0}</value>
+  </data>
 </root>

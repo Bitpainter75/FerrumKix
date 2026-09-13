@@ -534,4 +534,43 @@
   <data name="Dieses_Album_l_sst_sich_nicht_an_das_Ger_t_berge_bb85dcc0" xml:space="preserve">
     <value>Este álbum não pode ser entregue ao dispositivo.</value>
   </data>
+  <data name="Audio_CD_wird_erkannt_9c5b4292" xml:space="preserve">
+    <value>A identificar o CD de áudio …</value>
+  </data>
+  <data name="Die_CD_ist_bei_MusicBrainz_nicht_verzeichnet_8cea9fcc" xml:space="preserve">
+    <value>O CD não está registado no MusicBrainz.</value>
+  </data>
+  <data name="Die_CD_konnte_nicht_nachgeschlagen_werden_5855e3f3" xml:space="preserve">
+    <value>Não foi possível consultar o CD.</value>
+  </data>
+  <data name="Die_Audio_CD_bleibt_ohne_Angaben_480874a1" xml:space="preserve">
+    <value>O CD de áudio fica sem dados.</value>
+  </data>
+  <data name="Welche_Ausgabe_ist_es_9eeb1c70" xml:space="preserve">
+    <value>Qual é a edição?</value>
+  </data>
+  <data name="Zu_dieser_CD_passen_0_Ausgaben_Sie_haben_dieselb_2fd65d57" xml:space="preserve">
+    <value>{0} edições correspondem a este CD. Têm as mesmas durações de faixa e não se distinguem por elas.</value>
+  </data>
+  <data name="bernehmen_59430842" xml:space="preserve">
+    <value>Aplicar</value>
+  </data>
+  <data name="Audio_CD_erkannt_0_1_2_Titel_46712662" xml:space="preserve">
+    <value>CD de áudio identificado: {0} – {1} ({2} faixas).</value>
+  </data>
+  <data name="Audio_CD_bei_MusicBrainz_nachschlagen_adecc94e" xml:space="preserve">
+    <value>Consultar o CD de áudio no MusicBrainz</value>
+  </data>
+  <data name="Audio_CD_Zielordner_f_rs_Rippen_4ca9fbf2" xml:space="preserve">
+    <value>CD de áudio: pasta de destino para extração</value>
+  </data>
+  <data name="Musikordner_des_Benutzers_2ac338a5" xml:space="preserve">
+    <value>Pasta de música do utilizador</value>
+  </data>
+  <data name="Zielordner_f_rs_Rippen_6def66d5" xml:space="preserve">
+    <value>Pasta de destino para extração</value>
+  </data>
+  <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
+    <value>Sem indicação própria: {0}</value>
+  </data>
 </root>

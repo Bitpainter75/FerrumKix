@@ -26,6 +26,8 @@ Namespace ViewModels
         Private _dialogDetails As String = String.Empty
         Private _dialogConfirmText As String = String.Empty
         Private _dialogCancelText As String = String.Empty
+        Private _dialogChoices As New List(Of String)()
+        Private _dialogSelectedChoice As Integer = -1
 
         Public ReadOnly Property IsDialogOpen As Boolean
             Get
@@ -85,6 +87,49 @@ Namespace ViewModels
                 SetField(_dialogCancelText, value)
             End Set
         End Property
+
+        ''' <summary>Die Moeglichkeiten, wenn nicht nur ja oder nein zur Wahl steht. Leer heisst:
+        ''' eine gewoehnliche Sicherheitsabfrage.</summary>
+        Public ReadOnly Property DialogChoices As IReadOnlyList(Of String)
+            Get
+                Return _dialogChoices
+            End Get
+        End Property
+
+        Public ReadOnly Property HasDialogChoices As Boolean
+            Get
+                Return _dialogChoices.Count > 0
+            End Get
+        End Property
+
+        Public Property DialogSelectedChoice As Integer
+            Get
+                Return _dialogSelectedChoice
+            End Get
+            Set(value As Integer)
+                SetField(_dialogSelectedChoice, value)
+            End Set
+        End Property
+
+        ''' <summary>Laesst aus mehreren Moeglichkeiten waehlen. Gibt die Stelle der gewaehlten
+        ''' zurueck, oder -1 bei Abbruch.</summary>
+        Public Async Function ShowChoiceAsync(title As String, message As String, choices As IEnumerable(Of String),
+                                              confirmText As String, cancelText As String) As Task(Of Integer)
+            _dialogChoices = If(choices, Enumerable.Empty(Of String)()).ToList()
+            RaisePropertyChanged(NameOf(DialogChoices))
+            RaisePropertyChanged(NameOf(HasDialogChoices))
+            ' Die erste ist vorgewaehlt: eine Frage, bei der erst etwas angeklickt werden muss,
+            ' bevor der Knopf etwas tut, wirkt kaputt.
+            DialogSelectedChoice = If(_dialogChoices.Count > 0, 0, -1)
+
+            Dim confirmed = Await ShowConfirmAsync(title, message, String.Empty, confirmText, cancelText)
+            Dim picked = If(confirmed, _dialogSelectedChoice, -1)
+
+            _dialogChoices = New List(Of String)()
+            RaisePropertyChanged(NameOf(DialogChoices))
+            RaisePropertyChanged(NameOf(HasDialogChoices))
+            Return picked
+        End Function
 
         ''' <summary>Fragt nach und wartet auf die Antwort. True heisst: der Nutzer hat den
         ''' bestaetigenden Knopf gedrueckt.</summary>

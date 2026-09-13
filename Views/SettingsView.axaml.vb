@@ -34,6 +34,16 @@ Namespace Views
             If Not String.IsNullOrWhiteSpace(chosen) Then FindControl(Of TextBox)("LyrionSyncFolderBox").Text = chosen
         End Sub
 
+        ''' <summary>Der Zielordner fuers Rippen einer Audio-CD. Leer lassen heisst: Musikordner.</summary>
+        Private Async Sub OnChooseCdRipFolderClick(sender As Object, e As RoutedEventArgs)
+            Dim storage = TopLevel.GetTopLevel(Me)?.StorageProvider
+            If storage Is Nothing Then Return
+            Dim folders = Await storage.OpenFolderPickerAsync(New FolderPickerOpenOptions With {
+                .Title = LocalizationService.T("Zielordner fürs Rippen"), .AllowMultiple = False})
+            Dim chosen = folders.FirstOrDefault()?.TryGetLocalPath()
+            If Not String.IsNullOrWhiteSpace(chosen) Then FindControl(Of TextBox)("CdRipFolderBox").Text = chosen
+        End Sub
+
         Private Sub OnSectionNavClick(sender As Object, e As RoutedEventArgs)
             Dim button = TryCast(sender, Button)
             Dim name = TryCast(button?.Tag, String)

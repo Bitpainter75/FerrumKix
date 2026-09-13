@@ -97,12 +97,55 @@ Namespace Services
                 Dim input = Await GetInputAsync(track, request.OutputDirectory, cancellationToken)
                 Try
                     Dim target = UniquePath(request.OutputDirectory, SafeFileName($"{TrackPrefix(track)}{track.DisplayTitle}") & ExtensionFor(request.Format))
-                    Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken)
+                    ' Bei einer Audio-CD traegt die Zwischendatei keine Kennzeichen; sie kommen aus
+                    ' dem Titel, den die Erkennung gefuellt hat.
+                    Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track)
                     request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig"))
                 Finally
                     DeleteTemporaryCdWav(input)
                 End Try
             Next
+        End Function
+
+        ''' <summary>Schreibt Titel, Interpret, Album und Nummer in die Zieldatei.
+        '''
+        ''' <para>Nur, was wirklich dasteht: ein leeres <c>-metadata</c> loeschte den Wert, den die
+        ''' Quelle vielleicht schon mitbringt. Und "Titel 07" oder "Audio-CD" sind Platzhalter und
+        ''' keine Angaben - sie werden ausgelassen, damit eine nicht erkannte CD keine falschen
+        ''' Kennzeichen bekommt.</para></summary>
+        Private Shared Sub AddMetadata(psi As ProcessStartInfo, track As Track)
+            If track Is Nothing Then Return
+            Add(psi, "title", track.Title, track.IsAudioCdTrack)
+            Add(psi, "artist", track.Artist, False)
+            Add(psi, "album", track.Album, track.IsAudioCdTrack)
+            Add(psi, "album_artist", track.AlbumArtist, False)
+            If track.TrackNumber > 0 Then
+                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("track=" & track.TrackNumber.ToString(CultureInfo.InvariantCulture))
+            End If
+            If track.Year > 0 Then
+                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("date=" & track.Year.ToString(CultureInfo.InvariantCulture))
+            End If
+            If Not String.IsNullOrWhiteSpace(track.Genre) Then
+                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("genre=" & track.Genre.Trim())
+            End If
+        End Sub
+
+        Private Shared Sub Add(psi As ProcessStartInfo, name As String, value As String, guardPlaceholder As Boolean)
+            If String.IsNullOrWhiteSpace(value) Then Return
+            If guardPlaceholder AndAlso IsCdPlaceholder(value) Then Return
+            psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add(name & "=" & value.Trim())
+        End Sub
+
+        ''' <summary>Die Ersatztexte, die AudioCdService vergibt, solange nichts erkannt ist:
+        ''' "Titel 07" und "Audio-CD". Sie sind bewusst NICHT uebersetzt - sie sind eine Marke und
+        ''' kein Text fuer den Nutzer, und nur deshalb laesst sich hier verlaesslich erkennen, dass
+        ''' nichts dasteht, was in die Kennzeichen gehoert.</summary>
+        Private Shared Function IsCdPlaceholder(value As String) As Boolean
+            Dim trimmed = value.Trim()
+            If String.Equals(trimmed, "Audio-CD", StringComparison.Ordinal) Then Return True
+            If Not trimmed.StartsWith("Titel ", StringComparison.Ordinal) Then Return False
+            Dim rest = trimmed.Substring("Titel ".Length)
+            Return rest.Length > 0 AndAlso rest.All(AddressOf Char.IsDigit)
         End Function
 
         Private Shared Sub DeleteTemporaryCdWav(path As String)
@@ -185,7 +228,11 @@ Namespace Services
             Return temporary
         End Function
 
-        Private Shared Async Function RunFfmpegAsync(input As String, target As String, request As Request, startSeconds As Double?, endSeconds As Double?, cancellationToken As CancellationToken, Optional isConcatList As Boolean = False) As Task
+        ''' <param name="tags">Die Angaben, die in die Zieldatei sollen. Nothing heisst: nehmen,
+        ''' was in der Quelle steht. Bei einer Audio-CD steht dort NICHTS - CDDA kennt keine
+        ''' Kennzeichen -, und ohne diesen Weg kaeme die gerippte Datei ohne Titel heraus, obwohl
+        ''' die Erkennung ihn laengst ermittelt hat.</param>
+        Private Shared Async Function RunFfmpegAsync(input As String, target As String, request As Request, startSeconds As Double?, endSeconds As Double?, cancellationToken As CancellationToken, Optional isConcatList As Boolean = False, Optional tags As Track = Nothing) As Task
             Dim psi As New ProcessStartInfo("ffmpeg") With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
             psi.ArgumentList.Add("-hide_banner") : psi.ArgumentList.Add("-y")
             If isConcatList Then
@@ -199,6 +246,7 @@ Namespace Services
                 psi.ArgumentList.Add("-t") : psi.ArgumentList.Add((endSeconds.Value - startSeconds.Value).ToString("0.000", CultureInfo.InvariantCulture))
             End If
             psi.ArgumentList.Add("-map_metadata") : psi.ArgumentList.Add("0") : psi.ArgumentList.Add("-map") : psi.ArgumentList.Add("0:a:0")
+            AddMetadata(psi, tags)
             Select Case request.Format
                 Case OutputFormat.Mp3
                     psi.ArgumentList.Add("-c:a") : psi.ArgumentList.Add("libmp3lame")

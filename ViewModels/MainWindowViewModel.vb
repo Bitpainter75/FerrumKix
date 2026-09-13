@@ -153,6 +153,7 @@ Namespace ViewModels
             ShowAudioCdPlaylistCommand = New DelegateCommand(Sub() SelectedPlaylist = PlaylistKind.AudioCd)
             ClearSearchCommand = New DelegateCommand(Sub() SearchText = String.Empty)
             RemoveMissingTracksCommand = New DelegateCommand(AddressOf RemoveMissingTracks)
+            IdentifyAudioCdCommand = New DelegateCommand(AddressOf IdentifyAudioCdAgain)
             OpenSettingsCommand = New DelegateCommand(Sub() Mode = AppMode.Settings)
             ClosePanelCommand = New DelegateCommand(Sub() Mode = AppMode.Player)
             ' Der Parameter kommt aus dem AXAML und ist dort eine Zeichenkette, auch wenn eine Zahl
@@ -210,6 +211,7 @@ Namespace ViewModels
         Public ReadOnly Property ClearSearchCommand As DelegateCommand
         Public ReadOnly Property OpenSettingsCommand As DelegateCommand
         Public ReadOnly Property ClosePanelCommand As DelegateCommand
+        Public ReadOnly Property IdentifyAudioCdCommand As DelegateCommand
         Public ReadOnly Property RemoveMissingTracksCommand As DelegateCommand
 
         Public Property Mode As AppMode
@@ -466,6 +468,29 @@ Namespace ViewModels
                 AppSettingsService.Current.LyrionClientName = If(value, String.Empty).Trim()
                 AppSettingsService.Save()
             End Set
+        End Property
+
+        ''' <summary>Wohin eine Audio-CD gerippt wird. Leer heisst: der Musikordner des Nutzers.
+        ''' Der Konverter schlaegt diesen Ordner vor, wenn nur CD-Titel in der Liste stehen - bei
+        ''' Dateien bleibt es sinnvoller beim Ordner der Dateien selbst.</summary>
+        Public Property CdRipTargetPath As String
+            Get
+                Return AppSettingsService.Current.CdRipTargetPath
+            End Get
+            Set(value As String)
+                AppSettingsService.Current.CdRipTargetPath = If(value, String.Empty).Trim()
+                AppSettingsService.Save()
+                RaisePropertyChanged()
+                RaisePropertyChanged(NameOf(CdRipTargetHint))
+            End Set
+        End Property
+
+        ''' <summary>Was tatsaechlich genommen wird - damit im Dialog steht, wohin es geht, auch
+        ''' wenn das Feld leer ist.</summary>
+        Public ReadOnly Property CdRipTargetHint As String
+            Get
+                Return LocalizationService.Format("Ohne eigene Angabe: {0}", AppSettingsService.ResolvedCdRipTarget)
+            End Get
         End Property
 
         ''' <summary>Der Zielordner des Favoritenabgleichs. Siehe
@@ -1048,6 +1073,10 @@ Namespace ViewModels
             ' MPRIS erfaehrt davon nur ueber Seeked.
             Dim restarting = Object.ReferenceEquals(track, _currentTrack) AndAlso Not _isStopped
 
+            ' Ab hier hoert man wieder DIESE Wiedergabe - ein eingestelltes Lyrion-Geraet bekommt
+            ' die Transportleiste dann nicht mehr, sonst ginge der Anhalten-Knopf dorthin, waehrend
+            ' hier eine CD laeuft.
+            LocalPlaybackTookOver()
             _currentTrack = track
             RaisePropertyChanged(NameOf(IsPlayingLyrion))
             If _lyrionTracks.Contains(track) Then RaiseEvent LyrionCurrentTrackChanged(track)
@@ -1406,14 +1435,17 @@ Namespace ViewModels
         Public Async Function AddAudioCdAsync() As Task
             StatusText = LocalizationService.T("Audio-CD wird gelesen.")
             Try
-                Dim tracks = Await Task.Run(AddressOf AudioCdService.ReadFirstDisc)
+                Dim disc = Await Task.Run(AddressOf AudioCdService.ReadFirstDiscInfo)
                 If _shutdown.IsCancellationRequested Then Return
-                If tracks.Count = 0 Then
+                If disc.Tracks.Count = 0 Then
                     StatusText = LocalizationService.T("Keine Audio-CD gefunden oder das Laufwerk ist nicht lesbar.")
                     Return
                 End If
-                SetAudioCdTracks(tracks, selectPlaylist:=True)
-                StatusText = LocalizationService.Format("{0} Titel von Audio-CD verfügbar.", tracks.Count)
+                SetAudioCdTracks(disc.Tracks, selectPlaylist:=True)
+                StatusText = LocalizationService.Format("{0} Titel von Audio-CD verfügbar.", disc.Tracks.Count)
+                ' Die CD selbst bringt keine Namen mit - die kommen aus der Erkennung.
+                SetAudioCdToc(disc.Toc)
+                IdentifyDisc(disc.Toc)
             Catch ex As Exception
                 DiagnosticLogService.LogException("AudioCd.Add", ex)
                 StatusText = LocalizationService.T("Die Audio-CD konnte nicht gelesen werden.")
@@ -1425,8 +1457,12 @@ Namespace ViewModels
         Private Async Sub CheckAudioCd()
             If _shutdown.IsCancellationRequested OrElse Interlocked.Exchange(_audioCdCheckRunning, 1) <> 0 Then Return
             Try
-                Dim tracks = Await Task.Run(AddressOf AudioCdService.ReadFirstDisc)
-                Dispatcher.UIThread.Post(Sub() SetAudioCdTracks(tracks, selectPlaylist:=False))
+                Dim disc = Await Task.Run(AddressOf AudioCdService.ReadFirstDiscInfo)
+                Dispatcher.UIThread.Post(Sub()
+                                             SetAudioCdTracks(disc.Tracks, selectPlaylist:=False)
+                                             SetAudioCdToc(disc.Toc)
+                                             IdentifyDisc(disc.Toc)
+                                         End Sub)
             Catch ex As Exception
                 DiagnosticLogService.LogException("AudioCd.Monitor", ex)
             Finally

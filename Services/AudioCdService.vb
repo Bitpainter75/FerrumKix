@@ -18,6 +18,21 @@ Namespace Services
         Private Sub New()
         End Sub
 
+        ' Das Oeffnen eines optischen Laufwerks ist KEIN harmloses Oeffnen einer Datei: viele
+        ' Laufwerke ziehen die Lade dabei ein. Wer alle fuenf Sekunden nachsieht, ob eine CD drin
+        ' ist, bekommt sie beim Einlegen immer wieder vor der Hand zugefahren. Mit O_NONBLOCK
+        ' unterbleibt das - und der Zustand laesst sich damit trotzdem abfragen.
+        Private Const OpenReadOnly As Integer = 0
+        Private Const OpenNonBlock As Integer = &H800   ' O_NONBLOCK unter Linux (x86-64, aarch64)
+
+        ''' <summary>CDROM_DRIVE_STATUS. Sagt, ob ueberhaupt eine lesbare CD da ist, ohne sie
+        ''' anzufassen.</summary>
+        Private Const CdromDriveStatus As UInteger = &H5326UI
+        ''' <summary>CDSL_CURRENT - der gerade eingelegte Traeger.</summary>
+        Private Const CurrentSlot As Integer = &H7FFFFFFF
+        ''' <summary>CDS_DISC_OK. Alles andere heisst: keine CD, Lade offen oder noch nicht bereit.</summary>
+        Private Const DriveDiscOk As Integer = 4
+
         Private Const CdromReadTocHeader As UInteger = &H5305UI
         Private Const CdromReadTocEntry As UInteger = &H5306UI
         Private Const CdromLeadout As Byte = &HAA
@@ -37,6 +52,14 @@ Namespace Services
             Public Address As Integer
             Public DataMode As Byte
         End Structure
+
+        <DllImport("libc", SetLastError:=True, EntryPoint:="open")>
+        Private Shared Function OpenDevice(<MarshalAs(UnmanagedType.LPUTF8Str)> path As String, flags As Integer) As Integer
+        End Function
+
+        <DllImport("libc", SetLastError:=True, EntryPoint:="ioctl")>
+        Private Shared Function ioctl(handle As SafeFileHandle, request As UInteger, value As Integer) As Integer
+        End Function
 
         <DllImport("libc", SetLastError:=True)>
         Private Shared Function ioctl(handle As SafeFileHandle, request As UInteger, ByRef value As TocHeader) As Integer
@@ -118,19 +141,27 @@ Namespace Services
         Private Shared Function ReadDisc(devicePath As String) As DiscInfo
             Dim result As New DiscInfo With {.DevicePath = devicePath}
             Try
-                Using stream As New FileStream(devicePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                ' Selbst geoeffnet statt ueber FileStream: nur so laesst sich O_NONBLOCK setzen,
+                ' und ohne das faehrt die Lade beim Nachsehen zu.
+                Dim descriptor = OpenDevice(devicePath, OpenReadOnly Or OpenNonBlock)
+                If descriptor < 0 Then Return result
+                Using handle As New SafeFileHandle(New IntPtr(descriptor), ownsHandle:=True)
+                    ' Erst fragen, ob ueberhaupt etwas Lesbares drin ist. Eine offene Lade oder ein
+                    ' noch anlaufendes Laufwerk soll gar nicht erst angesprochen werden.
+                    If ioctl(handle, CdromDriveStatus, CurrentSlot) <> DriveDiscOk Then Return result
+
                     Dim header As TocHeader
-                    If ioctl(stream.SafeFileHandle, CdromReadTocHeader, header) <> 0 OrElse
+                    If ioctl(handle, CdromReadTocHeader, header) <> 0 OrElse
                        header.FirstTrack = 0 OrElse header.LastTrack < header.FirstTrack Then Return result
 
                     Dim entries As New Dictionary(Of Integer, TocEntry)()
                     For number = CInt(header.FirstTrack) To CInt(header.LastTrack)
                         Dim entry As New TocEntry With {.Track = CByte(number), .Format = 1} ' CDROM_LBA
-                        If ioctl(stream.SafeFileHandle, CdromReadTocEntry, entry) = 0 Then entries(number) = entry
+                        If ioctl(handle, CdromReadTocEntry, entry) = 0 Then entries(number) = entry
                     Next
 
                     Dim leadout As New TocEntry With {.Track = CdromLeadout, .Format = 1}
-                    If ioctl(stream.SafeFileHandle, CdromReadTocEntry, leadout) <> 0 Then Return result
+                    If ioctl(handle, CdromReadTocEntry, leadout) <> 0 Then Return result
 
                     Dim hasAudioTrack = False
                     For Each pair In entries

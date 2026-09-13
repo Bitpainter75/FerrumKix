@@ -534,4 +534,43 @@
   <data name="Dieses_Album_l_sst_sich_nicht_an_das_Ger_t_berge_bb85dcc0" xml:space="preserve">
     <value>Dette album kan ikke sendes til enheden.</value>
   </data>
+  <data name="Audio_CD_wird_erkannt_9c5b4292" xml:space="preserve">
+    <value>Lyd-cd’en genkendes …</value>
+  </data>
+  <data name="Die_CD_ist_bei_MusicBrainz_nicht_verzeichnet_8cea9fcc" xml:space="preserve">
+    <value>Cd’en er ikke registreret hos MusicBrainz.</value>
+  </data>
+  <data name="Die_CD_konnte_nicht_nachgeschlagen_werden_5855e3f3" xml:space="preserve">
+    <value>Cd’en kunne ikke slås op.</value>
+  </data>
+  <data name="Die_Audio_CD_bleibt_ohne_Angaben_480874a1" xml:space="preserve">
+    <value>Lyd-cd’en forbliver uden oplysninger.</value>
+  </data>
+  <data name="Welche_Ausgabe_ist_es_9eeb1c70" xml:space="preserve">
+    <value>Hvilken udgave er det?</value>
+  </data>
+  <data name="Zu_dieser_CD_passen_0_Ausgaben_Sie_haben_dieselb_2fd65d57" xml:space="preserve">
+    <value>{0} udgaver passer til denne cd. De har samme sporlængder og kan ikke skelnes derpå.</value>
+  </data>
+  <data name="bernehmen_59430842" xml:space="preserve">
+    <value>Anvend</value>
+  </data>
+  <data name="Audio_CD_erkannt_0_1_2_Titel_46712662" xml:space="preserve">
+    <value>Lyd-cd genkendt: {0} – {1} ({2} numre).</value>
+  </data>
+  <data name="Audio_CD_bei_MusicBrainz_nachschlagen_adecc94e" xml:space="preserve">
+    <value>Slå lyd-cd’en op hos MusicBrainz</value>
+  </data>
+  <data name="Audio_CD_Zielordner_f_rs_Rippen_4ca9fbf2" xml:space="preserve">
+    <value>Lyd-cd: målmappe til ripning</value>
+  </data>
+  <data name="Musikordner_des_Benutzers_2ac338a5" xml:space="preserve">
+    <value>Brugerens musikmappe</value>
+  </data>
+  <data name="Zielordner_f_rs_Rippen_6def66d5" xml:space="preserve">
+    <value>Målmappe til ripning</value>
+  </data>
+  <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
+    <value>Uden egen angivelse: {0}</value>
+  </data>
 </root>

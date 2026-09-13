@@ -2,6 +2,32 @@
 
 ## 0.8.0
 
+- Audio CDs are now identified. A CD carries nothing itself - its table of contents knows only
+  where each track starts and ends - so the titles read "Track 01" and the album "Audio CD", and
+  that is what ended up in the MP3 tags when ripping. FerrumPlay now computes the MusicBrainz disc
+  id from the track lengths alone and looks the CD up; the CD itself is never read for this and
+  nothing but those lengths is sent. freedb, the obvious candidate, was shut down in 2020.
+  Where several editions share the same track lengths - the disc id is a fingerprint of the table
+  of contents, not of the pressing - you are asked which one it is, with year, country and edition
+  note. A button in the Audio CD toolbar looks the disc up again, so a different edition can be
+  chosen afterwards. What is found goes into the MP3 tags when converting: title, artist, album,
+  album artist, track number and year. Placeholders never do - an unidentified CD gets no tags
+  rather than wrong ones.
+- Ejecting a CD discards what was recognised, and so does swapping in a different one. Two CDs with
+  the same number of tracks produce the same playlist entries, so the track objects survive the
+  swap - without clearing them, the new CD would have shown the old CD's titles, and would have
+  kept them if it was not listed at MusicBrainz.
+- Fixed: checking for a CD every five seconds pulled the tray shut while you were trying to put a
+  disc in. Opening an optical device is not a harmless file open; many drives close the tray on it.
+  The drive is now opened non-blocking and asked for its state first, and the disc is only touched
+  when there actually is a readable one.
+- Added a target folder for ripping audio CDs to the settings, defaulting to the user's music
+  folder. A CD has no folder of its own to suggest, so the converter used to fall back to the last
+  browsed folder.
+- Fixed: with a Lyrion device selected, the stop button went to the device even while an audio CD
+  was playing locally, so the CD kept going. The transport bar now follows what is actually being
+  heard: picking a device or starting an album on it hands the bar to the device, and any local
+  playback takes it back.
 - FerrumPlay can now act as a remote control for the Lyrion server. A picker next to the album
   search chooses where playback runs: locally, as before, or on any player registered with the
   server. With a device chosen, the whole transport bar controls it - play, pause, next, previous,
