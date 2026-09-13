@@ -516,4 +516,22 @@
   <data name="0_Treffer_zuletzt_hinzugef_gt_gilt_f_r_eine_Such_386bdd72" xml:space="preserve">
     <value>{0} osumaa · ”Viimeksi lisätyt” ei koske hakua</value>
   </data>
+  <data name="Lokal_abspielen_80fc8242" xml:space="preserve">
+    <value>Toista paikallisesti</value>
+  </data>
+  <data name="nicht_verbunden_3e200411" xml:space="preserve">
+    <value>(ei yhteyttä)</value>
+  </data>
+  <data name="Wo_die_Wiedergabe_l_uft_a7645c83" xml:space="preserve">
+    <value>Missä toisto kuuluu</value>
+  </data>
+  <data name="Wiedergabe_auf_0_1_d0c0ff33" xml:space="preserve">
+    <value>Toistetaan laitteella {0}: {1}</value>
+  </data>
+  <data name="Auf_dem_Ger_t_l_uft_gerade_nichts_e3c6e9dc" xml:space="preserve">
+    <value>Laitteella ei toisteta mitään.</value>
+  </data>
+  <data name="Dieses_Album_l_sst_sich_nicht_an_das_Ger_t_berge_bb85dcc0" xml:space="preserve">
+    <value>Tätä albumia ei voi välittää laitteelle.</value>
+  </data>
 </root>

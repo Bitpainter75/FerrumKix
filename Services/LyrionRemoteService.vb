@@ -153,9 +153,10 @@ Namespace Services
                     snapshot = New RemoteStatus With {.PlayerId = SelectedPlayerId, .Reachable = False}
                 End Try
 
+                ' Wurde zwischenzeitlich umgeschaltet, gehoert dieser Stand nicht mehr hierher -
+                ' sonst schriebe eine abgeloeste Schleife den Zustand des alten Geraets zurueck.
+                If token.IsCancellationRequested Then Return
                 SyncLock Gate
-                    ' Wurde zwischenzeitlich umgeschaltet, gehoert dieser Stand nicht mehr hierher.
-                    If Not Object.ReferenceEquals(_poll?.Token, Nothing) AndAlso token.IsCancellationRequested Then Return
                     _status = snapshot
                 End SyncLock
                 RaiseEvent StatusChanged(Nothing, EventArgs.Empty)
@@ -205,10 +206,17 @@ Namespace Services
             Dim mode = LyrionMediaServerService.TextOf(result, "mode")
             snapshot.IsPlaying = mode = "play"
             snapshot.IsStopped = mode = "stop"
-            snapshot.Volume = Math.Clamp(NumberOf(result, "mixer volume"), 0, 100)
-            ' Der Server gibt eine NEGATIVE Lautstaerke heraus, wenn stummgeschaltet ist - der
-            ' Betrag ist der Stand, auf den das Aufheben zurueckfuehrt.
-            snapshot.Muted = NumberOf(result, "mixer volume") < 0 OrElse LyrionMediaServerService.TextOf(result, "mixer muting") = "1"
+            ' Stummschaltung steckt im VORZEICHEN der Lautstaerke: bei stumm meldet "status"
+            ' -100, und der Betrag ist der Stand, auf den das Aufheben zurueckfuehrt. Ein Feld
+            ' "mixer muting" gibt es in dieser Antwort NICHT (nur als eigene Abfrage
+            ' "mixer muting ?"). Aufgenommen an LMS 9.1.2 mit SqueezeLite.
+            '
+            ' Das Vorzeichen darf deshalb nicht weggeschnitten werden - ein Math.Clamp(..., 0, 100)
+            ' machte aus "stumm bei 100" ein "auf null gedreht", und das Aufheben fuehrte danach
+            ' auf null statt auf den vorigen Stand.
+            Dim rawVolume = NumberOf(result, "mixer volume")
+            snapshot.Muted = rawVolume < 0
+            snapshot.Volume = Math.Clamp(Math.Abs(rawVolume), 0, 100)
             snapshot.PositionSeconds = NumberOf(result, "time")
             snapshot.DurationSeconds = NumberOf(result, "duration")
             snapshot.PlaylistCount = CInt(NumberOf(result, "playlist_tracks"))

@@ -36,9 +36,12 @@ Namespace Views
   ''' diese Sperre laedt jeder Sprachwechsel die Bibliothek neu.</summary>
   Private _suppressSortChange As Boolean
   Private ReadOnly _searchDebounce As New Avalonia.Threading.DispatcherTimer With {.Interval = TimeSpan.FromMilliseconds(300)}
-  ''' <summary>Die Schlussmeldung des Abgleichs bleibt stehen, bis sie weggeklickt wird. Nur
-  ''' dieses Panel merkt sich das - der naechste Lauf zeigt sie wieder.</summary>
-  Private _syncDismissed As Boolean
+  ''' <summary>Die Geraete des Servers, in der Reihenfolge des Auswahlfeldes. Die ERSTE Stelle ist
+  ''' die oertliche Wiedergabe und hat kein Geraet - deshalb Nothing an Stelle 0.</summary>
+  Private _targets As New List(Of LyrionRemoteService.RemotePlayer)()
+  ''' <summary>Das Fuellen des Auswahlfeldes loest selbst eine Auswahlaenderung aus. Ohne diese
+  ''' Sperre schaltete jeder Aufbau der Liste die Wiedergabe um.</summary>
+  Private _suppressTargetChange As Boolean
   Public Sub New()
    Me.New(Nothing, Nothing)
   End Sub
@@ -60,6 +63,7 @@ Namespace Views
                                       End Sub
    FillSortBox()
    RenderSyncState()
+   LoadPlaybackTargetsAsync()
    UpdateSortDirection()
    AddHandler _searchDebounce.Tick, AddressOf OnSearchDebounceTick
    AddHandler DataContextChanged, AddressOf OnPanelDataContextChanged
@@ -256,10 +260,10 @@ Namespace Views
   Private Sub OnAlbumClick(sender As Object, e As RoutedEventArgs)
    Dim tile = TryCast(TryCast(sender, Button)?.Tag, LyrionAlbumTile)
    If tile Is Nothing Then Return
-   ShowAlbumAsync(tile.Album)
+   Dim ignored = ShowAlbumAsync(tile.Album)
   End Sub
 
-  Private Async Sub ShowAlbumAsync(album As LyrionMediaServerService.Album)
+  Private Async Function ShowAlbumAsync(album As LyrionMediaServerService.Album) As Threading.Tasks.Task
    _shownAlbum = album
    If _shownAlbum Is Nothing Then Return
    ' Eine wiederhergestellte Titelliste bringt ein Album OHNE Kennung mit (siehe
@@ -283,7 +287,7 @@ Namespace Views
    Catch ex As Exception
     FindControl(Of TextBlock)("Status").Text = ex.Message
    End Try
-  End Sub
+  End Function
   Private Sub RenderTracks(tracksToShow As IEnumerable(Of Track))
    Dim tracks = FindControl(Of ListBox)("Tracks")
    tracks.Items.Clear()
@@ -345,6 +349,17 @@ Namespace Views
     FindControl(Of TextBlock)("Status").Text = LocalizationService.T("Wird an Lyrion übergeben …")
     Dim player = TryCast(DataContext, MainWindowViewModel)
     If player Is Nothing Then Throw New InvalidOperationException(LocalizationService.T("Die lokale Wiedergabe steht noch nicht bereit."))
+
+    If LyrionRemoteService.IsRemote Then
+     ' Auf dem Geraet wird die ganze Wiedergabeliste des Servers gesetzt und auf den gewaehlten
+     ' Titel gesprungen - der Server fuehrt die Reihenfolge dann selbst, wie bei jedem anderen
+     ' Steuergeraet auch.
+     If String.IsNullOrWhiteSpace(_shownAlbum?.Id) Then Throw New InvalidOperationException(LocalizationService.T("Dieses Album lässt sich nicht an das Gerät übergeben."))
+     player.PlayLyrionAlbumRemote(_shownAlbum.Id, _albumTracks.IndexOf(track))
+     FindControl(Of TextBlock)("Status").Text = LocalizationService.Format("Wiedergabe auf {0}: {1}", LyrionRemoteService.SelectedPlayerName, track.Title)
+     Return Threading.Tasks.Task.CompletedTask
+    End If
+
     player.PlayLyrionAlbum(_albumTracks, track)
     FindControl(Of TextBlock)("Status").Text = LocalizationService.Format("Wiedergabe in FerrumPlay: {0}", track.Title)
    Catch ex As Exception
@@ -352,6 +367,58 @@ Namespace Views
    End Try
    Return Threading.Tasks.Task.CompletedTask
   End Function
+
+  ''' <summary>Fuellt das Auswahlfeld: die oertliche Wiedergabe und jedes am Server angemeldete
+  ''' Geraet. Ein gemerktes Geraet, das der Server gerade nicht kennt, steht trotzdem darin -
+  ''' sonst spraenge die Auswahl beim Oeffnen stillschweigend auf "Lokal" zurueck.</summary>
+  Private Async Sub LoadPlaybackTargetsAsync()
+   Dim players As New List(Of LyrionRemoteService.RemotePlayer)()
+   Try
+    players = Await LyrionRemoteService.GetPlayersAsync(Threading.CancellationToken.None)
+   Catch ex As Exception
+    DiagnosticLogService.LogException("Lyrion.Remote", ex)
+   End Try
+
+   Dim chosen = LyrionRemoteService.SelectedPlayerId
+   If chosen.Length > 0 AndAlso Not players.Any(Function(entry) entry.Id = chosen) Then
+    players.Insert(0, New LyrionRemoteService.RemotePlayer With {
+                   .Id = chosen, .Name = LyrionRemoteService.SelectedPlayerName, .Connected = False})
+   End If
+
+   _targets.Clear()
+   _targets.Add(Nothing)
+   _targets.AddRange(players)
+   FillTargetBox()
+  End Sub
+
+  Private Sub FillTargetBox()
+   Dim box = FindControl(Of ComboBox)("TargetBox")
+   If box Is Nothing Then Return
+   _suppressTargetChange = True
+   Try
+    box.ItemsSource = _targets.Select(AddressOf TargetLabel).ToList()
+    Dim chosen = LyrionRemoteService.SelectedPlayerId
+    Dim index = _targets.FindIndex(Function(entry) If(entry?.Id, String.Empty) = chosen)
+    box.SelectedIndex = Math.Max(0, index)
+   Finally
+    _suppressTargetChange = False
+   End Try
+  End Sub
+
+  Private Shared Function TargetLabel(player As LyrionRemoteService.RemotePlayer) As String
+   If player Is Nothing Then Return LocalizationService.T("Lokal abspielen")
+   If Not player.Connected Then Return player.Name & " " & LocalizationService.T("(nicht verbunden)")
+   Return player.Name
+  End Function
+
+  ''' <summary>Umschalten zwischen oertlicher Wiedergabe und einem Geraet.</summary>
+  Private Sub OnPlaybackTargetChanged(sender As Object, e As SelectionChangedEventArgs)
+   If _suppressTargetChange Then Return
+   Dim index = FindControl(Of ComboBox)("TargetBox").SelectedIndex
+   If index < 0 OrElse index >= _targets.Count Then Return
+   Dim player = _targets(index)
+   LyrionRemoteService.SelectPlayer(If(player?.Id, String.Empty), If(player?.Name, String.Empty))
+  End Sub
   ''' <summary>Getippt wird schneller als der Server antwortet: ohne diese kurze Ruhe schickt ein
   ''' zwoelf Zeichen langer Kuenstlername zwoelf Abfragen los, von denen elf schon beim Eintreffen
   ''' veraltet sind.</summary>
@@ -374,7 +441,7 @@ Namespace Views
   ''' OnLibraryScanCompleted). Konnte er nicht anfangen, weil ein anderer Vorgang laeuft, wird
   ''' wenigstens die Liste geholt - ein Klick darf nicht folgenlos bleiben.</para></summary>
   Private Sub OnReloadClick(sender As Object, e As RoutedEventArgs)
-   If _shownAlbum IsNot Nothing Then ShowAlbumAsync(_shownAlbum) : Return
+   If _shownAlbum IsNot Nothing Then Dim reloading = ShowAlbumAsync(_shownAlbum) : Return
    Select Case LyrionLibraryScanService.Toggle()
     Case LyrionLibraryScanService.StartResult.Started, LyrionLibraryScanService.StartResult.Cancelling
      RenderSyncState()
@@ -406,8 +473,10 @@ Namespace Views
   ''' waehrend des Laufs steht er deshalb gar nicht da.</summary>
   Private Sub OnSyncDismissClick(sender As Object, e As RoutedEventArgs)
    If LyrionTaskState.IsBusy Then Return
-   _syncDismissed = True
-   RenderSyncState()
+   ' Weggeklickt wird die MELDUNG im Dienst, nicht die Zeile in diesem Panel. Merkte sich das
+   ' Panel es, waere es beim naechsten Oeffnen vergessen - die Ansicht wird jedes Mal neu
+   ' gebaut - und die Zeile staende wieder da.
+   LyrionTaskState.DismissStatus()
   End Sub
 
   ''' <summary>Der Dienst meldet sich aus einem Hintergrundfaden - der Wechsel auf den
@@ -428,18 +497,17 @@ Namespace Views
 
    Dim running = LyrionTaskState.Running
    Dim busy = LyrionTaskState.IsBusy
-   ' Ein neuer Lauf bringt eine weggeklickte Meldung zurueck.
-   If busy Then _syncDismissed = False
    Dim text = LyrionTaskState.Status
 
-   ' Die Zeile bleibt stehen, solange es unaufloesbare Favoriten gibt: sie traegt den einzigen
-   ' Knopf, mit dem sich daran etwas machen laesst.
+   ' Die Zeile steht genau dann da, wenn es etwas zu sagen gibt - eine weggeklickte Meldung ist
+   ' eine leere. Der Aufraeumknopf faehrt mit ihr: er gehoert zu dieser Meldung, und wer sie
+   ' wegklickt, bekommt ihn beim naechsten Lauf wieder.
    Dim cleanup = FindControl(Of Button)("SyncCleanupButton")
    Dim unresolved = LyrionFavoriteSyncService.Unresolved.Count
-   If cleanup IsNot Nothing Then cleanup.IsVisible = Not busy AndAlso unresolved > 0
-   If unresolved > 0 Then _syncDismissed = False
+   Dim show = Not String.IsNullOrEmpty(text)
+   If cleanup IsNot Nothing Then cleanup.IsVisible = show AndAlso Not busy AndAlso unresolved > 0
 
-   box.IsVisible = Not _syncDismissed AndAlso Not String.IsNullOrEmpty(text)
+   box.IsVisible = show
    line.Text = text
    ' Die Farbe sagt, ob noch etwas geschieht: das ist der Unterschied, um den es geht.
    SetClass(line, "sync-busy", busy)
@@ -492,6 +560,36 @@ Namespace Views
    LyrionFavoriteSyncService.StartUnresolvedCleanup()
   End Sub
 
+  ''' <summary>Schlaegt das Album auf, das gerade auf dem Geraet laeuft, und waehlt darin den
+  ''' laufenden Titel. Die Album-Kennung kommt aus der Zustandsabfrage; das Album selbst wird aus
+  ''' der geholten Liste genommen, und wenn es dort fehlt - etwa weil gerade nach einem Begriff
+  ''' gefiltert wird - aus den Angaben des Geraets gebaut.</summary>
+  Private Async Function ShowRemoteAlbumAsync() As Threading.Tasks.Task
+   Dim status = LyrionRemoteService.Status
+   If status Is Nothing OrElse Not status.Reachable OrElse String.IsNullOrWhiteSpace(status.AlbumId) Then
+    FindControl(Of TextBlock)("Status").Text = LocalizationService.T("Auf dem Gerät läuft gerade nichts.")
+    Return
+   End If
+
+   Dim album = _albums.FirstOrDefault(Function(entry) entry.Id = status.AlbumId)
+   If album Is Nothing Then
+    album = New LyrionMediaServerService.Album With {
+     .Id = status.AlbumId, .Title = status.Album, .Artist = status.Artist,
+     .ArtworkTrackId = status.ArtworkTrackId}
+   End If
+
+   Await ShowAlbumAsync(album)
+
+   ' Den laufenden Titel auswaehlen. Ueber den Namen und nicht ueber die Stelle in der Liste: das
+   ' Geraet fuehrt seine eigene Reihenfolge, und bei Zufall stimmt die Stelle nicht mit unserer.
+   Dim list = FindControl(Of ListBox)("Tracks")
+   Dim item = list.Items.OfType(Of ListBoxItem)().FirstOrDefault(
+    Function(entry) String.Equals(TryCast(entry.Tag, Track)?.Title, status.Title, StringComparison.CurrentCultureIgnoreCase))
+   If item Is Nothing Then Return
+   list.SelectedItem = item
+   Avalonia.Threading.Dispatcher.UIThread.Post(Sub() list.ScrollIntoView(item))
+  End Function
+
   ''' <summary>Setzt oder nimmt eine Klasse. RenderSyncState laeuft bei jeder Meldung erneut;
   ''' ein blosses Classes.Add legte die Klasse dann ein ums andere Mal nach.</summary>
   Private Shared Sub SetClass(target As Control, name As String, wanted As Boolean)
@@ -503,6 +601,12 @@ Namespace Views
   End Sub
 
   Private Sub OnJumpToCurrentTrackClick(sender As Object, e As RoutedEventArgs)
+   ' Ferngesteuert steht der laufende Titel nicht in einer hiesigen Liste, sondern auf dem Geraet.
+   ' Sein Album wird deshalb beim Server nachgeschlagen und aufgeschlagen.
+   If LyrionRemoteService.IsRemote Then
+    Dim jumping = ShowRemoteAlbumAsync()
+    Return
+   End If
    Dim viewModel = TryCast(DataContext, MainWindowViewModel)
    Dim current = viewModel?.CurrentTrack
    If current Is Nothing Then Return

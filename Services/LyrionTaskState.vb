@@ -111,6 +111,13 @@ Namespace Services
             Return True
         End Function
 
+        ''' <summary>Nimmt die stehende Meldung weg. GEHOERT HIERHER und nicht in die Ansicht: die
+        ''' Lyrion-Ansicht wird bei jedem Oeffnen neu gebaut, ein dort gemerktes "weggeklickt" waere
+        ''' beim naechsten Blick wieder vergessen und die Zeile staende erneut da.</summary>
+        Public Shared Sub DismissStatus()
+            SetStatus(String.Empty)
+        End Sub
+
         Public Shared Sub SetStatus(text As String)
             SyncLock Gate
                 _status = If(text, String.Empty)

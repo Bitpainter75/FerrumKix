@@ -2,6 +2,23 @@
 
 ## 0.8.0
 
+- FerrumPlay can now act as a remote control for the Lyrion server. A picker next to the album
+  search chooses where playback runs: locally, as before, or on any player registered with the
+  server. With a device chosen, the whole transport bar controls it - play, pause, next, previous,
+  seek, volume, mute, shuffle and repeat - and title, cover, position and volume come from the
+  server's own status, polled once a second because JSON-RPC has no subscription. Local playback
+  stops when a device is picked; nobody wants two sources at once.
+  This needs no SlimProto. The three routes sketched in the audit answer a different question -
+  they were about FerrumPlay *appearing* as a player in the Lyrion interface. Controlling one that
+  is already there is plain JSON-RPC with the player's id.
+- MPRIS follows the device: Waybar and notifications show what plays on it, and the media keys
+  control it. This needed no extra work - MPRIS builds its state from the same display fields.
+- "Jump to current track" now opens the album playing on the device. The album id comes from the
+  status query, and the track is matched by name rather than by position, because the device runs
+  its own order and under shuffle the position would point elsewhere.
+- Fixed: a dismissed message ("N favorites removed") came back as soon as the player views were
+  switched. The dismissal was remembered by the Lyrion view, which is rebuilt every time it opens -
+  the same mistake the sync state itself had. It now belongs to the message, in the service.
 - Fixed: the album order was ignored whenever the list was filtered by a search term. The server
   accepts `sort:` together with `search:` and then returns its own full-text ranking regardless -
   measured against LMS 9.1.2, the same term gave the identical order line for line under

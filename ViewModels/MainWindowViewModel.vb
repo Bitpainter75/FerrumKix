@@ -140,6 +140,7 @@ Namespace ViewModels
         Public Sub New(Optional startupPaths As IEnumerable(Of String) = Nothing)
             Rows = New ObservableCollection(Of PlaylistRow)()
 
+            HookLyrionRemote()
             PlayPauseCommand = New DelegateCommand(AddressOf TogglePlayPause)
             StopCommand = New DelegateCommand(AddressOf StopPlayback)
             NextCommand = New DelegateCommand(Sub() PlayNext(userRequested:=True))
@@ -911,8 +912,12 @@ Namespace ViewModels
             Set(value As Double)
                 Dim clamped = Math.Clamp(value, 0, 100)
                 If Not SetField(_volume, clamped) Then Return
-                _player.SetVolume(clamped)
                 RaisePropertyChanged(NameOf(VolumeIconSource))
+                ' Ferngesteuert geht die Lautstaerke ans Geraet und wird NICHT gemerkt: gemerkt
+                ' gehoert die der oertlichen Wiedergabe, sonst truege sie beim naechsten Start den
+                ' Stand eines fremden Geraets.
+                If RemoteSetVolume(clamped) Then Return
+                _player.SetVolume(clamped)
                 AppSettingsService.Current.Volume = clamped
             End Set
         End Property
@@ -923,8 +928,9 @@ Namespace ViewModels
             End Get
             Set(value As Boolean)
                 If Not SetField(_isMuted, value) Then Return
-                _player.SetMuted(value)
                 RaisePropertyChanged(NameOf(VolumeIconSource))
+                If RemoteSetMuted(value) Then Return
+                _player.SetMuted(value)
                 AppSettingsService.Current.Muted = value
             End Set
         End Property
@@ -948,6 +954,7 @@ Namespace ViewModels
             Set(value As Boolean)
                 If Not SetField(_isShuffle, value) Then Return
                 AppSettingsService.Current.Shuffle = value
+                If RemoteSetShuffle(value) Then Return
                 RebuildPlayOrder()
                 RebuildLyrionPlayOrder()
                 RebuildRows()
@@ -965,6 +972,7 @@ Namespace ViewModels
                 AppSettingsService.Current.RepeatMode = CInt(value)
                 RaisePropertyChanged(NameOf(RepeatIconSource))
                 RaisePropertyChanged(NameOf(IsRepeatActive))
+                RemoteSetRepeat(value)
             End Set
         End Property
 
@@ -1070,6 +1078,9 @@ Namespace ViewModels
         End Sub
 
         Private Sub TogglePlayPause()
+            ' Ferngesteuert? Dann gehoert der Knopf dem Geraet. Diese Pruefung steht in JEDER
+            ' Einsprungstelle der Transportsteuerung ganz vorn.
+            If RemoteTogglePlayPause() Then Return
             If _currentTrack Is Nothing Then
                 Dim first = FirstPlayableTrack()
                 If first Is Nothing Then Return
@@ -1088,6 +1099,7 @@ Namespace ViewModels
         End Sub
 
         Private Sub StopPlayback()
+            If RemoteStop() Then Return
             _player.Stop()
             IsPlaying = False
             _isStopped = True
@@ -1099,6 +1111,7 @@ Namespace ViewModels
         ''' vom Ende eines Titels: nur beim Ende gilt "einzelnen Titel wiederholen", sonst kaeme
         ''' man mit dem Knopf nie weiter.</summary>
         Private Sub PlayNext(userRequested As Boolean)
+            If RemoteNext() Then Return
             If _repeat = RepeatMode.Single AndAlso Not userRequested AndAlso _currentTrack IsNot Nothing Then
                 PlayCore(_currentTrack, skipDirection:=0)
                 Return
@@ -1118,6 +1131,7 @@ Namespace ViewModels
         ''' <summary>Der vorige Titel. Laeuft der aktuelle schon laenger als drei Sekunden, springt
         ''' der Knopf zunaechst an dessen Anfang. So wie an jeder Anlage.</summary>
         Private Sub PlayPrevious()
+            If RemotePrevious() Then Return
             If _currentTrack IsNot Nothing AndAlso _positionSeconds > 3 Then
                 SeekTo(0)
                 Return
@@ -1129,6 +1143,7 @@ Namespace ViewModels
         End Sub
 
         Public Sub SeekTo(seconds As Double)
+            If RemoteSeek(seconds) Then Return
             If _currentTrack Is Nothing Then Return
             _player.Seek(seconds)
             PositionSeconds = seconds
