@@ -2,70 +2,6 @@
 
 ## 0.8.0
 
-- Fixed: clicking into the seek bar on an audio CD left the time reading 0:00 and the bar empty.
-  A CD runs in mpv as the whole disc with start=#N, so its clock counts from the start of the disc
-  while the display counts within the track. The seek handed over the track-relative position
-  unchanged, which landed at that many seconds into the *disc* - the display then subtracted the
-  track's start, got a negative number, clamped it to zero, and stayed there.
-- Fixed: shuffle had no effect on an audio CD. Only the file playlist and, since 0.7.0, the Lyrion
-  album were shuffled; the CD handed out its tracks in disc order no matter what the switch said.
-  It now has a play order of its own, built the same way. Repeat was never affected - it does not
-  depend on the order but on the wrap in FindNeighbour.
-- Switching areas now clears the status line. A message like "Audio CD identified: …" belongs to
-  what was just done, not to whatever is looked at next - left standing it reads as if it belonged
-  to the new view.
-- The cover-size field follows FerrumPix's NumericUpDown styling, so it sits beside the text boxes
-  and drop-downs instead of bringing Fluent's own frame and height along.
-- Both search fields now carry a cross to clear the term, as in FerrumPix. It appears only when
-  there is something to clear. The playlist quick search had the command for it all along but no
-  button to reach it.
-- Fixed: after stopping, the play button restarted whatever had played last, even if you had
-  meanwhile opened a different Lyrion album or switched to another list. It now starts what is on
-  screen. Stopping in the middle of an album and pressing play still resumes that same track - the
-  list you are looking at only takes over when the track you stopped is not part of it.
-- Ripped files now carry the cover art, embedded, at the size configured for MP3 tags. This is
-  what MusicBrainz Picard, the project's own tagger, does with the same archive. OGG is left out
-  deliberately: ffmpeg cannot attach a picture to an Ogg container, and attempting it produces a
-  zero-byte file rather than an error.
-- The audio CD identification now fetches the cover art as well, from the Cover Art Archive, at the
-  size configured for MP3 tags. That setting existed (default 800) but could not be reached; it is
-  now in the MP3 tags section and says that it governs this image too. The smallest offered size
-  that is still large enough is taken - downscaling is possible, upscaling is not. Tagging already
-  scaled to it and never upscales.
-- The settings now name MusicBrainz and the Cover Art Archive under Technology, and say plainly
-  what differs between them: the CD details are public domain, the cover art is not. Both are in
-  THIRD-PARTY-NOTICES.txt as well.
-- The MusicBrainz request identifies the application and its version, and nothing else. The usual
-  contact address is deliberately left out: it would go to a third-party service on every lookup by
-  every user. The price is known - without a contact, MusicBrainz throttles sooner.
-- A throttled MusicBrainz request is retried rather than failed. The service allows one request per
-  second and answers 503 otherwise, which means "try again shortly", not "no".
-- Audio CDs are now identified. A CD carries nothing itself - its table of contents knows only
-  where each track starts and ends - so the titles read "Track 01" and the album "Audio CD", and
-  that is what ended up in the MP3 tags when ripping. FerrumPlay now computes the MusicBrainz disc
-  id from the track lengths alone and looks the CD up; the CD itself is never read for this and
-  nothing but those lengths is sent. freedb, the obvious candidate, was shut down in 2020.
-  Where several editions share the same track lengths - the disc id is a fingerprint of the table
-  of contents, not of the pressing - you are asked which one it is, with year, country and edition
-  note. A button in the Audio CD toolbar looks the disc up again, so a different edition can be
-  chosen afterwards. What is found goes into the MP3 tags when converting: title, artist, album,
-  album artist, track number and year. Placeholders never do - an unidentified CD gets no tags
-  rather than wrong ones.
-- Ejecting a CD discards what was recognised, and so does swapping in a different one. Two CDs with
-  the same number of tracks produce the same playlist entries, so the track objects survive the
-  swap - without clearing them, the new CD would have shown the old CD's titles, and would have
-  kept them if it was not listed at MusicBrainz.
-- Fixed: checking for a CD every five seconds pulled the tray shut while you were trying to put a
-  disc in. Opening an optical device is not a harmless file open; many drives close the tray on it.
-  The drive is now opened non-blocking and asked for its state first, and the disc is only touched
-  when there actually is a readable one.
-- Added a target folder for ripping audio CDs to the settings, defaulting to the user's music
-  folder. A CD has no folder of its own to suggest, so the converter used to fall back to the last
-  browsed folder.
-- Fixed: with a Lyrion device selected, the stop button went to the device even while an audio CD
-  was playing locally, so the CD kept going. The transport bar now follows what is actually being
-  heard: picking a device or starting an album on it hands the bar to the device, and any local
-  playback takes it back.
 - FerrumPlay can now act as a remote control for the Lyrion server. A picker next to the album
   search chooses where playback runs: locally, as before, or on any player registered with the
   server. With a device chosen, the whole transport bar controls it - play, pause, next, previous,
@@ -80,17 +16,33 @@
 - "Jump to current track" now opens the album playing on the device. The album id comes from the
   status query, and the track is matched by name rather than by position, because the device runs
   its own order and under shuffle the position would point elsewhere.
-- Fixed: a dismissed message ("N favorites removed") came back as soon as the player views were
-  switched. The dismissal was remembered by the Lyrion view, which is rebuilt every time it opens -
-  the same mistake the sync state itself had. It now belongs to the message, in the service.
-- Fixed: the album order was ignored whenever the list was filtered by a search term. The server
-  accepts `sort:` together with `search:` and then returns its own full-text ranking regardless -
-  measured against LMS 9.1.2, the same term gave the identical order line for line under
-  artist/year, year/album and recently added. Search results are now ordered in the application.
-  One limit stays and is stated in the status line: "recently added" cannot be reproduced, because
-  the album query does not say when an album entered the library. A second, smaller one: the server
-  knows the library's sort names and files "The Beatles" under B, while a locally ordered search
-  result files it under T.
+- Audio CDs are now identified. A CD carries nothing itself - its table of contents knows only
+  where each track starts and ends - so the titles read "Track 01" and the album "Audio CD", and
+  that is what ended up in the MP3 tags when ripping. FerrumPlay now computes the MusicBrainz disc
+  id from the track lengths alone and looks the CD up; the CD itself is never read for this and
+  nothing but those lengths is sent. freedb, the obvious candidate, was shut down in 2020.
+  Where several editions share the same track lengths - the disc id is a fingerprint of the table
+  of contents, not of the pressing - you are asked which one it is, with year, country and edition
+  note. A button in the Audio CD toolbar looks the disc up again, so a different edition can be
+  chosen afterwards. What is found goes into the MP3 tags when converting: title, artist, album,
+  album artist, track number and year. Placeholders never do - an unidentified CD gets no tags
+  rather than wrong ones.
+- The audio CD identification now fetches the cover art as well, from the Cover Art Archive, at the
+  size configured for MP3 tags. That setting existed (default 800) but could not be reached; it is
+  now in the MP3 tags section and says that it governs this image too. The smallest offered size
+  that is still large enough is taken - downscaling is possible, upscaling is not. Tagging already
+  scaled to it and never upscales.
+- Ripped files now carry the cover art, embedded, at the size configured for MP3 tags. This is
+  what MusicBrainz Picard, the project's own tagger, does with the same archive. OGG is left out
+  deliberately: ffmpeg cannot attach a picture to an Ogg container, and attempting it produces a
+  zero-byte file rather than an error.
+- Ejecting a CD discards what was recognised, and so does swapping in a different one. Two CDs with
+  the same number of tracks produce the same playlist entries, so the track objects survive the
+  swap - without clearing them, the new CD would have shown the old CD's titles, and would have
+  kept them if it was not listed at MusicBrainz.
+- Added a target folder for ripping audio CDs to the settings, defaulting to the user's music
+  folder. A CD has no folder of its own to suggest, so the converter used to fall back to the last
+  browsed folder.
 - "Refresh library" now asks the server to look for new and changed music first, and only then
   fetches the list. Refetching alone showed the same state: a record added a minute ago is one the
   server does not know about yet. Progress is reported per scan step, the run can be cancelled -
@@ -102,6 +54,54 @@
   its album and track lists are in motion, and a sync reading into that would fetch a state that
   never existed. The button belonging to the running task cancels it; the other is disabled while
   it runs, so a refused click cannot paint over a running task's progress.
+- The settings now name MusicBrainz and the Cover Art Archive under Technology, and say plainly
+  what differs between them: the CD details are public domain, the cover art is not. Both are in
+  THIRD-PARTY-NOTICES.txt as well.
+- The MusicBrainz request identifies the application and its version, and nothing else. The usual
+  contact address is deliberately left out: it would go to a third-party service on every lookup by
+  every user. The price is known - without a contact, MusicBrainz throttles sooner.
+- Switching areas now clears the status line. A message like "Audio CD identified: …" belongs to
+  what was just done, not to whatever is looked at next - left standing it reads as if it belonged
+  to the new view.
+- Both search fields now carry a cross to clear the term, as in FerrumPix. It appears only when
+  there is something to clear. The playlist quick search had the command for it all along but no
+  button to reach it.
+- The cover-size field follows FerrumPix's NumericUpDown styling, so it sits beside the text boxes
+  and drop-downs instead of bringing Fluent's own frame and height along.
+- Fixed: with a Lyrion device selected, the stop button went to the device even while an audio CD
+  was playing locally, so the CD kept going. The transport bar now follows what is actually being
+  heard: picking a device or starting an album on it hands the bar to the device, and any local
+  playback takes it back.
+- Fixed: after stopping, the play button restarted whatever had played last, even if you had
+  meanwhile opened a different Lyrion album or switched to another list. It now starts what is on
+  screen. Stopping in the middle of an album and pressing play still resumes that same track - the
+  list you are looking at only takes over when the track you stopped is not part of it.
+- Fixed: the album order was ignored whenever the list was filtered by a search term. The server
+  accepts `sort:` together with `search:` and then returns its own full-text ranking regardless -
+  measured against LMS 9.1.2, the same term gave the identical order line for line under
+  artist/year, year/album and recently added. Search results are now ordered in the application.
+  One limit stays and is stated in the status line: "recently added" cannot be reproduced, because
+  the album query does not say when an album entered the library. A second, smaller one: the server
+  knows the library's sort names and files "The Beatles" under B, while a locally ordered search
+  result files it under T.
+- Fixed: a dismissed message ("N favorites removed") came back as soon as the player views were
+  switched. The dismissal was remembered by the Lyrion view, which is rebuilt every time it opens -
+  the same mistake the sync state itself had. It now belongs to the message, in the service.
+- Fixed: shuffle had no effect on an audio CD. Only the file playlist and, since 0.7.0, the Lyrion
+  album were shuffled; the CD handed out its tracks in disc order no matter what the switch said.
+  It now has a play order of its own, built the same way. Repeat was never affected - it does not
+  depend on the order but on the wrap in FindNeighbour.
+- Fixed: clicking into the seek bar on an audio CD left the time reading 0:00 and the bar empty.
+  A CD runs in mpv as the whole disc with start=#N, so its clock counts from the start of the disc
+  while the display counts within the track. The seek handed over the track-relative position
+  unchanged, which landed at that many seconds into the *disc* - the display then subtracted the
+  track's start, got a negative number, clamped it to zero, and stayed there.
+- Fixed: checking for a CD every five seconds pulled the tray shut while you were trying to put a
+  disc in. Opening an optical device is not a harmless file open; many drives close the tray on it.
+  The drive is now opened non-blocking and asked for its state first, and the disc is only touched
+  when there actually is a readable one.
+- A throttled MusicBrainz request is retried rather than failed. The service allows one request per
+  second and answers 503 otherwise, which means "try again shortly", not "no".
 
 ## 0.7.0
 

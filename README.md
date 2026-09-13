@@ -23,14 +23,21 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Takes what you give it.** Drag files and whole folders into the window, add them with the buttons below the list, or pass them on the command line.
 - **Shuffle and repeat.** Whole list or a single track. Don't want to hear a track right now? Untick it instead of removing it.
 - **Gapless.** A continuously mixed album plays from track to track without a break.
-- **Plays Audio CDs.** On Linux, an inserted Audio CD is detected automatically and appears as a
-  separate temporary playlist. Its tracks can be selected, searched and played just like files;
-  ejecting the disc removes the playlist again.
+- **Plays and identifies Audio CDs.** On Linux, an inserted Audio CD is detected automatically and
+  appears as a separate temporary playlist. Its tracks can be selected, searched and played just
+  like files; ejecting the disc removes the playlist again. The disc is looked up at MusicBrainz
+  from its track lengths alone, so titles, artist, album and year are filled in instead of
+  "Track 01" — and they go into the tags, along with the cover art, when the CD is converted.
 - **Browses Lyrion.** Connect a Lyrion Media Server to search its albums as you type, view server
   artwork, and play an album locally through FerrumPlay. The album becomes a temporary playlist,
   including next/previous, shuffle, repeat, and jump-to-current-track. Sort the overview by
   recently added, artist/year, album or year/album, in either direction, and filter it down to
-  your favorites.
+  your favorites. "Refresh library" asks the server to look for new and changed music first,
+  rather than showing the same state again.
+- **Works as a remote control.** A picker chooses where playback runs: locally, or on any player
+  registered with the Lyrion server. With a device chosen, the whole transport bar controls it —
+  play, pause, next, previous, seek, volume, mute, shuffle and repeat — and the desktop's media
+  keys and status display follow it too.
 - **Keeps your favorites.** A star on every album tile marks it as a favorite on the server, where
   every other Lyrion client sees it too. One button then mirrors those albums into a folder of
   your choosing: only what is missing or has changed is transferred, and anything in the folder
@@ -64,7 +71,9 @@ Accent colour, font size, language, the blurred cover background, the width of t
 gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start are all
 configurable. The MP3 editor and Lyrion browser also keep their own defaults; entering a Lyrion
 server address makes its player tab available, and a target folder there enables the favorites
-sync. On Linux, the whole interface can also be scaled
+sync. The MP3 section also sets the edge length cover art is brought to, which governs the image
+fetched for an identified CD as well, and there is a target folder for ripping audio CDs that
+defaults to your music folder. On Linux, the whole interface can also be scaled
 per screen, for displays where it would otherwise come out too small.
 
 ## Installation
@@ -141,4 +150,11 @@ dotnet run --project FerrumPlay.vbproj
 
 FerrumPlay is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI and SkiaSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) and [Tabler Icons](https://github.com/tabler/tabler-icons) (MIT). [libmpv](https://mpv.io/) (GPL-2.0-or-later) is not bundled; it is loaded from your system.
 
-FerrumPlay is at version 0.6.0 and in active development.
+Two services are queried at runtime rather than shipped, and their footing differs. The CD details
+come from [MusicBrainz](https://musicbrainz.org) and are core data under
+[CC0](https://musicbrainz.org/doc/About/Data_License) — public domain. The cover art comes from the
+[Cover Art Archive](https://coverartarchive.org), and those images are **not**: they remain with
+their respective copyright owners. Only the disc id, computed from the track lengths, is sent; the
+disc itself is never read for the lookup.
+
+FerrumPlay is at version 0.8.0 and in active development.
