@@ -24,12 +24,55 @@ Namespace ViewModels
 
         Private _cover As Bitmap
         Private _loading As CancellationTokenSource
+        Private _isFavorite As Boolean
+        Private _favoriteBusy As Boolean
 
         Public Sub New(album As LyrionMediaServerService.Album)
             Me.Album = album
         End Sub
 
         Public ReadOnly Property Album As LyrionMediaServerService.Album
+
+        ''' <summary>Ob das Album in den Favoriten des Servers steht. Die Kachel zeigt es als
+        ''' Sternchen und aendert es auf Klick; gesetzt wird es von der Uebersicht, die die
+        ''' Favoritenliste als Ganzes holt.</summary>
+        Public Property IsFavorite As Boolean
+            Get
+                Return _isFavorite
+            End Get
+            Set(value As Boolean)
+                SetField(_isFavorite, value)
+            End Set
+        End Property
+
+        ''' <summary>Ein Album ohne Favoritenadresse laesst sich nicht merken - der Server fuehrt
+        ''' Favoriten ueber diese Adresse. Das Sternchen bleibt dann weg, statt einen Klick
+        ''' anzubieten, der ins Leere geht.</summary>
+        Public ReadOnly Property CanFavorite As Boolean
+            Get
+                Return Not String.IsNullOrWhiteSpace(Album?.FavoritesUrl)
+            End Get
+        End Property
+
+        ''' <summary>Schaltet den Favoritenstatus um. Der Stern springt sofort, damit der Klick
+        ''' nicht ins Leere geht; scheitert der Server, kehrt er zurueck. Ein zweiter Klick waehrend
+        ''' der Umschaltung bleibt folgenlos, sonst kaemen add und delete in falscher Reihenfolge
+        ''' beim Server an.</summary>
+        Public Async Function ToggleFavoriteAsync() As Task
+            If _favoriteBusy OrElse Not CanFavorite Then Return
+            _favoriteBusy = True
+            Dim wanted = Not IsFavorite
+            Dim before = IsFavorite
+            IsFavorite = wanted
+            Try
+                IsFavorite = Await LyrionMediaServerService.SetAlbumFavoriteAsync(Album, wanted, CancellationToken.None)
+            Catch ex As Exception
+                IsFavorite = before
+                DiagnosticLogService.LogException("Lyrion.Favorite", ex)
+            Finally
+                _favoriteBusy = False
+            End Try
+        End Function
 
         Public ReadOnly Property Title As String
             Get

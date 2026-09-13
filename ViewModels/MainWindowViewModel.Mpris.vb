@@ -140,7 +140,7 @@ Namespace ViewModels
             state.Genre = track.Genre
             state.TrackNumber = track.TrackNumber
             state.DiscNumber = track.DiscNumber
-            state.Url = ToFileUri(track.FilePath)
+            state.Url = ToTrackUri(track.FilePath)
             If Object.ReferenceEquals(_mprisArtTrack, track) Then state.ArtUrl = _mprisArtUrl
             Return state
         End Function
@@ -153,6 +153,16 @@ Namespace ViewModels
                 Dim hash = Convert.ToHexString(sha.ComputeHash(Encoding.UTF8.GetBytes(track.FilePath))).Substring(0, 16)
                 Return "/io/github/Bitpainter75/FerrumPlay/Track/T" & hash
             End Using
+        End Function
+
+        ''' <summary>Die Adresse eines Titels. Ein gestreamter Titel traegt statt eines Dateipfads
+        ''' schon eine vollstaendige Adresse und bleibt, wie er ist - durch ToFileUri geschickt
+        ''' ergaebe er ein "file:///http%3A///...", das niemand aufloesen kann.</summary>
+        Private Shared Function ToTrackUri(filePath As String) As String
+            If String.IsNullOrEmpty(filePath) Then Return String.Empty
+            If filePath.StartsWith("http://", StringComparison.OrdinalIgnoreCase) OrElse
+               filePath.StartsWith("https://", StringComparison.OrdinalIgnoreCase) Then Return filePath
+            Return ToFileUri(filePath)
         End Function
 
         ''' <summary>file:///... mit jedem Pfadteil einzeln maskiert. Uri aus einem Pfad zu bauen

@@ -28,6 +28,8 @@ Namespace Services
         Private Shared ReadOnly ArtFiles As New ConcurrentDictionary(Of String, String)(StringComparer.Ordinal)
         ''' <summary>Die Cover gestreamter Titel, nach ihrer Adresse. Siehe <see cref="LoadRemote"/>.</summary>
         Private Shared ReadOnly RemoteCovers As New ConcurrentDictionary(Of String, Bitmap)(StringComparer.Ordinal)
+        ''' <summary>Die ausgelagerten Bilddateien gestreamter Titel, ebenfalls nach ihrer Adresse.</summary>
+        Private Shared ReadOnly RemoteArtFiles As New ConcurrentDictionary(Of String, String)(StringComparer.Ordinal)
         Private Shared ReadOnly HttpClient As New HttpClient With {.Timeout = TimeSpan.FromSeconds(12)}
 
         ''' <summary>Die Namen, unter denen ein Albumbild neben den Titeln liegt. Reihenfolge ist
@@ -78,34 +80,63 @@ Namespace Services
             Next
         End Sub
 
-        ''' <summary>Lädt ein extern bereitgestelltes Cover für einen Stream. Der Aufrufer führt
-        ''' diese Methode auf einem Arbeitsfaden aus.</summary>
-        Public Shared Function LoadRemote(url As String) As Bitmap
-            If String.IsNullOrWhiteSpace(url) Then Return Nothing
+        ''' <summary>Laedt ein extern bereitgestelltes Cover fuer einen Stream. Mit
+        ''' <paramref name="exportFile"/> wird es zusaetzlich als Datei abgelegt: MPRIS gibt ein
+        ''' Bild als Adresse weiter und nicht als Daten, ohne diese Datei bleibt die Anzeige in
+        ''' Leisten und Benachrichtigungen bei gestreamten Titeln leer. Der Aufrufer fuehrt diese
+        ''' Methode auf einem Arbeitsfaden aus.</summary>
+        Public Shared Function LoadRemote(url As String, exportFile As Boolean) As (Cover As Bitmap, ArtFile As String)
+            If String.IsNullOrWhiteSpace(url) Then Return (Nothing, String.Empty)
 
             ' Gemerkt wie ein oertliches Cover: die Titel EINES Albums teilen sich dieselbe
             ' Adresse, und ohne diesen Zwischenspeicher holt jeder Titelwechsel dasselbe Bild
             ' erneut ueber das Netz - und liesse das vorige unbenutzt liegen.
             Dim cached As Bitmap = Nothing
-            If RemoteCovers.TryGetValue(url, cached) Then Return cached
+            Dim haveCover = RemoteCovers.TryGetValue(url, cached)
+            Dim cachedFile As String = Nothing
+            ' Der Zwischenspeicher auf der Platte wird aufgeraeumt, die Adresse allein genuegt
+            ' also nicht - die Datei muss noch liegen.
+            Dim haveFile = RemoteArtFiles.TryGetValue(url, cachedFile) AndAlso File.Exists(cachedFile)
+            If haveCover AndAlso (haveFile OrElse Not exportFile) Then
+                Return (cached, If(haveFile, cachedFile, String.Empty))
+            End If
 
-            Dim bitmap As Bitmap = Nothing
+            Dim bytes As Byte()
+            Dim mimeType As String
             Try
-                Dim bytes = HttpClient.GetByteArrayAsync(url).GetAwaiter().GetResult()
-                Using stream As New MemoryStream(bytes)
-                    bitmap = New Bitmap(stream)
+                Using response = HttpClient.GetAsync(url).GetAwaiter().GetResult()
+                    response.EnsureSuccessStatusCode()
+                    ' Woher sonst das Bildformat: anders als beim eingebetteten Bild gibt es hier
+                    ' keinen Tag, der es nennt.
+                    mimeType = response.Content.Headers.ContentType?.MediaType
+                    bytes = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult()
                 End Using
             Catch ex As Exception
                 DiagnosticLogService.Log("CoverArt.Remote", $"{url}: {ex.Message}")
                 ' Nur ein Fehlschlag wird NICHT gemerkt: der Server kann beim naechsten Titel
                 ' wieder da sein.
-                Return Nothing
+                Return (Nothing, String.Empty)
             End Try
+
+            Dim artFile = If(exportFile, WriteArtCacheFile(bytes, mimeType), String.Empty)
+            If artFile.Length > 0 Then RemoteArtFiles(url) = artFile
+            If haveCover Then Return (cached, artFile)
+
+            Dim bitmap As Bitmap
+            Try
+                Using stream As New MemoryStream(bytes)
+                    bitmap = New Bitmap(stream)
+                End Using
+            Catch ex As Exception
+                DiagnosticLogService.Log("CoverArt.Remote", $"{url}: {ex.Message}")
+                Return (Nothing, artFile)
+            End Try
+
             ' Hat ein anderer Faden dasselbe Bild zuerst abgelegt, gilt seines - das eigene wird
             ' dann gleich wieder freigegeben.
             Dim stored = RemoteCovers.GetOrAdd(url, bitmap)
             If Not Object.ReferenceEquals(stored, bitmap) Then bitmap.Dispose()
-            Return stored
+            Return (stored, artFile)
         End Function
 
         ''' <summary>Das Titelbild als DATEI, fuer MPRIS: dort geht ein Bild als Adresse hinaus und
@@ -196,26 +227,38 @@ Namespace Services
             Try
                 Dim picture = ReadEmbeddedPicture(filePath)
                 If picture.Data Is Nothing Then Return String.Empty
+                Return WriteArtCacheFile(picture.Data, picture.MimeType)
+            Catch ex As Exception
+                DiagnosticLogService.Log("CoverArt.Export", $"{filePath}: {ex.Message}")
+                Return String.Empty
+            End Try
+        End Function
 
+        ''' <summary>Legt Bilddaten im Zwischenspeicher ab, benannt nach ihrem Inhalt - die Titel
+        ''' eines Albums tragen meist dasselbe Bild und teilen sich dann eine Datei. Liefert den
+        ''' Pfad, leer bei einem Fehlschlag.</summary>
+        Private Shared Function WriteArtCacheFile(data As Byte(), mimeType As String) As String
+            If data Is Nothing OrElse data.Length = 0 Then Return String.Empty
+            Try
                 Dim hash As String
                 Using sha = SHA1.Create()
-                    hash = Convert.ToHexString(sha.ComputeHash(picture.Data)).Substring(0, 16).ToLowerInvariant()
+                    hash = Convert.ToHexString(sha.ComputeHash(data)).Substring(0, 16).ToLowerInvariant()
                 End Using
 
                 Dim folder = ArtCacheDirectory
                 Directory.CreateDirectory(folder)
-                Dim target = Path.Combine(folder, hash & ExtensionForMimeType(picture.MimeType))
+                Dim target = Path.Combine(folder, hash & ExtensionForMimeType(mimeType))
                 If File.Exists(target) Then
                     ' Beruehren, damit das Aufraeumen die zuletzt gebrauchten stehen laesst.
                     File.SetLastWriteTimeUtc(target, Date.UtcNow)
                 Else
                     Dim temporary = target & ".tmp"
-                    File.WriteAllBytes(temporary, picture.Data)
+                    File.WriteAllBytes(temporary, data)
                     File.Move(temporary, target, overwrite:=True)
                 End If
                 Return target
             Catch ex As Exception
-                DiagnosticLogService.Log("CoverArt.Export", $"{filePath}: {ex.Message}")
+                DiagnosticLogService.Log("CoverArt.Export", ex.Message)
                 Return String.Empty
             End Try
         End Function

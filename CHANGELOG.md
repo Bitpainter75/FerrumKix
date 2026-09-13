@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.7.0
+
+- The Lyrion album overview can now be sorted: recently added, artist/year, album, or year/album,
+  each ascending or descending. The server sorts wherever it can — it knows the library's sort
+  names and files “The Beatles” under B. Two of its limits are worked around: it cannot sort by
+  album title at all, so that order is applied locally, and “recently added” only ever returns as
+  many albums as the server's own `browseagelimit` allows, which the status line says out loud
+  instead of pretending it is the whole library. Descending is not a server option either and is
+  applied to the fetched list.
+- Added a favorites filter to the Lyrion overview and a star badge on every album tile that also
+  changes the status. Favorites live on the server, so the change is there immediately and in
+  every other Lyrion client.
+- Added a favorites sync: one button in the Lyrion view mirrors the albums marked as favorites
+  into a folder of your choosing, and the target folder is the only thing to configure. The files
+  come from the server over HTTP, so the library itself is never touched — not even read — and no
+  mount or rsync is needed. Only what is missing or has changed is transferred, compared by size
+  *and* modification time, and anything in the folder that is no longer a favorite is removed,
+  empty directories along with it.
+- The Lyrion overview now loads the library in one go instead of page by page. The server hands
+  over 6500 albums in a fraction of a second, the scrollbar is honest from the start, and sorting
+  or filtering no longer has to ask the server again.
+- Fixed: while a Lyrion track was playing, MPRIS sent no cover at all, so Waybar and notifications
+  showed none. The artwork of a streamed track is now cached as a file like an embedded cover.
+- Fixed: `xesam:url` mangled the address of a Lyrion stream into an unusable
+  `file:///https%3A///…` instead of passing the stream URL through.
+- The Lyrion settings no longer show the client-name field. It never had any effect: FerrumPlay
+  plays the server's files itself and does not register as a player.
+
 ## 0.6.0
 
 - Added a Lyrion Media Server browser with instant album search, cover grid, album tracks, and

@@ -20,12 +20,21 @@ Namespace Views
   Private _albumTracks As New List(Of Track)()
   Private _viewModel As MainWindowViewModel
   Private _searchRequest As Integer
-  ''' <summary>Die Kacheln der Albenuebersicht. Der Repeater haengt daran und baut daraus nur, was
-  ''' gerade sichtbar ist.</summary>
-  Private ReadOnly _albumTiles As New ObservableCollection(Of LyrionAlbumTile)()
-  ''' <summary>Wie viele Alben der Server insgesamt zur aktuellen Suche hat.</summary>
-  Private _albumsTotal As Integer
-  Private _albumsLoading As Boolean
+  ''' <summary>Die Alben zur laufenden Suche, VOLLSTAENDIG und in der Reihenfolge, die der
+  ''' Dienst geliefert hat. Aus ihr baut ApplyAlbumView die sichtbaren Kacheln.</summary>
+  Private _albums As New List(Of LyrionMediaServerService.Album)()
+  ''' <summary>Die Favoritenadressen des Servers. Siehe GetFavoriteAlbumUrlsAsync.</summary>
+  Private _favoriteUrls As New HashSet(Of String)(StringComparer.Ordinal)
+  Private _favoritesLoaded As Boolean
+  ''' <summary>Die gebauten Kacheln nach Album-Kennung, damit Umsortieren und Filtern das
+  ''' geladene Cover nicht wegwerfen.</summary>
+  Private ReadOnly _tilesById As New Dictionary(Of String, LyrionAlbumTile)(StringComparer.Ordinal)
+  Private _sort As LyrionMediaServerService.AlbumSort = LyrionMediaServerService.AlbumSort.ArtistYear
+  Private _descending As Boolean
+  Private _favoritesOnly As Boolean
+  ''' <summary>Das Fuellen des Auswahlfeldes loest selbst eine Auswahlaenderung aus. Ohne
+  ''' diese Sperre laedt jeder Sprachwechsel die Bibliothek neu.</summary>
+  Private _suppressSortChange As Boolean
   Private ReadOnly _searchDebounce As New Avalonia.Threading.DispatcherTimer With {.Interval = TimeSpan.FromMilliseconds(300)}
   Public Sub New()
    Me.New(Nothing, Nothing)
@@ -37,7 +46,8 @@ Namespace Views
    LocalizationService.ApplyTo(Me)
    AddHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
    AddHandler DetachedFromVisualTree, Sub(sender, e) RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
-   FindControl(Of ItemsRepeater)("Albums").ItemsSource = _albumTiles
+   FillSortBox()
+   UpdateSortDirection()
    AddHandler _searchDebounce.Tick, AddressOf OnSearchDebounceTick
    AddHandler DataContextChanged, AddressOf OnPanelDataContextChanged
    Dim restored = If(existingTracks, Enumerable.Empty(Of Track)()).ToList()
@@ -49,6 +59,8 @@ Namespace Views
   End Sub
   Private Sub OnLanguageChanged(sender As Object, e As EventArgs)
    LocalizationService.ApplyTo(Me)
+   ' Das Auswahlfeld wird aus Code gefuellt, der Durchlauf ueber den Baum erreicht es nicht.
+   FillSortBox()
   End Sub
 
   Private Sub ShowExistingTracks(tracks As List(Of Track), currentTrack As Track)
@@ -67,74 +79,142 @@ Namespace Views
    Dim selected = list.Items.OfType(Of ListBoxItem)().FirstOrDefault(Function(item) Object.ReferenceEquals(item.Tag, currentTrack))
    If selected IsNot Nothing Then list.SelectedItem = selected : list.ScrollIntoView(selected)
   End Sub
-  ''' <summary>Wie viele Alben eine Abfrage holt. Gross genug, dass ein Bildschirm voll wird, klein
-  ''' genug, dass die erste Kachel schnell da ist.</summary>
-  Private Const AlbumPageSize As Integer = 120
+  ''' <summary>Die Reihenfolgen, wie sie im Auswahlfeld stehen.</summary>
+  Private Shared ReadOnly SortOrder As LyrionMediaServerService.AlbumSort() = {
+   LyrionMediaServerService.AlbumSort.Recent, LyrionMediaServerService.AlbumSort.ArtistYear,
+   LyrionMediaServerService.AlbumSort.AlbumTitle, LyrionMediaServerService.AlbumSort.YearAlbum}
 
-  ''' <summary>Ab diesem Abstand zum Ende des Rollbereichs wird die naechste Seite geholt. Etwa
-  ''' zwei Kachelzeilen: der Nachschub ist da, bevor der Anwender das Ende sieht.</summary>
-  Private Const AlbumPreloadDistance As Double = 500
-
-  Private Async Sub LoadAlbumsAsync()
-   Dim request = Threading.Interlocked.Increment(_searchRequest)
-   _albumTiles.Clear()
-   _albumsTotal = 0
-   _albumsLoading = False
-   Dim scroll = FindControl(Of ScrollViewer)("AlbumScroll")
-   scroll.IsVisible = True : FindControl(Of ScrollViewer)("TrackScroll").IsVisible = False
-   scroll.Offset = New Avalonia.Vector(0, 0)
-   FindControl(Of TextBlock)("PageTitle").Text = "Lyrion Media Server"
-   FindControl(Of TextBlock)("Status").Text = LocalizationService.T("Alben werden geladen …")
-   Await LoadNextAlbumPageAsync(request)
-  End Sub
-
-  ''' <summary>Holt den naechsten Ausschnitt und haengt ihn an. Der Ausschnitt wird an der Anfrage
-  ''' festgemacht, mit der er begonnen hat: eine inzwischen getippte Suche verwirft ihn.</summary>
-  Private Async Function LoadNextAlbumPageAsync(request As Integer) As Threading.Tasks.Task
-   If _albumsLoading Then Return
-   If _albumTiles.Count > 0 AndAlso _albumTiles.Count >= _albumsTotal Then Return
-   _albumsLoading = True
-   Try
-    Dim offset = _albumTiles.Count
-    Dim page = Await LyrionMediaServerService.GetAlbumsAsync(FindControl(Of TextBox)("SearchBox").Text, offset, AlbumPageSize, Threading.CancellationToken.None)
-    ' Verworfen wird, was nicht mehr zur laufenden Suche gehoert - und ebenso, was an eine
-    ' inzwischen anders gefuellte Liste nicht mehr lueckenlos anschliesst.
-    If request <> Threading.Volatile.Read(_searchRequest) OrElse offset <> _albumTiles.Count Then Return
-    _albumsTotal = page.Total
-    For Each album In page.Albums
-     _albumTiles.Add(New LyrionAlbumTile(album))
-    Next
-    FindControl(Of TextBlock)("Status").Text = If(_albumTiles.Count = 0, LocalizationService.T("Keine Alben gefunden."), LocalizationService.Format("{0} von {1} Alben", _albumTiles.Count, Math.Max(_albumsTotal, _albumTiles.Count)))
-    ' Ein hohes Fenster zeigt mehr als eine Seite. Dann muss gleich weitergeladen werden, sonst
-    ' gibt es nichts zu rollen und das Nachladen kaeme nie wieder in Gang.
-    If page.Albums.Count > 0 Then Avalonia.Threading.Dispatcher.UIThread.Post(Sub() FillAlbumViewport(request), Avalonia.Threading.DispatcherPriority.Background)
-   Catch ex As Exception
-    If request = Threading.Volatile.Read(_searchRequest) Then FindControl(Of TextBlock)("Status").Text = ex.Message
-   Finally
-    ' Nur die laufende Suche gibt die Sperre wieder frei. Sonst oeffnete ein spaet
-    ' eintreffender Rest der vorigen Suche den Weg fuer eine zweite Abfrage derselben Seite.
-    If request = Threading.Volatile.Read(_searchRequest) Then _albumsLoading = False
-   End Try
+  Private Shared Function SortLabel(sort As LyrionMediaServerService.AlbumSort) As String
+   Select Case sort
+    Case LyrionMediaServerService.AlbumSort.Recent : Return LocalizationService.T("Zuletzt hinzugefügt")
+    Case LyrionMediaServerService.AlbumSort.AlbumTitle : Return LocalizationService.T("Album")
+    Case LyrionMediaServerService.AlbumSort.YearAlbum : Return LocalizationService.T("Jahr/Album")
+    Case Else : Return LocalizationService.T("Interpret/Jahr")
+   End Select
   End Function
 
-  Private Async Sub FillAlbumViewport(request As Integer)
-   If request <> Threading.Volatile.Read(_searchRequest) Then Return
+  ''' <summary>Fuellt das Auswahlfeld. Laeuft auch bei jedem Sprachwechsel erneut; das Setzen der
+  ''' Liste loest dabei eine Auswahlaenderung aus, die keine Neuladung bedeuten darf.</summary>
+  Private Sub FillSortBox()
+   Dim box = FindControl(Of ComboBox)("SortBox")
+   _suppressSortChange = True
+   Try
+    box.ItemsSource = SortOrder.Select(AddressOf SortLabel).ToList()
+    box.SelectedIndex = Math.Max(0, Array.IndexOf(SortOrder, _sort))
+   Finally
+    _suppressSortChange = False
+   End Try
+  End Sub
+
+  Private Sub OnSortChanged(sender As Object, e As SelectionChangedEventArgs)
+   If _suppressSortChange Then Return
+   Dim index = FindControl(Of ComboBox)("SortBox").SelectedIndex
+   If index < 0 OrElse index >= SortOrder.Length OrElse SortOrder(index) = _sort Then Return
+   _sort = SortOrder(index)
+   LoadAlbumsAsync()
+  End Sub
+
+  ''' <summary>Die Richtung kehrt nur die vorhandene Liste um - dafuer muss der Server nicht
+  ''' gefragt werden.</summary>
+  Private Sub OnSortDirectionClick(sender As Object, e As RoutedEventArgs)
+   _descending = Not _descending
+   UpdateSortDirection()
+   ApplyAlbumView()
+  End Sub
+
+  Private Sub UpdateSortDirection()
+   Dim icon = FindControl(Of FerrumPlay.Controls.SvgIcon)("SortDirectionIcon")
+   If icon Is Nothing Then Return
+   icon.Source = If(_descending, "avares://FerrumPlay/Assets/Icons/outline/chevron-up.svg", "avares://FerrumPlay/Assets/Icons/outline/chevron-down.svg")
+  End Sub
+
+  Private Sub OnFavoriteFilterClick(sender As Object, e As RoutedEventArgs)
+   _favoritesOnly = Not _favoritesOnly
+   Dim button = FindControl(Of Button)("FavoriteFilterButton")
+   If _favoritesOnly Then button.Classes.Add("active") Else button.Classes.Remove("active")
+   ApplyAlbumView()
+  End Sub
+
+  ''' <summary>Der Stern auf einer Kachel. Er steckt IN der Albumschaltflaeche, deren Klick das
+  ''' Album oeffnet - ohne dieses Handled liefe beides auf einmal.</summary>
+  Private Async Sub OnFavoriteBadgeClick(sender As Object, e As RoutedEventArgs)
+   e.Handled = True
+   Dim tile = TryCast(TryCast(sender, Button)?.Tag, LyrionAlbumTile)
+   If tile Is Nothing Then Return
+   Await tile.ToggleFavoriteAsync()
+   ' Der Filter arbeitet auf dieser Menge: ohne den Nachtrag zeigte er ein gerade abgewaehltes
+   ' Album weiter und ein neu gemerktes nicht.
+   If tile.IsFavorite Then _favoriteUrls.Add(tile.Album.FavoritesUrl) Else _favoriteUrls.Remove(tile.Album.FavoritesUrl)
+   If _favoritesOnly Then ApplyAlbumView()
+  End Sub
+
+  ''' <summary>Holt die Albenliste vollstaendig und zeigt sie an. Die Favoriten kommen nur beim
+  ''' ersten Mal mit: sie aendern sich nur ueber das Sternchen, und das traegt seine Aenderung
+  ''' selbst nach. Das Aktualisieren-Symbol laesst beides neu holen.</summary>
+  Private Async Sub LoadAlbumsAsync()
+   Dim request = Threading.Interlocked.Increment(_searchRequest)
    Dim scroll = FindControl(Of ScrollViewer)("AlbumScroll")
-   If scroll Is Nothing OrElse Not scroll.IsVisible Then Return
-   If scroll.Extent.Height > scroll.Viewport.Height + AlbumPreloadDistance Then Return
-   Await LoadNextAlbumPageAsync(request)
+   scroll.IsVisible = True : FindControl(Of ScrollViewer)("TrackScroll").IsVisible = False
+   FindControl(Of TextBlock)("PageTitle").Text = "Lyrion Media Server"
+   FindControl(Of TextBlock)("Status").Text = LocalizationService.T("Alben werden geladen …")
+   Try
+    Dim albums = Await LyrionMediaServerService.GetAlbumsAsync(FindControl(Of TextBox)("SearchBox").Text, _sort, Threading.CancellationToken.None)
+    If Not _favoritesLoaded Then
+     _favoriteUrls = Await LyrionMediaServerService.GetFavoriteAlbumUrlsAsync(Threading.CancellationToken.None)
+     _favoritesLoaded = True
+    End If
+    If request <> Threading.Volatile.Read(_searchRequest) Then Return
+    _albums = albums
+    scroll.Offset = New Avalonia.Vector(0, 0)
+    ApplyAlbumView()
+   Catch ex As Exception
+    If request = Threading.Volatile.Read(_searchRequest) Then FindControl(Of TextBlock)("Status").Text = ex.Message
+   End Try
   End Sub
 
-  Private Async Sub OnAlbumScrollChanged(sender As Object, e As ScrollChangedEventArgs)
-   Dim scroll = TryCast(sender, ScrollViewer)
-   If scroll Is Nothing OrElse Not scroll.IsVisible Then Return
-   If scroll.Offset.Y + scroll.Viewport.Height < scroll.Extent.Height - AlbumPreloadDistance Then Return
-   Await LoadNextAlbumPageAsync(Threading.Volatile.Read(_searchRequest))
+  ''' <summary>Baut aus der geholten Liste die sichtbaren Kacheln: erst der Favoritenfilter, dann
+  ''' die Richtung. SORTIERT wird hier nicht - die Reihenfolge steht schon fest, sie wird
+  ''' hoechstens umgedreht.</summary>
+  Private Sub ApplyAlbumView()
+   Dim shown As IEnumerable(Of LyrionMediaServerService.Album) = _albums
+   If _favoritesOnly Then shown = shown.Where(Function(album) _favoriteUrls.Contains(album.FavoritesUrl))
+   Dim ordered = shown.ToList()
+   If _descending Then ordered.Reverse()
+   ' Die Liste wird als Ganzes gesetzt statt Kachel fuer Kachel angehaengt: bei mehreren tausend
+   ' Alben waeren das ebenso viele Meldungen an den Repeater.
+   FindControl(Of ItemsRepeater)("Albums").ItemsSource = ordered.Select(AddressOf TileFor).ToList()
+   FindControl(Of TextBlock)("Status").Text = StatusText(ordered.Count)
   End Sub
 
-  ''' <summary>Der Repeater hat eine Kachel gebaut - erst jetzt lohnt sich ihr Cover.</summary>
+  ''' <summary>Die Kachel zu einem Album, und zwar immer DIESELBE. Beim Umsortieren oder Filtern
+  ''' bleibt so das schon geladene Cover erhalten, statt erneut vom Server zu kommen.</summary>
+  Private Function TileFor(album As LyrionMediaServerService.Album) As LyrionAlbumTile
+   Dim key = If(album.Id, String.Empty)
+   Dim tile As LyrionAlbumTile = Nothing
+   If key.Length = 0 OrElse Not _tilesById.TryGetValue(key, tile) Then
+    tile = New LyrionAlbumTile(album)
+    If key.Length > 0 Then _tilesById(key) = tile
+   End If
+   tile.IsFavorite = _favoriteUrls.Contains(tile.Album.FavoritesUrl)
+   Return tile
+  End Function
+
+  Private Function StatusText(count As Integer) As String
+   If count = 0 Then Return LocalizationService.T("Keine Alben gefunden.")
+   If _favoritesOnly Then Return LocalizationService.Format("{0} von {1} Alben", count, _albums.Count)
+   ' Bei "Zuletzt hinzugefuegt" ist die Zahl NICHT die Bibliothek: der Server gibt davon nur so
+   ' viele heraus, wie seine Einstellung browseagelimit erlaubt.
+   If _sort = LyrionMediaServerService.AlbumSort.Recent Then Return LocalizationService.Format("{0} zuletzt hinzugefügte Alben", count)
+   Return LocalizationService.Format("{0} Alben", count)
+  End Function
+
+  ''' <summary>Der Repeater hat eine Kachel gebaut - erst jetzt lohnt sich ihr Cover. Und erst
+  ''' jetzt gibt es die Kachel ueberhaupt: der Uebersetzungsdurchlauf beim Aufbau des Panels
+  ''' hat sie nicht gesehen, also bekommt sie ihren hier.</summary>
   Private Sub OnAlbumTilePrepared(sender As Object, e As ItemsRepeaterElementPreparedEventArgs)
-   TryCast(TryCast(e.Element, Control)?.DataContext, LyrionAlbumTile)?.RequestCover()
+   Dim element = TryCast(e.Element, Control)
+   If element IsNot Nothing Then LocalizationService.ApplyTo(element)
+   TryCast(element?.DataContext, LyrionAlbumTile)?.RequestCover()
   End Sub
 
   ''' <summary>Der Repeater reicht die Kachel weiter. Ihr Bild wird losgelassen, die Bilddaten
@@ -255,8 +335,74 @@ Namespace Views
   End Sub
 
   Private Sub OnReloadClick(sender As Object, e As RoutedEventArgs)
-   If _shownAlbum Is Nothing Then LoadAlbumsAsync() Else ShowAlbumAsync(_shownAlbum)
+   If _shownAlbum IsNot Nothing Then ShowAlbumAsync(_shownAlbum) : Return
+   ''' Von Hand aktualisiert heisst: alles noch einmal. Auch die Favoriten koennen sich
+   ''' anderswo geaendert haben, und ein Cover kann ein anderes geworden sein.
+   _favoritesLoaded = False
+   _tilesById.Clear()
+   LoadAlbumsAsync()
   End Sub
+  ''' <summary>Laeuft gerade ein Abgleich? Dann bricht ein zweiter Klick ihn ab, statt einen
+  ''' zweiten zu starten - zwei Laeufe auf denselben Ordner kaemen sich in die Quere.</summary>
+  Private _syncCancel As Threading.CancellationTokenSource
+
+  Private Async Sub OnSyncClick(sender As Object, e As RoutedEventArgs)
+   If _syncCancel IsNot Nothing Then
+    _syncCancel.Cancel()
+    Return
+   End If
+
+   Dim target = AppSettingsService.Current.LyrionSyncTargetPath
+   If String.IsNullOrWhiteSpace(target) Then
+    SyncStatus(LocalizationService.T("Bitte zuerst einen Zielordner für den Favoritenabgleich wählen."))
+    Return
+   End If
+
+   Dim source As New Threading.CancellationTokenSource()
+   _syncCancel = source
+   FindControl(Of Button)("SyncButton").Classes.Add("active")
+   Try
+    Dim report As Action(Of String) = Sub(line) Avalonia.Threading.Dispatcher.UIThread.Post(Sub() SyncStatus(line))
+    Dim plan = Await LyrionFavoriteSyncService.BuildPlanAsync(target, report, source.Token)
+
+    If plan.Unresolved.Count > 0 Then
+     DiagnosticLogService.Log("Lyrion.Sync", $"Ohne Album: {String.Join(", ", plan.Unresolved)}")
+    End If
+
+    If Not plan.HasWork Then
+     SyncStatus(LocalizationService.Format("Abgleich: nichts zu tun, {0} Titel sind aktuell.", plan.UpToDate))
+     Return
+    End If
+
+    SyncStatus(LocalizationService.Format("Abgleich: {0} Titel holen ({1}), {2} entfernen …",
+                                          plan.Fetch.Count, LyrionFavoriteSyncService.FormatBytes(plan.BytesToFetch), plan.Remove.Count))
+    Dim result = Await LyrionFavoriteSyncService.RunAsync(plan, report, source.Token)
+
+    Dim text = LocalizationService.Format("Abgleich fertig: {0} geholt ({1}), {2} entfernt.",
+                                          result.Fetched, LyrionFavoriteSyncService.FormatBytes(result.BytesFetched), result.Removed)
+    If result.Failed > 0 Then text &= " " & LocalizationService.Format("{0} fehlgeschlagen, siehe Protokoll.", result.Failed)
+    If plan.Unresolved.Count > 0 Then text &= " " & LocalizationService.Format("{0} Favoriten ohne passendes Album übersprungen.", plan.Unresolved.Count)
+    SyncStatus(text)
+   Catch ex As OperationCanceledException
+    SyncStatus(LocalizationService.T("Abgleich abgebrochen."))
+   Catch ex As Exception
+    SyncStatus(ex.Message)
+    DiagnosticLogService.LogException("Lyrion.Sync", ex)
+   Finally
+    _syncCancel = Nothing
+    source.Dispose()
+    FindControl(Of Button)("SyncButton").Classes.Remove("active")
+   End Try
+  End Sub
+
+  ''' <summary>Der Abgleich schreibt in dieselbe Statuszeile wie die Uebersicht. Steht gerade die
+  ''' Titelliste eines Albums offen, gehoert die Zeile dieser Liste - dann bleibt die Meldung aus,
+  ''' statt die Angaben zum Album zu ueberschreiben.</summary>
+  Private Sub SyncStatus(text As String)
+   If _shownAlbum IsNot Nothing Then Return
+   FindControl(Of TextBlock)("Status").Text = text
+  End Sub
+
   Private Sub OnJumpToCurrentTrackClick(sender As Object, e As RoutedEventArgs)
    Dim viewModel = TryCast(DataContext, MainWindowViewModel)
    Dim current = viewModel?.CurrentTrack

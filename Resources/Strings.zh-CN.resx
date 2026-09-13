@@ -4,7 +4,16 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="0_Alben_27cd7852" xml:space="preserve">
+    <value>{0} 张专辑</value>
+  </data>
+  <data name="0_Favoriten_ohne_passendes_Album_bersprungen_29105465" xml:space="preserve">
+    <value>已跳过 {0} 个收藏，没有匹配的专辑。</value>
+  </data>
   <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>已移除 {0} 个缺失曲目。</value></data>
+  <data name="0_fehlgeschlagen_siehe_Protokoll_38490aa5" xml:space="preserve">
+    <value>{0} 首失败，请查看日志。</value>
+  </data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} 声道</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} × {1}，系统缩放系数 {2:0.##}</value></data>
   <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
@@ -16,6 +25,21 @@
   <data name="0_von_1_Alben_d5492fcf" xml:space="preserve">
     <value>{1} 张专辑中的 {0} 张</value>
   </data>
+  <data name="0_zuletzt_hinzugef_gte_Alben_f56727a1" xml:space="preserve">
+    <value>最近添加的 {0} 张专辑</value>
+  </data>
+  <data name="Abgleich_0_Titel_holen_1_2_entfernen_ceed4a91" xml:space="preserve">
+    <value>同步：获取 {0} 首（{1}），移除 {2} 首 …</value>
+  </data>
+  <data name="Abgleich_abgebrochen_501da6fe" xml:space="preserve">
+    <value>同步已取消。</value>
+  </data>
+  <data name="Abgleich_fertig_0_geholt_1_2_entfernt_da37f80a" xml:space="preserve">
+    <value>同步完成：获取 {0} 首（{1}），移除 {2} 首。</value>
+  </data>
+  <data name="Abgleich_nichts_zu_tun_0_Titel_sind_aktuell_8dbee7ce" xml:space="preserve">
+    <value>同步：无需处理，{0} 首曲目已是最新。</value>
+  </data>
   <data name="Abspielen_b2eaf9fd" xml:space="preserve">
     <value>播放</value>
   </data>
@@ -26,8 +50,14 @@
   <data name="Alben_werden_geladen_02583de6" xml:space="preserve">
     <value>正在载入专辑 …</value>
   </data>
+  <data name="Alben_werden_gelesen_e70b01e7" xml:space="preserve">
+    <value>正在读取专辑 …</value>
+  </data>
   <data name="Album_abspielen_9c9d0b34" xml:space="preserve">
     <value>播放专辑</value>
+  </data>
+  <data name="Album_als_Favorit_merken_513b3090" xml:space="preserve">
+    <value>将专辑加入收藏</value>
   </data>
   <data name="Album_Artist_an_Artist_angleichen_ad438087" xml:space="preserve">
     <value>专辑艺术家跟随艺术家</value>
@@ -96,6 +126,9 @@
   <data name="Bitte_zuerst_die_Adresse_des_Lyrion_Media_Server_e8bf5785" xml:space="preserve">
     <value>请先填写 Lyrion Media Server 的地址。</value>
   </data>
+  <data name="Bitte_zuerst_einen_Zielordner_f_r_den_Favoritena_7887a79e" xml:space="preserve">
+    <value>请先为收藏同步选择目标文件夹。</value>
+  </data>
   <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>封面列宽度</value></data>
   <data name="brige_Tags_beim_Speichern_entfernen_307feaab" xml:space="preserve">
     <value>保存时移除其余标签</value>
@@ -124,8 +157,14 @@
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>打标签时的文件名</value>
   </data>
+  <data name="Der_Knopf_in_der_Lyrion_Ansicht_gleicht_die_als__ac9f1e30" xml:space="preserve">
+    <value>Lyrion 视图中的按钮会把标记为收藏的专辑同步到此文件夹。</value>
+  </data>
   <data name="Der_konfigurierte_Lyrion_Client_ist_nicht_verbun_4bbee169" xml:space="preserve">
     <value>所设置的 Lyrion 客户端未连接。</value>
+  </data>
+  <data name="Der_Server_meldet_kein_einziges_Favoritenalbum_D_0c1fbfcf" xml:space="preserve">
+    <value>服务器未报告任何收藏专辑。同步已中止，以免清空目标文件夹。</value>
   </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>音频通过 libmpv 及系统输出设备播放。</value></data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>文件已不存在，将跳过该曲目。</value></data>
@@ -155,6 +194,15 @@
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>设置</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>尚未选择曲目。</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>正在读取文件。</value></data>
+  <data name="Favoriten_Abgleich_Zielordner_eee106f3" xml:space="preserve">
+    <value>收藏同步：目标文件夹</value>
+  </data>
+  <data name="Favoriten_in_den_Zielordner_abgleichen_5551a9c6" xml:space="preserve">
+    <value>将收藏同步到目标文件夹</value>
+  </data>
+  <data name="Favoriten_werden_gelesen_12163ab1" xml:space="preserve">
+    <value>正在读取收藏 …</value>
+  </data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>从列表中移除缺失的曲目</value></data>
   <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
     <value>FerrumPlay 建立在这些项目之上。按钮会在浏览器中打开项目页面和许可证文本。</value>
@@ -178,8 +226,14 @@
   <data name="http_server_9000_oder_https_music_example_lan_b966c9dd" xml:space="preserve">
     <value>http://server:9000 或 https://music.example.lan</value>
   </data>
+  <data name="Interpret_Jahr_8c81661b" xml:space="preserve">
+    <value>艺术家/年份</value>
+  </data>
   <data name="Jahr_956a6e5a" xml:space="preserve">
     <value>年份</value>
+  </data>
+  <data name="Jahr_Album_42cad399" xml:space="preserve">
+    <value>年份/专辑</value>
   </data>
   <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>未找到可播放的文件。</value></data>
   <data name="Keine_Alben_gefunden_e94729f8" xml:space="preserve">
@@ -235,6 +289,12 @@
   <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
     <value>已选择新封面：{0}</value>
   </data>
+  <data name="Noch_kein_Ordner_gew_hlt_55143b5b" xml:space="preserve">
+    <value>尚未选择文件夹</value>
+  </data>
+  <data name="Nur_Favoriten_zeigen_19a6f639" xml:space="preserve">
+    <value>仅显示收藏</value>
+  </data>
   <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
     <value>只有 MP3 文件可以写入标签。</value>
   </data>
@@ -242,6 +302,9 @@
     <value>界面</value>
   </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>添加文件夹</value></data>
+  <data name="Reihenfolge_umkehren_6f427353" xml:space="preserve">
+    <value>反转排序</value>
+  </data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>关闭</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>快速搜索</value></data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>字体大小</value></data>
@@ -260,11 +323,17 @@
   <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
     <value>技术与许可</value>
   </data>
+  <data name="Titel_0_von_1_wird_geholt_2_0d374c1f" xml:space="preserve">
+    <value>正在获取第 {0}/{1} 首: {2}</value>
+  </data>
   <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>在播放中包含此曲目</value></data>
   <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>添加曲目</value></data>
   <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>无法播放曲目：{0}</value></data>
   <data name="Titel_und_Tracknummer_a3a490ab" xml:space="preserve">
     <value>标题与音轨号</value>
+  </data>
+  <data name="Titel_werden_gelesen_f208a1f6" xml:space="preserve">
+    <value>正在读取曲目 …</value>
   </data>
   <data name="Tonausgabe_1455f378" xml:space="preserve"><value>音频输出</value></data>
   <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>音频文件</value></data>
@@ -283,6 +352,9 @@
   <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>默认使用系统语言；不受支持时使用英语。</value></data>
   <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>上一曲</value></data>
   <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>前置增益</value></data>
+  <data name="W_hlen_42774e68" xml:space="preserve">
+    <value>选择 …</value>
+  </data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>播放</value></data>
   <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
     <value>正在 FerrumPlay 中播放：{0}</value>
@@ -303,7 +375,16 @@
   <data name="Zieldatei_existiert_bereits_0_644a441b" xml:space="preserve">
     <value>目标文件已存在：{0}</value>
   </data>
+  <data name="Zielordner_f_r_den_Favoriten_Abgleich_96a880a6" xml:space="preserve">
+    <value>收藏同步的目标文件夹</value>
+  </data>
+  <data name="Zielordner_wird_verglichen_9500b01c" xml:space="preserve">
+    <value>正在比对目标文件夹 …</value>
+  </data>
   <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>随机播放</value></data>
+  <data name="Zuletzt_hinzugef_gt_040f6771" xml:space="preserve">
+    <value>最近添加</value>
+  </data>
   <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>返回播放</value></data>
   <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>音频转换</value></data>
   <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>原始文件保持不变。FFmpeg 由系统提供。</value></data>

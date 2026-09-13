@@ -1,6 +1,7 @@
 Imports System
 Imports System.Collections.Generic
 Imports System.Globalization
+Imports System.Linq
 Imports System.Net.Http
 Imports System.Text
 Imports System.Text.Json
@@ -20,6 +21,10 @@ Namespace Services
             Public Property Artist As String = String.Empty
             Public Property Year As String = String.Empty
             Public Property ArtworkTrackId As String = String.Empty
+            ''' <summary>Unter dieser Adresse fuehrt der Server das Album in den Favoriten. Sie
+            ''' kommt aus der Albenabfrage und ist der einzige Bezug zwischen beiden Listen: die
+            ''' Favoritenliste kennt keine Album-Kennung.</summary>
+            Public Property FavoritesUrl As String = String.Empty
         End Class
         Public NotInheritable Class Song
             Public Property Id As String = String.Empty
@@ -40,41 +45,184 @@ Namespace Services
             Public Property Name As String = String.Empty
         End Class
         Private Shared ReadOnly Client As New HttpClient With {.Timeout = TimeSpan.FromSeconds(12)}
-        ''' <summary>Ein Ausschnitt der Albenliste und die Gesamtzahl dazu. Die Gesamtzahl kommt vom
-        ''' Server und nicht aus der Laenge des Ausschnitts: nur mit ihr weiss die Ansicht, ob sich
-        ''' weiteres Nachladen noch lohnt.</summary>
-        Public NotInheritable Class AlbumPage
-            Public Property Albums As New List(Of Album)()
-            Public Property Total As Integer
+        ''' <summary>Wonach die Albenuebersicht sortiert. Bis auf <see cref="AlbumSort.AlbumTitle"/>
+        ''' sortiert der Server selbst: er kennt die Sortiernamen der Bibliothek und stellt "The
+        ''' Beatles" unter B. Nach dem Albumtitel kann er nicht sortieren, das uebernimmt die
+        ''' Ansicht.</summary>
+        Public Enum AlbumSort
+            ''' <summary>Zuletzt hinzugefuegt. Davon gibt der Server nur so viele heraus, wie seine
+            ''' Einstellung "browseagelimit" erlaubt - voreingestellt 200.</summary>
+            Recent = 0
+            ArtistYear = 1
+            AlbumTitle = 2
+            YearAlbum = 3
+        End Enum
+
+        ''' <summary>Die VOLLSTAENDIGE Albenliste zu einer Suche, in der gewuenschten Reihenfolge.
+        '''
+        ''' <para>Absichtlich nicht seitenweise: der Server gibt 6500 Alben in einem Zug in
+        ''' Sekundenbruchteilen heraus, und nur mit der ganzen Liste laesst sich absteigend
+        ''' sortieren oder auf die Favoriten filtern, ohne bei jedem Handgriff neu zu fragen.</para>
+        '''
+        ''' <para>Erst wird nur gezaehlt: die Anzahl steht im Kopf der Antwort, und ohne sie muesste
+        ''' die Abfrage eine Obergrenze raten.</para></summary>
+        Public Shared Async Function GetAlbumsAsync(search As String, sort As AlbumSort, cancellationToken As CancellationToken) As Task(Of List(Of Album))
+            Dim albums As New List(Of Album)()
+            Dim probe = Await RequestAsync("", AlbumCommand(0, sort, search), cancellationToken)
+            Dim total As Integer
+            If Not Integer.TryParse(Text(probe, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) OrElse total <= 0 Then Return albums
+
+            Dim result = Await RequestAsync("", AlbumCommand(total, sort, search), cancellationToken)
+            Dim rows As JsonElement
+            If Not result.TryGetProperty("albums_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return albums
+            For Each row In rows.EnumerateArray()
+                albums.Add(New Album With {.Id = Text(row, "id"), .Title = FirstText(row, "album", "title"), .Artist = FirstText(row, "artist", "albumartist"),
+                                           .Year = Text(row, "year"), .ArtworkTrackId = Text(row, "artwork_track_id"), .FavoritesUrl = Text(row, "favorites_url")})
+            Next
+            If sort = AlbumSort.AlbumTitle Then
+                albums = albums.OrderBy(Function(album) album.Title, StringComparer.CurrentCultureIgnoreCase).
+                                ThenBy(Function(album) album.Artist, StringComparer.CurrentCultureIgnoreCase).ToList()
+            End If
+            Return albums
+        End Function
+
+        ''' <summary>"l" liefert den Albumnamen. Ohne dieses Tag kommen nur Cover und Metadaten an,
+        ''' die Beschriftung der Album-Kacheln bliebe leer. Mit <paramref name="count"/> = 0 zaehlt
+        ''' der Server nur.</summary>
+        Private Shared Function AlbumCommand(count As Integer, sort As AlbumSort, search As String) As String()
+            Dim command As New List(Of String) From {"albums", "0", Math.Max(0, count).ToString(CultureInfo.InvariantCulture), "tags:aljy", "sort:" & ServerSort(sort)}
+            If Not String.IsNullOrWhiteSpace(search) Then command.Add("search:" & search.Trim())
+            Return command.ToArray()
+        End Function
+
+        ''' <summary>Nach dem Albumtitel kennt der Server keine Reihenfolge - er nimmt "sort:album"
+        ''' entgegen und liefert trotzdem die Voreinstellung. Dafuer wird nach Interpret geholt und
+        ''' die Liste danach umsortiert.</summary>
+        Private Shared Function ServerSort(sort As AlbumSort) As String
+            Select Case sort
+                Case AlbumSort.Recent : Return "new"
+                Case AlbumSort.YearAlbum : Return "yearalbum"
+                Case Else : Return "artflow"
+            End Select
+        End Function
+
+        ''' <summary>Woran ein Favoriteneintrag als ALBUM zu erkennen ist. Einzelne Titel und
+        ''' Radiosender stehen in derselben Liste und tragen andere Adressen.</summary>
+        Private Const AlbumFavoritePrefix As String = "db:album."
+
+        ''' <summary>Die Adressen der als Favorit gemerkten Alben, fuer den Filter in der
+        ''' Uebersicht. Wer auch die Namen braucht, nimmt <see cref="GetFavoriteEntriesAsync"/>.</summary>
+        Public Shared Async Function GetFavoriteAlbumUrlsAsync(cancellationToken As CancellationToken) As Task(Of HashSet(Of String))
+            Dim entries = Await GetFavoriteEntriesAsync(cancellationToken)
+            Return New HashSet(Of String)(entries.Select(Function(entry) entry.Url), StringComparer.Ordinal)
+        End Function
+
+        ''' <summary>Ein Favoriteneintrag, so wie der Server ihn fuehrt.</summary>
+        Public NotInheritable Class FavoriteEntry
+            Public Property Url As String = String.Empty
+            Public Property Name As String = String.Empty
         End Class
 
-        Public Shared Async Function GetAlbumsAsync(search As String, start As Integer, count As Integer, cancellationToken As CancellationToken) As Task(Of AlbumPage)
-            Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
-            If String.IsNullOrWhiteSpace(baseUrl) Then Throw New InvalidOperationException(LocalizationService.T("Bitte zuerst die Adresse des Lyrion Media Server eintragen."))
-            ' "l" liefert den Albumnamen. Ohne dieses Tag kommen nur Cover und Metadaten an,
-            ' die Beschriftung der Album-Kacheln bleibt dann leer.
-            Dim command As New List(Of String) From {"albums", Math.Max(0, start).ToString(CultureInfo.InvariantCulture), Math.Max(1, count).ToString(CultureInfo.InvariantCulture), "tags:aljy", "sort:artflow"}
-            If Not String.IsNullOrWhiteSpace(search) Then command.Add("search:" & search.Trim())
-            Dim body = JsonSerializer.Serialize(New With {.id = 1, .method = "slim.request", .params = New Object() {"", command.ToArray()}})
-            Using response = Await Client.PostAsync(baseUrl & "/jsonrpc.js", New StringContent(body, Encoding.UTF8, "application/json"), cancellationToken)
-                response.EnsureSuccessStatusCode()
-                Using document = JsonDocument.Parse(Await response.Content.ReadAsStringAsync(cancellationToken))
-                    Dim result = document.RootElement.GetProperty("result")
-                    Dim page As New AlbumPage()
-                    Dim total As Integer
-                    If Integer.TryParse(Text(result, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) Then page.Total = total
-                    Dim rows As JsonElement
-                    If Not result.TryGetProperty("albums_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return page
-                    For Each row In rows.EnumerateArray()
-                        page.Albums.Add(New Album With {.Id = Text(row, "id"), .Title = FirstText(row, "album", "title"), .Artist = FirstText(row, "artist", "albumartist"), .Year = Text(row, "year"), .ArtworkTrackId = Text(row, "artwork_track_id")})
-                    Next
-                    ' Meldet der Server keine Gesamtzahl, gilt der Ausschnitt als das Ende - sonst
-                    ' liefe das Nachladen ins Leere weiter.
-                    If page.Total <= 0 Then page.Total = start + page.Albums.Count
-                    Return page
-                End Using
-            End Using
+        ''' <summary>Ein Titel der Bibliothek mit dem, was der Abgleich braucht.</summary>
+        Public NotInheritable Class LibraryTrack
+            Public Property Id As String = String.Empty
+            Public Property AlbumId As String = String.Empty
+            ''' <summary>Die Adresse, unter der die Datei auf dem SERVER liegt, etwa
+            ''' file:///music/D/Deep%20Purple/...</summary>
+            Public Property Url As String = String.Empty
+            Public Property Size As Long
+            ''' <summary>Aenderungszeit der Datei auf dem Server, als Unix-Sekunden.</summary>
+            Public Property ModifiedUnix As Long
+        End Class
+
+        ''' <summary>Die Favoriteneintraege, die ALBEN sind. Einzelne Titel und Radiosender stehen
+        ''' in derselben Liste und tragen andere Adressen.</summary>
+        Public Shared Async Function GetFavoriteEntriesAsync(cancellationToken As CancellationToken) As Task(Of List(Of FavoriteEntry))
+            Dim entries As New List(Of FavoriteEntry)()
+            Dim probe = Await RequestAsync("", {"favorites", "items", "0", "0"}, cancellationToken)
+            Dim total As Integer
+            If Not Integer.TryParse(Text(probe, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) OrElse total <= 0 Then Return entries
+
+            Dim result = Await RequestAsync("", {"favorites", "items", "0", total.ToString(CultureInfo.InvariantCulture), "want_url:1"}, cancellationToken)
+            Dim rows As JsonElement
+            If Not result.TryGetProperty("loop_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return entries
+            For Each row In rows.EnumerateArray()
+                Dim url = Text(row, "url")
+                If url.StartsWith(AlbumFavoritePrefix, StringComparison.Ordinal) Then
+                    entries.Add(New FavoriteEntry With {.Url = url, .Name = Text(row, "name")})
+                End If
+            Next
+            Return entries
         End Function
+
+        ''' <summary>Die Ordner, in denen der Server seine Medien liegen hat. Damit laesst sich der
+        ''' serverseitige Teil eines Titelpfades abschneiden, ohne ihn irgendwo einzutragen.</summary>
+        Public Shared Async Function GetMediaDirsAsync(cancellationToken As CancellationToken) As Task(Of List(Of String))
+            Dim folders As New List(Of String)()
+            Dim result = Await RequestAsync("", {"pref", "mediadirs", "?"}, cancellationToken)
+            Dim value As JsonElement
+            If Not result.TryGetProperty("_p2", value) Then Return folders
+            If value.ValueKind = JsonValueKind.Array Then
+                For Each entry In value.EnumerateArray()
+                    If entry.ValueKind = JsonValueKind.String Then folders.Add(entry.GetString())
+                Next
+            ElseIf value.ValueKind = JsonValueKind.String Then
+                folders.Add(value.GetString())
+            End If
+            Return folders
+        End Function
+
+        ''' <summary>ALLE Titel der Bibliothek mit Adresse, Aenderungszeit, Groesse und Album.
+        '''
+        ''' <para>Bewusst in einem Zug statt je Album: bei 800 Favoritenalben waeren das 800
+        ''' Abfragen und rund vierzig Sekunden, waehrend die ganze Bibliothek in gut zwei Sekunden
+        ''' herueberkommt. Die Antwort ist gross (Groessenordnung 20 MB bei 78000 Titeln), wird
+        ''' aber nur fuer den Abgleich gebraucht und danach wieder freigegeben.</para></summary>
+        Public Shared Async Function GetAllLibraryTracksAsync(cancellationToken As CancellationToken) As Task(Of List(Of LibraryTrack))
+            Dim tracks As New List(Of LibraryTrack)()
+            Dim probe = Await RequestAsync("", {"tracks", "0", "0", "tags:u"}, cancellationToken)
+            Dim total As Integer
+            If Not Integer.TryParse(Text(probe, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) OrElse total <= 0 Then Return tracks
+
+            Dim result = Await RequestAsync("", {"tracks", "0", total.ToString(CultureInfo.InvariantCulture), "tags:unfe"}, cancellationToken)
+            Dim rows As JsonElement
+            If Not result.TryGetProperty("titles_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return tracks
+            For Each row In rows.EnumerateArray()
+                Dim size As Long
+                Long.TryParse(Text(row, "filesize"), NumberStyles.Integer, CultureInfo.InvariantCulture, size)
+                Dim modified As Long
+                Long.TryParse(Text(row, "modificationTime"), NumberStyles.Integer, CultureInfo.InvariantCulture, modified)
+                tracks.Add(New LibraryTrack With {.Id = Text(row, "id"), .AlbumId = Text(row, "album_id"),
+                                                  .Url = Text(row, "url"), .Size = size, .ModifiedUnix = modified})
+            Next
+            Return tracks
+        End Function
+
+        ''' <summary>Die Adresse, unter der der Server eine Titeldatei unveraendert herausgibt. Sie
+        ''' liefert dieselben Bytes wie die Datei in der Ablage.</summary>
+        Public Shared Function DownloadUrl(trackId As String) As String
+            Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
+            If String.IsNullOrWhiteSpace(baseUrl) OrElse String.IsNullOrWhiteSpace(trackId) Then Return String.Empty
+            Return baseUrl & "/music/" & Uri.EscapeDataString(trackId) & "/download"
+        End Function
+
+        ''' <summary>Setzt oder loescht den Favoritenstatus eines Albums und liefert den Stand
+        ''' danach. Die Nummer zum Loeschen wird JEDES MAL frisch geholt: sie ist die Stelle in der
+        ''' Favoritenliste und verschiebt sich, sobald davor ein Eintrag wegfaellt.</summary>
+        Public Shared Async Function SetAlbumFavoriteAsync(album As Album, favorite As Boolean, cancellationToken As CancellationToken) As Task(Of Boolean)
+            If album Is Nothing OrElse String.IsNullOrWhiteSpace(album.FavoritesUrl) Then Return False
+            If favorite Then
+                Await RequestAsync("", {"favorites", "add", "url:" & album.FavoritesUrl, "title:" & album.Title}, cancellationToken)
+                Return True
+            End If
+            Dim existing = Await RequestAsync("", {"favorites", "exists", album.FavoritesUrl}, cancellationToken)
+            If Text(existing, "exists") <> "1" Then Return False
+            Dim index = Text(existing, "index")
+            If String.IsNullOrWhiteSpace(index) Then Return True
+            Await RequestAsync("", {"favorites", "delete", "item_id:" & index}, cancellationToken)
+            Return False
+        End Function
+
         Public Shared Async Function GetAlbumSongsAsync(albumId As String, cancellationToken As CancellationToken) As Task(Of List(Of Song))
             Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
             If String.IsNullOrWhiteSpace(baseUrl) OrElse String.IsNullOrWhiteSpace(albumId) Then Return New List(Of Song)()
@@ -122,7 +270,7 @@ Namespace Services
             If String.IsNullOrWhiteSpace(baseUrl) OrElse String.IsNullOrWhiteSpace(songId) Then Return String.Empty
             Return baseUrl & "/music/" & Uri.EscapeDataString(songId) & "/download"
         End Function
-        Private Shared Async Function RequestAsync(playerId As String, command As String(), cancellationToken As CancellationToken) As Task(Of JsonElement)
+        Friend Shared Async Function RequestAsync(playerId As String, command As String(), cancellationToken As CancellationToken) As Task(Of JsonElement)
             Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
             If String.IsNullOrWhiteSpace(baseUrl) Then Throw New InvalidOperationException(LocalizationService.T("Bitte zuerst die Adresse des Lyrion Media Server eintragen."))
             Dim body = JsonSerializer.Serialize(New With {.id = 3, .method = "slim.request", .params = New Object() {playerId, command}})

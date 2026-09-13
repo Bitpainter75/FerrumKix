@@ -467,6 +467,19 @@ Namespace ViewModels
             End Set
         End Property
 
+        ''' <summary>Der Zielordner des Favoritenabgleichs. Siehe
+        ''' <see cref="LyrionFavoriteSyncService"/>.</summary>
+        Public Property LyrionSyncTargetPath As String
+            Get
+                Return AppSettingsService.Current.LyrionSyncTargetPath
+            End Get
+            Set(value As String)
+                AppSettingsService.Current.LyrionSyncTargetPath = If(value, String.Empty).Trim()
+                AppSettingsService.Save()
+                RaisePropertyChanged()
+            End Set
+        End Property
+
         Public Property IsResumeOnStart As Boolean
             Get
                 Return AppSettingsService.Current.ResumeOnStart
@@ -1262,11 +1275,20 @@ Namespace ViewModels
             Dim exportArt = _mpris IsNot Nothing
 
             Task.Run(Sub()
-                         Dim bitmap = If(String.IsNullOrWhiteSpace(track.RemoteCoverUrl), CoverArtService.Load(path), CoverArtService.LoadRemote(track.RemoteCoverUrl))
-                         ' Fuer einen Stream gibt es keine Datei zum Auslagern: ExportArtFile
-                         ' liefe nur ueber TagLib und Verzeichnispruefungen ins Leere und legte
-                         ' die Adresse in seinem Zwischenspeicher ab.
-                         Dim artFile = If(exportArt AndAlso String.IsNullOrWhiteSpace(track.RemoteCoverUrl), CoverArtService.ExportArtFile(path), String.Empty)
+                         Dim bitmap As Bitmap
+                         Dim artFile As String
+                         If String.IsNullOrWhiteSpace(track.RemoteCoverUrl) Then
+                             bitmap = CoverArtService.Load(path)
+                             artFile = If(exportArt, CoverArtService.ExportArtFile(path), String.Empty)
+                         Else
+                             ' Fuer einen Stream gibt es keine Tondatei zum Auslagern: ExportArtFile
+                             ' liefe ueber TagLib und Verzeichnispruefungen ins Leere. Das Bild kommt
+                             ' ueber das Netz und wird beim Laden gleich mit abgelegt, sonst ginge
+                             ' MPRIS ohne Bild hinaus.
+                             Dim remote = CoverArtService.LoadRemote(track.RemoteCoverUrl, exportArt)
+                             bitmap = remote.Cover
+                             artFile = remote.ArtFile
+                         End If
                          Dispatcher.UIThread.Post(
                              Sub()
                                  If Volatile.Read(_coverRequest) <> request Then Return

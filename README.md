@@ -28,7 +28,14 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
   ejecting the disc removes the playlist again.
 - **Browses Lyrion.** Connect a Lyrion Media Server to search its albums as you type, view server
   artwork, and play an album locally through FerrumPlay. The album becomes a temporary playlist,
-  including next/previous, shuffle, repeat, and jump-to-current-track.
+  including next/previous, shuffle, repeat, and jump-to-current-track. Sort the overview by
+  recently added, artist/year, album or year/album, in either direction, and filter it down to
+  your favorites.
+- **Keeps your favorites.** A star on every album tile marks it as a favorite on the server, where
+  every other Lyrion client sees it too. One button then mirrors those albums into a folder of
+  your choosing: only what is missing or has changed is transferred, and anything in the folder
+  that is no longer a favorite is removed. The files come from the server, so your library stays
+  untouched and no network mount is needed.
 - **Edits MP3 albums.** Update shared album metadata and per-track titles or numbers, replace the
   embedded cover, clean up tags, and keep useful defaults for recurring album work.
 - **Converts without another app.** Convert a title or album to MP3 (CBR or VBR), FLAC or Ogg
@@ -39,7 +46,7 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Fits into the desktop.** FerrumPlay speaks MPRIS, so Waybar, playerctl, notifications and the media keys reach it even while its window is in the background - with title, artist, album and cover.
 - **Runs once.** Open a file or folder from the file manager while FerrumPlay is running, and the running window takes it over, plays it, expands its album group and scrolls directly to the requested track.
 - **Remembers everything.** Playlist, volume, window position and the last track are back at the next start - and if you like, playback resumes right where it stopped.
-- **Speaks your language.** German and English, following your system by default.
+- **Speaks your language.** Twenty-one languages, following your system by default.
 
 <img src="Screenshot.png" height="550" />
 
@@ -56,7 +63,8 @@ The transport sits on a dark deck at the bottom: the progress bar across the ful
 Accent colour, font size, language, the blurred cover background, the width of the cover column,
 gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start are all
 configurable. The MP3 editor and Lyrion browser also keep their own defaults; entering a Lyrion
-server address makes its player tab available. On Linux, the whole interface can also be scaled
+server address makes its player tab available, and a target folder there enables the favorites
+sync. On Linux, the whole interface can also be scaled
 per screen, for displays where it would otherwise come out too small.
 
 ## Installation

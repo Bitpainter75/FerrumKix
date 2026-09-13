@@ -102,6 +102,10 @@ Namespace Services
         ''' <summary>Vollständige LMS-Basisadresse, etwa https://music.example.lan/.</summary>
         Public Property LyrionServerUrl As String = String.Empty
         Public Property LyrionClientName As String = "FerrumPlay"
+        ''' <summary>Der Ordner, in den der Favoritenabgleich schreibt. Leer heisst: kein Abgleich.
+        ''' Er ist die EINZIGE Angabe dafuer - woher die Dateien kommen und wie der Serverpfad
+        ''' abzuschneiden ist, erfragt der Abgleich beim Server.</summary>
+        Public Property LyrionSyncTargetPath As String = String.Empty
 
     End Class
 

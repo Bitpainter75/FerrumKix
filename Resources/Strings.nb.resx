@@ -4,7 +4,16 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="0_Alben_27cd7852" xml:space="preserve">
+    <value>{0} album</value>
+  </data>
+  <data name="0_Favoriten_ohne_passendes_Album_bersprungen_29105465" xml:space="preserve">
+    <value>{0} favoritter hoppet over, ingen tilsvarende album.</value>
+  </data>
   <data name="0_fehlende_Titel_entfernt_a871adbc" xml:space="preserve"><value>{0} manglende spor er fjernet.</value></data>
+  <data name="0_fehlgeschlagen_siehe_Protokoll_38490aa5" xml:space="preserve">
+    <value>{0} mislyktes, se loggen.</value>
+  </data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} kanaler</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} med {1}, systemfaktor {2:0.##}</value></data>
   <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
@@ -16,6 +25,21 @@
   <data name="0_von_1_Alben_d5492fcf" xml:space="preserve">
     <value>{0} av {1} album</value>
   </data>
+  <data name="0_zuletzt_hinzugef_gte_Alben_f56727a1" xml:space="preserve">
+    <value>{0} nylig lagt til album</value>
+  </data>
+  <data name="Abgleich_0_Titel_holen_1_2_entfernen_ceed4a91" xml:space="preserve">
+    <value>Synkronisering: henter {0} spor ({1}), fjerner {2} …</value>
+  </data>
+  <data name="Abgleich_abgebrochen_501da6fe" xml:space="preserve">
+    <value>Synkronisering avbrutt.</value>
+  </data>
+  <data name="Abgleich_fertig_0_geholt_1_2_entfernt_da37f80a" xml:space="preserve">
+    <value>Synkronisering ferdig: {0} hentet ({1}), {2} fjernet.</value>
+  </data>
+  <data name="Abgleich_nichts_zu_tun_0_Titel_sind_aktuell_8dbee7ce" xml:space="preserve">
+    <value>Synkronisering: ingenting å gjøre, {0} spor er oppdatert.</value>
+  </data>
   <data name="Abspielen_b2eaf9fd" xml:space="preserve">
     <value>Spill</value>
   </data>
@@ -26,8 +50,14 @@
   <data name="Alben_werden_geladen_02583de6" xml:space="preserve">
     <value>Album lastes inn …</value>
   </data>
+  <data name="Alben_werden_gelesen_e70b01e7" xml:space="preserve">
+    <value>Leser album …</value>
+  </data>
   <data name="Album_abspielen_9c9d0b34" xml:space="preserve">
     <value>Spill albumet</value>
+  </data>
+  <data name="Album_als_Favorit_merken_513b3090" xml:space="preserve">
+    <value>Legg albumet til favoritter</value>
   </data>
   <data name="Album_Artist_an_Artist_angleichen_ad438087" xml:space="preserve">
     <value>Tilpass albumartist til artist</value>
@@ -96,6 +126,9 @@
   <data name="Bitte_zuerst_die_Adresse_des_Lyrion_Media_Server_e8bf5785" xml:space="preserve">
     <value>Skriv inn adressen til Lyrion Media Server først.</value>
   </data>
+  <data name="Bitte_zuerst_einen_Zielordner_f_r_den_Favoritena_7887a79e" xml:space="preserve">
+    <value>Velg først en målmappe for favorittsynkroniseringen.</value>
+  </data>
   <data name="Breite_der_Coverspalte_35dc68ef" xml:space="preserve"><value>Bredde på dekksøylen</value></data>
   <data name="brige_Tags_beim_Speichern_entfernen_307feaab" xml:space="preserve">
     <value>Fjern øvrige tagger ved lagring</value>
@@ -124,8 +157,14 @@
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>Filnavn ved tagging</value>
   </data>
+  <data name="Der_Knopf_in_der_Lyrion_Ansicht_gleicht_die_als__ac9f1e30" xml:space="preserve">
+    <value>Knappen i Lyrion-visningen synkroniserer albumene som er merket som favoritter, til denne mappen.</value>
+  </data>
   <data name="Der_konfigurierte_Lyrion_Client_ist_nicht_verbun_4bbee169" xml:space="preserve">
     <value>Den innstilte Lyrion-klienten er ikke tilkoblet.</value>
+  </data>
+  <data name="Der_Server_meldet_kein_einziges_Favoritenalbum_D_0c1fbfcf" xml:space="preserve">
+    <value>Serveren melder ikke et eneste favorittalbum. Synkroniseringen stopper, slik at målmappen ikke tømmes.</value>
   </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>Lyd spilles av gjennom libmpv og dermed gjennom systemets utdataenhet.</value></data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>Filen er borte. Sporet hoppes over.</value></data>
@@ -155,6 +194,15 @@
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Innstillinger</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>Ingen spor valgt ennå.</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Filer leses fortsatt.</value></data>
+  <data name="Favoriten_Abgleich_Zielordner_eee106f3" xml:space="preserve">
+    <value>Favorittsynkronisering: målmappe</value>
+  </data>
+  <data name="Favoriten_in_den_Zielordner_abgleichen_5551a9c6" xml:space="preserve">
+    <value>Synkroniser favoritter til målmappen</value>
+  </data>
+  <data name="Favoriten_werden_gelesen_12163ab1" xml:space="preserve">
+    <value>Leser favoritter …</value>
+  </data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Fjern manglende spor fra listen</value></data>
   <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
     <value>FerrumPlay bygger på disse prosjektene. Knappene åpner prosjektsiden og lisensteksten i nettleseren.</value>
@@ -178,8 +226,14 @@
   <data name="http_server_9000_oder_https_music_example_lan_b966c9dd" xml:space="preserve">
     <value>http://server:9000 eller https://music.example.lan</value>
   </data>
+  <data name="Interpret_Jahr_8c81661b" xml:space="preserve">
+    <value>Artist/År</value>
+  </data>
   <data name="Jahr_956a6e5a" xml:space="preserve">
     <value>År</value>
+  </data>
+  <data name="Jahr_Album_42cad399" xml:space="preserve">
+    <value>År/Album</value>
   </data>
   <data name="Keine_abspielbaren_Dateien_gefunden_426f2472" xml:space="preserve"><value>Finner ingen spillbare filer.</value></data>
   <data name="Keine_Alben_gefunden_e94729f8" xml:space="preserve">
@@ -235,6 +289,12 @@
   <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
     <value>Nytt omslag valgt: {0}</value>
   </data>
+  <data name="Noch_kein_Ordner_gew_hlt_55143b5b" xml:space="preserve">
+    <value>Ingen mappe valgt ennå</value>
+  </data>
+  <data name="Nur_Favoriten_zeigen_19a6f639" xml:space="preserve">
+    <value>Vis bare favoritter</value>
+  </data>
   <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
     <value>Bare MP3-filer kan tagges.</value>
   </data>
@@ -242,6 +302,9 @@
     <value>Grensesnitt</value>
   </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Legg til mappe</value></data>
+  <data name="Reihenfolge_umkehren_6f427353" xml:space="preserve">
+    <value>Snu rekkefølgen</value>
+  </data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>Lukk</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Rask søk</value></data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Skriftstørrelse</value></data>
@@ -260,11 +323,17 @@
   <data name="Technologie_Lizenzen_08a06633" xml:space="preserve">
     <value>Teknologi og lisenser</value>
   </data>
+  <data name="Titel_0_von_1_wird_geholt_2_0d374c1f" xml:space="preserve">
+    <value>Henter spor {0} av {1}: {2}</value>
+  </data>
   <data name="Titel_beim_Abspielen_ber_cksichtigen_d2570efe" xml:space="preserve"><value>Inkluder spor i avspilling</value></data>
   <data name="Titel_hinzuf_gen_281f3e70" xml:space="preserve"><value>Legg til spor</value></data>
   <data name="Titel_l_sst_sich_nicht_abspielen_0_4f62a802" xml:space="preserve"><value>Kan ikke spille av spor: {0}</value></data>
   <data name="Titel_und_Tracknummer_a3a490ab" xml:space="preserve">
     <value>Titler og spornumre</value>
+  </data>
+  <data name="Titel_werden_gelesen_f208a1f6" xml:space="preserve">
+    <value>Leser spor …</value>
   </data>
   <data name="Tonausgabe_1455f378" xml:space="preserve"><value>Lydutgang</value></data>
   <data name="Tondateien_fe57e2e9" xml:space="preserve"><value>Lydfiler</value></data>
@@ -283,6 +352,9 @@
   <data name="Verwendet_standardm_ig_die_Systemsprache_falls_n_eb8ed68d" xml:space="preserve"><value>Bruker systemspråket som standard; engelsk hvis det ikke støttes.</value></data>
   <data name="Voriger_Titel_74f94573" xml:space="preserve"><value>Forrige spor</value></data>
   <data name="Vorverst_rkung_cc216e52" xml:space="preserve"><value>Forforsterker</value></data>
+  <data name="W_hlen_42774e68" xml:space="preserve">
+    <value>Velg …</value>
+  </data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>Avspilling</value></data>
   <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
     <value>Spilles i FerrumPlay: {0}</value>
@@ -303,7 +375,16 @@
   <data name="Zieldatei_existiert_bereits_0_644a441b" xml:space="preserve">
     <value>Målfilen finnes allerede: {0}</value>
   </data>
+  <data name="Zielordner_f_r_den_Favoriten_Abgleich_96a880a6" xml:space="preserve">
+    <value>Målmappe for favorittsynkroniseringen</value>
+  </data>
+  <data name="Zielordner_wird_verglichen_9500b01c" xml:space="preserve">
+    <value>Sammenligner målmappen …</value>
+  </data>
   <data name="Zuf_llige_Reihenfolge_cced99c2" xml:space="preserve"><value>Bland</value></data>
+  <data name="Zuletzt_hinzugef_gt_040f6771" xml:space="preserve">
+    <value>Nylig lagt til</value>
+  </data>
   <data name="Zur_ck_zur_Wiedergabe_2444a76b" xml:space="preserve"><value>Tilbake til avspilling</value></data>
   <data name="Audio_konvertieren_e874bf5c" xml:space="preserve"><value>Konverter lyd</value></data>
   <data name="Die_Originaldateien_bleiben_unver_ndert_FFmpeg_w_d5bd36d1" xml:space="preserve"><value>De originale filene forblir uendret. FFmpeg leveres av systemet.</value></data>

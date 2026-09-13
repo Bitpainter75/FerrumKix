@@ -19,6 +19,16 @@
         <Style Selector="Button.lyrion-album TextBlock.muted">
             <Setter Property="Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
         </Style>
+        <!-- Das Sternchen auf dem Cover: eine runde, dunkle Flaeche, damit es auch auf einem
+             hellen Cover lesbar bleibt. -->
+        <Style Selector="Button.fav-badge">
+            <Setter Property="Background" Value="#99000000"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="14"/>
+        </Style>
+        <Style Selector="Button.fav-badge:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#CC000000"/>
+        </Style>
         <!-- Gleiche Flächen für Hover und Auswahl wie in der normalen Wiedergabeliste. -->
         <Style Selector="ListBoxItem.lyrion-track">
             <Setter Property="Background" Value="Transparent"/>
@@ -62,6 +72,23 @@
                                            IconBrush="{DynamicResource FP.Text.Muted}"/>
                             <Image Source="{Binding Cover}" Width="160" Height="160"
                                    Stretch="UniformToFill"/>
+                            <!-- Der Favoritenstern liegt AUF dem Cover und ist selbst eine
+                                 Schaltflaeche. Sein Klick darf die Kachel nicht mit oeffnen;
+                                 dafuer sorgt der Behandler, siehe OnFavoriteBadgeClick. -->
+                            <Button Classes="fav-badge" Width="28" Height="28" Padding="0"
+                                    HorizontalAlignment="Right" VerticalAlignment="Top"
+                                    Margin="0,5,5,0" IsVisible="{Binding CanFavorite}"
+                                    Tag="{Binding}" Click="OnFavoriteBadgeClick"
+                                    ToolTip.Tip="Album als Favorit merken">
+                                <Panel>
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/star.svg"
+                                                   Width="16" Height="16" IsVisible="{Binding !IsFavorite}"
+                                                   IconBrush="#F0FFFFFF"/>
+                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/star-filled.svg"
+                                                   Width="16" Height="16" IsVisible="{Binding IsFavorite}"
+                                                   IconBrush="{DynamicResource FP.Accent}"/>
+                                </Panel>
+                            </Button>
                         </Panel>
                     </Border>
                     <TextBlock Text="{Binding Title}" MinHeight="18" FontWeight="SemiBold"
@@ -85,14 +112,33 @@
                 <Button Classes="icon-btn" Click="OnJumpToCurrentTrackClick" ToolTip.Tip="Zum aktuellen Titel springen">
                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/target.svg" Width="16" Height="16"/>
                 </Button>
+                <Button x:Name="SyncButton" Classes="icon-btn" Click="OnSyncClick"
+                        ToolTip.Tip="Favoriten in den Zielordner abgleichen">
+                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/download.svg" Width="16" Height="16"/>
+                </Button>
                 <Button Classes="icon-btn" Click="OnReloadClick" ToolTip.Tip="Bibliothek aktualisieren">
                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/repeat.svg" Width="16" Height="16"/>
                 </Button>
             </StackPanel>
         </Grid>
 
-        <TextBox x:Name="SearchBox" Grid.Row="1" Margin="0,14,0,10"
-                 PlaceholderText="Alben durchsuchen" TextChanged="OnSearchTextChanged"/>
+        <!-- Suche, Reihenfolge und der Favoritenfilter in EINER Zeile. Nur die Suche geht an den
+             Server; Reihenfolge und Filter arbeiten auf der schon geholten Liste. -->
+        <Grid Grid.Row="1" Margin="0,14,0,10" ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="6">
+            <TextBox x:Name="SearchBox" PlaceholderText="Alben durchsuchen" TextChanged="OnSearchTextChanged"/>
+            <ComboBox x:Name="SortBox" Grid.Column="1" MinWidth="184" VerticalAlignment="Stretch"
+                      SelectionChanged="OnSortChanged"/>
+            <Button x:Name="SortDirectionButton" Grid.Column="2" Classes="icon-btn"
+                    Click="OnSortDirectionClick" ToolTip.Tip="Reihenfolge umkehren">
+                <icons:SvgIcon x:Name="SortDirectionIcon" Width="16" Height="16"
+                               Source="avares://FerrumPlay/Assets/Icons/outline/chevron-down.svg"/>
+            </Button>
+            <Button x:Name="FavoriteFilterButton" Grid.Column="3" Classes="icon-btn"
+                    Click="OnFavoriteFilterClick" ToolTip.Tip="Nur Favoriten zeigen">
+                <icons:SvgIcon Width="16" Height="16"
+                               Source="avares://FerrumPlay/Assets/Icons/outline/star.svg"/>
+            </Button>
+        </Grid>
 
         <Grid Grid.Row="2" RowDefinitions="Auto,*">
             <TextBlock x:Name="Status" Classes="muted" Text="Lyrion Media Server wird geladen …" Margin="2,0,0,8"/>
@@ -102,8 +148,7 @@
                      kann sich zwei Ansichten nicht mit einer Liste teilen. -->
                 <ScrollViewer x:Name="AlbumScroll"
                               HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto"
-                              ScrollChanged="OnAlbumScrollChanged">
+                              VerticalScrollBarVisibility="Auto">
                     <!-- MinItemWidth/MinItemHeight werden bewusst nicht gesetzt: das Layout nimmt
                          sie unveraendert als Mass und vergleicht sie nicht mit der Kachel. Ohne
                          Angabe misst es das erste gebaute Element und trifft damit immer. -->
