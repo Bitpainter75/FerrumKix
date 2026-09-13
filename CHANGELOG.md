@@ -2,6 +2,10 @@
 
 ## 0.8.0
 
+- Fixed: shuffle had no effect on an audio CD. Only the file playlist and, since 0.7.0, the Lyrion
+  album were shuffled; the CD handed out its tracks in disc order no matter what the switch said.
+  It now has a play order of its own, built the same way. Repeat was never affected - it does not
+  depend on the order but on the wrap in FindNeighbour.
 - Audio CDs are now identified. A CD carries nothing itself - its table of contents knows only
   where each track starts and ends - so the titles read "Track 01" and the album "Audio CD", and
   that is what ended up in the MP3 tags when ripping. FerrumPlay now computes the MusicBrainz disc

@@ -75,6 +75,10 @@ Namespace ViewModels
         ''' <summary>Die Reihenfolge, in der gespielt wird. Bei Zufall eine gemischte Fassung von
         ''' <c>_tracks</c>, sonst dieselbe Reihenfolge.</summary>
         Private _playOrder As New List(Of Track)()
+        ''' <summary>Die Abspielreihenfolge der Audio-CD. Eigene Liste wie bei Lyrion: die CD-Titel
+        ''' selbst stehen in der Reihenfolge der Scheibe und sollen dort auch stehen bleiben -
+        ''' gemischt wird nur, WORAUS gespielt wird.</summary>
+        Private _audioCdPlayOrder As New List(Of Track)()
 
         Private ReadOnly _shuffleRandom As New Random()
 
@@ -982,6 +986,7 @@ Namespace ViewModels
                 If RemoteSetShuffle(value) Then Return
                 RebuildPlayOrder()
                 RebuildLyrionPlayOrder()
+                RebuildAudioCdPlayOrder()
                 RebuildRows()
                 ' Die automatische Angleichung haengt an der Reihenfolge.
                 ApplyReplayGain()
@@ -1279,9 +1284,35 @@ Namespace ViewModels
 
         Private Function CurrentPlayOrder() As List(Of Track)
             If _currentTrack IsNot Nothing AndAlso _lyrionTracks.Contains(_currentTrack) Then Return _lyrionPlayOrder
-            If _currentTrack IsNot Nothing AndAlso _currentTrack.IsAudioCdTrack Then Return _audioCdTracks
-            Return If(_selectedPlaylist = PlaylistKind.AudioCd, _audioCdTracks, _playOrder)
+            If _currentTrack IsNot Nothing AndAlso _currentTrack.IsAudioCdTrack Then Return _audioCdPlayOrder
+            Return If(_selectedPlaylist = PlaylistKind.AudioCd, _audioCdPlayOrder, _playOrder)
         End Function
+
+        ''' <summary>Die Abspielreihenfolge der Audio-CD. Dieselbe Bauart wie bei Lyrion: ohne
+        ''' Zufall die Reihenfolge der Scheibe, mit Zufall gemischt, und der LAUFENDE Titel bleibt
+        ''' vorn - sonst zoege das Einschalten von Zufall mitten im Stueck den naechsten Titel
+        ''' unter dem Finger weg.
+        '''
+        ''' <para>Ohne diese Liste gab CurrentPlayOrder die CD-Titel roh heraus, und der
+        ''' Zufallsschalter blieb bei einer CD wirkungslos - Wiederholen dagegen wirkte, weil es
+        ''' nicht an der Reihenfolge haengt, sondern am Umlauf in FindNeighbour.</para></summary>
+        Private Sub RebuildAudioCdPlayOrder()
+            _audioCdPlayOrder = New List(Of Track)(_audioCdTracks)
+            If Not _isShuffle Then Return
+            For index = _audioCdPlayOrder.Count - 1 To 1 Step -1
+                Dim swap = _shuffleRandom.Next(index + 1)
+                Dim temporary = _audioCdPlayOrder(index)
+                _audioCdPlayOrder(index) = _audioCdPlayOrder(swap)
+                _audioCdPlayOrder(swap) = temporary
+            Next
+            If _currentTrack IsNot Nothing Then
+                Dim position = _audioCdPlayOrder.IndexOf(_currentTrack)
+                If position > 0 Then
+                    _audioCdPlayOrder.RemoveAt(position)
+                    _audioCdPlayOrder.Insert(0, _currentTrack)
+                End If
+            End If
+        End Sub
 
         Private Sub RebuildLyrionPlayOrder()
             _lyrionPlayOrder = New List(Of Track)(_lyrionTracks)
@@ -1486,6 +1517,7 @@ Namespace ViewModels
                 _rowsByTrack(track) = New PlaylistTrackRow(track)
             Next
             RaisePropertyChanged(NameOf(HasAudioCd))
+            RebuildAudioCdPlayOrder()
 
             If _selectedPlaylist = PlaylistKind.AudioCd OrElse selectPlaylist Then
                 SelectedPlaylist = PlaylistKind.AudioCd
