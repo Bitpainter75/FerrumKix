@@ -96,7 +96,6 @@ Namespace Views
    FindControl(Of TextBlock)("PageTitle").Text = If(String.IsNullOrWhiteSpace(first.Album), "Lyrion Media Server", first.Album)
    FindControl(Of TextBlock)("Status").Text = first.AlbumArtist & "  ·  " & LocalizationService.Format("{0} Titel", tracks.Count)
    RenderTracks(tracks)
-   ReportVisibleTracks()
    Dim list = FindControl(Of ListBox)("Tracks")
    Dim selected = list.Items.OfType(Of ListBoxItem)().FirstOrDefault(Function(item) Object.ReferenceEquals(item.Tag, currentTrack))
    If selected IsNot Nothing Then list.SelectedItem = selected : list.ScrollIntoView(selected)
@@ -288,12 +287,16 @@ Namespace Views
     FindControl(Of TextBlock)("Status").Text = _shownAlbum.Artist & If(String.IsNullOrWhiteSpace(_shownAlbum.Year), "", " · " & _shownAlbum.Year) & "  ·  " & LocalizationService.Format("{0} Titel", songs.Count)
     _albumTracks = songs.OrderBy(Function(entry) TrackNumber(entry.TrackNumber)).ThenBy(Function(entry) entry.Title).Select(AddressOf CreateTrack).ToList()
     RenderTracks(_albumTracks)
-    ReportVisibleTracks()
    Catch ex As Exception
     FindControl(Of TextBlock)("Status").Text = ex.Message
    End Try
   End Function
   Private Sub RenderTracks(tracksToShow As IEnumerable(Of Track))
+   ' Hier und NICHT bei den einzelnen Aufrufern: durch diese Stelle geht JEDE Titelliste, die zu
+   ' sehen ist - ein geoeffnetes Album, eine wiederhergestellte Liste, eine umsortierte. Wird das
+   ' Melden an die Aufrufer gehaengt, fehlt frueher oder spaeter einer, und der Wiedergabeknopf
+   ' faengt dann wieder mit dem Falschen an.
+   ReportVisibleTracks(tracksToShow)
    Dim tracks = FindControl(Of ListBox)("Tracks")
    tracks.Items.Clear()
    For Each track In tracksToShow
@@ -598,8 +601,11 @@ Namespace Views
   ''' <summary>Sagt dem Bauplan, welche Titelliste hier gerade zu sehen ist. Danach richtet sich
   ''' der Wiedergabeknopf, wenn nach einem Halt gedrueckt wird: er soll das anfangen, was auf dem
   ''' Schirm steht, und nicht das, was zuletzt lief.</summary>
-  Private Sub ReportVisibleTracks()
-   TryCast(DataContext, MainWindowViewModel)?.SetVisibleLyrionTracks(_albumTracks)
+  Private Sub ReportVisibleTracks(tracksToShow As IEnumerable(Of Track))
+   ' Die Titelliste steht nur dann auf dem Schirm, wenn ihr Rollbereich auch sichtbar ist. Beim
+   ' Albengitter ist sie es nicht - dann darf hier nichts gemeldet werden.
+   If FindControl(Of ScrollViewer)("TrackScroll")?.IsVisible <> True Then Return
+   TryCast(DataContext, MainWindowViewModel)?.SetVisibleLyrionTracks(tracksToShow)
   End Sub
 
   ''' <summary>Es steht keine Titelliste mehr offen - Albengitter, oder der Bereich ist zu.</summary>
