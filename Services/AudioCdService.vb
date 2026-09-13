@@ -46,17 +46,45 @@ Namespace Services
         Private Shared Function ioctl(handle As SafeFileHandle, request As UInteger, ByRef value As TocEntry) As Integer
         End Function
 
+        ''' <summary>Das Inhaltsverzeichnis einer CD, wie es die Erkennung braucht.
+        '''
+        ''' <para>Die ADRESSEN sind der Punkt: aus ihnen wird die Disc-Kennung berechnet, mit der
+        ''' sich die CD bei MusicBrainz nachschlagen laesst. Zwei CDs mit denselben Spurlaengen
+        ''' haben dieselbe Kennung - genau so ist es gemeint, es ist ein Fingerabdruck des
+        ''' Inhaltsverzeichnisses und keine Kennung der Pressung.</para></summary>
+        Public NotInheritable Class DiscToc
+            Public Property FirstTrack As Integer
+            Public Property LastTrack As Integer
+            ''' <summary>Adresse des Lead-out, also wo die letzte Spur endet.</summary>
+            Public Property LeadOutLba As Integer
+            ''' <summary>Startadresse je Spurnummer - AUCH die von Datenspuren. Die Kennung wird
+            ''' ueber das ganze Inhaltsverzeichnis gebildet, nicht nur ueber die Audiospuren.</summary>
+            Public Property StartLba As New Dictionary(Of Integer, Integer)()
+        End Class
+
+        ''' <summary>Titel UND Inhaltsverzeichnis einer CD.</summary>
+        Public NotInheritable Class DiscInfo
+            Public Property Tracks As New List(Of Track)()
+            Public Property Toc As DiscToc
+            Public Property DevicePath As String = String.Empty
+        End Class
+
         ''' <summary>Findet die erste eingelegte Audio-CD und gibt ihre Audiotitel zurueck.
         ''' Ein leeres Ergebnis ist kein Fehler: Es gibt kein Laufwerk, kein Medium, keine
         ''' Audio-CD, oder der Benutzer hat keine Leseberechtigung fuer das Laufwerk.</summary>
         Public Shared Function ReadFirstDisc() As List(Of Track)
-            If Not OperatingSystem.IsLinux() Then Return New List(Of Track)()
+            Return ReadFirstDiscInfo().Tracks
+        End Function
+
+        ''' <summary>Wie <see cref="ReadFirstDisc"/>, aber mit dem Inhaltsverzeichnis daneben.</summary>
+        Public Shared Function ReadFirstDiscInfo() As DiscInfo
+            If Not OperatingSystem.IsLinux() Then Return New DiscInfo()
 
             For Each devicePath In LinuxOpticalDevices()
-                Dim tracks = ReadDisc(devicePath)
-                If tracks.Count > 0 Then Return tracks
+                Dim info = ReadDisc(devicePath)
+                If info.Tracks.Count > 0 Then Return info
             Next
-            Return New List(Of Track)()
+            Return New DiscInfo()
         End Function
 
         Private Shared Iterator Function LinuxOpticalDevices() As IEnumerable(Of String)
@@ -87,8 +115,8 @@ Namespace Services
             Next
         End Function
 
-        Private Shared Function ReadDisc(devicePath As String) As List(Of Track)
-            Dim result As New List(Of Track)()
+        Private Shared Function ReadDisc(devicePath As String) As DiscInfo
+            Dim result As New DiscInfo With {.DevicePath = devicePath}
             Try
                 Using stream As New FileStream(devicePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
                     Dim header As TocHeader
@@ -110,6 +138,15 @@ Namespace Services
                     Next
                     If Not hasAudioTrack Then Return result
 
+                    ' Das Inhaltsverzeichnis im Rohzustand - daraus entsteht die Disc-Kennung.
+                    Dim toc As New DiscToc With {.FirstTrack = CInt(header.FirstTrack),
+                                                 .LastTrack = CInt(header.LastTrack),
+                                                 .LeadOutLba = leadout.Address}
+                    For Each pair In entries
+                        toc.StartLba(pair.Key) = pair.Value.Address
+                    Next
+                    result.Toc = toc
+
                     For number = CInt(header.FirstTrack) To CInt(header.LastTrack)
                         Dim entry As TocEntry
                         If Not entries.TryGetValue(number, entry) OrElse IsDataTrack(entry) Then Continue For
@@ -125,7 +162,7 @@ Namespace Services
                         Dim seconds = Math.Max(0, (nextLba - entry.Address) / 75.0)
                         ' Die letzte physische Spur begrenzt auch die letzte Audiospur einer
                         ' Mixed-Mode-CD sauber vor einer eventuell folgenden Datenspur.
-                        result.Add(New Track With {
+                        result.Tracks.Add(New Track With {
                             .FilePath = Track.CreateAudioCdPath(devicePath, number, CInt(header.LastTrack)),
                             .Title = $"Titel {number:00}",
                             .Album = "Audio-CD",

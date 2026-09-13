@@ -134,13 +134,13 @@
 
         <!-- Suche, Reihenfolge und der Favoritenfilter in EINER Zeile. Nur die Suche geht an den
              Server; Reihenfolge und Filter arbeiten auf der schon geholten Liste. -->
-        <Grid Grid.Row="1" Margin="0,14,0,10" ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="6">
-            <TextBox x:Name="SearchBox" PlaceholderText="Alben durchsuchen" TextChanged="OnSearchTextChanged"/>
-            <!-- Wo gespielt wird. Steht NEBEN der Suche und nicht in den Einstellungen: es ist
-                 keine Einrichtung, sondern eine Entscheidung, die man beim Hoeren trifft. -->
-            <ComboBox x:Name="TargetBox" Grid.Column="1" MinWidth="168" VerticalAlignment="Stretch"
+        <Grid Grid.Row="1" Margin="0,14,0,10" ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="6">
+            <!-- Wo gespielt wird, ganz links: es ist keine Einrichtung, sondern eine Entscheidung,
+                 die man beim Hoeren trifft - und sie gilt fuer alles, was rechts davon steht. -->
+            <ComboBox x:Name="TargetBox" MinWidth="168" VerticalAlignment="Stretch"
                       SelectionChanged="OnPlaybackTargetChanged"
                       ToolTip.Tip="Wo die Wiedergabe läuft"/>
+            <TextBox x:Name="SearchBox" Grid.Column="1" PlaceholderText="Alben durchsuchen" TextChanged="OnSearchTextChanged"/>
             <ComboBox x:Name="SortBox" Grid.Column="2" MinWidth="184" VerticalAlignment="Stretch"
                       SelectionChanged="OnSortChanged"/>
             <Button x:Name="SortDirectionButton" Grid.Column="3" Classes="icon-btn"
