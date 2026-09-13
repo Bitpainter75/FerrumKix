@@ -298,10 +298,15 @@ Namespace Views
    ' faengt dann wieder mit dem Falschen an.
    ReportVisibleTracks(tracksToShow)
    Dim tracks = FindControl(Of ListBox)("Tracks")
+   Dim viewModel = TryCast(DataContext, MainWindowViewModel)
+   ' Auf einem Geraet laedt der Server das ganze Album und fuehrt die Reihenfolge selbst. Der
+   ' Haken kann dort nichts ausrichten, also steht er gesetzt und ausgegraut da, statt etwas zu
+   ' versprechen, was erst bei der Wiedergabe in FerrumPlay gilt.
+   Dim remote = LyrionRemoteService.IsRemote
    tracks.Items.Clear()
    For Each track In tracksToShow
      Dim row As New Grid With {.ColumnDefinitions = New ColumnDefinitions("Auto,*,Auto"), .ColumnSpacing = 10}
-     row.Children.Add(New CheckBox With {.IsChecked = True, .IsHitTestVisible = False, .VerticalAlignment = VerticalAlignment.Center})
+     row.Children.Add(BuildTrackCheckBox(track, viewModel, remote))
      Dim titleText = If(track.TrackNumber = 0, track.Title, track.TrackNumber & ". " & track.Title)
      Dim title As New StackPanel With {.Spacing = 1} : title.Children.Add(New TextBlock With {.Text = titleText, .FontSize = 13, .TextTrimming = Avalonia.Media.TextTrimming.CharacterEllipsis})
      ' Interpret und technische Angaben in EINER Zeile: die Liste eines Albums bleibt damit so
@@ -316,6 +321,31 @@ Namespace Views
      tracks.Items.Add(item)
     Next
   End Sub
+  ''' <summary>Der Haken einer Titelzeile. Er wird hier gebaut und nicht im AXAML, weil die ganze
+  ''' Titelliste hier gebaut wird.
+  '''
+  ''' <para>Der Ereignisbehandler haengt ERST nach dem Setzen des Zustands dran: das Setzen loest
+  ''' IsCheckedChanged selbst aus, und der Behandler schriebe den eben gelesenen Wert gleich
+  ''' wieder zurueck.</para></summary>
+  Private Shared Function BuildTrackCheckBox(track As Track, viewModel As MainWindowViewModel,
+                                             remote As Boolean) As CheckBox
+   Dim tick As New CheckBox With {
+    .IsChecked = remote OrElse viewModel Is Nothing OrElse viewModel.IsLyrionTrackEnabled(track),
+    .IsEnabled = Not remote,
+    .VerticalAlignment = VerticalAlignment.Center}
+   ToolTip.SetTip(tick, If(remote,
+                           LocalizationService.T("Auf einem Gerät spielt der Server das ganze Album."),
+                           LocalizationService.T("Titel beim Abspielen in FerrumPlay berücksichtigen")))
+   If remote OrElse viewModel Is Nothing Then Return tick
+   AddHandler tick.IsCheckedChanged,
+    Sub(sender As Object, e As RoutedEventArgs)
+     Dim box = TryCast(sender, CheckBox)
+     If box Is Nothing Then Return
+     viewModel.SetLyrionTrackEnabled(track, box.IsChecked.GetValueOrDefault())
+    End Sub
+   Return tick
+  End Function
+
   Private Sub OnPanelDataContextChanged(sender As Object, e As EventArgs)
    If _viewModel IsNot Nothing Then
     RemoveHandler _viewModel.LyrionPlayOrderChanged, AddressOf OnLyrionPlayOrderChanged
@@ -426,6 +456,9 @@ Namespace Views
    If index < 0 OrElse index >= _targets.Count Then Return
    Dim player = _targets(index)
    LyrionRemoteService.SelectPlayer(If(player?.Id, String.Empty), If(player?.Name, String.Empty))
+   ' Mit dem Ziel wechselt, ob die Haken etwas ausrichten koennen. Die offene Titelliste zeigt das
+   ' erst nach einem Neuaufbau.
+   RenderTracks(_albumTracks)
   End Sub
   ''' <summary>Getippt wird schneller als der Server antwortet: ohne diese kurze Ruhe schickt ein
   ''' zwoelf Zeichen langer Kuenstlername zwoelf Abfragen los, von denen elf schon beim Eintreffen

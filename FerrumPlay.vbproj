@@ -5,10 +5,20 @@
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>FerrumPlay</RootNamespace>
     <AssemblyName>FerrumPlay</AssemblyName>
-    <Version>0.8.0</Version>
-    <AssemblyVersion>0.8.0.0</AssemblyVersion>
-    <FileVersion>0.8.0.0</FileVersion>
-    <InformationalVersion>0.8.0</InformationalVersion>
+    <!-- Die Nummer steht in der Datei VERSION und NUR dort: dasselbe, was packaging/package.sh
+         liest und was die Update-Pruefung aus dem Hauptzweig holt. Eine zweite Nummer hier waere
+         die naechste, die auseinanderlaeuft - genau das war vor 0.8.1 der Fall.
+         "0.8.1-3" ist die Paketkennung mit pkgrel; die .NET-Versionsfelder vertragen nur die
+         Zahlengruppen davor, die Paketkennung selbst traegt die InformationalVersion.
+         Das Bauskript setzt beide zusaetzlich ueber -p:, und eine Eigenschaft von der Befehlszeile
+         gewinnt gegen diese hier. -->
+    <FerrumPlayRelease>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/VERSION').Trim())</FerrumPlayRelease>
+    <FerrumPlayVersion>$(FerrumPlayRelease)</FerrumPlayVersion>
+    <FerrumPlayVersion Condition="$(FerrumPlayRelease.Contains('-'))">$(FerrumPlayRelease.Substring(0, $(FerrumPlayRelease.IndexOf('-'))))</FerrumPlayVersion>
+    <Version>$(FerrumPlayVersion)</Version>
+    <AssemblyVersion>$(FerrumPlayVersion).0</AssemblyVersion>
+    <FileVersion>$(FerrumPlayVersion).0</FileVersion>
+    <InformationalVersion>$(FerrumPlayRelease)</InformationalVersion>
     <Nullable>enable</Nullable>
     <PublishTrimmed>false</PublishTrimmed>
     <PublishSingleFile>true</PublishSingleFile>

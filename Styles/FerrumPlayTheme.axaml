@@ -426,21 +426,24 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
-    <Style Selector="NumericUpDown.combo-like /template/ RepeatButton#PART_DecreaseButton, NumericUpDown.combo-like /template/ RepeatButton#PART_IncreaseButton">
-        <Setter Property="Background" Value="{DynamicResource FP.Bg.Input}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Normal}"/>
-        <Setter Property="Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
-    </Style>
-    <Style Selector="NumericUpDown.combo-like /template/ RepeatButton#PART_DecreaseButton:pointerover, NumericUpDown.combo-like /template/ RepeatButton#PART_IncreaseButton:pointerover">
-        <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Strong}"/>
-    </Style>
-    <Style Selector="NumericUpDown.combo-like /template/ RepeatButton#PART_DecreaseButton:pressed, NumericUpDown.combo-like /template/ RepeatButton#PART_IncreaseButton:pressed">
-        <Setter Property="Background" Value="{DynamicResource FP.Sel.Bg}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Strong}"/>
-    </Style>
-    <Style Selector="NumericUpDown.combo-like /template/ RepeatButton#PART_DecreaseButton /template/ ContentPresenter, NumericUpDown.combo-like /template/ RepeatButton#PART_IncreaseButton /template/ ContentPresenter">
+    <!-- Die beiden Pfeilknoepfe stecken in der Vorlage des ButtonSpinner, und DIE steckt in der
+         Vorlage des NumericUpDown. Ohne den zweiten /template/-Sprung trifft der Selektor nichts:
+         die Knoepfe behielten das Fluent-Aussehen, also schwarze Pfeile auf dunklem Grund und
+         rechts ECKIGE Ecken ueber dem abgerundeten Rahmen des Feldes.
+
+         Gesetzt wird am ContentPresenter des Knopfes, nicht am Knopf: er zeichnet Hintergrund,
+         Trennstrich und Pfeil. Sein Hintergrund kommt aus der Vorlage und ist damit ein lokaler
+         Wert, gegen den ein Stil nicht ankommt - die Farbe des Fluent-Themas bleibt also stehen.
+         Rundung und Textfarbe sind nicht gebunden und lassen sich setzen; mehr braucht es nicht,
+         weil der Fluent-Hintergrund ein durchscheinender Schleier ueber dem Eingabefeld ist. -->
+    <Style Selector="NumericUpDown.combo-like /template/ ButtonSpinner /template/ RepeatButton#PART_IncreaseButton /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="TextElement.Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
+    </Style>
+    <!-- Der Verkleinern-Knopf sitzt aussen rechts, also folgen seine rechten Ecken dem Rahmen:
+         acht Punkt Rundung minus ein Punkt Rahmenstaerke. -->
+    <Style Selector="NumericUpDown.combo-like /template/ ButtonSpinner /template/ RepeatButton#PART_DecreaseButton /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
+        <Setter Property="CornerRadius" Value="0,7,7,0"/>
     </Style>
 
     <Style Selector="TextBox">

@@ -4,6 +4,7 @@ Imports System.Collections.ObjectModel
 Imports System.Globalization
 Imports System.IO
 Imports System.Linq
+Imports System.Reflection
 Imports System.Threading
 Imports System.Threading.Tasks
 Imports Avalonia.Media.Imaging
@@ -87,6 +88,16 @@ Namespace ViewModels
         ''' Album aufgeschlagen hat und auf Wiedergabe drueckt, meint dieses und nicht das vorige.</summary>
         Private _visibleLyrionTracks As New List(Of Track)()
 
+        ''' <summary>Die Lyrion-Titel, deren Haken weg ist - gemerkt an ihrer Stromadresse und
+        ''' nicht am Objekt: die Titelliste eines Albums wird bei jedem Sortieren und jedem
+        ''' erneuten Oeffnen neu gebaut, und die Haken stuenden danach stillschweigend wieder alle
+        ''' da. Die Adresse traegt die Titelkennung des Servers und bleibt dieselbe.
+        '''
+        ''' <para>Der Satz gilt nur fuer die Wiedergabe in FerrumPlay. Laeuft die Wiedergabe auf
+        ''' einem Geraet, fuehrt der Server seine eigene Warteschlange; dort spielt das ganze
+        ''' Album, und die Haken sind in der Ansicht ausgegraut.</para></summary>
+        Private ReadOnly _lyrionDisabledTracks As New HashSet(Of String)(StringComparer.Ordinal)
+
         Private ReadOnly _shuffleRandom As New Random()
 
         Private _currentTrack As Track
@@ -114,6 +125,11 @@ Namespace ViewModels
 
         ''' <summary>Ein Vergroesserungsfaktor wurde in dieser Sitzung verstellt.</summary>
         Private _restartNeeded As Boolean
+
+        ''' <summary>Die veroeffentlichte Fassung, wenn sie von der laufenden abweicht. Sonst leer.</summary>
+        Private _availableVersion As String = String.Empty
+        Private _updateCheckDone As Boolean
+        Private _updateCheckRunning As Boolean
 
         ''' <summary>Der Abbruch fuer das Einlesen. Beim Beenden wird gezogen, damit ein Lauf ueber
         ''' ein Netzlaufwerk die Anwendung nicht festhaelt.</summary>
@@ -237,6 +253,9 @@ Namespace ViewModels
                     RaisePropertyChanged(NameOf(IsPlayerVisible))
                     RaisePropertyChanged(NameOf(IsSettingsVisible))
                     ClearStatus()
+                    ' Die Frage nach einer neueren Fassung stellt sich nur hier - der Hinweis steht
+                    ' neben der Versionsangabe, und woanders wird nichts abgefragt.
+                    If value = AppMode.Settings Then BeginUpdateCheck()
                 End If
             End Set
         End Property
@@ -775,12 +794,67 @@ Namespace ViewModels
             RaisePropertyChanged(NameOf(IsRestartNeeded))
         End Sub
 
+        ''' <summary>Die laufende Fassung, so wie sie auch auf dem Paket steht. Sie kommt aus
+        ''' -p:InformationalVersion, das packaging/package.sh aus der Datei VERSION speist - mit
+        ''' dem Paketstand ("0.8.1-3"), den die vierstellige Assembly-Nummer nicht traegt. Aus
+        ''' einem Bau ohne diesen Schalter faellt die Nummer aus dem Projekt zurueck.</summary>
         Public ReadOnly Property DisplayVersion As String
             Get
-                Dim version = Reflection.Assembly.GetExecutingAssembly().GetName().Version
-                Return If(version Is Nothing, "0.0.0", $"{version.Major}.{version.Minor}.{version.Build}")
+                Dim asm = Reflection.Assembly.GetExecutingAssembly()
+                Dim informational = asm.GetCustomAttribute(Of Reflection.AssemblyInformationalVersionAttribute)()?.InformationalVersion
+                If String.IsNullOrWhiteSpace(informational) Then
+                    Dim version = asm.GetName().Version
+                    Return If(version Is Nothing, "0.0.0", $"{version.Major}.{version.Minor}.{version.Build}")
+                End If
+                ' Ohne gesetzte InformationalVersion haengt der Compiler "+<commit-sha>" an.
+                Dim plus = informational.IndexOf("+"c)
+                Return If(plus >= 0, informational.Substring(0, plus), informational)
             End Get
         End Property
+
+        ''' <summary>Die veroeffentlichte Nummer, wenn sie sich von der laufenden unterscheidet -
+        ''' sonst leer.</summary>
+        Public ReadOnly Property AvailableVersion As String
+            Get
+                Return _availableVersion
+            End Get
+        End Property
+
+        ''' <summary>Steuert den Hinweis neben der Versionsangabe.</summary>
+        Public ReadOnly Property IsUpdateAvailable As Boolean
+            Get
+                Return _availableVersion.Length > 0
+            End Get
+        End Property
+
+        ''' <summary>Fragt beim Oeffnen der Einstellungen einmal nach, welche Fassung
+        ''' veroeffentlicht ist. Weicht sie von der laufenden ab, erscheint der Hinweis neben der
+        ''' Versionsangabe.
+        '''
+        ''' <para>Einmal je Sitzung, und nur nach einer Antwort, die ankam: scheitert der Abruf,
+        ''' bleibt die Sperre offen, damit ein spaeteres Oeffnen es noch einmal versuchen kann.
+        ''' Gescheitert wird still - es gibt nichts anzuzeigen und nichts zu melden. Uebernommen
+        ''' aus FerrumPix.</para></summary>
+        Public Async Sub BeginUpdateCheck()
+            If _updateCheckDone OrElse _updateCheckRunning Then Return
+            _updateCheckRunning = True
+            Try
+                Dim published = Await UpdateCheckService.FetchLatestVersionAsync(_shutdown.Token)
+                ' Leer heisst: keine brauchbare Antwort. Dann bleibt die Sperre offen.
+                If published.Length = 0 Then Return
+                _updateCheckDone = True
+                Dim other = If(UpdateCheckService.IsDifferent(published, DisplayVersion), published, "")
+                If String.Equals(other, _availableVersion, StringComparison.Ordinal) Then Return
+                _availableVersion = other
+                RaisePropertyChanged(NameOf(AvailableVersion))
+                RaisePropertyChanged(NameOf(IsUpdateAvailable))
+            Catch ex As Exception
+                ' Ein Async Sub reicht Ausnahmen an niemanden weiter - unbehandelt beendet das die App.
+                DiagnosticLogService.LogException("MainWindowViewModel.BeginUpdateCheck", ex)
+            Finally
+                _updateCheckRunning = False
+            End Try
+        End Sub
 
         Public ReadOnly Property SettingsFilePath As String
             Get
@@ -1277,12 +1351,33 @@ Namespace ViewModels
             Return CurrentPlayOrder().Where(AddressOf IsPlayable).ToList()
         End Function
 
-        ''' <summary>Dran kommt ein Titel, der angehakt ist und dessen Datei nicht als fehlend gilt.</summary>
+        ''' <summary>Dran kommt ein Titel, der angehakt ist und dessen Datei nicht als fehlend gilt.
+        ''' Ein Titel ohne Zeile in der Wiedergabeliste kommt aus dem Lyrion-Bereich; fuer ihn
+        ''' entscheidet der Satz der abgewaehlten Titel.</summary>
         Private Function IsPlayable(track As Track) As Boolean
             Dim row As PlaylistTrackRow = Nothing
-            If Not _rowsByTrack.TryGetValue(track, row) Then Return True
+            If Not _rowsByTrack.TryGetValue(track, row) Then Return IsLyrionTrackEnabled(track)
             Return row.IsEnabled AndAlso Not row.IsMissing
         End Function
+
+        ''' <summary>Ob ein Lyrion-Titel bei der Wiedergabe in FerrumPlay drankommt. Ohne Eintrag
+        ''' kommt er dran - abgewaehlt wird gemerkt, angehakt ist der Normalfall.</summary>
+        Public Function IsLyrionTrackEnabled(track As Track) As Boolean
+            If track Is Nothing OrElse String.IsNullOrEmpty(track.FilePath) Then Return True
+            Return Not _lyrionDisabledTracks.Contains(track.FilePath)
+        End Function
+
+        ''' <summary>Setzt den Haken eines Lyrion-Titels. Der LAUFENDE Titel wird davon nicht
+        ''' angehalten: der Haken sagt, was noch drankommt, und nicht, was gerade zu hoeren ist -
+        ''' genauso wie in der Wiedergabeliste.</summary>
+        Public Sub SetLyrionTrackEnabled(track As Track, enabled As Boolean)
+            If track Is Nothing OrElse String.IsNullOrEmpty(track.FilePath) Then Return
+            If enabled Then
+                _lyrionDisabledTracks.Remove(track.FilePath)
+            Else
+                _lyrionDisabledTracks.Add(track.FilePath)
+            End If
+        End Sub
 
         Private Function FirstPlayableTrack() As Track
             Dim order = PlayableOrder()

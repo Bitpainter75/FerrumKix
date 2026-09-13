@@ -595,4 +595,16 @@
     <value>Tyhjennä haku</value>
   </data>
   <data name="Konvertierung_wird_abgebrochen_7de828ba" xml:space="preserve"><value>Muunnosta peruutetaan …</value></data>
+  <data name="Aktualisierung_verf_gbar_c20b1333" xml:space="preserve">
+    <value>Päivitys saatavilla:</value>
+  </data>
+  <data name="Ver_ffentlichte_Fassung_herunterladen_08d01ad8" xml:space="preserve">
+    <value>Lataa julkaistu versio</value>
+  </data>
+  <data name="Titel_beim_Abspielen_in_FerrumPlay_ber_cksichtig_5a5e3054" xml:space="preserve">
+    <value>Sisällytä kappale toistettaessa FerrumPlayssa</value>
+  </data>
+  <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
+    <value>Laitteella palvelin toistaa koko albumin.</value>
+  </data>
 </root>

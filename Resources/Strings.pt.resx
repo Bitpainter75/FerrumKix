@@ -595,4 +595,16 @@
     <value>Limpar a pesquisa</value>
   </data>
   <data name="Konvertierung_wird_abgebrochen_7de828ba" xml:space="preserve"><value>A conversão está a ser cancelada …</value></data>
+  <data name="Aktualisierung_verf_gbar_c20b1333" xml:space="preserve">
+    <value>Atualização disponível:</value>
+  </data>
+  <data name="Ver_ffentlichte_Fassung_herunterladen_08d01ad8" xml:space="preserve">
+    <value>Transferir a versão publicada</value>
+  </data>
+  <data name="Titel_beim_Abspielen_in_FerrumPlay_ber_cksichtig_5a5e3054" xml:space="preserve">
+    <value>Incluir a faixa ao reproduzir no FerrumPlay</value>
+  </data>
+  <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
+    <value>Num dispositivo, o servidor reproduz o álbum inteiro.</value>
+  </data>
 </root>

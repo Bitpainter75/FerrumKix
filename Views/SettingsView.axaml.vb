@@ -54,13 +54,27 @@ Namespace Views
         End Sub
 
         Public Sub OnLicenseLinkClick(sender As Object, e As RoutedEventArgs)
-            Dim url = TryCast(TryCast(sender, Control)?.Tag, String)
+            OpenExternalUrl(TryCast(TryCast(sender, Control)?.Tag, String))
+            e.Handled = True
+        End Sub
+
+        ''' <summary>Der Hinweis neben der Versionsangabe fuehrt zur zuletzt veroeffentlichten
+        ''' Fassung. Die Adresse steht im Dienst, der auch die Nummer holt - eine zweite Stelle mit
+        ''' derselben Adresse liefe irgendwann auseinander.</summary>
+        Public Sub OnReleasePageClick(sender As Object, e As RoutedEventArgs)
+            OpenExternalUrl(UpdateCheckService.ReleasesAddress)
+            e.Handled = True
+        End Sub
+
+        ''' <summary>Uebergibt die Adresse dem Browser des Systems. Scheitert das, bleibt es still:
+        ''' ein nicht geoeffneter Link ist kein Grund, die Anwendung anzuhalten.</summary>
+        Private Shared Sub OpenExternalUrl(url As String)
             If String.IsNullOrWhiteSpace(url) Then Return
             Try
                 Process.Start(New ProcessStartInfo(url) With {.UseShellExecute = True})
-            Catch
+            Catch ex As Exception
+                DiagnosticLogService.LogException("SettingsView.OpenExternalUrl", ex)
             End Try
-            e.Handled = True
         End Sub
 
     End Class
