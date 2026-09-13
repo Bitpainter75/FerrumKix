@@ -381,6 +381,68 @@
         <Setter Property="Foreground" Value="{DynamicResource FP.Text.Muted}"/>
     </Style>
 
+    <!-- Zahlenfeld, das aussieht wie die uebrigen Eingaben. Uebernommen aus FerrumPix
+         (NumericUpDown.combo-like): ohne diesen Stil bringt Fluent seinen eigenen Rahmen und
+         seine eigene Hoehe mit, und das Feld steht fremd neben TextBox und ComboBox daneben.
+
+         Die vielen /template/-Zeilen sind kein Zierrat: die Vorlage von NumericUpDown enthaelt
+         eine EIGENE TextBox mit eigenem Rahmen, und die zeichnete sonst einen zweiten Rahmen
+         INNERHALB des aeusseren. -->
+    <Style Selector="NumericUpDown.combo-like">
+        <Setter Property="Background" Value="{DynamicResource FP.Bg.Input}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Normal}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="FontSize" Value="{DynamicResource FP.Font.Body}"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like:pointerover">
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Strong}"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like:focus-within">
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like /template/ TextBox#PART_TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like /template/ TextBox#PART_TextBox /template/ ScrollViewer#PART_ScrollViewer">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like /template/ TextBox#PART_TextBox /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like /template/ TextBox#PART_TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like /template/ RepeatButton#PART_DecreaseButton, NumericUpDown.combo-like /template/ RepeatButton#PART_IncreaseButton">
+        <Setter Property="Background" Value="{DynamicResource FP.Bg.Input}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Normal}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like /template/ RepeatButton#PART_DecreaseButton:pointerover, NumericUpDown.combo-like /template/ RepeatButton#PART_IncreaseButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Strong}"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like /template/ RepeatButton#PART_DecreaseButton:pressed, NumericUpDown.combo-like /template/ RepeatButton#PART_IncreaseButton:pressed">
+        <Setter Property="Background" Value="{DynamicResource FP.Sel.Bg}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Strong}"/>
+    </Style>
+    <Style Selector="NumericUpDown.combo-like /template/ RepeatButton#PART_DecreaseButton /template/ ContentPresenter, NumericUpDown.combo-like /template/ RepeatButton#PART_IncreaseButton /template/ ContentPresenter">
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
+    </Style>
+
     <Style Selector="TextBox">
         <Setter Property="Background" Value="{DynamicResource FP.Bg.Input}"/>
         <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>

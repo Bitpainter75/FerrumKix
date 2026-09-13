@@ -11,6 +11,11 @@
   album were shuffled; the CD handed out its tracks in disc order no matter what the switch said.
   It now has a play order of its own, built the same way. Repeat was never affected - it does not
   depend on the order but on the wrap in FindNeighbour.
+- Switching areas now clears the status line. A message like "Audio CD identified: …" belongs to
+  what was just done, not to whatever is looked at next - left standing it reads as if it belonged
+  to the new view.
+- The cover-size field follows FerrumPix's NumericUpDown styling, so it sits beside the text boxes
+  and drop-downs instead of bringing Fluent's own frame and height along.
 - Both search fields now carry a cross to clear the term, as in FerrumPix. It appears only when
   there is something to clear. The playlist quick search had the command for it all along but no
   button to reach it.

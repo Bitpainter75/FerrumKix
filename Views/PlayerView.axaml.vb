@@ -158,7 +158,14 @@ Namespace Views
             ShowTagEditor(ConversionTracksForContext(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow)))
         End Sub
 
+        ''' <summary>Ein Bereichswechsel nimmt die Statuszeile mit. Sie gehoert zu dem, was eben
+        ''' getan wurde - stehen gelassen sieht sie aus, als gehoere sie zur neuen Ansicht.</summary>
+        Private Sub ClearStatus()
+            ViewModel?.ClearStatus()
+        End Sub
+
         Private Sub ShowTagEditor(tracks As IEnumerable(Of Track))
+            ClearStatus()
             Dim selected = tracks?.Where(Function(track) track IsNot Nothing AndAlso String.Equals(IO.Path.GetExtension(track.FilePath), ".mp3", StringComparison.OrdinalIgnoreCase)).ToList()
             If selected Is Nothing OrElse selected.Count = 0 Then Return
             _tagEditorPanel = New TagEditorPanel(selected) : AddHandler _tagEditorPanel.CloseRequested, AddressOf OnTagEditorCloseRequested
@@ -178,6 +185,7 @@ Namespace Views
             ShowLyrionPanel()
         End Sub
         Private Sub ShowLyrionPanel(Optional tracks As IEnumerable(Of Track) = Nothing, Optional currentTrack As Track = Nothing)
+            ClearStatus()
             _lyrionPanel = New LyrionBrowserPanel(tracks, currentTrack) : AddHandler _lyrionPanel.CloseRequested, AddressOf OnLyrionCloseRequested
             AddHandler _lyrionPanel.JumpToCurrentRequested, AddressOf OnLyrionJumpToCurrentRequested
             Dim host = Me.FindControl(Of ContentControl)("ConverterHost") : host.Content = _lyrionPanel : host.IsVisible = True
@@ -253,6 +261,7 @@ Namespace Views
         End Sub
 
         Private Sub ShowConverter(tracks As IEnumerable(Of Track))
+            ClearStatus()
             Dim selected = tracks?.Where(Function(track) track IsNot Nothing).ToList()
             If selected Is Nothing OrElse selected.Count = 0 Then Return
             _converterPanel = New ConverterPanel(selected)
@@ -323,6 +332,7 @@ Namespace Views
         End Sub
 
         Private Sub OnConverterCloseRequested(sender As Object, e As EventArgs)
+            ClearStatus()
             Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
             host.Content = Nothing
             host.IsVisible = False

@@ -230,6 +230,7 @@ Namespace ViewModels
                 If SetField(_mode, value) Then
                     RaisePropertyChanged(NameOf(IsPlayerVisible))
                     RaisePropertyChanged(NameOf(IsSettingsVisible))
+                    ClearStatus()
                 End If
             End Set
         End Property
@@ -295,6 +296,7 @@ Namespace ViewModels
                 RaisePropertyChanged(NameOf(IsFilesPlaylistSelected))
                 RaisePropertyChanged(NameOf(IsAudioCdPlaylistSelected))
                 RebuildRows()
+                ClearStatus()
             End Set
         End Property
 
@@ -816,6 +818,15 @@ Namespace ViewModels
                 SetField(_statusText, If(value, String.Empty))
             End Set
         End Property
+
+        ''' <summary>Nimmt die Statuszeile weg.
+        '''
+        ''' <para>Beim Wechsel des Bereichs faellig: eine Meldung wie "Audio-CD erkannt: …" gehoert
+        ''' zu dem, was gerade getan wurde, und nicht zu dem, was man als Naechstes ansieht. Sie
+        ''' stehen zu lassen sieht aus, als gehoerte sie zur neuen Ansicht.</para></summary>
+        Public Sub ClearStatus()
+            StatusText = String.Empty
+        End Sub
 
         Public Property SidePanelWidth As Double
             Get
