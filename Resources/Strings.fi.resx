@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>Kansikuva muunnetaan tähän kokoon tallennettaessa. Sama koskee kuvaa, jonka ääni-CD:n tunnistus hakee.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Ääni-CD:iden tunnistus</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Tunnistettujen CD:iden kansikuvat</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Oikeudenhaltijat</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Ääni-CD:iden tiedot tulevat MusicBrainzista ja ovat vapaasti käytettävissä (CC0). Cover Art Archiven kansikuvat eivät ole: ne kuuluvat oikeudenhaltijoilleen ja ne vain näytetään.</value>
+  </data>
 </root>

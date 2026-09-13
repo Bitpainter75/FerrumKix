@@ -20,6 +20,9 @@
   now in the MP3 tags section and says that it governs this image too. The smallest offered size
   that is still large enough is taken - downscaling is possible, upscaling is not. Tagging already
   scaled to it and never upscales.
+- The settings now name MusicBrainz and the Cover Art Archive under Technology, and say plainly
+  what differs between them: the CD details are public domain, the cover art is not. Both are in
+  THIRD-PARTY-NOTICES.txt as well.
 - The MusicBrainz request identifies the application and its version, and nothing else. The usual
   contact address is deliberately left out: it would go to a third-party service on every lookup by
   every user. The price is known - without a contact, MusicBrainz throttles sooner.

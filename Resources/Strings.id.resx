@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>Sampul disesuaikan ke ukuran ini saat menyimpan. Berlaku juga untuk gambar yang diambil identifikasi CD audio.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Identifikasi CD audio</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Sampul untuk CD yang dikenali</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Pemegang hak</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Data CD audio berasal dari MusicBrainz dan berstatus domain publik (CC0). Sampul dari Cover Art Archive tidak: gambar itu milik pemegang haknya masing-masing dan hanya ditampilkan.</value>
+  </data>
 </root>

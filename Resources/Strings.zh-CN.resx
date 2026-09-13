@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>保存时封面图会调整为此尺寸。音频 CD 识别获取的图片同样适用。</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>音频 CD 识别</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>已识别 CD 的封面图</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>权利持有者</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>音频 CD 的信息来自 MusicBrainz，属于公有领域（CC0）。Cover Art Archive 的封面图则不是：它们归各自的权利持有者所有，仅用于显示。</value>
+  </data>
 </root>

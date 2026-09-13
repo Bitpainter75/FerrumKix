@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>La pochette est ramenée à cette taille lors de l’enregistrement. Cela vaut aussi pour l’image récupérée par l’identification du CD audio.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Identification des CD audio</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Pochettes des CD identifiés</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Ayants droit</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Les informations sur les CD audio proviennent de MusicBrainz et relèvent du domaine public (CC0). Les pochettes du Cover Art Archive, non : elles appartiennent à leurs ayants droit respectifs et sont seulement affichées.</value>
+  </data>
 </root>

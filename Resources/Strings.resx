@@ -754,4 +754,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>Cover art is brought to this size when saving. It also applies to the image the audio CD identification fetches.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Identification of audio CDs</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Cover art for identified CDs</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Rights holders</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>The details for audio CDs come from MusicBrainz and are in the public domain (CC0). The cover art from the Cover Art Archive is not: it belongs to its respective rights holders and is only displayed.</value>
+  </data>
 </root>

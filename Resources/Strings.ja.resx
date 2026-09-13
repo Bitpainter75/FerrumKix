@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>保存時にカバー画像をこのサイズにします。オーディオ CD 識別が取得する画像にも適用されます。</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>オーディオ CD の識別</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>識別した CD のカバー画像</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>権利者</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>オーディオ CD の情報は MusicBrainz から来ており、パブリックドメイン (CC0) です。Cover Art Archive のカバー画像はそうではなく、それぞれの権利者に帰属し、表示されるだけです。</value>
+  </data>
 </root>

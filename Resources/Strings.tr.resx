@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>Kaydederken kapak görseli bu ölçüye getirilir. Ses CD’si tanımanın getirdiği görsel için de geçerlidir.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Ses CD’lerinin tanınması</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Tanınan CD’lerin kapak görselleri</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Hak sahipleri</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Ses CD’lerine ait bilgiler MusicBrainz’den gelir ve kamu malıdır (CC0). Cover Art Archive’deki kapak görselleri değildir: kendi hak sahiplerine aittir ve yalnızca gösterilir.</value>
+  </data>
 </root>

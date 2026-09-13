@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>A capa é ajustada a esta medida ao guardar. Aplica-se também à imagem obtida pela identificação do CD de áudio.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Identificação de CD de áudio</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Capas dos CD identificados</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Titulares de direitos</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Os dados dos CD de áudio vêm do MusicBrainz e são de domínio público (CC0). As capas do Cover Art Archive não: pertencem aos respetivos titulares de direitos e são apenas apresentadas.</value>
+  </data>
 </root>

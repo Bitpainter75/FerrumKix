@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>La portada se ajusta a este tamaño al guardar. También se aplica a la imagen que obtiene la identificación del CD de audio.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Identificación de CD de audio</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Portadas de los CD identificados</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Titulares de derechos</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Los datos de los CD de audio provienen de MusicBrainz y son de dominio público (CC0). Las portadas del Cover Art Archive no lo son: pertenecen a sus respectivos titulares de derechos y solo se muestran.</value>
+  </data>
 </root>

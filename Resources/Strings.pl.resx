@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>Okładka jest sprowadzana do tego rozmiaru przy zapisie. Dotyczy to także obrazu pobieranego przez rozpoznawanie płyty audio.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Rozpoznawanie płyt audio</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Okładki rozpoznanych płyt</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Posiadacze praw</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Dane o płytach audio pochodzą z MusicBrainz i są w domenie publicznej (CC0). Okładki z Cover Art Archive nie: należą do swoich posiadaczy praw i są jedynie wyświetlane.</value>
+  </data>
 </root>

@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>De hoesafbeelding wordt bij het opslaan op deze maat gebracht. Dit geldt ook voor de afbeelding die de audio-cd-herkenning ophaalt.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Herkenning van audio-cd’s</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Hoesafbeeldingen van herkende cd’s</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Rechthebbenden</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>De gegevens over audio-cd’s komen van MusicBrainz en zijn publiek domein (CC0). De hoesafbeeldingen van het Cover Art Archive niet: die behoren toe aan hun rechthebbenden en worden alleen getoond.</value>
+  </data>
 </root>

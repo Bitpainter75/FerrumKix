@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>При сохранении обложка приводится к этому размеру. Это относится и к изображению, которое получает распознавание аудио-CD.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Распознавание аудио-CD</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Обложки распознанных CD</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Правообладатели</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Сведения об аудио-CD поступают из MusicBrainz и находятся в общественном достоянии (CC0). Обложки из Cover Art Archive — нет: они принадлежат своим правообладателям и только отображаются.</value>
+  </data>
 </root>

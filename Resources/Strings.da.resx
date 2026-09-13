@@ -579,4 +579,16 @@
   <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
     <value>Coverbilledet bringes til dette mål ved lagring. Det gælder også billedet, som lyd-cd-genkendelsen henter.</value>
   </data>
+  <data name="Erkennung_von_Audio_CDs_802e23ef" xml:space="preserve">
+    <value>Genkendelse af lyd-cd’er</value>
+  </data>
+  <data name="Titelbilder_zu_erkannten_CDs_96367df5" xml:space="preserve">
+    <value>Coverbilleder til genkendte cd’er</value>
+  </data>
+  <data name="Rechteinhaber_90360a33" xml:space="preserve">
+    <value>Rettighedshavere</value>
+  </data>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
+    <value>Oplysningerne om lyd-cd’er kommer fra MusicBrainz og er offentligt eje (CC0). Coverbillederne fra Cover Art Archive er det ikke: de tilhører deres respektive rettighedshavere og bliver kun vist.</value>
+  </data>
 </root>
