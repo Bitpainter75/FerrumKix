@@ -79,6 +79,12 @@ Namespace Services
         ''' bleibt: ein eingescanntes Booklet ist selten quadratisch und stuende sonst gestaucht im
         ''' Tag. Ein bereits kleineres Bild wird NICHT hochgerechnet - das brachte nur Dateigroesse
         ''' und keinen einzigen Bildpunkt mehr.</summary>
+        ''' <summary>Fuer den Konverter: dasselbe Verkleinern wie beim Taggen, damit ein
+        ''' eingebettetes Titelbild ueberall dieselbe eingestellte Kantenlaenge hat.</summary>
+        Friend Shared Function ScaleCoverToSetting(source As Byte()) As Byte()
+            Return ResizeCover(source)
+        End Function
+
         Private Shared Function ResizeCover(source As Byte()) As Byte()
             Dim size = AppSettingsService.Current.TagCoverSize
             Using input = SKBitmap.Decode(source)

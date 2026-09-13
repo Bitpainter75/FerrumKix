@@ -89,23 +89,73 @@ Namespace Services
                 End If
             End If
 
-            For index = 0 To tracks.Count - 1
-                cancellationToken.ThrowIfCancellationRequested()
-                Dim track = tracks(index)
-                progress?.Report(LocalizationService.Format("Konvertiere {0} von {1}: {2}", index + 1, tracks.Count, track.ShortTitle))
-                request.ItemProgress?.Invoke(index, LocalizationService.T("Konvertiert"))
-                Dim input = Await GetInputAsync(track, request.OutputDirectory, cancellationToken)
-                Try
-                    Dim target = UniquePath(request.OutputDirectory, SafeFileName($"{TrackPrefix(track)}{track.DisplayTitle}") & ExtensionFor(request.Format))
-                    ' Bei einer Audio-CD traegt die Zwischendatei keine Kennzeichen; sie kommen aus
-                    ' dem Titel, den die Erkennung gefuellt hat.
-                    Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track)
-                    request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig"))
-                Finally
-                    DeleteTemporaryCdWav(input)
-                End Try
-            Next
+            ' Das Titelbild einmal fuer den ganzen Lauf. Alle Titel einer CD teilen es sich.
+            Dim coverFile = Await FetchCoverAsync(
+                tracks.Select(Function(track) track.RemoteCoverUrl).FirstOrDefault(Function(url) Not String.IsNullOrWhiteSpace(url)),
+                cancellationToken)
+            Try
+                For index = 0 To tracks.Count - 1
+                    cancellationToken.ThrowIfCancellationRequested()
+                    Dim track = tracks(index)
+                    progress?.Report(LocalizationService.Format("Konvertiere {0} von {1}: {2}", index + 1, tracks.Count, track.ShortTitle))
+                    request.ItemProgress?.Invoke(index, LocalizationService.T("Konvertiert"))
+                    Dim input = Await GetInputAsync(track, request.OutputDirectory, cancellationToken)
+                    Try
+                        Dim target = UniquePath(request.OutputDirectory, SafeFileName($"{TrackPrefix(track)}{track.DisplayTitle}") & ExtensionFor(request.Format))
+                        ' Bei einer Audio-CD traegt die Zwischendatei keine Kennzeichen; sie kommen
+                        ' aus dem Titel, den die Erkennung gefuellt hat - Titelbild inbegriffen.
+                        Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track, coverFile:=coverFile)
+                        request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig"))
+                    Finally
+                        DeleteTemporaryCdWav(input)
+                    End Try
+                Next
+            Finally
+                DeleteTemporaryFile(coverFile)
+            End Try
         End Function
+
+        ''' <summary>Ob das Format ein eingebettetes Titelbild traegt. OGG/Vorbis kann es in
+        ''' dieser Form NICHT - ffmpeg kennt fuer den Ogg-Behaelter kein "attached_pic", und der
+        ''' Versuch braeche die ganze Umwandlung ab. Dort bleibt die Datei eben ohne Bild.</summary>
+        Private Shared Function CanEmbedCover(format As OutputFormat) As Boolean
+            Return format = OutputFormat.Mp3 OrElse format = OutputFormat.Flac
+        End Function
+
+        ''' <summary>Holt das Titelbild und legt es als Datei ab, auf die eingestellte Kantenlaenge
+        ''' gebracht. EINMAL je Lauf und nicht je Titel: bei sechzehn Titeln waeren das sechzehn
+        ''' gleiche Abfragen beim selben Dienst.</summary>
+        Private Shared Async Function FetchCoverAsync(url As String, cancellationToken As CancellationToken) As Task(Of String)
+            If String.IsNullOrWhiteSpace(url) Then Return Nothing
+            Try
+                Using client As New Net.Http.HttpClient()
+                    client.Timeout = TimeSpan.FromSeconds(30)
+                    Dim raw = Await client.GetByteArrayAsync(url, cancellationToken)
+                    If raw Is Nothing OrElse raw.Length = 0 Then Return Nothing
+                    Dim scaled = Mp3TagWriteService.ScaleCoverToSetting(raw)
+                    ' Die Ablage heisst NICHT "file": VB unterscheidet keine Gross- und
+                    ' Kleinschreibung, und ein so benannter Wert verdeckt die Klasse IO.File im
+                    ' ganzen Rumpf. Dieselbe Falle wie bei "path" in CoverArtService.
+                    Dim coverPath = Path.Combine(Path.GetTempPath(), $"ferrumplay-cover-{Guid.NewGuid():N}.jpg")
+                    Await File.WriteAllBytesAsync(coverPath, scaled, cancellationToken)
+                    Return coverPath
+                End Using
+            Catch ex As OperationCanceledException
+                Throw
+            Catch ex As Exception
+                ' Kein Bild ist kein Grund, die Umwandlung zu lassen.
+                DiagnosticLogService.LogAlways("Convert.Cover", ex.Message)
+                Return Nothing
+            End Try
+        End Function
+
+        Private Shared Sub DeleteTemporaryFile(path As String)
+            If String.IsNullOrWhiteSpace(path) Then Return
+            Try
+                If File.Exists(path) Then File.Delete(path)
+            Catch
+            End Try
+        End Sub
 
         ''' <summary>Schreibt Titel, Interpret, Album und Nummer in die Zieldatei.
         '''
@@ -232,7 +282,8 @@ Namespace Services
         ''' was in der Quelle steht. Bei einer Audio-CD steht dort NICHTS - CDDA kennt keine
         ''' Kennzeichen -, und ohne diesen Weg kaeme die gerippte Datei ohne Titel heraus, obwohl
         ''' die Erkennung ihn laengst ermittelt hat.</param>
-        Private Shared Async Function RunFfmpegAsync(input As String, target As String, request As Request, startSeconds As Double?, endSeconds As Double?, cancellationToken As CancellationToken, Optional isConcatList As Boolean = False, Optional tags As Track = Nothing) As Task
+        ''' <param name="coverFile">Ein Titelbild, das in die Zieldatei soll, oder Nothing.</param>
+        Private Shared Async Function RunFfmpegAsync(input As String, target As String, request As Request, startSeconds As Double?, endSeconds As Double?, cancellationToken As CancellationToken, Optional isConcatList As Boolean = False, Optional tags As Track = Nothing, Optional coverFile As String = Nothing) As Task
             Dim psi As New ProcessStartInfo("ffmpeg") With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
             psi.ArgumentList.Add("-hide_banner") : psi.ArgumentList.Add("-y")
             If isConcatList Then
@@ -242,10 +293,25 @@ Namespace Services
                 psi.ArgumentList.Add("-ss") : psi.ArgumentList.Add(startSeconds.Value.ToString("0.000", CultureInfo.InvariantCulture))
             End If
             psi.ArgumentList.Add("-i") : psi.ArgumentList.Add(input)
+            ' Das Titelbild MUSS unmittelbar hier stehen. Alles zwischen zwei "-i" gilt der
+            ' FOLGENDEN Eingabe - ein "-t" dazwischen wuerde nicht mehr die Ausgabe begrenzen,
+            ' sondern das Bild beschneiden, und der zugeschnittene Titel waere wieder ganz lang.
+            Dim withCover = CanEmbedCover(request.Format) AndAlso Not String.IsNullOrEmpty(coverFile)
+            If withCover Then psi.ArgumentList.Add("-i") : psi.ArgumentList.Add(coverFile)
             If endSeconds.HasValue AndAlso startSeconds.HasValue Then
                 psi.ArgumentList.Add("-t") : psi.ArgumentList.Add((endSeconds.Value - startSeconds.Value).ToString("0.000", CultureInfo.InvariantCulture))
             End If
             psi.ArgumentList.Add("-map_metadata") : psi.ArgumentList.Add("0") : psi.ArgumentList.Add("-map") : psi.ArgumentList.Add("0:a:0")
+            If withCover Then
+                ' "attached_pic" macht aus der zweiten Eingabe ein eingebettetes Titelbild und
+                ' keine abzuspielende Bildspur. Ohne diese Kennzeichnung haelt mancher Abspieler
+                ' die Datei fuer ein Video. Kopiert statt neu berechnet: das Bild ist schon JPEG.
+                psi.ArgumentList.Add("-map") : psi.ArgumentList.Add("1:v")
+                psi.ArgumentList.Add("-c:v") : psi.ArgumentList.Add("copy")
+                psi.ArgumentList.Add("-disposition:v") : psi.ArgumentList.Add("attached_pic")
+                psi.ArgumentList.Add("-metadata:s:v") : psi.ArgumentList.Add("title=Album cover")
+                psi.ArgumentList.Add("-metadata:s:v") : psi.ArgumentList.Add("comment=Cover (front)")
+            End If
             AddMetadata(psi, tags)
             Select Case request.Format
                 Case OutputFormat.Mp3

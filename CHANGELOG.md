@@ -18,6 +18,10 @@
   meanwhile opened a different Lyrion album or switched to another list. It now starts what is on
   screen. Stopping in the middle of an album and pressing play still resumes that same track - the
   list you are looking at only takes over when the track you stopped is not part of it.
+- Ripped files now carry the cover art, embedded, at the size configured for MP3 tags. This is
+  what MusicBrainz Picard, the project's own tagger, does with the same archive. OGG is left out
+  deliberately: ffmpeg cannot attach a picture to an Ogg container, and attempting it produces a
+  zero-byte file rather than an error.
 - The audio CD identification now fetches the cover art as well, from the Cover Art Archive, at the
   size configured for MP3 tags. That setting existed (default 800) but could not be reached; it is
   now in the MP3 tags section and says that it governs this image too. The smallest offered size
