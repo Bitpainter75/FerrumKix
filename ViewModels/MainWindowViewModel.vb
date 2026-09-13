@@ -97,7 +97,6 @@ Namespace ViewModels
         ' Konvertieren und CD-Rippen beanspruchen dieselben Laufwerke und Dateien wie die
         ' Wiedergabeliste. Dieser Zustand wird von der Fensterdecke verwendet, damit waehrend
         ' des Vorgangs keine weitere Bedienaktion dazwischenfunkt.
-        Private _isConversionRunning As Boolean
 
         Private _positionSeconds As Double
         Private _durationSeconds As Double
@@ -112,16 +111,6 @@ Namespace ViewModels
         ''' <summary>Laeuft gerade ein Ordner-Einlesen. Zwei gleichzeitig waeren erlaubt, aber der
         ''' Balken kann nur eines zeigen, und die Reihenfolge in der Liste wuerde sich mischen.</summary>
         Private _isScanning As Boolean
-
-        ''' <summary>True, solange eine Audio-Konvertierung oder ein CD-Rip aktiv ist.</summary>
-        Public Property IsConversionRunning As Boolean
-            Get
-                Return _isConversionRunning
-            End Get
-            Set(value As Boolean)
-                SetField(_isConversionRunning, value)
-            End Set
-        End Property
 
         ''' <summary>Ein Vergroesserungsfaktor wurde in dieser Sitzung verstellt.</summary>
         Private _restartNeeded As Boolean

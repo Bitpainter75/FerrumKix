@@ -60,7 +60,6 @@ Namespace Views
         Private _cancel As CancellationTokenSource
         Private _closeWhenFinished As Boolean
         Public Event CloseRequested As EventHandler
-        Public Event ProcessingChanged(isRunning As Boolean)
         Public ReadOnly Property Queue As New ObservableCollection(Of ConversionQueueRow)()
         Public ReadOnly Property DisplayRows As New ObservableCollection(Of Object)()
 
@@ -152,9 +151,8 @@ Namespace Views
             Dim folder = FindControl(Of TextBox)("FolderBox").Text
             If String.IsNullOrWhiteSpace(folder) Then Status(LocalizationService.T("Bitte zuerst einen Zielordner auswählen.")) : Return
             _cancel = New CancellationTokenSource()
-            FindControl(Of Button)("ConvertButton").IsEnabled = False
+            SetProcessingControls(True)
             FindControl(Of ProgressBar)("Progress").IsVisible = True
-            RaiseEvent ProcessingChanged(True)
             For Each row In Queue : row.Status = LocalizationService.T("Wartet") : Next
             Try
                 Await AudioConversionService.ConvertAsync(New AudioConversionService.Request With {
@@ -173,9 +171,8 @@ Namespace Views
                 Status(ex.Message)
             Finally
                 FindControl(Of ProgressBar)("Progress").IsVisible = False
-                FindControl(Of Button)("ConvertButton").IsEnabled = True
+                SetProcessingControls(False)
                 _cancel?.Dispose() : _cancel = Nothing
-                RaiseEvent ProcessingChanged(False)
                 If _closeWhenFinished Then RaiseEvent CloseRequested(Me, EventArgs.Empty)
             End Try
         End Sub
@@ -221,7 +218,42 @@ Namespace Views
         End Sub
 
         Private Sub OnBackClick(sender As Object, e As RoutedEventArgs)
-            If _cancel IsNot Nothing Then _cancel.Cancel() Else RaiseEvent CloseRequested(Me, EventArgs.Empty)
+            If _cancel IsNot Nothing Then
+                CancelProcessing()
+            Else
+                RaiseEvent CloseRequested(Me, EventArgs.Empty)
+            End If
+        End Sub
+
+        ''' <summary>Bricht den laufenden Konvertierungs- oder Rip-Vorgang ab. Diese Methode wird
+        ''' auch von der Fortschrittsdecke des Hauptfensters aufgerufen, die das Panel waehrend
+        ''' eines Laufs absichtlich verdeckt.</summary>
+        Public Sub CancelProcessing()
+            If _cancel Is Nothing OrElse _cancel.IsCancellationRequested Then Return
+            Status(LocalizationService.T("Konvertierung wird abgebrochen …"))
+            FindControl(Of Button)("CancelButton").IsEnabled = False
+            _cancel.Cancel()
+        End Sub
+
+        Private Sub OnCancelClick(sender As Object, e As RoutedEventArgs)
+            CancelProcessing()
+        End Sub
+
+        ''' <summary>Die Warteschlange bleibt bewusst aktiv und scrollbar. Gesperrt werden nur
+        ''' Eingaben, die den bereits gestarteten Auftrag veraendern koennten.</summary>
+        Private Sub SetProcessingControls(isProcessing As Boolean)
+            FindControl(Of Button)("BackButton").IsVisible = Not isProcessing
+            Dim cancelButton = FindControl(Of Button)("CancelButton")
+            cancelButton.IsVisible = isProcessing
+            cancelButton.IsEnabled = isProcessing
+
+            For Each controlName In {"ConvertButton", "ChooseFolderButton"}
+                FindControl(Of Button)(controlName).IsEnabled = Not isProcessing
+            Next
+            FindControl(Of ComboBox)("ModeBox").IsEnabled = Not isProcessing
+            For Each controlName In {"Mp3Radio", "FlacRadio", "OggRadio", "CbrRadio", "VbrRadio", "B128Radio", "B192Radio", "B256Radio", "B320Radio"}
+                FindControl(Of RadioButton)(controlName).IsEnabled = Not isProcessing
+            Next
         End Sub
 
         Private Sub Status(text As String)

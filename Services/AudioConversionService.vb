@@ -286,8 +286,13 @@ Namespace Services
             Dim temporary = Path.Combine(Path.GetTempPath(), $"ferrumplay-cd-{Guid.NewGuid():N}.wav")
             Dim psi As New ProcessStartInfo("cdparanoia") With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
             psi.ArgumentList.Add("-d") : psi.ArgumentList.Add(device) : psi.ArgumentList.Add(number.ToString(CultureInfo.InvariantCulture)) : psi.ArgumentList.Add(temporary)
-            Await RunProcessAsync(psi, cancellationToken)
-            Return temporary
+            Try
+                Await RunProcessAsync(psi, cancellationToken)
+                Return temporary
+            Catch
+                DeleteTemporaryCdWav(temporary)
+                Throw
+            End Try
         End Function
 
         ''' <param name="tags">Die Angaben, die in die Zieldatei sollen. Nothing heisst: nehmen,
@@ -342,15 +347,42 @@ Namespace Services
                     psi.ArgumentList.Add("-c:a") : psi.ArgumentList.Add("libvorbis") : psi.ArgumentList.Add("-q:a") : psi.ArgumentList.Add(If(request.BitrateKbps >= 256, "7", If(request.BitrateKbps >= 192, "5", "3")))
             End Select
             psi.ArgumentList.Add(target)
-            Await RunProcessAsync(psi, cancellationToken)
+            Try
+                Await RunProcessAsync(psi, cancellationToken)
+            Catch ex As OperationCanceledException When cancellationToken.IsCancellationRequested
+                ' FFmpeg kann die Zieldatei schon angelegt haben. Eine abgebrochene Datei darf
+                ' nicht wie ein erfolgreiches Ergebnis neben den echten Titeln liegen bleiben.
+                DeleteTemporaryFile(target)
+                Throw
+            End Try
         End Function
 
         Private Shared Async Function RunProcessAsync(psi As ProcessStartInfo, cancellationToken As CancellationToken) As Task
             Using process As New Process With {.StartInfo = psi}
                 process.Start()
                 Dim errorTask = process.StandardError.ReadToEndAsync()
-                Await process.WaitForExitAsync(cancellationToken)
+                Dim outputTask = process.StandardOutput.ReadToEndAsync()
+                Dim cancelled = False
+                Try
+                    Await process.WaitForExitAsync(cancellationToken)
+                Catch ex As OperationCanceledException When cancellationToken.IsCancellationRequested
+                    cancelled = True
+                End Try
+                If cancelled Then
+                    ' WaitForExitAsync beendet den Kindprozess nicht selbst. Ohne Kill wuerden
+                    ' FFmpeg bzw. cdparanoia nach dem UI-Abbruch im Hintergrund weiterlaufen.
+                    Try
+                        If Not process.HasExited Then process.Kill(entireProcessTree:=True)
+                    Catch
+                    End Try
+                    Try
+                        Await process.WaitForExitAsync()
+                    Catch
+                    End Try
+                    Throw New OperationCanceledException(cancellationToken)
+                End If
                 Dim errors = Await errorTask
+                Await outputTask
                 If process.ExitCode <> 0 Then Throw New InvalidOperationException(If(String.IsNullOrWhiteSpace(errors), $"{psi.FileName} wurde mit Fehlercode {process.ExitCode} beendet.", errors.Trim()))
             End Using
         End Function

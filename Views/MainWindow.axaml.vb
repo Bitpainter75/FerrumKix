@@ -231,13 +231,6 @@ Namespace Views
             Dim viewModel = Me.ViewModel
             If viewModel Is Nothing Then Return
 
-            ' Die Fortschrittsdecke faengt Zeigerereignisse ab. Die Tastatur kann aber noch beim
-            ' zuvor fokussierten Bedienelement ankommen und wird deshalb ebenfalls gesperrt.
-            If viewModel.IsConversionRunning Then
-                e.Handled = True
-                Return
-            End If
-
             ' Steht eine Sicherheitsabfrage offen, gehoert ihr die Tastatur - und zwar GANZ.
             ' Ohne dieses Handled hielte die Leertaste hinter der Frage die Wiedergabe an.
             If viewModel.IsDialogOpen Then

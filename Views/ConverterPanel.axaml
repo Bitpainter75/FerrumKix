@@ -5,9 +5,10 @@
              x:Class="FerrumPlay.Views.ConverterPanel">
   <Grid RowDefinitions="Auto,*,Auto" Background="#66101418">
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="18,10,14,7">
-      <Button Grid.Column="0" Classes="icon-btn" Click="OnBackClick" ToolTip.Tip="Zurück zur Wiedergabeliste">
+      <Button Grid.Column="0" x:Name="BackButton" Classes="icon-btn" Click="OnBackClick" ToolTip.Tip="Zurück zur Wiedergabeliste">
         <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/>
       </Button>
+      <Button Grid.Column="0" x:Name="CancelButton" Content="Abbrechen" Click="OnCancelClick" IsVisible="False"/>
       <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
         <TextBlock Text="Audio konvertieren" FontSize="{DynamicResource FP.Font.Title}" FontWeight="SemiBold"/>
       </StackPanel>
@@ -68,7 +69,7 @@
           <Grid ColumnDefinitions="108,*,Auto" ColumnSpacing="8">
             <TextBlock Text="Ausgabe" Classes="section-header" VerticalAlignment="Center"/>
             <TextBox x:Name="FolderBox" Grid.Column="1" PlaceholderText="Zielordner auswählen" IsReadOnly="True" VerticalAlignment="Center"/>
-            <Button Grid.Column="2" Content="..." Click="OnChooseFolderClick" VerticalAlignment="Center" Padding="12,7"/>
+            <Button Grid.Column="2" x:Name="ChooseFolderButton" Content="..." Click="OnChooseFolderClick" VerticalAlignment="Center" Padding="12,7"/>
           </Grid>
           <Grid ColumnDefinitions="108,*,Auto" ColumnSpacing="8">
             <ComboBox x:Name="ModeBox" Grid.Column="1" SelectedIndex="0" HorizontalAlignment="Left" MinWidth="260">
