@@ -11,6 +11,20 @@
   album were shuffled; the CD handed out its tracks in disc order no matter what the switch said.
   It now has a play order of its own, built the same way. Repeat was never affected - it does not
   depend on the order but on the wrap in FindNeighbour.
+- Fixed: after stopping, the play button restarted whatever had played last, even if you had
+  meanwhile opened a different Lyrion album or switched to another list. It now starts what is on
+  screen. Stopping in the middle of an album and pressing play still resumes that same track - the
+  list you are looking at only takes over when the track you stopped is not part of it.
+- The audio CD identification now fetches the cover art as well, from the Cover Art Archive, at the
+  size configured for MP3 tags. That setting existed (default 800) but could not be reached; it is
+  now in the MP3 tags section and says that it governs this image too. The smallest offered size
+  that is still large enough is taken - downscaling is possible, upscaling is not. Tagging already
+  scaled to it and never upscales.
+- The MusicBrainz request identifies the application and its version, and nothing else. The usual
+  contact address is deliberately left out: it would go to a third-party service on every lookup by
+  every user. The price is known - without a contact, MusicBrainz throttles sooner.
+- A throttled MusicBrainz request is retried rather than failed. The service allows one request per
+  second and answers 503 otherwise, which means "try again shortly", not "no".
 - Audio CDs are now identified. A CD carries nothing itself - its table of contents knows only
   where each track starts and ends - so the titles read "Track 01" and the album "Audio CD", and
   that is what ended up in the MP3 tags when ripping. FerrumPlay now computes the MusicBrainz disc

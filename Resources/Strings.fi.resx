@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>Ilman omaa asetusta: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>Kansikuva: reunan pituus</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>Kansikuva muunnetaan tähän kokoon tallennettaessa. Sama koskee kuvaa, jonka ääni-CD:n tunnistus hakee.</value>
+  </data>
 </root>

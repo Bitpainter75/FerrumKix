@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>Bez własnego ustawienia: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>Okładka: długość krawędzi</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>Okładka jest sprowadzana do tego rozmiaru przy zapisie. Dotyczy to także obrazu pobieranego przez rozpoznawanie płyty audio.</value>
+  </data>
 </root>

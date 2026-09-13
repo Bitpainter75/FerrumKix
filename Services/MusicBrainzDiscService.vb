@@ -26,13 +26,17 @@ Namespace Services
         Private Sub New()
         End Sub
 
-        ''' <summary>MusicBrainz verlangt eine aussagekraeftige Kennung des Aufrufers und sperrt
-        ''' anonyme Aufrufe aus. Die Adresse gehoert ausdruecklich dazu.</summary>
+        ''' <summary>MusicBrainz will wissen, wer fragt, und weist namenlose Aufrufe ab. Genannt
+        ''' wird deshalb die Anwendung mit ihrer Fassung - und sonst NICHTS.
+        '''
+        ''' <para>Der uebliche Zusatz einer Kontaktadresse bleibt bewusst weg: er ginge bei jeder
+        ''' Abfrage jedes Nutzers an einen fremden Dienst, und die Anwendung fragt fuer sich selbst
+        ''' und nicht im Namen ihres Verfassers. Der Preis ist bekannt: ohne Kontakt drosselt
+        ''' MusicBrainz im Zweifel frueher.</para></summary>
         Private Shared ReadOnly Client As New HttpClient With {.Timeout = TimeSpan.FromSeconds(20)}
 
         Shared Sub New()
-            Client.DefaultRequestHeaders.UserAgent.ParseAdd(
-                "FerrumPlay/" & VersionText & " ( https://github.com/Bitpainter75/FerrumPlay )")
+            Client.DefaultRequestHeaders.UserAgent.ParseAdd("FerrumPlay/" & VersionText)
         End Sub
 
         Private Shared ReadOnly Property VersionText As String
@@ -125,21 +129,41 @@ Namespace Services
 
             Dim url = "https://musicbrainz.org/ws/2/discid/" & Uri.EscapeDataString(discId) &
                       "?fmt=json&inc=artist-credits+recordings"
-            Using response = Await Client.GetAsync(url, cancellationToken)
-                ' 404 heisst schlicht "nicht verzeichnet", 400 "so eine Kennung gibt es nicht".
-                ' Beides ist kein Fehler, ueber den jemand unterrichtet werden muesste - bei einer
-                ' seltenen Pressung ist das erste der Normalfall.
-                If response.StatusCode = Net.HttpStatusCode.NotFound OrElse
-                   response.StatusCode = Net.HttpStatusCode.BadRequest Then Return releases
-                response.EnsureSuccessStatusCode()
-                Using document = JsonDocument.Parse(Await response.Content.ReadAsStringAsync(cancellationToken))
-                    Dim rows As JsonElement
-                    If Not document.RootElement.TryGetProperty("releases", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return releases
-                    For Each row In rows.EnumerateArray()
-                        Dim release = ReadRelease(row, discId)
-                        If release IsNot Nothing AndAlso release.Tracks.Count > 0 Then releases.Add(release)
-                    Next
+
+            ' MusicBrainz laesst eine Abfrage je Sekunde zu und antwortet sonst mit 503 - das
+            ' heisst "gleich nochmal" und nicht "geht nicht". Ohne diese Wiederholung scheiterte
+            ' eine Erkennung an einer Drosselung, die nach zwei Sekunden vorbei ist.
+            Const attempts As Integer = 3
+            For attempt = 1 To attempts
+                Using response = Await Client.GetAsync(url, cancellationToken)
+                    ' 404 heisst schlicht "nicht verzeichnet", 400 "so eine Kennung gibt es nicht".
+                    ' Beides ist kein Fehler, ueber den jemand unterrichtet werden muesste - bei
+                    ' einer seltenen Pressung ist das erste der Normalfall.
+                    If response.StatusCode = Net.HttpStatusCode.NotFound OrElse
+                       response.StatusCode = Net.HttpStatusCode.BadRequest Then Return releases
+
+                    If (response.StatusCode = Net.HttpStatusCode.ServiceUnavailable OrElse
+                        response.StatusCode = Net.HttpStatusCode.TooManyRequests) AndAlso attempt < attempts Then
+                        Await Task.Delay(TimeSpan.FromSeconds(1.5 * attempt), cancellationToken)
+                        Continue For
+                    End If
+
+                    response.EnsureSuccessStatusCode()
+                    Return ReadReleases(Await response.Content.ReadAsStringAsync(cancellationToken), discId)
                 End Using
+            Next
+            Return releases
+        End Function
+
+        Private Shared Function ReadReleases(json As String, discId As String) As List(Of DiscRelease)
+            Dim releases As New List(Of DiscRelease)()
+            Using document = JsonDocument.Parse(json)
+                Dim rows As JsonElement
+                If Not document.RootElement.TryGetProperty("releases", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return releases
+                For Each row In rows.EnumerateArray()
+                    Dim release = ReadRelease(row, discId)
+                    If release IsNot Nothing AndAlso release.Tracks.Count > 0 Then releases.Add(release)
+                Next
             End Using
             Return releases
         End Function
@@ -216,6 +240,22 @@ Namespace Services
                 builder.Append(Text(credit, "joinphrase"))
             Next
             Return builder.ToString().Trim()
+        End Function
+
+        ''' <summary>Die Adresse des Titelbildes bei der Cover Art Archive.
+        '''
+        ''' <para>Dort liegen feste Groessen (250, 500, 1200) und das Original. Gewaehlt wird die
+        ''' kleinste, die noch GROSS GENUG ist - herunterrechnen kann die Anwendung, herauf nicht.
+        ''' Ueber 1200 kommt das Original, das kann dann auch mal mehrere Megabyte haben.</para>
+        '''
+        ''' <para>Gibt es kein Bild, antwortet der Dienst mit 404. Das ist kein Fehler; die
+        ''' Coverspalte bleibt dann eben leer.</para></summary>
+        Public Shared Function CoverUrlFor(releaseId As String, wantedSize As Integer) As String
+            If String.IsNullOrWhiteSpace(releaseId) Then Return String.Empty
+            Dim suffix = If(wantedSize <= 250, "front-250",
+                         If(wantedSize <= 500, "front-500",
+                         If(wantedSize <= 1200, "front-1200", "front")))
+            Return "https://coverartarchive.org/release/" & Uri.EscapeDataString(releaseId) & "/" & suffix
         End Function
 
         Private Shared Function Text(element As JsonElement, name As String) As String

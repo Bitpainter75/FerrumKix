@@ -60,6 +60,7 @@ Namespace Views
                                         RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
                                         RemoveHandler LyrionTaskState.Changed, AddressOf OnSyncStateChanged
                                         RemoveHandler LyrionLibraryScanService.Completed, AddressOf OnLibraryScanCompleted
+                                        ClearVisibleTracks()
                                       End Sub
    FillSortBox()
    RenderSyncState()
@@ -95,6 +96,7 @@ Namespace Views
    FindControl(Of TextBlock)("PageTitle").Text = If(String.IsNullOrWhiteSpace(first.Album), "Lyrion Media Server", first.Album)
    FindControl(Of TextBlock)("Status").Text = first.AlbumArtist & "  ·  " & LocalizationService.Format("{0} Titel", tracks.Count)
    RenderTracks(tracks)
+   ReportVisibleTracks()
    Dim list = FindControl(Of ListBox)("Tracks")
    Dim selected = list.Items.OfType(Of ListBoxItem)().FirstOrDefault(Function(item) Object.ReferenceEquals(item.Tag, currentTrack))
    If selected IsNot Nothing Then list.SelectedItem = selected : list.ScrollIntoView(selected)
@@ -175,6 +177,8 @@ Namespace Views
    Dim request = Threading.Interlocked.Increment(_searchRequest)
    Dim scroll = FindControl(Of ScrollViewer)("AlbumScroll")
    scroll.IsVisible = True : FindControl(Of ScrollViewer)("TrackScroll").IsVisible = False
+   ' Zurueck im Albengitter steht keine Titelliste mehr offen.
+   ClearVisibleTracks()
    FindControl(Of TextBlock)("PageTitle").Text = "Lyrion Media Server"
    FindControl(Of TextBlock)("Status").Text = LocalizationService.T("Alben werden geladen …")
    Try
@@ -284,6 +288,7 @@ Namespace Views
     FindControl(Of TextBlock)("Status").Text = _shownAlbum.Artist & If(String.IsNullOrWhiteSpace(_shownAlbum.Year), "", " · " & _shownAlbum.Year) & "  ·  " & LocalizationService.Format("{0} Titel", songs.Count)
     _albumTracks = songs.OrderBy(Function(entry) TrackNumber(entry.TrackNumber)).ThenBy(Function(entry) entry.Title).Select(AddressOf CreateTrack).ToList()
     RenderTracks(_albumTracks)
+    ReportVisibleTracks()
    Catch ex As Exception
     FindControl(Of TextBlock)("Status").Text = ex.Message
    End Try
@@ -589,6 +594,18 @@ Namespace Views
    list.SelectedItem = item
    Avalonia.Threading.Dispatcher.UIThread.Post(Sub() list.ScrollIntoView(item))
   End Function
+
+  ''' <summary>Sagt dem Bauplan, welche Titelliste hier gerade zu sehen ist. Danach richtet sich
+  ''' der Wiedergabeknopf, wenn nach einem Halt gedrueckt wird: er soll das anfangen, was auf dem
+  ''' Schirm steht, und nicht das, was zuletzt lief.</summary>
+  Private Sub ReportVisibleTracks()
+   TryCast(DataContext, MainWindowViewModel)?.SetVisibleLyrionTracks(_albumTracks)
+  End Sub
+
+  ''' <summary>Es steht keine Titelliste mehr offen - Albengitter, oder der Bereich ist zu.</summary>
+  Private Sub ClearVisibleTracks()
+   TryCast(DataContext, MainWindowViewModel)?.SetVisibleLyrionTracks(Nothing)
+  End Sub
 
   ''' <summary>Setzt oder nimmt eine Klasse. RenderSyncState laeuft bei jeder Meldung erneut;
   ''' ein blosses Classes.Add legte die Klasse dann ein ums andere Mal nach.</summary>

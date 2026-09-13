@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>未自行设置时：{0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>封面图：边长</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>保存时封面图会调整为此尺寸。音频 CD 识别获取的图片同样适用。</value>
+  </data>
 </root>

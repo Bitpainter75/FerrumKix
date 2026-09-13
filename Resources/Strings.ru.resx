@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>Без собственной настройки: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>Обложка: длина стороны</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>При сохранении обложка приводится к этому размеру. Это относится и к изображению, которое получает распознавание аудио-CD.</value>
+  </data>
 </root>

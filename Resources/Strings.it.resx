@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>Senza indicazione propria: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>Copertina: lunghezza del lato</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>La copertina viene portata a questa dimensione al salvataggio. Vale anche per l’immagine recuperata dal riconoscimento del CD audio.</value>
+  </data>
 </root>

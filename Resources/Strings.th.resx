@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>หากไม่ระบุเอง: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>ภาพปก: ความยาวด้าน</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>ภาพปกจะถูกปรับให้เป็นขนาดนี้เมื่อบันทึก และใช้กับภาพที่การระบุแผ่นซีดีเสียงดึงมาด้วย</value>
+  </data>
 </root>

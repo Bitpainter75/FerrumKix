@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>Zonder eigen opgave: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>Hoesafbeelding: randlengte</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>De hoesafbeelding wordt bij het opslaan op deze maat gebracht. Dit geldt ook voor de afbeelding die de audio-cd-herkenning ophaalt.</value>
+  </data>
 </root>

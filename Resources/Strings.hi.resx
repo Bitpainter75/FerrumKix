@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>अपनी सेटिंग के बिना: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>कवर चित्र: किनारे की लंबाई</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>सहेजते समय कवर चित्र इस माप पर लाया जाता है। यह उस चित्र पर भी लागू होता है जो ऑडियो सीडी पहचान लाती है।</value>
+  </data>
 </root>

@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>Sans indication de votre part : {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>Pochette : longueur du côté</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>La pochette est ramenée à cette taille lors de l’enregistrement. Cela vaut aussi pour l’image récupérée par l’identification du CD audio.</value>
+  </data>
 </root>

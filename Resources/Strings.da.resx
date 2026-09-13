@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>Uden egen angivelse: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>Coverbillede: kantlængde</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>Coverbilledet bringes til dette mål ved lagring. Det gælder også billedet, som lyd-cd-genkendelsen henter.</value>
+  </data>
 </root>

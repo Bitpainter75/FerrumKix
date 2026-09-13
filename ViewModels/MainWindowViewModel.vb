@@ -79,6 +79,10 @@ Namespace ViewModels
         ''' selbst stehen in der Reihenfolge der Scheibe und sollen dort auch stehen bleiben -
         ''' gemischt wird nur, WORAUS gespielt wird.</summary>
         Private _audioCdPlayOrder As New List(Of Track)()
+        ''' <summary>Die Lyrion-Titelliste, die gerade AUF DEM SCHIRM steht - nicht die, aus der
+        ''' gespielt wird. Nach einem Halt faengt der Wiedergabeknopf mit ihr an: wer ein anderes
+        ''' Album aufgeschlagen hat und auf Wiedergabe drueckt, meint dieses und nicht das vorige.</summary>
+        Private _visibleLyrionTracks As New List(Of Track)()
 
         Private ReadOnly _shuffleRandom As New Random()
 
@@ -471,6 +475,19 @@ Namespace ViewModels
             Set(value As String)
                 AppSettingsService.Current.LyrionClientName = If(value, String.Empty).Trim()
                 AppSettingsService.Save()
+            End Set
+        End Property
+
+        ''' <summary>Die Kantenlaenge, auf die ein Titelbild beim Speichern gebracht wird - und mit
+        ''' der die Audio-CD-Erkennung ihr Bild holt.</summary>
+        Public Property TagCoverSize As Integer
+            Get
+                Return AppSettingsService.Current.TagCoverSize
+            End Get
+            Set(value As Integer)
+                AppSettingsService.Current.TagCoverSize = Math.Clamp(value, 64, 3000)
+                AppSettingsService.Save()
+                RaisePropertyChanged()
             End Set
         End Property
 
@@ -1125,11 +1142,48 @@ Namespace ViewModels
             ' Nach einem Stop ist bei mpv nichts mehr geladen. Ein Pausenwechsel liefe dann ins
             ' Leere, und der Knopf saehe aus, als haenge er.
             If _player.LoadedPath Is Nothing Then
-                Play(_currentTrack)
+                ' Und er faengt mit dem an, was auf dem Schirm steht. Wer nach dem Anhalten ein
+                ' anderes Album aufschlaegt und auf Wiedergabe drueckt, meint dieses - nicht das,
+                ' was zuletzt lief. Steht nichts anderes da, bleibt es beim bisherigen Titel.
+                Dim wanted = StartTrackAfterStop()
+                If wanted Is Nothing Then
+                    Play(_currentTrack)
+                ElseIf _visibleLyrionTracks.Contains(wanted) Then
+                    ' Ein Lyrion-Album wird als Ganzes uebernommen, sonst bliebe die
+                    ' Abspielreihenfolge die des vorigen.
+                    PlayLyrionAlbum(_visibleLyrionTracks, wanted)
+                Else
+                    Play(wanted)
+                End If
                 Return
             End If
 
             _player.TogglePause()
+        End Sub
+
+        ''' <summary>Womit der Wiedergabeknopf nach einem Halt anfangen soll, oder Nothing, wenn es
+        ''' beim bisherigen Titel bleiben darf.
+        '''
+        ''' <para>Vorrang hat eine offene Lyrion-Titelliste: sie ist das, was gerade zu sehen ist.
+        ''' Sonst zaehlt die gewaehlte Wiedergabeliste. Gehoert der bisherige Titel ohnehin dazu,
+        ''' aendert sich nichts - ein Halt mitten im Album und ein Druck auf Wiedergabe soll
+        ''' denselben Titel wieder aufnehmen und nicht ans Listenende springen.</para></summary>
+        Private Function StartTrackAfterStop() As Track
+            If _visibleLyrionTracks.Count > 0 Then
+                If _currentTrack IsNot Nothing AndAlso _visibleLyrionTracks.Contains(_currentTrack) Then Return Nothing
+                Return _visibleLyrionTracks.FirstOrDefault(AddressOf IsPlayable)
+            End If
+
+            Dim order = If(_selectedPlaylist = PlaylistKind.AudioCd, _audioCdPlayOrder, _playOrder)
+            If _currentTrack IsNot Nothing AndAlso order.Contains(_currentTrack) Then Return Nothing
+            Return order.FirstOrDefault(AddressOf IsPlayable)
+        End Function
+
+        ''' <summary>Die Lyrion-Ansicht meldet, welche Titelliste sie zeigt. Eine leere Liste
+        ''' heisst: es steht keine offen, etwa weil das Albengitter zu sehen ist oder der Bereich
+        ''' geschlossen wurde.</summary>
+        Public Sub SetVisibleLyrionTracks(tracks As IEnumerable(Of Track))
+            _visibleLyrionTracks = If(tracks, Enumerable.Empty(Of Track)()).Where(Function(track) track IsNot Nothing).ToList()
         End Sub
 
         Private Sub StopPlayback()
@@ -1354,7 +1408,9 @@ Namespace ViewModels
         ' Das Titelbild
 
         Private Sub LoadCoverAsync(track As Track)
-            If track.IsAudioCdTrack Then
+            ' Eine Audio-CD traegt kein Bild in sich - es sei denn, die Erkennung hat eine Adresse
+            ' dafuer hinterlegt. Dann gilt der gewoehnliche Weg fuer entfernte Bilder.
+            If track.IsAudioCdTrack AndAlso String.IsNullOrWhiteSpace(track.RemoteCoverUrl) Then
                 _currentCover = Nothing
                 RaisePropertyChanged(NameOf(CurrentCover))
                 RaisePropertyChanged(NameOf(HasCover))

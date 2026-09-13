@@ -89,6 +89,7 @@ Namespace ViewModels
                 track.Album = "Audio-CD"
                 track.AlbumArtist = String.Empty
                 track.Year = 0
+                track.RemoteCoverUrl = String.Empty
             Next
             RebuildRows()
         End Sub
@@ -139,6 +140,11 @@ Namespace ViewModels
                 byNumber(track.Number) = track
             Next
 
+            ' Das Titelbild kommt aus derselben Quelle wie die Angaben, in der Groesse, die in den
+            ' MP3-Einstellungen steht. Geholt wird es erst, wenn es gebraucht wird - hier steht nur
+            ' die Adresse.
+            Dim coverUrl = MusicBrainzDiscService.CoverUrlFor(release.Id, AppSettingsService.Current.TagCoverSize)
+
             Dim applied = 0
             For Each track In _audioCdTracks
                 Dim found As MusicBrainzDiscService.DiscTrack = Nothing
@@ -148,14 +154,18 @@ Namespace ViewModels
                 track.Album = release.Title
                 track.AlbumArtist = release.Artist
                 If release.Year > 0 Then track.Year = release.Year
+                track.RemoteCoverUrl = coverUrl
                 applied += 1
             Next
 
             ' Die Zeilen tragen die Beschriftung, nicht der Titel - ohne Neuaufbau bliebe
             ' "Titel 01" stehen, obwohl im Titel schon der richtige Name steht.
             RebuildRows()
-            If Object.ReferenceEquals(_currentTrack, Nothing) = False AndAlso _audioCdTracks.Contains(_currentTrack) Then
+            If _currentTrack IsNot Nothing AndAlso _audioCdTracks.Contains(_currentTrack) Then
                 RaiseCurrentTrackChanged()
+                ' Laeuft die CD schon, waehrend die Erkennung eintrifft, braucht die Coverspalte
+                ' einen Anstoss - sonst bliebe sie bis zum naechsten Titel leer.
+                LoadCoverAsync(_currentTrack)
             End If
             StatusText = LocalizationService.Format("Audio-CD erkannt: {0} – {1} ({2} Titel).",
                                                     release.Artist, release.Title, applied)

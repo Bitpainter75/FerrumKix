@@ -573,4 +573,10 @@
   <data name="Ohne_eigene_Angabe_0_68bb812b" xml:space="preserve">
     <value>직접 지정하지 않으면: {0}</value>
   </data>
+  <data name="Titelbild_Kantenl_nge_730c98b5" xml:space="preserve">
+    <value>커버 이미지: 한 변 길이</value>
+  </data>
+  <data name="Auf_dieses_Ma_wird_ein_Titelbild_beim_Speichern__e7de826c" xml:space="preserve">
+    <value>저장할 때 커버 이미지를 이 크기로 맞춥니다. 오디오 CD 식별이 가져오는 이미지에도 적용됩니다.</value>
+  </data>
 </root>
