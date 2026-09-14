@@ -193,11 +193,7 @@
                             <DataTemplate DataType="vm:PlaylistGroupRow">
                                 <Border Classes="group-row" Padding="8,7,16,7">
                                     <Border.ContextMenu>
-                                        <!-- ContextMenus leben in einem eigenen Popup und liegen damit ausserhalb
-                                             des skalierten WindowFrame. Beim Oeffnen bekommt es deshalb in der
-                                             Code-Behind denselben Faktor wie das Anwendungsfenster. -->
-                                        <ContextMenu Opening="OnContextMenuOpening"
-                                                     RenderTransformOrigin="0%,0%">
+                                        <ContextMenu>
                                             <MenuItem Header="Album abspielen" Tag="{Binding}" Click="OnGroupPlayClick"/>
                                             <MenuItem Header="Album konvertieren…" Tag="{Binding}" Click="OnGroupConvertClick"/>
                                             <MenuItem Header="MP3-Tags bearbeiten…" Tag="{Binding}" Click="OnGroupTagClick" IsVisible="{Binding !IsAudioCdGroup}"/>
@@ -236,8 +232,7 @@
                                         PointerMoved="OnTrackPointerMoved"
                                         PointerReleased="OnTrackPointerReleased">
                                     <Border.ContextMenu>
-                                        <ContextMenu Opening="OnContextMenuOpening"
-                                                     RenderTransformOrigin="0%,0%">
+                                        <ContextMenu>
                                             <MenuItem Header="Abspielen" Tag="{Binding}" Click="OnTrackPlayClick"/>
                                             <MenuItem Header="Konvertieren…" Tag="{Binding}" Click="OnTrackConvertClick"/>
                                             <MenuItem Header="MP3-Tags bearbeiten…" Tag="{Binding}" Click="OnTrackTagClick" IsVisible="{Binding !Track.IsAudioCdTrack}"/>

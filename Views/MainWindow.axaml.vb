@@ -283,6 +283,14 @@ Namespace Views
                 scale.ScaleX = factor
                 scale.ScaleY = factor
 
+                ' Popups - Kontextmenue, Tooltip, Aufklappliste - stehen in einem eigenen Fenster
+                ' und liegen damit ausserhalb dieses Rahmens. Sie holen sich den Faktor ueber diese
+                ' Ressource; siehe den PopupRoot-Stil in Styles/FerrumPlayTheme.axaml. Ein NEUES
+                ' Transform und kein Aendern des vorhandenen: nur der Austausch des Werts sagt den
+                ' DynamicResource-Bindungen Bescheid, ein offenes Popup misst sich sonst nicht neu.
+                Dim app = Application.Current
+                If app IsNot Nothing Then app.Resources("FP.UiScale") = New ScaleTransform(factor, factor)
+
                 DiagnosticLogService.Log("Window.UiScale",
                                          $"Faktor={factor:0.##}, Fenster={size.Width:0}x{size.Height:0}, " &
                                          $"Rahmen={frame.Width:0}x{frame.Height:0}, Bildschirm={If(screenName, "?")}")
