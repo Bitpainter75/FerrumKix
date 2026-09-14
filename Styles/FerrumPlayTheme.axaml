@@ -346,7 +346,7 @@
     <Style Selector="Button.converter-primary">
         <Setter Property="Background" Value="{DynamicResource FP.Accent}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
-        <Setter Property="Foreground" Value="{DynamicResource FP.Footer.OnAccent}"/>
+        <Setter Property="Foreground" Value="White"/>
     </Style>
     <Style Selector="Button.converter-primary:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource FP.Accent.Light}"/>
