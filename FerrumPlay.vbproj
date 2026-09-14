@@ -36,6 +36,12 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="12.1.2" />
     <PackageReference Include="Avalonia.Desktop" Version="12.1.2" />
+    <!-- Das Wayland-Backend. Avalonia.Desktop zieht nur Avalonia.X11 nach; unter einem
+         Wayland-Schreibtisch laeuft die Anwendung damit ueber XWayland, und deren Bruecke
+         liefert beim Ablegen den Inhalt der Zwischenablage statt der gezogenen Datei.
+         Gewaehlt wird der Weg in Program.BuildAvaloniaApp; auf Windows und macOS liegt
+         diese Baugruppe ungenutzt daneben. -->
+    <PackageReference Include="Avalonia.Wayland" Version="12.1.2" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.2" />
     <!-- Wie in FerrumPix das virtualisierende Raster: der ItemsRepeater baut nur die Kacheln, die
          wirklich im Sichtbereich liegen, und reicht sie beim Rollen weiter. Ohne ihn erzeugt die

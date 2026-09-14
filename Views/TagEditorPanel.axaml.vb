@@ -154,13 +154,27 @@ Namespace Views
    box.Text = If(Integer.TryParse(box.Text, number), NumberText(number), box.Text)
   End Sub
 
+  ''' <summary>Aus dem Abgelegten liess sich kein Bild lesen. Wortlos nichts zu tun sah aus wie
+  ''' ein Fehler der Anwendung - gerade jetzt, wo die Flaeche waehrend des Ziehens ausdruecklich
+  ''' zum Ablegen einlaedt. Woran es lag, steht im Protokoll.</summary>
+  Public Sub ReportCoverDropFailed()
+   _hintShowsSummary = False
+   FindControl(Of TextBlock)("Hint").Text = LocalizationService.T("Das abgelegte Element konnte nicht als Bild gelesen werden.")
+  End Sub
+
   ''' <summary>Uebernimmt ein Cover, das die Tag-Coverspalte entgegengenommen und bereits als Bild
   ''' geprueft hat. Geschrieben wird es erst beim Speichern.</summary>
   Public Sub SetCover(bytes As Byte(), fileName As String)
    If bytes Is Nothing OrElse bytes.Length = 0 Then Return
    _cover = bytes
    _hintShowsSummary = False
-   FindControl(Of TextBlock)("Hint").Text = LocalizationService.Format("Neues Cover gewählt: {0}", fileName)
+   ' Das Mass des neuen Bildes steht schon fest: die Coverspalte meldet es beim Anzeigen und
+   ' damit VOR diesem Aufruf, siehe TagCoverPanel.ShowBitmap. Ohne diese Angabe naennte die
+   ' Zeile nur die Datei, waehrend die eben noch dort genannte Aufloesung die des alten
+   ' Bildes war - und genau die entscheidet, ob das neue genug hergibt.
+   FindControl(Of TextBlock)("Hint").Text = If(_coverSize.Length = 0,
+                                               LocalizationService.Format("Neues Cover gewählt: {0}", fileName),
+                                               LocalizationService.Format("Neues Cover gewählt: {0} ({1})", fileName, _coverSize))
   End Sub
   Private Async Sub OnSaveClick(sender As Object, e As RoutedEventArgs)
    Dim artist = FindControl(Of TextBox)("ArtistBox").Text : Dim albumArtist = If(AppSettingsService.Current.TagAlbumArtistFollowsArtist, artist, FindControl(Of TextBox)("AlbumArtistBox").Text)

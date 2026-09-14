@@ -99,11 +99,22 @@
                        Classes="muted"
                        TextAlignment="Center"/>
         </StackPanel>
-        <TextBlock x:Name="DropHint"
-                   Text="Cover hierher ziehen"
-                   Classes="muted"
-                   Margin="0,4,0,0"
-                   TextWrapping="Wrap"
-                   TextAlignment="Center"/>
+        <StackPanel Spacing="8" Margin="0,4,0,0">
+            <!-- Der Knopf ist der VERLAESSLICHE Weg und steht deshalb zuerst. Das Ziehen bleibt
+                 daneben stehen, es ist der bequemere - nur kommt unter XWayland nicht die
+                 gezogene Datei an, sondern der Inhalt der Zwischenablage. Das liegt an der
+                 X11-Anbindung von Avalonia und nicht an dieser Anwendung; der Auswahldialog geht
+                 ueber IStorageProvider und ist davon nicht betroffen. -->
+            <Button Classes="ghost"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Click="OnChooseCoverClick"
+                    Content="Cover wählen …"/>
+            <TextBlock x:Name="DropHint"
+                       Text="oder Cover hierher ziehen"
+                       Classes="muted"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

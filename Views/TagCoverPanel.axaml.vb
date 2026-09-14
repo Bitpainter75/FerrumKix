@@ -5,6 +5,7 @@ Imports System.Linq
 Imports System.Threading.Tasks
 Imports Avalonia.Controls
 Imports Avalonia.Input
+Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
 Imports Avalonia.Media.Imaging
 Imports Avalonia.Platform.Storage
@@ -65,6 +66,28 @@ Namespace Views
                 ShowBitmap(bitmap, ownsIt:=False)
             Catch ex As Exception
                 DiagnosticLogService.LogException("TagCover.Load", ex)
+            End Try
+        End Sub
+
+        ''' <summary>Waehlt ein Coverbild ueber den Dateidialog. Derselbe Weg wie ein abgelegtes
+        ''' Bild, sobald der Pfad feststeht - nur kommt der Pfad hier aus einer Auswahl und nicht
+        ''' aus dem Zug, und genau deshalb gibt es den Knopf: unter XWayland liefert das Ablegen
+        ''' den Inhalt der Zwischenablage statt der gezogenen Datei.</summary>
+        Private Async Sub OnChooseCoverClick(sender As Object, e As RoutedEventArgs)
+            Try
+                Dim storage = TopLevel.GetTopLevel(Me)?.StorageProvider
+                If storage Is Nothing Then Return
+                Dim files = Await storage.OpenFilePickerAsync(New FilePickerOpenOptions With {
+                    .Title = LocalizationService.T("Cover wählen"),
+                    .AllowMultiple = False,
+                    .FileTypeFilter = {New FilePickerFileType(LocalizationService.T("Bilder")) With {
+                        .Patterns = {"*.jpg", "*.jpeg", "*.png", "*.webp", "*.bmp", "*.gif"},
+                        .MimeTypes = {"image/*"}}}})
+                Dim chosen = files.FirstOrDefault()?.TryGetLocalPath()
+                If String.IsNullOrWhiteSpace(chosen) Then Return
+                Await ApplyCoverAsync(chosen)
+            Catch ex As Exception
+                DiagnosticLogService.LogException("TagCover.Choose", ex)
             End Try
         End Sub
 

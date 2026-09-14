@@ -80,6 +80,7 @@
                         <Button Classes="ghost nav" Tag="TaggingSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/disc.svg" Width="16" Height="16"/><TextBlock Text="MP3-Tags"/></StackPanel></Button>
                         <Button Classes="ghost nav" Tag="ConverterSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/arrows-sort.svg" Width="16" Height="16"/><TextBlock Text="Audio-Konverter"/></StackPanel></Button>
                         <Button Classes="ghost nav" Tag="LyrionSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/music.svg" Width="16" Height="16"/><TextBlock Text="Lyrion Media Server"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="DiagnosticsSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/alert-triangle.svg" Width="16" Height="16"/><TextBlock Text="Fehlersuche"/></StackPanel></Button>
                         <Button Classes="ghost nav" Tag="TechnologySection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="16" Height="16"/><TextBlock Text="Technologie &amp; Lizenzen"/></StackPanel></Button>
                     </StackPanel>
                 </ScrollViewer>
@@ -286,7 +287,7 @@
                         <StackPanel Spacing="8" IsVisible="{Binding AreScreenScalesVisible}">
                             <TextBlock Text="Vergrößerung der Anwendung" Classes="setting-title"/>
                             <TextBlock Classes="setting-note"
-                                       Text="Ein eigener Faktor je Bildschirm, für den Fall, dass die Anwendung dort zu klein steht. Wirkt erst beim nächsten Start: das Fenstersystem liest den Wert nur beim Hochfahren."/>
+                                       Text="Ein eigener Faktor je Bildschirm, für den Fall, dass die Anwendung dort zu klein steht. Gilt sofort."/>
                             <ItemsControl ItemsSource="{Binding ScreenScales}" Margin="0,4,0,0">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -301,6 +302,7 @@
                                                                    Step="0.05" DefaultValue="1"
                                                                    VerticalAlignment="Center"
                                                                    ToolTip.Tip="Doppelklick setzt auf 100 Prozent zurück"
+                                                                   ValueCommitted="OnScreenScaleCommitted"
                                                                    Value="{Binding Scale, Mode=TwoWay}"/>
                                                 <TextBlock Text="{Binding ScaleText}"
                                                            VerticalAlignment="Center" MinWidth="86"
@@ -310,10 +312,6 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <TextBlock Classes="setting-note"
-                                       Foreground="{DynamicResource FP.Accent}"
-                                       IsVisible="{Binding IsRestartNeeded}"
-                                       Text="Die neue Vergrößerung gilt, sobald FerrumPlay das nächste Mal gestartet wird."/>
                         </StackPanel>
 
                         <Grid ColumnDefinitions="*,Auto">
@@ -371,6 +369,23 @@
                 </Border>
 
                 <Border x:Name="LyrionSection" Classes="section"><StackPanel Spacing="16"><TextBlock Text="Lyrion Media Server" Classes="group-caption"/><TextBlock Text="Durchsuche deine Lyrion-Bibliothek und spiele Alben direkt in FerrumPlay ab." Classes="setting-note"/><StackPanel Spacing="5"><TextBlock Text="Serveradresse" Classes="setting-title"/><TextBox Text="{Binding LyrionServerUrl, Mode=TwoWay}" PlaceholderText="http://server:9000 oder https://music.example.lan"/></StackPanel><!-- Ausgeblendet: der Client-Name hat keine Wirkung. Sein einziger Leser ist FindPlayerAsync, und das ruft niemand auf. Ein Eingabefeld dieses Namens laesst erwarten, dass FerrumPlay sich beim Server als Player anmeldet - das tut es nicht. Siehe Audits/LYRION_MEDIA_SERVER.md, Abschnitt Player-Anbindung. --><StackPanel Spacing="5" IsVisible="False"><TextBlock Text="Client-Name" Classes="setting-title"/><TextBox Text="{Binding LyrionClientName, Mode=TwoWay}" PlaceholderText="FerrumPlay"/><TextBlock Text="FerrumPlay spielt die gewählten Titel direkt über den Server ab; ein zusätzlicher Lyrion-Client ist nicht erforderlich." Classes="setting-note"/></StackPanel><StackPanel Spacing="5"><TextBlock Text="Favoriten-Abgleich: Zielordner" Classes="setting-title"/><Grid ColumnDefinitions="*,Auto" ColumnSpacing="6"><TextBox x:Name="LyrionSyncFolderBox" Text="{Binding LyrionSyncTargetPath, Mode=TwoWay}" PlaceholderText="Noch kein Ordner gewählt"/><Button Grid.Column="1" Click="OnChooseLyrionSyncFolderClick" Content="Wählen …"/></Grid><TextBlock Text="Der Knopf in der Lyrion-Ansicht gleicht die als Favorit gemerkten Alben in diesen Ordner ab." Classes="setting-note"/></StackPanel></StackPanel></Border>
+
+                <Border x:Name="DiagnosticsSection" Classes="section">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Fehlersuche" Classes="group-caption"/>
+                        <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="3"><TextBlock Text="Diagnoseprotokoll" Classes="setting-title"/><TextBlock Text="Schreibt ausführliche Zeilen zum Ablauf nach ferrumplay.log. Nur zur Fehlersuche einschalten: im Normalbetrieb wächst die Datei bei jedem Schritt weiter." Classes="setting-note" TextWrapping="Wrap"/></StackPanel><ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding EnableDiagnosticLogging, Mode=TwoWay}"/></Grid>
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Ordner für Protokolle und Einstellungen" Classes="setting-title"/>
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                                <TextBlock Text="{Binding DiagnosticLogFolder}" Classes="setting-note no-translate" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                <Button Grid.Column="1" Click="OnOpenLogFolderClick" Content="Öffnen"/>
+                            </Grid>
+                            <!-- Der Hinweis gehoert neben den Schalter: sonst laesst ihn jemand
+                                 eingeschaltet, weil er einen Absturz sonst nicht wiederfindet. -->
+                            <TextBlock Text="Ausnahmen stehen immer in errors.log, auch bei ausgeschaltetem Protokoll. Der Startparameter --debug schaltet das Protokoll für einen einzelnen Lauf ein." Classes="setting-note" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
 
                 <Border x:Name="TechnologySection" Classes="section">
                     <StackPanel Spacing="14"><StackPanel Spacing="2"><TextBlock Text="Technologie" Classes="group-caption"/><TextBlock Text="FerrumPlay baut auf diesen Projekten auf. Die Schaltflächen öffnen Projektseite und Lizenztext im Browser." Classes="setting-note"/><TextBlock Text="Die Angaben zu Audio-CDs kommen von MusicBrainz und sind gemeinfrei (CC0). Die Titelbilder der Cover Art Archive sind es nicht: sie gehören ihren jeweiligen Rechteinhabern und werden nur angezeigt." Classes="setting-note" TextWrapping="Wrap"/></StackPanel>

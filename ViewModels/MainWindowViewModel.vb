@@ -124,7 +124,6 @@ Namespace ViewModels
         Private _isScanning As Boolean
 
         ''' <summary>Ein Vergroesserungsfaktor wurde in dieser Sitzung verstellt.</summary>
-        Private _restartNeeded As Boolean
 
         ''' <summary>Die veroeffentlichte Fassung, wenn sie von der laufenden abweicht. Sonst leer.</summary>
         Private _availableVersion As String = String.Empty
@@ -401,6 +400,32 @@ Namespace ViewModels
                 AppSettingsService.Save()
                 RaisePropertyChanged(NameOf(TagFileNamePatternPreview))
             End Set
+        End Property
+
+        ''' <summary>Das ausfuehrliche Diagnoseprotokoll. Ab Werk aus - es soll im Normalbetrieb
+        ''' keine Datei anwachsen -, und ueber diesen Schalter einzuschalten, wenn etwas
+        ''' nachzuvollziehen ist. Ausnahmen haengen NICHT daran: die gehen immer nach errors.log,
+        ''' denn was schiefgeht, will man nachtraeglich sehen koennen, und dafuer laesst es sich
+        ''' nicht vorher einschalten.</summary>
+        Public Property EnableDiagnosticLogging As Boolean
+            Get
+                Return AppSettingsService.Current.EnableDiagnosticLogging
+            End Get
+            Set(value As Boolean)
+                AppSettingsService.Current.EnableDiagnosticLogging = value
+                AppSettingsService.Save()
+                ' Der Dienst merkt sich den Schalter, statt ihn bei jeder Zeile aus der Datei zu
+                ' lesen - also muss ihm das Umlegen gesagt werden.
+                DiagnosticLogService.RefreshEnabled(value)
+            End Set
+        End Property
+
+        ''' <summary>Der Ordner, in dem Protokolle und Einstellungen liegen. Steht als reiner Pfad
+        ''' in der Einstellungsseite und wird deshalb nicht uebersetzt.</summary>
+        Public ReadOnly Property DiagnosticLogFolder As String
+            Get
+                Return DiagnosticLogService.AppDataDirectory
+            End Get
         End Property
 
         ''' <summary>Das Benennungsmuster fuer getaggte Dateien, in der Schreibweise von
@@ -708,14 +733,11 @@ Namespace ViewModels
         Public ReadOnly Property SetFontSizeCommand As DelegateCommand
         Public ReadOnly Property SetAccentColorCommand As DelegateCommand
 
-        ''' <summary>True, sobald ein Faktor verstellt wurde. Die Einstellungen zeigen daraufhin den
-        ''' Hinweis, dass es erst beim naechsten Start wirkt - dauerhaft dort stehen soll er nicht,
-        ''' er betrifft ja nur den, der gerade etwas geaendert hat.</summary>
-        Public ReadOnly Property IsRestartNeeded As Boolean
-            Get
-                Return _restartNeeded
-            End Get
-        End Property
+        ''' <summary>Ein Vergroesserungsfaktor wurde verstellt. Das Fenster legt ihn daraufhin
+        ''' sofort an - siehe <c>MainWindow.ApplyUiScale</c>. Frueher stand hier ein Hinweis auf
+        ''' den naechsten Start: der Wert ging damals als Umgebungsvariable an das Fenstersystem
+        ''' und wurde nur beim Hochfahren gelesen.</summary>
+        Public Event UiScaleChanged()
 
         Private Sub SetFontSizeOffset(offset As Integer)
             Dim normalized = FontScaleService.Normalize(offset)
@@ -789,9 +811,12 @@ Namespace ViewModels
                     .ScreenName = r.ScreenName,
                     .Scale = r.Scale}).ToList()
 
-            If _restartNeeded Then Return
-            _restartNeeded = True
-            RaisePropertyChanged(NameOf(IsRestartNeeded))
+        End Sub
+
+        ''' <summary>Der Regler ist losgelassen - jetzt gilt der Faktor. Getrennt vom Verstellen,
+        ''' damit das Fenster nicht bei jeder Zwischenstellung eines Zuges neu vermessen wird.</summary>
+        Public Sub CommitUiScale()
+            RaiseEvent UiScaleChanged()
         End Sub
 
         ''' <summary>Die laufende Fassung, so wie sie auch auf dem Paket steht. Sie kommt aus

@@ -263,21 +263,171 @@ Namespace Views
         End Sub
 
         Private Async Sub OnTagCoverDrop(sender As Object, e As DragEventArgs)
+            ' GANZ ZUERST und ohne jede Bedingung: nach dem Loslassen kommt kein DragOver mehr,
+            ' das die Hervorhebung noch abraeumen koennte, und ein DragLeave gibt es hier auch
+            ' nicht. Stand das Abraeumen hinter den Pruefungen, blieb die Einladung nach einem
+            ' Ablegen, mit dem sich nichts anfangen liess, bis zum Schliessen des Tag-Bereichs
+            ' stehen.
+            Me.FindControl(Of TagCoverPanel)("TagCoverPanel")?.SetDropActive(False)
             Dim panel = TagCoverTargetAt(e)
             If panel Is Nothing Then Return
-            Dim entry = e.DataTransfer.TryGetFiles()?.FirstOrDefault()
-            Dim localPath = entry?.TryGetLocalPath()
-            If String.IsNullOrWhiteSpace(localPath) Then Return
-            ' VOR dem ersten Await: danach ist das Ereignis laengst zum Fenster weitergestiegen,
-            ' und dessen Ablegen-Behandlung haengt das Bild zusaetzlich in die Wiedergabeliste.
+            ' HIER, vor dem Lesen der Daten und vor dem ersten Await, und nicht spaeter. Zwei
+            ' Gruende, und der zweite ist teuer erkauft:
+            '
+            ' Erstens ist das Ereignis nach einem Await laengst zum Fenster weitergestiegen,
+            ' dessen Ablegen-Behandlung das Bild zusaetzlich in die Wiedergabeliste haengt.
+            '
+            ' Zweitens kommt die Datei nur dann an. Wurde die Zeile hinter das Lesen gestellt,
+            ' lieferte DERSELBE Zug nur noch ein Ereignis ohne Datei - dreimal nacheinander
+            ' nachgestellt, siehe die Eintraege unten im Protokoll. Die Formen meldet X11
+            ' weiterhin ("Universal: File"), die Daten dahinter sind dann aber schon weg.
             e.Handled = True
-            panel.SetDropActive(False)
+            Dim localPath = DroppedFilePath(e)
+            If String.IsNullOrWhiteSpace(localPath) Then
+                ' Ohne Meldung an den Anwender. X11 schickt zu einem geglueckten Zug noch ein
+                ' zweites, leeres Ereignis hinterher; eine Meldung darauf erschien mitten in
+                ' einem Ablegen, das gerade eben gelungen war. Was ankam, steht im Protokoll -
+                ' daran ist ein echter Fehlschlag immer noch zu erkennen.
+                DiagnosticLogService.LogAlways("TagEditor.CoverDrop", "Ablegen ohne Datei. " & DescribeTransfer(e))
+                Return
+            End If
             Try
+                ' Auch der geglueckte Weg steht im Protokoll. Ohne ihn ist an der Zeile darueber
+                ' nicht zu erkennen, ob sie das leere NACHklappern eines geglueckten Zuges
+                ' beschreibt oder den einzigen Versuch, der ankam.
+                DiagnosticLogService.LogAlways("TagEditor.CoverDrop", "Datei uebernommen: " & localPath)
                 Await panel.ApplyCoverAsync(localPath)
             Catch ex As Exception
+                ' Hier ist die Meldung am Platz: eine Datei war da, nur liess sich kein Bild
+                ' daraus lesen. Das ist etwas, das der Anwender wissen will.
                 DiagnosticLogService.LogException("TagEditor.CoverDrop", ex)
+                _tagEditorPanel?.ReportCoverDropFailed()
             End Try
         End Sub
+
+        ''' <summary>Der oertliche Pfad des Abgelegten, sonst eine leere Zeichenkette.
+        '''
+        ''' <para>Zuerst als Datei - so kommt es aus einem Dateiverwalter. Manche Quellen legen
+        ''' dagegen nur Text ab, in dem eine "file://"-Adresse oder ein blanker Pfad steht.
+        ''' Auch das ist eine Datei, und sie hier abzulehnen hiesse, ein Ablegen wortlos
+        ''' verfallen zu lassen.</para></summary>
+        Private Shared Function DroppedFilePath(e As DragEventArgs) As String
+            Dim files = e.DataTransfer.TryGetFiles()
+            If files IsNot Nothing Then
+                For Each entry In files
+                    Dim localPath = entry?.TryGetLocalPath()
+                    If Not String.IsNullOrWhiteSpace(localPath) Then Return localPath
+                Next
+            End If
+
+            ' Erst die rohe Adressliste, dann blanker Text. Beides kommt zeilenweise und wird
+            ' gleich gelesen.
+            For Each rawFormat In RawPathFormats
+                Dim fromFormat = FirstLocalPath(TryGetPlatformString(e, rawFormat))
+                If Not String.IsNullOrWhiteSpace(fromFormat) Then Return fromFormat
+            Next
+            Try
+                Return FirstLocalPath(e.DataTransfer.TryGetText())
+            Catch
+                Return String.Empty
+            End Try
+        End Function
+
+        ''' <summary>Die Adressen, unter denen ein Dateiverwalter seine Auswahl ablegt, wenn das
+        ''' allgemeine Dateiformat nichts hergibt. Es kuendigen naemlich welche das Dateiformat an
+        ''' und ruecken beim Nachfragen trotzdem nur die rohe Liste heraus - im Protokoll steht
+        ''' dann "Universal: File" bei einem Posten, der nur Text kann. Die Bezeichner gehen
+        ''' unveraendert ans System; unter X11 sind es MIME-Typen.</summary>
+        Private Shared ReadOnly RawPathFormats As String() = {
+            "text/uri-list",
+            "application/x-kde4-urilist",
+            "application/x-kde-urilist",
+            "x-special/gnome-copied-files",
+            "x-special/nautilus-clipboard",
+            "text/x-moz-url"}
+
+        ''' <summary>Eine rohe Adressliste, einmal als Zeichenkette und einmal als Bytes erfragt.
+        ''' Welchen der beiden Wege eine Form nimmt, haengt daran, als was sie angemeldet wurde -
+        ''' und das weiss nur die Gegenseite. Beides zu versuchen kostet nichts und erspart es,
+        ''' je Dateiverwalter zu raten. text/x-moz-url kommt als UTF-16 ueber die Leitung,
+        ''' deshalb wird auch das gelesen.</summary>
+        Private Shared Function TryGetPlatformString(e As DragEventArgs, identifier As String) As String
+            Try
+                Dim text = e.DataTransfer.TryGetValue(DataFormat.CreateStringPlatformFormat(identifier))
+                If Not String.IsNullOrWhiteSpace(text) Then Return text
+            Catch
+            End Try
+            Try
+                Dim bytes = e.DataTransfer.TryGetValue(DataFormat.CreateBytesPlatformFormat(identifier))
+                If bytes Is Nothing OrElse bytes.Length = 0 Then Return Nothing
+                Dim utf8 = Text.Encoding.UTF8.GetString(bytes)
+                If utf8.IndexOf(ChrW(0)) < 0 Then Return utf8
+                Return Text.Encoding.Unicode.GetString(bytes)
+            Catch
+            End Try
+            Return Nothing
+        End Function
+
+        ''' <summary>Die erste Zeile, die einen oertlichen Pfad ergibt. Eine Liste kommt
+        ''' zeilenweise; "#" leitet in text/uri-list einen Kommentar ein, und
+        ''' x-special/gnome-copied-files stellt der Liste "copy" oder "cut" voran - beides faellt
+        ''' hier von selbst durch, weil daraus keine Adresse wird.</summary>
+        Private Shared Function FirstLocalPath(text As String) As String
+            For Each line In If(text, String.Empty).Split({ChrW(13), ChrW(10)}, StringSplitOptions.RemoveEmptyEntries)
+                Dim trimmed = line.Trim()
+                If trimmed.Length = 0 OrElse trimmed.StartsWith("#", StringComparison.Ordinal) Then Continue For
+                If trimmed.StartsWith("/", StringComparison.Ordinal) Then Return trimmed
+                Dim uri As Uri = Nothing
+                If Uri.TryCreate(trimmed, UriKind.Absolute, uri) AndAlso uri.IsFile Then Return uri.LocalPath
+            Next
+            Return String.Empty
+        End Function
+
+        ''' <summary>Was in einem Ablegen drinsteckt - Formen, Posten und Text. Nur fuers Protokoll,
+        ''' und ausfuehrlich, weil die blosse Liste der Formen einmal "Universal: File" sagte und
+        ''' damit das Gegenteil dessen, was herauskam. Siehe den Hinweis an RawPathFormats.</summary>
+        Private Shared Function DescribeTransfer(e As DragEventArgs) As String
+            Dim parts As New List(Of String)()
+            Try
+                parts.Add("Formen: " & String.Join(" | ", e.DataTransfer.Formats.Select(Function(entry) entry.ToString())))
+            Catch ex As Exception
+                parts.Add("Formen: <" & ex.GetType().Name & ">")
+            End Try
+            Try
+                Dim items = e.DataTransfer.Items
+                parts.Add("Posten: " & items.Count)
+                For index = 0 To items.Count - 1
+                    Dim item = items(index)
+                    Dim itemFormats = String.Join(" ", item.Formats.Select(Function(entry) entry.ToString()))
+                    Dim raw As Object = Nothing
+                    Try
+                        raw = item.TryGetRaw(DataFormat.File)
+                    Catch ex As Exception
+                        parts.Add($"[{index}] TryGetRaw wirft {ex.GetType().Name}")
+                    End Try
+                    parts.Add($"[{index}] {itemFormats} -> {If(raw Is Nothing, "nichts", raw.GetType().Name)}")
+                Next
+            Catch ex As Exception
+                parts.Add("Posten: <" & ex.GetType().Name & ">")
+            End Try
+            Try
+                Dim text = e.DataTransfer.TryGetText()
+                parts.Add("Text: " & Quoted(text))
+            Catch ex As Exception
+                parts.Add("Text: <" & ex.GetType().Name & ">")
+            End Try
+            ' Was die rohen Formen hergeben, steht ebenfalls da: sie sind der Weg, auf dem ein
+            ' Dateiverwalter seine Auswahl noch liefern kann, wenn das Dateiformat leer bleibt.
+            For Each rawFormat In RawPathFormats
+                parts.Add(rawFormat & ": " & Quoted(TryGetPlatformString(e, rawFormat)))
+            Next
+            Return String.Join("; ", parts)
+        End Function
+
+        Private Shared Function Quoted(text As String) As String
+            If text Is Nothing Then Return "nichts"
+            Return """" & text.Replace(vbCr, "\r").Replace(vbLf, "\n") & """"
+        End Function
 
         Private Sub ShowConverter(tracks As IEnumerable(Of Track))
             ClearStatus()

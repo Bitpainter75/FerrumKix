@@ -6,6 +6,7 @@ Imports Avalonia.Controls
 Imports Avalonia.Input
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
+Imports Avalonia.Media
 Imports Avalonia.Platform.Storage
 Imports FerrumPlay.Services
 Imports FerrumPlay.ViewModels
@@ -23,9 +24,36 @@ Namespace Views
             AddHandler Closing, AddressOf OnWindowClosing
             AddHandler KeyDown, AddressOf OnWindowKeyDown
             AddHandler Opened, AddressOf OnWindowOpened
+            ' Das Wayland-Backend meldet die Bildschirme NACH dem Oeffnen nach - beim Opened steht
+            ' Screens.All dort noch leer, und ohne dieses Ereignis blieben die Einstellungen ohne
+            ' Bildschirmliste und das Fenster unvergroessert. Unter X11 kommt es einmal zusaetzlich
+            ' und schadet nicht.
+            AddHandler Screens.Changed, AddressOf OnScreensChanged
+            AddHandler PositionChanged, AddressOf OnWindowPositionChanged
+            ' Wann das Fenster welche Groesse bekommt und warum. Steht nur im Protokoll, kostet
+            ' also ausgeschaltet nichts - und ist die einzige Stelle, an der sich eine Groesse, die
+            ' erst verspaetet ankommt, von einer falsch berechneten unterscheiden laesst.
+            AddHandler Resized, AddressOf OnWindowResized
             ' Kommt das Fenster wieder nach vorn, wird nachgesehen, ob fehlende Dateien wieder da
             ' sind - oder weitere fehlen. Das Viewmodel drosselt selbst.
-            AddHandler Activated, Sub(sender, e) ViewModel?.RecheckMissingFiles()
+            AddHandler Activated,
+                Sub(sender, e)
+                    DiagnosticLogService.LogAlways("Window.Focus", $"Activated, Zustand={WindowState}, {ClientSize.Width:0}x{ClientSize.Height:0}")
+                    ViewModel?.RecheckMissingFiles()
+                End Sub
+            ' Der Gegenpunkt: verliert das Fenster die Aktivierung, schickt der Compositor eine
+            ' neue Konfiguration mit - und ob darin "maximiert" noch steht, entscheidet, ob
+            ' Avalonia auf seine hinterlegte Wiederherstellungsgroesse zurueckstellt.
+            AddHandler Deactivated,
+                Sub(sender, e) DiagnosticLogService.LogAlways("Window.Focus", $"Deactivated, Zustand={WindowState}, {ClientSize.Width:0}x{ClientSize.Height:0}")
+            ' Ein verstellter Faktor wirkt sofort; ohne das bliebe das Fenster stehen, bis jemand
+            ' die Anwendung neu startet.
+            AddHandler DataContextChanged,
+                Sub(sender, e)
+                    Dim viewModel = Me.ViewModel
+                    If viewModel Is Nothing Then Return
+                    AddHandler viewModel.UiScaleChanged, AddressOf ApplyUiScale
+                End Sub
             ' Die Beschreibung der Bildschirme ist ein fertiger Satz aus dem Code und wird beim
             ' Sprachwechsel neu gebaut. Die Faktoren kommen dabei aus den Einstellungen und bleiben.
             AddHandler LocalizationService.LanguageChanged, Sub(sender, e) OnWindowOpened(Me, EventArgs.Empty)
@@ -166,7 +194,20 @@ Namespace Views
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             End If
 
-            If settings.WindowMaximized Then WindowState = WindowState.Maximized
+            ' UNTER WAYLAND NICHT MAXIMIEREN.
+            '
+            ' Der Compositor schickt "aktiviert" und "maximiert" in derselben Konfiguration. Unter
+            ' Hyprland verliert ein Fenster beim Wegwandern des Zeigers die Aktivierung - und mit
+            ' ihr den maximierten Zustand. Avalonia stellt daraufhin die Groesse wieder her, die es
+            ' sich dazu gemerkt hat, und das Fenster fiel mitten in seiner Kachel auf die alte
+            ' Groesse zurueck. Im Protokoll steht genau das: "Deactivated, Zustand=Maximized,
+            ' 1241x705", zwei Sekunden spaeter "1035x588, Zustand=Normal".
+            '
+            ' In einer Kachelverwaltung bringt Maximieren ohnehin nichts - der Compositor gibt die
+            ' Groesse vor, und das Fenster fuellt seine Kachel von selbst. Auf einem Wayland-Tisch
+            ' mit frei liegenden Fenstern geht damit das maximierte Oeffnen verloren; das ist der
+            ' Preis dafuer, dass es ueberhaupt verlaesslich steht.
+            If settings.WindowMaximized AndAlso Not Program.UsesWayland Then WindowState = WindowState.Maximized
             UpdateMaximizeGlyph()
         End Sub
 
@@ -183,7 +224,44 @@ Namespace Views
 
         ''' <summary>Die Bildschirme kennt Avalonia erst, wenn das Fenster steht. Die Einstellungen
         ''' brauchen sie, um je Bildschirm einen Vergroesserungsfaktor anbieten zu koennen.</summary>
+        ''' <summary>Ein Bildschirm kam dazu, fiel weg oder aenderte sich. Beides haengt daran: die
+        ''' Liste in den Einstellungen und die Vergroesserung des Fensters.</summary>
+        Private Sub OnScreensChanged(sender As Object, e As EventArgs)
+            OnWindowOpened(Me, EventArgs.Empty)
+        End Sub
+
+        ''' <summary>Wann das Fenster welche Groesse bekommt und warum. Der Anlass ist die
+        ''' entscheidende Angabe: "Layout" heisst, dass die Anwendung selbst die Groesse betreibt,
+        ''' und genau daran liess sich erkennen, dass sie gegen die Kachelverwaltung arbeitete -
+        ''' siehe die Freigabe von Width/Height in OnWindowOpened.</summary>
+        Private Sub OnWindowResized(sender As Object, e As WindowResizedEventArgs)
+            DiagnosticLogService.LogAlways("Window.Size", $"{e.ClientSize.Width:0}x{e.ClientSize.Height:0}, Anlass={e.Reason}, Zustand={WindowState}")
+            ' MIT DER GROESSE AUS DEM EREIGNIS. Die Eigenschaft ClientSize traegt zu diesem
+            ' Zeitpunkt unter Umstaenden noch den alten Wert; der Rahmen rechnete dann mit der
+            ' Groesse von vorher weiter.
+            ApplyUiScale(e.ClientSize)
+        End Sub
+
+        ''' <summary>Das Fenster steht jetzt woanders - unter Umstaenden auf einem Bildschirm mit
+        ''' einem anderen Faktor.</summary>
+        Private Sub OnWindowPositionChanged(sender As Object, e As PixelPointEventArgs)
+            ApplyUiScale()
+        End Sub
+
         Private Sub OnWindowOpened(sender As Object, e As EventArgs)
+            ' VOR der Pruefung auf die Ansicht: die Vergroesserung haengt an den Einstellungen und
+            ' nicht an ihr, und ohne Ansicht bliebe das Fenster sonst unvergroessert stehen.
+            ApplyUiScale()
+            ' DIE GEMERKTE GROESSE WIEDER FREIGEBEN. Width und Height sind gesetzte Werte, und
+            ' Avalonia legt gesetzte Werte bei JEDEM Layout-Durchgang erneut auf. In einer
+            ' Kachelverwaltung bestimmt aber der Compositor die Groesse: unter X11 korrigiert der
+            ' Fenstermanager das sofort weg, unter Wayland gewinnt der eigene Wert - das Fenster
+            ' bekam beim Zurueckkehren in den Arbeitsbereich die Kachel und fiel Sekunden spaeter
+            ' auf die gemerkte Groesse zurueck, gemessen im Protokoll als "Resized 1035x588,
+            ' Anlass=Layout". Als NaN gelten sie als nicht gesetzt, und das Fenster behaelt, was
+            ' ihm zugewiesen wurde.
+            Width = Double.NaN
+            Height = Double.NaN
             Dim viewModel = Me.ViewModel
             If viewModel Is Nothing Then Return
 
@@ -202,6 +280,52 @@ Namespace Views
             End Try
         End Sub
 
+        ''' <summary>Legt die eingestellte Vergroesserung auf das Fenster.
+        '''
+        ''' <para>Genommen wird der Faktor des Bildschirms, auf dem das Fenster gerade steht - die
+        ''' Einstellung fuehrt einen je Bildschirm, weil an einem kleinen Zweitschirm etwas anderes
+        ''' noetig ist als am grossen. Findet sich keiner, bleibt es bei 1,0.</para>
+        '''
+        ''' <para>Frueher stand der Wert in einer Umgebungsvariablen, die nur Avalonias X11-Weg
+        ''' liest; unter Wayland war der Regler damit wirkungslos. Ueber die Layout-Vergroesserung
+        ''' gilt er ueberall und sofort.</para></summary>
+        Friend Sub ApplyUiScale()
+            ApplyUiScale(ClientSize)
+        End Sub
+
+        ''' <param name="size">Die Groesse, mit der gerechnet werden soll. Aus einem Ereignis die
+        ''' dort mitgelieferte: die Eigenschaft <c>ClientSize</c> hinkt ihr unter Umstaenden noch
+        ''' hinterher.</param>
+        Friend Sub ApplyUiScale(size As Size)
+            Try
+                Dim frame = Me.FindControl(Of Border)("WindowFrame")
+                Dim scale = TryCast(frame?.RenderTransform, ScaleTransform)
+                If frame Is Nothing OrElse scale Is Nothing Then Return
+                If size.Width <= 0 OrElse size.Height <= 0 Then Return
+
+                Dim screenName = Screens.ScreenFromWindow(Me)?.DisplayName
+                Dim factor = Math.Max(0.1, AppSettingsService.ScaleForScreen(screenName))
+
+                ' Der Rahmen wird KLEINER als das Fenster gebaut und von der Vergroesserung wieder
+                ' genau darauf gebracht. Sein Mass steht damit fest und haengt nicht daran, was der
+                ' Inhalt sich wuenscht - das war die Stelle, an der es nach einem Wechsel des
+                ' Arbeitsbereichs auseinanderlief.
+                frame.Width = size.Width / factor
+                frame.Height = size.Height / factor
+                scale.ScaleX = factor
+                scale.ScaleY = factor
+
+                ' Vorerst ohne Schalter: die Zahlen sind das Einzige, woran sich diese Sache
+                ' festmachen laesst, und sie mussten zu oft nachtraeglich erbeten werden.
+                DiagnosticLogService.LogAlways("Window.UiScale",
+                                         $"Faktor={factor:0.##}, Fenster={size.Width:0}x{size.Height:0}, " &
+                                         $"Rahmen={frame.Width:0}x{frame.Height:0}, Bildschirm={If(screenName, "?")}")
+            Catch ex As Exception
+                DiagnosticLogService.LogException("Window.UiScale", ex)
+            End Try
+        End Sub
+
+
         Private Sub OnWindowClosing(sender As Object, e As WindowClosingEventArgs)
             Try
                 Dim settings = AppSettingsService.Current
@@ -211,8 +335,11 @@ Namespace Views
                 ' Anwender gewaehlt hat. Sie zu merken hiesse, das Fenster beim naechsten Start
                 ' bildschirmfuellend zu oeffnen, auch wenn es gar nicht maximiert werden soll.
                 If Not settings.WindowMaximized Then
-                    settings.WindowWidth = Width
-                    settings.WindowHeight = Height
+                    ' NICHT Width/Height: die sind seit dem Oeffnen freigegeben und stehen auf NaN.
+                    ' ClientSize ist ohnehin der genauere Wert - das Fenster traegt keine Rahmen
+                    ' des Systems, siehe WindowDecorations="None".
+                    settings.WindowWidth = ClientSize.Width
+                    settings.WindowHeight = ClientSize.Height
                     settings.WindowLeft = Position.X
                     settings.WindowTop = Position.Y
                 End If

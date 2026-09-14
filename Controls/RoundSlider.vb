@@ -175,11 +175,21 @@ Namespace Controls
             context.DrawEllipse(FillBrush, New Pen(ThumbBorderBrush, 2), New Point(thumbX, centerY), ThumbRadius, ThumbRadius)
         End Sub
 
+        ''' <summary>Der Wert steht fest: der Zug ist beendet, oder er wurde in einem Schritt
+        ''' gesetzt (Rad, Doppelklick).
+        '''
+        ''' <para>Wer auf <c>Value</c> hoert, bekommt waehrend eines Zuges jede Zwischenstellung.
+        ''' Fuer eine Anzeige ist das richtig; fuer etwas Teures - das Neuvermessen des ganzen
+        ''' Fensters etwa - ist es einmal zu viel je Bildpunkt. Dafuer ist dieses Ereignis
+        ''' da.</para></summary>
+        Public Event ValueCommitted()
+
         Protected Overrides Sub OnPointerPressed(e As PointerPressedEventArgs)
             MyBase.OnPointerPressed(e)
             If Not e.GetCurrentPoint(Me).Properties.IsLeftButtonPressed Then Return
             If e.ClickCount >= 2 Then
                 Value = DefaultValue
+                RaiseEvent ValueCommitted()
                 e.Handled = True
                 Return
             End If
@@ -219,8 +229,12 @@ Namespace Controls
         ''' <summary>Gibt den Fang nur frei, wenn er noch bei diesem Regler liegt: sonst gehoert er
         ''' schon jemand anderem, und dessen Zug wuerde abgebrochen.</summary>
         Private Sub EndDrag(pointer As IPointer)
+            ' Nur wenn wirklich gezogen wurde: OnPointerCaptureLost kommt auch dann, wenn der Fang
+            ' nie bei diesem Regler lag, und ein Ereignis ohne Zug davor waere eines zu viel.
+            Dim wasDragging = _isDragging
             _isDragging = False
             If pointer IsNot Nothing AndAlso pointer.Captured Is Me Then pointer.Capture(Nothing)
+            If wasDragging Then RaiseEvent ValueCommitted()
         End Sub
 
         Protected Overrides Sub OnPointerWheelChanged(e As PointerWheelEventArgs)
@@ -228,6 +242,9 @@ Namespace Controls
             If e.Delta.Y = 0 Then Return
             Dim increment = If(WheelIncrement > 0, WheelIncrement, If([Step] > 0, [Step], 1.0))
             Value = Value + Math.Sign(e.Delta.Y) * increment
+            ' Eine Raststellung ist fuer sich fertig - da gibt es kein Loslassen, auf das sich
+            ' warten liesse.
+            RaiseEvent ValueCommitted()
             e.Handled = True
         End Sub
 

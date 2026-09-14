@@ -15,15 +15,37 @@ Namespace Services
         End Sub
 
         Private Shared ReadOnly Gate As New Object()
-        Private Shared _enabled As Boolean = False
 
+        ''' <summary>Ob ausfuehrlich protokolliert wird. Der Wert wird GEMERKT und nicht bei jeder
+        ''' Zeile aus der Einstellungsdatei gelesen: <see cref="Log"/> laeuft im Zweifel hundertfach
+        ''' je Bedienschritt durch, und zwar auch dann, wenn gar nichts geschrieben wird. Gelesen
+        ''' wird er von mehreren Faeden - dem Anzeigefaden, dem Befehlsfaden des Abspielers, dem
+        ''' Ereignisfaden von libmpv -, deshalb ueber Volatile.</summary>
+        Private Shared _enabled As Integer = 0
+
+        ''' <summary>Der Startparameter hat das Protokoll erzwungen. Dann darf die EINSTELLUNG es
+        ''' nicht wieder ausschalten: sie wird kurz nach dem Start angewandt, und wer mit
+        ''' <c>--debug</c> startet, will das Protokoll fuer DIESEN Lauf - unabhaengig davon, was
+        ''' in der Datei steht. Genau der Fall, den der Parameter aufklaeren soll, ist ja der, in
+        ''' dem noch niemand etwas einstellen konnte.</summary>
+        Private Shared _forcedOn As Boolean
+
+        ''' <summary>Das Protokoll fuer diesen Lauf einschalten und eingeschaltet lassen.</summary>
         Public Shared Sub ForceEnable()
-            _enabled = True
+            _forcedOn = True
+            Threading.Volatile.Write(_enabled, 1)
+        End Sub
+
+        ''' <summary>Nach dem Umlegen des Schalters in den Einstellungen aufrufen - und einmal
+        ''' beim Start, damit der gemerkte Stand dem der Datei entspricht.</summary>
+        Public Shared Sub RefreshEnabled(value As Boolean)
+            If _forcedOn AndAlso Not value Then Return
+            Threading.Volatile.Write(_enabled, If(value, 1, 0))
         End Sub
 
         Public Shared ReadOnly Property IsEnabled As Boolean
             Get
-                Return _enabled
+                Return Threading.Volatile.Read(_enabled) = 1
             End Get
         End Property
 
@@ -38,7 +60,7 @@ Namespace Services
         End Property
 
         Public Shared Sub Log(area As String, message As String)
-            If Not _enabled Then Return
+            If Not IsEnabled Then Return
             Write("ferrumplay.log", area, message)
         End Sub
 

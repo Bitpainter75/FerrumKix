@@ -105,6 +105,9 @@
   </data>
   <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>Fjern valgte numre fra listen</value></data>
   <data name="Auslieferung_add9612e" xml:space="preserve"><value>Standard</value></data>
+  <data name="Ausnahmen_stehen_immer_in_errors_log_auch_bei_au_3df2d7ed" xml:space="preserve">
+    <value>Undtagelser står altid i errors.log, også når loggen er slået fra. Startparameteren --debug slår loggen til for en enkelt kørsel.</value>
+  </data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>Automatisk</value></data>
   <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
     <value>Ved gemning overtager albumkunstner automatisk kunstnerens værdi.</value>
@@ -125,6 +128,9 @@
   </data>
   <data name="Bild_hier_ablegen_eb5ee306" xml:space="preserve">
     <value>Slip billedet her</value>
+  </data>
+  <data name="Bilder_512227d4" xml:space="preserve">
+    <value>Billeder</value>
   </data>
   <data name="Bildkodierung_0e276e0e" xml:space="preserve">
     <value>Billedkodning</value>
@@ -148,7 +154,16 @@
   <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
     <value>Træk et omslag hertil</value>
   </data>
+  <data name="Cover_w_hlen_1bb8c665" xml:space="preserve">
+    <value>Vælg omslag …</value>
+  </data>
+  <data name="Cover_w_hlen_4d031ad1" xml:space="preserve">
+    <value>Vælg omslag</value>
+  </data>
   <data name="Darstellung_7058d4fa" xml:space="preserve"><value>Udseende</value></data>
+  <data name="Das_abgelegte_Element_konnte_nicht_als_Bild_gele_150feabd" xml:space="preserve">
+    <value>Det sluppede element kunne ikke læses som et billede.</value>
+  </data>
   <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
     <value>Omslagsbilledet kunne ikke læses.</value>
   </data>
@@ -173,12 +188,14 @@
     <value>Serveren melder ikke et eneste favoritalbum. Synkroniseringen stopper, så målmappen ikke tømmes.</value>
   </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>Lyden afspilles gennem libmpv og dermed gennem systemets outputenhed.</value></data>
+  <data name="Diagnoseprotokoll_7242d0cb" xml:space="preserve">
+    <value>Diagnoselog</value>
+  </data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>Filen er væk. Sporet springes over.</value></data>
   <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>Fremhævsfarven: fremskridt, afspilningsknap, lydstyrkeknap og rækken af ​​det aktuelle nummer følger den.</value></data>
   <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
     <value>Lokal afspilning er ikke klar endnu.</value>
   </data>
-  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>Den nye skalering gælder næste gang FerrumPlay startes.</value></data>
   <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>Stilheden i slutningen af ​​en fil springes over, så et kontinuerligt blandet album afspilles uden pause. Træder i kraft fra næste nummer.</value></data>
   <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>Afspilningen blev stoppet af systemet.</value></data>
   <data name="Diese_Anwendung_416efc74" xml:space="preserve">
@@ -193,7 +210,9 @@
   <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
     <value>Gennemse dit Lyrion-bibliotek, og afspil album direkte i FerrumPlay.</value>
   </data>
-  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>En separat faktor pr. skærm, hvis applikationen ser for lille ud der. Træder i kraft ved næste start: vinduessystemet læser først værdien ved opstart.</value></data>
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
+    <value>En egen faktor pr. skærm, hvis programmet står for lille der. Gælder med det samme.</value>
+  </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Én genre pr. linje. Listen vises som valg ved MP3-tagging; en egen værdi er stadig mulig der.</value>
   </data>
@@ -210,12 +229,18 @@
     <value>Favoritter læses …</value>
   </data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Fjern manglende numre fra listen</value></data>
+  <data name="Fehlersuche_5ab03ccc" xml:space="preserve">
+    <value>Fejlsøgning</value>
+  </data>
   <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
     <value>FerrumPlay bygger på disse projekter. Knapperne åbner projektsiden og licensteksten i browseren.</value>
   </data>
   <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay opfanger det sidst afspillede nummer, hvor det blev afbrudt. Når den er slukket, er sporet kun valgt, ikke startet.</value></data>
   <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
     <value>FerrumPlay afspiller de valgte numre direkte via serveren; en yderligere Lyrion-klient er ikke nødvendig.</value>
+  </data>
+  <data name="ffnen_fc718f82" xml:space="preserve">
+    <value>Åbn</value>
   </data>
   <data name="Genre_2aa31fca" xml:space="preserve">
     <value>Genre</value>
@@ -292,6 +317,9 @@
   <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
     <value>Ændringerne er anvendt.</value>
   </data>
+  <data name="Neues_Cover_gew_hlt_0_1_0dfb7ff2" xml:space="preserve">
+    <value>Nyt omslag valgt: {0} ({1})</value>
+  </data>
   <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
     <value>Nyt omslag valgt: {0}</value>
   </data>
@@ -307,12 +335,21 @@
   <data name="Oberfl_che_ae0be527" xml:space="preserve">
     <value>Brugerflade</value>
   </data>
+  <data name="oder_Cover_hierher_ziehen_24ab49d2" xml:space="preserve">
+    <value>eller træk et omslag hertil</value>
+  </data>
+  <data name="Ordner_f_r_Protokolle_und_Einstellungen_75aa9ec3" xml:space="preserve">
+    <value>Mappe til logfiler og indstillinger</value>
+  </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Tilføj mappe</value></data>
   <data name="Reihenfolge_umkehren_6f427353" xml:space="preserve">
     <value>Vend rækkefølgen</value>
   </data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>Luk</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Hurtig søgning</value></data>
+  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_1f9b34d7" xml:space="preserve">
+    <value>Skriver detaljerede linjer om forløbet til ferrumplay.log. Slå kun til ved fejlsøgning: ved normal brug vokser filen ved hvert skridt.</value>
+  </data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Skriftstørrelse</value></data>
   <data name="Serveradresse_70863d55" xml:space="preserve">
     <value>Serveradresse</value>

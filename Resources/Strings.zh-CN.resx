@@ -105,6 +105,9 @@
   </data>
   <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>从列表中移除选中的曲目</value></data>
   <data name="Auslieferung_add9612e" xml:space="preserve"><value>默认</value></data>
+  <data name="Ausnahmen_stehen_immer_in_errors_log_auch_bei_au_3df2d7ed" xml:space="preserve">
+    <value>即使关闭日志，异常也始终记入 errors.log。启动参数 --debug 可为单次运行开启日志。</value>
+  </data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>自动</value></data>
   <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
     <value>保存时，专辑艺术家自动采用艺术家的值。</value>
@@ -125,6 +128,9 @@
   </data>
   <data name="Bild_hier_ablegen_eb5ee306" xml:space="preserve">
     <value>将图片放在这里</value>
+  </data>
+  <data name="Bilder_512227d4" xml:space="preserve">
+    <value>图片</value>
   </data>
   <data name="Bildkodierung_0e276e0e" xml:space="preserve">
     <value>图像编码</value>
@@ -148,7 +154,16 @@
   <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
     <value>将封面拖到这里</value>
   </data>
+  <data name="Cover_w_hlen_1bb8c665" xml:space="preserve">
+    <value>选择封面 …</value>
+  </data>
+  <data name="Cover_w_hlen_4d031ad1" xml:space="preserve">
+    <value>选择封面</value>
+  </data>
   <data name="Darstellung_7058d4fa" xml:space="preserve"><value>外观</value></data>
+  <data name="Das_abgelegte_Element_konnte_nicht_als_Bild_gele_150feabd" xml:space="preserve">
+    <value>无法将放下的项目作为图片读取。</value>
+  </data>
   <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
     <value>无法读取封面图像。</value>
   </data>
@@ -173,12 +188,14 @@
     <value>服务器未报告任何收藏专辑。同步已中止，以免清空目标文件夹。</value>
   </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>音频通过 libmpv 及系统输出设备播放。</value></data>
+  <data name="Diagnoseprotokoll_7242d0cb" xml:space="preserve">
+    <value>诊断日志</value>
+  </data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>文件已不存在，将跳过该曲目。</value></data>
   <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>强调色会应用于进度、播放按钮、音量滑块和当前曲目的行。</value></data>
   <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
     <value>本地播放尚未就绪。</value>
   </data>
-  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>新的缩放比例将在下次启动 FerrumPlay 时生效。</value></data>
   <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>将跳过文件末尾的静音部分，使连续混音的专辑无缝播放。将在下一曲起生效。</value></data>
   <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>播放已被系统停止。</value></data>
   <data name="Diese_Anwendung_416efc74" xml:space="preserve">
@@ -193,7 +210,9 @@
   <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
     <value>浏览你的 Lyrion 媒体库，并在 FerrumPlay 中直接播放专辑。</value>
   </data>
-  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>为每个屏幕单独设置缩放系数，以防应用程序显示得过小。将在下次启动时生效：窗口系统仅在启动时读取此值。</value></data>
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
+    <value>每块屏幕可设单独的倍率，用于应用在该屏上显得过小时。立即生效。</value>
+  </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>每行一个流派。该列表会在 MP3 打标签时作为选项出现，届时仍可自行输入。</value>
   </data>
@@ -210,12 +229,18 @@
     <value>正在读取收藏 …</value>
   </data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>从列表中移除缺失的曲目</value></data>
+  <data name="Fehlersuche_5ab03ccc" xml:space="preserve">
+    <value>排查问题</value>
+  </data>
   <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
     <value>FerrumPlay 建立在这些项目之上。按钮会在浏览器中打开项目页面和许可证文本。</value>
   </data>
   <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay 会从上次中断的位置继续播放最后播放的曲目。关闭后只会选中该曲目，不会开始播放。</value></data>
   <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
     <value>FerrumPlay 直接通过服务器播放所选曲目，无需另外的 Lyrion 客户端。</value>
+  </data>
+  <data name="ffnen_fc718f82" xml:space="preserve">
+    <value>打开</value>
   </data>
   <data name="Genre_2aa31fca" xml:space="preserve">
     <value>流派</value>
@@ -292,6 +317,9 @@
   <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
     <value>更改已应用。</value>
   </data>
+  <data name="Neues_Cover_gew_hlt_0_1_0dfb7ff2" xml:space="preserve">
+    <value>已选择新封面：{0}（{1}）</value>
+  </data>
   <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
     <value>已选择新封面：{0}</value>
   </data>
@@ -307,12 +335,21 @@
   <data name="Oberfl_che_ae0be527" xml:space="preserve">
     <value>界面</value>
   </data>
+  <data name="oder_Cover_hierher_ziehen_24ab49d2" xml:space="preserve">
+    <value>或将封面拖到这里</value>
+  </data>
+  <data name="Ordner_f_r_Protokolle_und_Einstellungen_75aa9ec3" xml:space="preserve">
+    <value>日志与设置文件夹</value>
+  </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>添加文件夹</value></data>
   <data name="Reihenfolge_umkehren_6f427353" xml:space="preserve">
     <value>反转排序</value>
   </data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>关闭</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>快速搜索</value></data>
+  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_1f9b34d7" xml:space="preserve">
+    <value>将运行过程的详细记录写入 ferrumplay.log。仅在排查问题时开启：日常使用中文件会随每一步不断增大。</value>
+  </data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>字体大小</value></data>
   <data name="Serveradresse_70863d55" xml:space="preserve">
     <value>服务器地址</value>

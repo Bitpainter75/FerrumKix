@@ -2,6 +2,7 @@ Imports Avalonia.Controls
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
 Imports FerrumPlay.Services
+Imports FerrumPlay.ViewModels
 Imports System.Linq
 Imports Avalonia.Platform.Storage
 Imports System.Diagnostics
@@ -44,6 +45,14 @@ Namespace Views
             If Not String.IsNullOrWhiteSpace(chosen) Then FindControl(Of TextBox)("CdRipFolderBox").Text = chosen
         End Sub
 
+        ''' <summary>Der Vergroesserungsregler wurde losgelassen. ERST JETZT wird das Fenster
+        ''' neu vermessen: waehrend des Zuges geschah das bei jeder Zwischenstellung, und das ist
+        ''' bei jedem Bildpunkt ein kompletter Durchgang durch den Baum. Die Prozentzahl daneben
+        ''' laeuft weiterhin mit - sie haengt am Wert, nicht an diesem Ereignis.</summary>
+        Private Sub OnScreenScaleCommitted()
+            TryCast(DataContext, MainWindowViewModel)?.CommitUiScale()
+        End Sub
+
         Private Sub OnSectionNavClick(sender As Object, e As RoutedEventArgs)
             Dim button = TryCast(sender, Button)
             Dim name = TryCast(button?.Tag, String)
@@ -51,6 +60,14 @@ Namespace Views
 
             Dim section = Me.FindControl(Of Border)(name)
             section?.BringIntoView()
+        End Sub
+
+        ''' <summary>Zeigt den Ordner mit Protokollen und Einstellungen im Dateiverwalter. Denselben
+        ''' Weg wie ein Link: der Dateiverwalter ist dem System gegenueber nichts anderes als der
+        ''' Browser.</summary>
+        Public Sub OnOpenLogFolderClick(sender As Object, e As RoutedEventArgs)
+            OpenExternalUrl(DiagnosticLogService.AppDataDirectory)
+            e.Handled = True
         End Sub
 
         Public Sub OnLicenseLinkClick(sender As Object, e As RoutedEventArgs)

@@ -105,6 +105,9 @@
   </data>
   <data name="Ausgew_hlte_Titel_aus_der_Liste_nehmen_8ee52d84" xml:space="preserve"><value>Remover faixas selecionadas da lista</value></data>
   <data name="Auslieferung_add9612e" xml:space="preserve"><value>Padrão</value></data>
+  <data name="Ausnahmen_stehen_immer_in_errors_log_auch_bei_au_3df2d7ed" xml:space="preserve">
+    <value>As exceções vão sempre para errors.log, mesmo com o registo desligado. O parâmetro de arranque --debug liga o registo para uma única execução.</value>
+  </data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>Automático</value></data>
   <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
     <value>Ao guardar, o artista do álbum assume automaticamente o valor do artista.</value>
@@ -125,6 +128,9 @@
   </data>
   <data name="Bild_hier_ablegen_eb5ee306" xml:space="preserve">
     <value>Solte a imagem aqui</value>
+  </data>
+  <data name="Bilder_512227d4" xml:space="preserve">
+    <value>Imagens</value>
   </data>
   <data name="Bildkodierung_0e276e0e" xml:space="preserve">
     <value>Codificação de imagem</value>
@@ -148,7 +154,16 @@
   <data name="Cover_hierher_ziehen_07b7d592" xml:space="preserve">
     <value>Arraste uma capa para aqui</value>
   </data>
+  <data name="Cover_w_hlen_1bb8c665" xml:space="preserve">
+    <value>Escolher capa …</value>
+  </data>
+  <data name="Cover_w_hlen_4d031ad1" xml:space="preserve">
+    <value>Escolher capa</value>
+  </data>
   <data name="Darstellung_7058d4fa" xml:space="preserve"><value>Aparência</value></data>
+  <data name="Das_abgelegte_Element_konnte_nicht_als_Bild_gele_150feabd" xml:space="preserve">
+    <value>Não foi possível ler o item solto como imagem.</value>
+  </data>
   <data name="Das_Coverbild_konnte_nicht_gelesen_werden_9385a4dd" xml:space="preserve">
     <value>Não foi possível ler a imagem da capa.</value>
   </data>
@@ -173,12 +188,14 @@
     <value>O servidor não indica nenhum álbum favorito. A sincronização é interrompida para não esvaziar a pasta de destino.</value>
   </data>
   <data name="Der_Ton_l_uft_ber_libmpv_und_damit_ber_das_Ausga_c3354975" xml:space="preserve"><value>O áudio é reproduzido através do libmpv e, portanto, através do dispositivo de saída do sistema.</value></data>
+  <data name="Diagnoseprotokoll_7242d0cb" xml:space="preserve">
+    <value>Registo de diagnóstico</value>
+  </data>
   <data name="Die_Datei_ist_nicht_mehr_da_Der_Titel_wird_bersp_2eb2f904" xml:space="preserve"><value>O arquivo desapareceu. A faixa foi ignorada.</value></data>
   <data name="Die_Farbe_der_Hervorhebungen_Fortschritt_Wiederg_fe852985" xml:space="preserve"><value>A cor de destaque: progresso, botão play, botão de volume e a linha da faixa atual seguem-no.</value></data>
   <data name="Die_lokale_Wiedergabe_steht_noch_nicht_bereit_6dd7c376" xml:space="preserve">
     <value>A reprodução local ainda não está pronta.</value>
   </data>
-  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumPlay_das__e3936216" xml:space="preserve"><value>A nova escala se aplica na próxima vez que o FerrumPlay for iniciado.</value></data>
   <data name="Die_Stille_am_Dateiende_wird_bersprungen_damit_e_4519dbe7" xml:space="preserve"><value>O silêncio no final de um arquivo é ignorado para que um álbum mixado continuamente seja reproduzido sem interrupção. Entra em vigor a partir da próxima faixa.</value></data>
   <data name="Die_Wiedergabe_wurde_vom_System_beendet_f1b8805d" xml:space="preserve"><value>A reprodução foi interrompida pelo sistema.</value></data>
   <data name="Diese_Anwendung_416efc74" xml:space="preserve">
@@ -193,7 +210,9 @@
   <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
     <value>Percorra a sua biblioteca Lyrion e reproduza álbuns diretamente no FerrumPlay.</value>
   </data>
-  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve"><value>Um fator separado por tela, caso o aplicativo pareça muito pequeno ali. Entra em vigor na próxima inicialização: o sistema de janelas lê o valor somente na inicialização.</value></data>
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
+    <value>Um fator próprio por ecrã, caso a aplicação fique demasiado pequena. Aplica-se de imediato.</value>
+  </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Um género por linha. Esta lista aparece como escolha ao etiquetar MP3; um valor próprio continua a ser possível.</value>
   </data>
@@ -210,12 +229,18 @@
     <value>A ler favoritos …</value>
   </data>
   <data name="Fehlende_Titel_aus_der_Liste_nehmen_aeb2f21d" xml:space="preserve"><value>Remova as faixas ausentes da lista</value></data>
+  <data name="Fehlersuche_5ab03ccc" xml:space="preserve">
+    <value>Resolução de problemas</value>
+  </data>
   <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
     <value>O FerrumPlay assenta nestes projetos. Os botões abrem a página do projeto e o texto da licença no navegador.</value>
   </data>
   <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay recupera a última faixa reproduzida onde foi interrompida. Quando desativado, a trilha é apenas selecionada, não iniciada.</value></data>
   <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
     <value>O FerrumPlay reproduz as faixas escolhidas diretamente através do servidor; não é necessário um cliente Lyrion adicional.</value>
+  </data>
+  <data name="ffnen_fc718f82" xml:space="preserve">
+    <value>Abrir</value>
   </data>
   <data name="Genre_2aa31fca" xml:space="preserve">
     <value>Género</value>
@@ -292,6 +317,9 @@
   <data name="nderungen_wurden_bernommen_4d77c6d4" xml:space="preserve">
     <value>As alterações foram aplicadas.</value>
   </data>
+  <data name="Neues_Cover_gew_hlt_0_1_0dfb7ff2" xml:space="preserve">
+    <value>Nova capa escolhida: {0} ({1})</value>
+  </data>
   <data name="Neues_Cover_gew_hlt_0_9b571cdd" xml:space="preserve">
     <value>Nova capa escolhida: {0}</value>
   </data>
@@ -307,12 +335,21 @@
   <data name="Oberfl_che_ae0be527" xml:space="preserve">
     <value>Interface</value>
   </data>
+  <data name="oder_Cover_hierher_ziehen_24ab49d2" xml:space="preserve">
+    <value>ou arraste uma capa para aqui</value>
+  </data>
+  <data name="Ordner_f_r_Protokolle_und_Einstellungen_75aa9ec3" xml:space="preserve">
+    <value>Pasta de registos e definições</value>
+  </data>
   <data name="Ordner_hinzuf_gen_366e3f6c" xml:space="preserve"><value>Adicionar pasta</value></data>
   <data name="Reihenfolge_umkehren_6f427353" xml:space="preserve">
     <value>Inverter a ordem</value>
   </data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>Fechar</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Pesquisa rápida</value></data>
+  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_1f9b34d7" xml:space="preserve">
+    <value>Escreve linhas detalhadas sobre o decurso em ferrumplay.log. Ative apenas para procurar uma falha: em uso normal o ficheiro cresce a cada passo.</value>
+  </data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Tamanho da fonte</value></data>
   <data name="Serveradresse_70863d55" xml:space="preserve">
     <value>Endereço do servidor</value>

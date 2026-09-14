@@ -93,6 +93,10 @@ Namespace Services
         Public Property TagRemoveOtherFields As Boolean = True
         ''' <summary>Die Tracknummer im erzeugten Dateinamen auf die Stellenzahl des Albums auffuellen.</summary>
         Public Property TagPadTrackNumberToAlbumLength As Boolean = True
+        ''' <summary>Das ausfuehrliche Diagnoseprotokoll. Ab Werk aus: eine Anwendung, die im
+        ''' Normalbetrieb schreibt, verliert entweder Zeit oder Platten. Ausnahmen haengen NICHT
+        ''' hieran, die gehen immer nach errors.log.</summary>
+        Public Property EnableDiagnosticLogging As Boolean = False
         Public Property ConverterDefaultFormat As Integer = 0
         Public Property ConverterDefaultBitrate As Integer = 192
         Public Property ConverterDefaultVbr As Boolean = False
@@ -295,18 +299,19 @@ Namespace Services
         ''' laufen, BEVOR Avalonia hochfaehrt: sie wird beim Aufbau des Fenstersystems einmal
         ''' gelesen und danach nie wieder. Eine Aenderung in den Einstellungen wirkt deshalb erst
         ''' beim naechsten Start, und die Einstellungen sagen das auch.</summary>
-        Public Shared Sub ApplyApplicationScaleEnvironment()
-            ' Die Variable wirkt nur auf Avalonias X11-Weg. Unter Windows und macOS skaliert
-            ' Avalonia von sich aus je Bildschirm, dort waere die Einstellung wirkungslos.
-            If Not OperatingSystem.IsLinux() Then Return
-
-            Dim value = BuildScreenScaleFactors(Current.ApplicationScaleFactors)
-            ' Kein Eintrag ueber 1,0: die Variable ganz WEGLASSEN statt leer setzen. Eine leere
-            ' Variable ist fuer Avalonia nicht dasselbe wie keine - sie verdraengt die eigene
-            ' Erkennung und erzwingt ueberall den Faktor 1.
-            Environment.SetEnvironmentVariable("AVALONIA_SCREEN_SCALE_FACTORS",
-                                               If(value.Length > 0, value, Nothing))
-        End Sub
+        ''' <summary>Der eingestellte Vergroesserungsfaktor eines Bildschirms, sonst 1,0.
+        '''
+        ''' <para>Frueher ging dieser Wert als AVALONIA_SCREEN_SCALE_FACTORS an das Fenstersystem.
+        ''' Die Variable liest aber nur Avalonias X11-Weg, und als eigener Wayland-Client blieb der
+        ''' Regler damit wirkungslos. Angewandt wird er jetzt im Fenster selbst, siehe
+        ''' <c>MainWindow.ApplyUiScale</c> - das haengt an keinem Fenstersystem und wirkt sofort.</para></summary>
+        Public Shared Function ScaleForScreen(screenName As String) As Double
+            Dim name = NormalizeScreenName(screenName)
+            If String.IsNullOrEmpty(name) Then Return 1.0
+            Dim match = NormalizeScreenScaleFactors(Current.ApplicationScaleFactors).
+                        FirstOrDefault(Function(entry) String.Equals(entry.ScreenName, name, StringComparison.Ordinal))
+            Return If(match Is Nothing, 1.0, match.Scale)
+        End Function
 
     End Class
 
