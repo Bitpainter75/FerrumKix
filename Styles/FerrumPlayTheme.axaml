@@ -196,6 +196,23 @@
         <Setter Property="IconBrush" Value="{DynamicResource FP.Accent}"/>
     </Style>
 
+    <!-- Der Rueckweg aus eigenstaendigen Arbeitsansichten soll sofort auffallen, ohne die
+         sonstigen kleinen Werkzeug-Symbole im Kopfbereich zu Konkurrenz zu machen. -->
+    <Style Selector="Button.back-navigation">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+    <Style Selector="Button.back-navigation icons|SvgIcon">
+        <Setter Property="IconBrush" Value="{DynamicResource FP.Accent}"/>
+    </Style>
+    <Style Selector="Button.back-navigation:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Accent}"/>
+    </Style>
+    <Style Selector="Button.back-navigation:pointerover icons|SvgIcon">
+        <Setter Property="IconBrush" Value="{DynamicResource FP.Footer.OnAccent}"/>
+    </Style>
+
     <!-- Ein Farbfeld der Akzentauswahl. Der RAHMEN und nicht die Fuellung zeigt die Wahl an: die
          Fuellung IST die Farbe und kann sie deshalb nicht zugleich hervorheben. -->
     <Style Selector="Button.swatch">
