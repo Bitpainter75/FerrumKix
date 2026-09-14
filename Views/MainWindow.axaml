@@ -22,10 +22,21 @@
          RenderTransform laeuft NACH dem Layout und kann es deshalb nicht stoeren. Der Rahmen
          bekommt sein Mass ausgerechnet - Fenstergroesse geteilt durch den Faktor, siehe
          MainWindow.ApplyUiScale -, und die Vergroesserung blaest genau das wieder auf die
-         Fenstergroesse auf. Links oben verankert, damit sie dort ansetzt, wo der Rahmen beginnt. -->
+         Fenstergroesse auf. Links oben verankert, damit sie dort ansetzt, wo der Rahmen beginnt.
+
+         DIESER RAHMEN DARF NICHT ClipToBounds TRAGEN. Avalonia rechnet das Sichtfenster, das jedes
+         virtualisierende Steuerelement darunter zu sehen bekommt, in
+         LayoutManager.CalculateEffectiveViewport aus - und zwar in dieser Reihenfolge: erst am
+         Bounds des Rahmens zuschneiden, DANN die Vergroesserung herausrechnen. Bounds ist hier
+         aber bereits die geteilte Groesse (Fenster durch Faktor), die Teilung geschieht damit
+         zweimal. Bei Faktor 1,68 meldete der Zuschnitt dem Alben-Repeater des Lyrion-Browsers ein
+         Sichtfenster von 660x375 statt 1108x630, beim Rollen zusaetzlich an der falschen Stelle.
+         Seine Buchhaltung ueber die gebauten Kacheln lief daran auseinander und die Anwendung
+         stuerzte in FlowLayoutAlgorithm.RaiseLineArranged ab. Ohne Zuschnitt geht das ungeteilte
+         Fenstermass in die Rechnung und kommt richtig unten an; die Ecken schneidet der Rahmen
+         darunter. -->
     <Border x:Name="WindowFrame"
             CornerRadius="8"
-            ClipToBounds="True"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             RenderTransformOrigin="0%,0%"
@@ -33,93 +44,99 @@
         <Border.RenderTransform>
             <ScaleTransform ScaleX="1" ScaleY="1"/>
         </Border.RenderTransform>
-        <Grid>
-            <Grid RowDefinitions="Auto,*">
+        <!-- DAS SCHNEIDEN AUF DIE ABGERUNDETEN ECKEN LIEGT HIER UND NICHT AM WINDOWFRAME.
+             Es muss UNTERHALB der Vergroesserung sitzen: siehe die Begruendung am Rahmen
+             darueber. Dieser Rahmen traegt kein RenderTransform, sein Zuschnitt ist damit
+             harmlos. -->
+        <Border CornerRadius="8" ClipToBounds="True">
+            <Grid>
+                <Grid RowDefinitions="Auto,*">
 
-                <!-- DIE FENSTERLEISTE. Hier laesst sich das Fenster verschieben; die Hoehe steht an
-                     zwei Stellen zusammen, hier und an den Fensterknoepfen weiter unten. Wer eine
-                     davon aendert, aendert beide. -->
-                <Border x:Name="TopWindowDragArea"
-                        Grid.Row="0"
-                        Classes="toolbar window-drag"
-                        Height="32">
-                    <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
-                        <!-- Der Namenszug liegt als Bild vor und nicht als Schrift: er traegt
-                             Verlauf und Schattierung, die sich mit einer Schriftart nicht
-                             nachbauen lassen. Die Hoehe haengt an der Leiste darueber. -->
-                        <Image Grid.Column="0"
-                            Source="avares://FerrumPlay/Assets/FerrumPlay_TopBar.png"
-                            Height="24"
-                            Stretch="Uniform"
-                            VerticalAlignment="Center"
-                            Margin="14,0,0,0"
-                            IsHitTestVisible="False"/>
-                        
-                        <!-- Der laufende Titel als Fenstertitel. Ueber ALLE Spalten und darin
-                             zentriert: in Spalte 1 zentriert saesse er nicht in der Fenstermitte,
-                             weil die Spalte erst hinter dem Namenszug beginnt. -->
-                        <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
-                                   Text="{Binding CurrentTitle}"
-                                   Foreground="{DynamicResource FP.Text.Secondary}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   MaxWidth="420"
-                                   TextTrimming="CharacterEllipsis"
-                                   IsHitTestVisible="False"
-                                   FontSize="{DynamicResource FP.Font.Body}"/>
+                    <!-- DIE FENSTERLEISTE. Hier laesst sich das Fenster verschieben; die Hoehe steht an
+                         zwei Stellen zusammen, hier und an den Fensterknoepfen weiter unten. Wer eine
+                         davon aendert, aendert beide. -->
+                    <Border x:Name="TopWindowDragArea"
+                            Grid.Row="0"
+                            Classes="toolbar window-drag"
+                            Height="32">
+                        <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                            <!-- Der Namenszug liegt als Bild vor und nicht als Schrift: er traegt
+                                 Verlauf und Schattierung, die sich mit einer Schriftart nicht
+                                 nachbauen lassen. Die Hoehe haengt an der Leiste darueber. -->
+                            <Image Grid.Column="0"
+                                Source="avares://FerrumPlay/Assets/FerrumPlay_TopBar.png"
+                                Height="24"
+                                Stretch="Uniform"
+                                VerticalAlignment="Center"
+                                Margin="14,0,0,0"
+                                IsHitTestVisible="False"/>
+
+                            <!-- Der laufende Titel als Fenstertitel. Ueber ALLE Spalten und darin
+                                 zentriert: in Spalte 1 zentriert saesse er nicht in der Fenstermitte,
+                                 weil die Spalte erst hinter dem Namenszug beginnt. -->
+                            <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                                       Text="{Binding CurrentTitle}"
+                                       Foreground="{DynamicResource FP.Text.Secondary}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       MaxWidth="420"
+                                       TextTrimming="CharacterEllipsis"
+                                       IsHitTestVisible="False"
+                                       FontSize="{DynamicResource FP.Font.Body}"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="1">
+                        <views:PlayerView IsVisible="{Binding IsPlayerVisible}"/>
+                        <views:SettingsView IsVisible="{Binding IsSettingsVisible}"/>
                     </Grid>
+                </Grid>
+
+                <!-- Die Knoepfe liegen NICHT in der Leiste, sondern darueber im Fenstergitter: der
+                     obere Rand haelt sie in ihrer Mitte. Bei einer Leiste von 32 und Knoepfen von 24
+                     sind das 4 Punkte oben. -->
+                <Border HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,4,8,0">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Button Classes="wnd-btn" x:Name="MinimizeButton" ToolTip.Tip="Minimieren">
+                            <TextBlock Text="−" FontSize="{DynamicResource FP.Glyph.Medium}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                        <Button Classes="wnd-btn" x:Name="MaximizeButton" ToolTip.Tip="Maximieren">
+                            <TextBlock x:Name="MaximizeGlyph" Text="□" FontSize="{DynamicResource FP.Glyph.Small}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                        <Button Classes="wnd-close" x:Name="CloseButton" ToolTip.Tip="Schließen">
+                            <TextBlock Text="×" FontSize="{DynamicResource FP.Glyph.XLarge}" Margin="0,-2,0,0"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
                 </Border>
 
-                <Grid Grid.Row="1">
-                    <views:PlayerView IsVisible="{Binding IsPlayerVisible}"/>
-                    <views:SettingsView IsVisible="{Binding IsSettingsVisible}"/>
-                </Grid>
+                <Border x:Name="ResizeTop" Height="5" Background="Transparent"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Top" Cursor="TopSide"/>
+                <Border x:Name="ResizeBottom" Height="5" Background="Transparent"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Cursor="BottomSide"/>
+                <Border x:Name="ResizeLeft" Width="5" Background="Transparent"
+                        HorizontalAlignment="Left" VerticalAlignment="Stretch" Cursor="LeftSide"/>
+                <Border x:Name="ResizeRight" Width="5" Background="Transparent"
+                        HorizontalAlignment="Right" VerticalAlignment="Stretch" Cursor="RightSide"/>
+                <Border x:Name="ResizeTopLeft" Width="14" Height="14" Background="Transparent"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="TopLeftCorner"/>
+                <Border x:Name="ResizeTopRight" Width="14" Height="14" Background="Transparent"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="TopRightCorner"/>
+                <Border x:Name="ResizeBottomLeft" Width="14" Height="14" Background="Transparent"
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="BottomLeftCorner"/>
+                <Border x:Name="ResizeBottomRight" Width="14" Height="14" Background="Transparent"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="BottomRightCorner"/>
+
+                <!-- Die Sicherheitsabfrage liegt als LETZTES Kind ueber allem: ueber dem Inhalt, den
+                     Fensterknoepfen und den Anfassern zum Groessenaendern. Solange nichts gefragt
+                     wird, ist sie unsichtbar und faengt nichts ab. -->
+                <views:ConfirmDialogOverlay/>
+
             </Grid>
-
-            <!-- Die Knoepfe liegen NICHT in der Leiste, sondern darueber im Fenstergitter: der
-                 obere Rand haelt sie in ihrer Mitte. Bei einer Leiste von 32 und Knoepfen von 24
-                 sind das 4 Punkte oben. -->
-            <Border HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Margin="0,4,8,0">
-                <StackPanel Orientation="Horizontal" Spacing="7">
-                    <Button Classes="wnd-btn" x:Name="MinimizeButton" ToolTip.Tip="Minimieren">
-                        <TextBlock Text="−" FontSize="{DynamicResource FP.Glyph.Medium}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Classes="wnd-btn" x:Name="MaximizeButton" ToolTip.Tip="Maximieren">
-                        <TextBlock x:Name="MaximizeGlyph" Text="□" FontSize="{DynamicResource FP.Glyph.Small}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Classes="wnd-close" x:Name="CloseButton" ToolTip.Tip="Schließen">
-                        <TextBlock Text="×" FontSize="{DynamicResource FP.Glyph.XLarge}" Margin="0,-2,0,0"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Button>
-                </StackPanel>
-            </Border>
-
-            <Border x:Name="ResizeTop" Height="5" Background="Transparent"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Top" Cursor="TopSide"/>
-            <Border x:Name="ResizeBottom" Height="5" Background="Transparent"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Cursor="BottomSide"/>
-            <Border x:Name="ResizeLeft" Width="5" Background="Transparent"
-                    HorizontalAlignment="Left" VerticalAlignment="Stretch" Cursor="LeftSide"/>
-            <Border x:Name="ResizeRight" Width="5" Background="Transparent"
-                    HorizontalAlignment="Right" VerticalAlignment="Stretch" Cursor="RightSide"/>
-            <Border x:Name="ResizeTopLeft" Width="14" Height="14" Background="Transparent"
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="TopLeftCorner"/>
-            <Border x:Name="ResizeTopRight" Width="14" Height="14" Background="Transparent"
-                    HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="TopRightCorner"/>
-            <Border x:Name="ResizeBottomLeft" Width="14" Height="14" Background="Transparent"
-                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="BottomLeftCorner"/>
-            <Border x:Name="ResizeBottomRight" Width="14" Height="14" Background="Transparent"
-                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="BottomRightCorner"/>
-
-            <!-- Die Sicherheitsabfrage liegt als LETZTES Kind ueber allem: ueber dem Inhalt, den
-                 Fensterknoepfen und den Anfassern zum Groessenaendern. Solange nichts gefragt
-                 wird, ist sie unsichtbar und faengt nichts ab. -->
-            <views:ConfirmDialogOverlay/>
-
-        </Grid>
+        </Border>
     </Border>
 </Window>
