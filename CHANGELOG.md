@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.9.1
+
+- Scrolling through the Lyrion albums no longer crashes the application. The scale of 0.9.0 is a
+  render transform on a frame that is sized down by the same factor, and that frame clipped its
+  contents as well. Avalonia works out the viewport it hands to every virtualising control by
+  clipping at the frame's bounds first and taking the scale out afterwards - so the division
+  happened twice. At factor 1.68 the album grid was told it had 660x375 to fill instead of
+  1108x630, and once scrolled the window sat in the wrong place too; the repeater's bookkeeping of
+  the tiles it had built ran apart and the layout pass threw. The rounded corners are cut by a
+  frame below the scale now, where clipping is harmless.
+  Every list in the application was given the same wrong viewport - the playlist above all. Those
+  did not crash, but they built too few rows and filled in late while scrolling. That is gone with
+  the same fix.
+- Context menus, tooltips and drop-down lists grow with the application again. They are drawn into
+  a window of their own and are therefore no children of the frame that the scale enlarges, so
+  since 0.9.0 they stayed at their original size while everything around them grew; up to 0.8.0 an
+  environment variable had scaled the whole windowing system. The factor is applied in the popup
+  template rather than to each menu, which takes submenus and drop-downs along with it.
+- The update check no longer announces an update that is none. The number after the hyphen is the
+  package revision, not a program version - 0.9.1-1 and 0.9.1-2 are the same FerrumPlay - but it
+  went into the comparison, so a repackaged release looked like a new one.
+
 ## 0.9.0
 
 ### MP3 tags
