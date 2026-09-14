@@ -82,10 +82,10 @@ Namespace Services
         ''' Handlungsgrund wie eine neue, und ein Vergleich auf "hoeher" wuerde ihn stumm
         ''' verschlucken.</para>
         '''
-        ''' <para>Verglichen werden die Zahlengruppen der Reihe nach, fehlende Gruppen zaehlen als
-        ''' Null: 0.8.1 und 0.8.1.0 sind dieselbe Fassung, 0.8.1-3 ist eine andere.
-        ''' Buchstabenanhaengsel bleiben aussen vor - dann steht dort nichts, worueber die Anwendung
-        ''' raten muesste.</para></summary>
+        ''' <para>Verglichen werden die Zahlengruppen der eigentlichen Versionsnummer; fehlende
+        ''' Gruppen zaehlen als Null. Damit sind 0.8.1 und 0.8.1.0 dieselbe Fassung. Alles nach
+        ''' dem Bindestrich ist der Paketstand (PKrel) und wird absichtlich ignoriert: 0.8.1-2
+        ''' und 0.8.1-3 bezeichnen dieselbe Programmversion.</para></summary>
         Public Shared Function IsDifferent(published As String, current As String) As Boolean
             Dim theirs = NumberGroups(published)
             Dim ours = NumberGroups(current)
@@ -99,11 +99,19 @@ Namespace Services
             Return False
         End Function
 
-        ''' <summary>Die Zahlengruppen einer Versionsangabe, hoechstens sechs.</summary>
+        ''' <summary>Die Zahlengruppen der Programmversion, ohne den Paketstand (PKrel).</summary>
         Private Shared Function NumberGroups(text As String) As List(Of Long)
             Dim groups As New List(Of Long)()
             If String.IsNullOrWhiteSpace(text) Then Return groups
-            For Each hit As Match In Regex.Matches(text, "[0-9]+")
+
+            ' VERSION wird auch fuer die Paketierung genutzt: bei "0.8.1-3" ist "-3" nur die
+            ' Revision des Pakets, keine neue Programmfassung. Es darf daher nicht in den
+            ' Updatevergleich eingehen.
+            Dim version = text.Trim()
+            Dim packageRelease = version.IndexOf("-"c)
+            If packageRelease >= 0 Then version = version.Substring(0, packageRelease)
+
+            For Each hit As Match In Regex.Matches(version, "[0-9]+")
                 Dim value As Long
                 ' Eine absurd lange Ziffernfolge fliegt raus, statt den Vergleich zu sprengen.
                 If Not Long.TryParse(hit.Value, NumberStyles.None, CultureInfo.InvariantCulture, value) Then Continue For

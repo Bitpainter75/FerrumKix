@@ -8,6 +8,7 @@ Imports Avalonia.Controls
 Imports Avalonia.Input
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
+Imports Avalonia.Media
 Imports Avalonia.Platform.Storage
 Imports Avalonia.Threading
 Imports FerrumPlay.Models
@@ -80,6 +81,19 @@ Namespace Views
 
         Private Sub OnAudioCdRemoved(sender As Object, e As EventArgs)
             _converterPanel?.CloseForRemovedAudioCd()
+        End Sub
+
+        ''' <summary>Kontextmenues werden als eigene Popups gezeichnet und erben darum den
+        ''' RenderTransform des WindowFrame nicht. Beim Oeffnen erhaelt es deshalb denselben
+        ''' Faktor wie die Anwendung.</summary>
+        Private Sub OnContextMenuOpening(sender As Object, e As ComponentModel.CancelEventArgs)
+            Dim menu = TryCast(sender, ContextMenu)
+            Dim window = TryCast(TopLevel.GetTopLevel(menu?.PlacementTarget), Window)
+            If menu Is Nothing OrElse window Is Nothing Then Return
+
+            Dim screenName = window.Screens.ScreenFromWindow(window)?.DisplayName
+            Dim factor = Math.Max(0.1, AppSettingsService.ScaleForScreen(screenName))
+            menu.RenderTransform = New ScaleTransform(factor, factor)
         End Sub
 
         Private Sub OnSeeked(seconds As Double)
