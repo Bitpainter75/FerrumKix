@@ -30,6 +30,12 @@ Namespace Views
         ''' geprueft.</summary>
         Public Event CoverChosen(bytes As Byte(), fileName As String)
 
+        ''' <summary>Das Mass des Bildes, das jetzt im Rahmen steht, als fertiger Text - leer,
+        ''' wenn keines drin steht. Der Tag-Bereich schreibt es in seine Hinweiszeile. Dasselbe
+        ''' Mass steht unter dem Rahmen, und es kommt aus derselben Stelle: zwei Wege dorthin
+        ''' liefen frueher oder spaeter auseinander.</summary>
+        Public Event CoverMeasured(text As String)
+
         Public Sub New()
             AvaloniaXamlLoader.Load(Me)
         End Sub
@@ -62,11 +68,12 @@ Namespace Views
             End Try
         End Sub
 
-        ''' <summary>Hebt den Coverrahmen hervor, solange ein Bild ueber der Spalte haengt.</summary>
+        ''' <summary>Hebt die Spalte hervor, solange ein Bild ueber ihr haengt. Die Klasse sitzt
+        ''' am Steuerelement selbst und nicht am Bildrahmen: an ihr haengen mehrere Teile der
+        ''' Einladung - Rahmen, aufgelegte Schicht und der Hinweis darunter -, und die stehen im
+        ''' Baum nicht beieinander. Siehe die Stilvorlagen in TagCoverPanel.axaml.</summary>
         Public Sub SetDropActive(active As Boolean)
-            Dim area = FindControl(Of Border)("CoverArea")
-            If area Is Nothing Then Return
-            If active Then area.Classes.Add("drop-target") Else area.Classes.Remove("drop-target")
+            If active Then Classes.Add("drop-active") Else Classes.Remove("drop-active")
         End Sub
 
         ''' <summary>Uebernimmt ein abgelegtes Bild: liest es, zeigt es und meldet es weiter.
@@ -97,7 +104,9 @@ Namespace Views
             Dim parts As New List(Of String)()
             If bitmap IsNot Nothing Then parts.Add($"{bitmap.PixelSize.Width} × {bitmap.PixelSize.Height}")
             If fileSize > 0 Then parts.Add(Track.FormatFileSize(fileSize))
-            FindControl(Of TextBlock)("SizeText").Text = String.Join(" · ", parts)
+            Dim measured = String.Join(" · ", parts)
+            FindControl(Of TextBlock)("SizeText").Text = measured
+            RaiseEvent CoverMeasured(measured)
             ' Nur ein selbst geladenes Bild darf freigegeben werden; das eingebettete gehoert dem
             ' Zwischenspeicher des Coverdienstes. Und erst im naechsten Durchgang: das alte Bild
             ' kann im laufenden Zeichendurchgang noch haengen.

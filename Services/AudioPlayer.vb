@@ -538,6 +538,13 @@ Namespace Services
                     RaiseEvent DurationChanged(Marshal.PtrToStructure(Of Double)(prop.Data))
                 Case PropPause
                     If prop.Format <> MpvInterop.MpvFormat.Flag OrElse prop.Data = IntPtr.Zero Then Return
+                    ' Ist nichts geladen, gibt es auch keinen Anhaltezustand zu melden. mpv sieht
+                    ' das anders: beim Anmelden der Beobachtung schickt es den aktuellen Wert
+                    ' sofort mit, und der ist im Leerlauf "nicht angehalten". Ungefiltert stuende
+                    ' der Anhalten-Knopf schon beim Start da, als spiele etwas - dabei wartet die
+                    ' Anwendung nur auf den ersten Titel. Dasselbe gilt nach einem Halt: dann ist
+                    ' bei mpv wieder nichts geladen.
+                    If LoadedPath Is Nothing Then Return
                     Dim paused = Marshal.ReadInt32(prop.Data) <> 0
                     SyncLock _syncRoot
                         _isPaused = paused

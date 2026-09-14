@@ -16,8 +16,11 @@
   </data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0}개 채널</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{1}의 {0}, 시스템 요소 {2:0.##}</value></data>
-  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
-    <value>MP3 파일 {0}개를 선택했습니다. 표지: {1}×{1}, JPEG {2} %.</value>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_a07793fc" xml:space="preserve">
+    <value>MP3 파일 {0}개 선택됨. 표지: {1}</value>
+  </data>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Kein_Cover_vorhanden_6730169f" xml:space="preserve">
+    <value>MP3 파일 {0}개 선택됨. 표지 없음.</value>
   </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0}퍼센트</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0}개의 트랙을 읽었습니다.</value></data>
@@ -119,6 +122,9 @@
   </data>
   <data name="Bibliothek_aktualisieren_08c49af2" xml:space="preserve">
     <value>라이브러리 새로 고침</value>
+  </data>
+  <data name="Bild_hier_ablegen_eb5ee306" xml:space="preserve">
+    <value>여기에 이미지를 놓으세요</value>
   </data>
   <data name="Bildkodierung_0e276e0e" xml:space="preserve">
     <value>이미지 인코딩</value>

@@ -93,18 +93,26 @@ Namespace Services
             Dim coverFile = Await FetchCoverAsync(
                 tracks.Select(Function(track) track.RemoteCoverUrl).FirstOrDefault(Function(url) Not String.IsNullOrWhiteSpace(url)),
                 cancellationToken)
+            ' Wie viele Stellen die aufgefuellte Nummer bekommt, richtet sich nach der Laenge des
+            ' ALBUMS und nicht nach der des ganzen Laufs: wer zwei Alben auf einmal umwandelt,
+            ' bekaeme sonst im zehnteiligen die Stellenzahl des hundertteiligen. Das Album ist
+            ' dabei der Ordner - so gruppiert der Konverter auch sonst, siehe OneResultPerFolder.
+            Dim albumLengths = tracks.GroupBy(Function(entry) entry.FolderPath, StringComparer.OrdinalIgnoreCase).
+                                      ToDictionary(Function(group) group.Key, Function(group) group.Count(), StringComparer.OrdinalIgnoreCase)
             Try
                 For index = 0 To tracks.Count - 1
                     cancellationToken.ThrowIfCancellationRequested()
                     Dim track = tracks(index)
                     progress?.Report(LocalizationService.Format("Konvertiere {0} von {1}: {2}", index + 1, tracks.Count, track.ShortTitle))
                     request.ItemProgress?.Invoke(index, LocalizationService.T("Konvertiert"))
+                    Dim albumLength As Integer
+                    albumLengths.TryGetValue(track.FolderPath, albumLength)
                     Dim input = Await GetInputAsync(track, request.OutputDirectory, cancellationToken)
                     Try
-                        Dim target = UniquePath(request.OutputDirectory, OutputFileName(track, request.Format))
+                        Dim target = UniquePath(request.OutputDirectory, OutputFileName(track, request.Format, albumLength))
                         ' Bei einer Audio-CD traegt die Zwischendatei keine Kennzeichen; sie kommen
                         ' aus dem Titel, den die Erkennung gefuellt hat - Titelbild inbegriffen.
-                        Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track, coverFile:=coverFile)
+                        Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track, coverFile:=coverFile, totalTracks:=albumLength)
                         ' Der MP3-Schreiber ist die einzige Stelle, die die ID3v2-Regeln vollstaendig
                         ' kennt (aufgefuellte TRCK-Nummer, Album-Sortierung, alte Tags entfernen).
                         ' Beim Rippen wird er daher nach FFmpeg nochmals angewandt; sein Name ist
@@ -170,7 +178,7 @@ Namespace Services
         ''' Quelle vielleicht schon mitbringt. Und "Titel 07" oder "Audio-CD" sind Platzhalter und
         ''' keine Angaben - sie werden ausgelassen, damit eine nicht erkannte CD keine falschen
         ''' Kennzeichen bekommt.</para></summary>
-        Private Shared Sub AddMetadata(psi As ProcessStartInfo, track As Track)
+        Private Shared Sub AddMetadata(psi As ProcessStartInfo, track As Track, totalTracks As Integer)
             If track Is Nothing Then Return
             Dim cdValues = If(track.IsAudioCdTrack, CdTagValues(track), Nothing)
             Add(psi, "title", track.Title, track.IsAudioCdTrack)
@@ -178,7 +186,11 @@ Namespace Services
             Add(psi, "album", track.Album, track.IsAudioCdTrack)
             Add(psi, "album_artist", If(cdValues Is Nothing, track.AlbumArtist, cdValues.AlbumArtist), False)
             If track.TrackNumber > 0 Then
-                Dim number = If(cdValues Is Nothing, track.TrackNumber.ToString(CultureInfo.InvariantCulture), Mp3TagWriteService.FormatTrackNumber(track.TrackNumber, cdValues.TotalTracks))
+                ' Die Nummer geht durch dieselbe Stelle wie im Tag-Editor. Vorher war das
+                ' Auffuellen dem CD-Rip vorbehalten, und eine umgewandelte Datei kam mit "7"
+                ' heraus, obwohl in der Quelle "07" stand - die Einstellung galt also nur
+                ' manchmal. Die CD kennt ihre Titelzahl aus der TOC, sonst zaehlt das Album.
+                Dim number = Mp3TagWriteService.FormatTrackNumber(track.TrackNumber, If(cdValues Is Nothing, totalTracks, cdValues.TotalTracks))
                 psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("track=" & number)
             End If
             If track.Year > 0 Then
@@ -267,7 +279,7 @@ Namespace Services
                 Dim entry = entries(index)
                 Dim endSeconds As Double? = If(index + 1 < total, entries(index + 1).StartSeconds, Nothing)
                 progress?.Report(LocalizationService.Format("Teile CUE {0} von {1}: {2}", index + 1, total, entry.Title))
-                Dim target = UniquePath(request.OutputDirectory, SafeFileName($"{entry.Number:00} - {entry.Title}") & ExtensionFor(request.Format))
+                Dim target = UniquePath(request.OutputDirectory, SafeFileName($"{Mp3TagWriteService.FormatTrackNumber(entry.Number, total)} - {entry.Title}") & ExtensionFor(request.Format))
                 Await RunFfmpegAsync(source.FilePath, target, request, entry.StartSeconds, endSeconds, cancellationToken)
             Next
         End Function
@@ -300,7 +312,7 @@ Namespace Services
         ''' Kennzeichen -, und ohne diesen Weg kaeme die gerippte Datei ohne Titel heraus, obwohl
         ''' die Erkennung ihn laengst ermittelt hat.</param>
         ''' <param name="coverFile">Ein Titelbild, das in die Zieldatei soll, oder Nothing.</param>
-        Private Shared Async Function RunFfmpegAsync(input As String, target As String, request As Request, startSeconds As Double?, endSeconds As Double?, cancellationToken As CancellationToken, Optional isConcatList As Boolean = False, Optional tags As Track = Nothing, Optional coverFile As String = Nothing) As Task
+        Private Shared Async Function RunFfmpegAsync(input As String, target As String, request As Request, startSeconds As Double?, endSeconds As Double?, cancellationToken As CancellationToken, Optional isConcatList As Boolean = False, Optional tags As Track = Nothing, Optional coverFile As String = Nothing, Optional totalTracks As Integer = 0) As Task
             Dim psi As New ProcessStartInfo("ffmpeg") With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
             psi.ArgumentList.Add("-hide_banner") : psi.ArgumentList.Add("-y")
             If isConcatList Then
@@ -332,7 +344,7 @@ Namespace Services
                 psi.ArgumentList.Add("-metadata:s:v") : psi.ArgumentList.Add("title=Album cover")
                 psi.ArgumentList.Add("-metadata:s:v") : psi.ArgumentList.Add("comment=Cover (front)")
             End If
-            AddMetadata(psi, tags)
+            AddMetadata(psi, tags, totalTracks)
             Select Case request.Format
                 Case OutputFormat.Mp3
                     psi.ArgumentList.Add("-c:a") : psi.ArgumentList.Add("libmp3lame")
@@ -399,16 +411,23 @@ Namespace Services
             Return If(format = OutputFormat.Mp3, ".mp3", If(format = OutputFormat.Flac, ".flac", ".ogg"))
         End Function
 
-        Private Shared Function TrackPrefix(track As Track) As String
-            Return If(track.TrackNumber > 0, track.TrackNumber.ToString("00", CultureInfo.InvariantCulture) & " - ", String.Empty)
+        ''' <summary>Die fuehrende Nummer im Dateinamen einer Umwandlung. Die Stellenzahl kommt
+        ''' aus derselben Stelle wie die des Tags und die der Eingabefelder, damit vom selben
+        ''' Album nicht der Dateiname "07" und der Tag "7" sagt. Hier stand vorher fest "00":
+        ''' das fuellte auch bei ausgeschalteter Einstellung auf und blieb bei hundert Titeln
+        ''' trotz eingeschalteter Einstellung zweistellig.</summary>
+        Private Shared Function TrackPrefix(track As Track, totalTracks As Integer) As String
+            If track.TrackNumber <= 0 Then Return String.Empty
+            Return Mp3TagWriteService.FormatTrackNumber(track.TrackNumber, totalTracks) & " - "
         End Function
 
         ''' <summary>Wendet beim CD-Rip dieselben Benennungs- und Standardisierungsregeln an wie
         ''' der MP3-Tag-Editor. Andere Konvertierungen behalten bewusst ihre bisherige Benennung.</summary>
-        Private Shared Function OutputFileName(track As Track, format As OutputFormat) As String
-            If Not track.IsAudioCdTrack Then Return SafeFileName($"{TrackPrefix(track)}{track.DisplayTitle}") & ExtensionFor(format)
-            Dim name = Mp3TagWriteService.BuildFileName(AppSettingsService.Current.TagFileNamePattern, CdTagValues(track))
-            Return SafeFileName(If(String.IsNullOrWhiteSpace(name), $"{TrackPrefix(track)}{track.DisplayTitle}", name)) & ExtensionFor(format)
+        Private Shared Function OutputFileName(track As Track, format As OutputFormat, totalTracks As Integer) As String
+            If Not track.IsAudioCdTrack Then Return SafeFileName($"{TrackPrefix(track, totalTracks)}{track.DisplayTitle}") & ExtensionFor(format)
+            Dim values = CdTagValues(track)
+            Dim name = Mp3TagWriteService.BuildFileName(AppSettingsService.Current.TagFileNamePattern, values)
+            Return SafeFileName(If(String.IsNullOrWhiteSpace(name), $"{TrackPrefix(track, values.TotalTracks)}{track.DisplayTitle}", name)) & ExtensionFor(format)
         End Function
 
         Private Shared Function CdTagValues(track As Track) As Mp3TagWriteService.Values

@@ -184,6 +184,9 @@ Namespace Views
             ' was gerade laeuft. Erst beim Verlassen kommt die Wiedergabe dort zurueck.
             Dim tagCover = Me.FindControl(Of TagCoverPanel)("TagCoverPanel")
             AddHandler tagCover.CoverChosen, AddressOf OnTagCoverChosen
+            ' VOR dem Fuellen der Spalte: das Mass des eingebetteten Bildes meldet sie schon
+            ' beim Anzeigen, und ein spaeter angehaengter Empfaenger bekaeme es nicht mehr.
+            AddHandler tagCover.CoverMeasured, AddressOf OnTagCoverMeasured
             tagCover.Show(selected)
             tagCover.IsVisible = True
             Me.FindControl(Of Border)("NowPlayingPanel").IsVisible = False
@@ -225,6 +228,12 @@ Namespace Views
         ''' es schon; hier wird es nur an den Tag-Bereich weitergereicht.</summary>
         Private Sub OnTagCoverChosen(bytes As Byte(), fileName As String)
             _tagEditorPanel?.SetCover(bytes, fileName)
+        End Sub
+
+        ''' <summary>Die Coverspalte hat das Bild vermessen, das sie zeigt. Der Tag-Bereich nennt
+        ''' dieses Mass in seiner Hinweiszeile.</summary>
+        Private Sub OnTagCoverMeasured(text As String)
+            _tagEditorPanel?.ShowCoverSize(text)
         End Sub
 
         ''' <summary>Die Tag-Coverspalte, wenn sie sichtbar ist UND der Zeiger ueber ihr steht -
@@ -363,6 +372,7 @@ Namespace Views
             Dim tagCover = Me.FindControl(Of TagCoverPanel)("TagCoverPanel")
             If tagCover Is Nothing OrElse Not tagCover.IsVisible Then Return
             RemoveHandler tagCover.CoverChosen, AddressOf OnTagCoverChosen
+            RemoveHandler tagCover.CoverMeasured, AddressOf OnTagCoverMeasured
             tagCover.IsVisible = False
             Me.FindControl(Of Border)("NowPlayingPanel").IsVisible = True
         End Sub

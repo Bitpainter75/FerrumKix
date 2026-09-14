@@ -1,16 +1,47 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:icons="clr-namespace:FerrumPlay.Controls"
+             xmlns:views="clr-namespace:FerrumPlay.Views"
              x:Class="FerrumPlay.Views.TagCoverPanel"
              DragDrop.AllowDrop="True"
              Background="Transparent">
     <UserControl.Styles>
-        <!-- Waehrend ein Bild ueber der Spalte haengt, zeigt der Rahmen, dass hier abgelegt
-             werden kann. Ohne diese Rueckmeldung ist nicht zu erkennen, ob die Flaeche das
-             Ablegen ueberhaupt annimmt. -->
-        <Style Selector="Border.drop-target">
+        <!-- Die Einladung zum Ablegen haengt an der GANZEN Spalte und nicht am Bildrahmen:
+             abgelegt werden darf ueberall hier, siehe PlayerView.TagCoverTargetAt.
+
+             Zwei Ausloeser, weil keiner allein reicht. ":pointerover" greift beim blossen
+             Ueberfahren mit der Maus und weist das Ziel aus, bevor ueberhaupt gezogen wird.
+             Waehrend eines laufenden Ziehens bleibt der Zeiger dagegen beim Ausgangsfenster,
+             und diese Pseudoklasse aendert sich nicht mehr - dafuer setzt SetDropActive die
+             Klasse "drop-active".
+
+             Die Ruhewerte stehen MIT IN DEN STILVORLAGEN und nicht am Element: ein dort gesetzter
+             Wert schlaegt in Avalonia jede Stilvorlage, und der Akzentrahmen kam deshalb nie zum
+             Vorschein. Dieselbe Aufteilung wie bei Border.track-row in PlayerView.axaml. -->
+        <Style Selector="Border#CoverArea">
+            <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Subtle}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style Selector="views|TagCoverPanel.drop-active Border#CoverArea, views|TagCoverPanel:pointerover Border#CoverArea">
             <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
-            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderThickness" Value="3"/>
+        </Style>
+        <!-- Ein Rahmen allein war zu wenig: liegt bereits ein Cover im Feld, fuellt es die
+             Flaeche, und drei Bildpunkte Rand daneben gehen im Bild unter. Die Einladung legt
+             sich deshalb als eigene Schicht UEBER das Bild.
+
+             NUR waehrend eines Ziehens, nicht schon beim Ueberfahren: sie verdeckt das Cover,
+             und das waere bei jeder Mausbewegung ueber die Spalte hinweg im Weg. Das blosse
+             Ueberfahren bekommt den Rahmen und den hervorgehobenen Hinweis, das Ziehen die
+             ganze Schicht - je naeher am Ablegen, desto deutlicher. -->
+        <Style Selector="Border#DropOverlay">
+            <Setter Property="Opacity" Value="0"/>
+        </Style>
+        <Style Selector="views|TagCoverPanel.drop-active Border#DropOverlay">
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style Selector="views|TagCoverPanel.drop-active TextBlock#DropHint, views|TagCoverPanel:pointerover TextBlock#DropHint">
+            <Setter Property="Foreground" Value="{DynamicResource FP.Accent}"/>
         </Style>
     </UserControl.Styles>
     <!-- Die Spalte waehrend des Taggens. Sie liegt an der Stelle der laufenden Wiedergabe, zeigt
@@ -22,15 +53,31 @@
                 ClipToBounds="True"
                 Width="{Binding CoverSize}"
                 Height="{Binding CoverSize}"
-                Background="#22FFFFFF"
-                BorderBrush="{DynamicResource FP.Border.Subtle}"
-                BorderThickness="1">
+                Background="#22FFFFFF">
             <Panel>
                 <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/music.svg"
                                Width="56" Height="56"
                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                IconBrush="{DynamicResource FP.Text.Muted}"/>
                 <Image x:Name="CoverImage" Stretch="UniformToFill"/>
+                <!-- Verdeckt das Bild fast ganz, damit Zeichen und Text darauf lesbar bleiben -
+                     ein helles Cover darunter frisst sonst beides. Nimmt selbst keine Zeigertreffer
+                     entgegen: sonst verdeckte es die Flaeche, auf die es gerade hinweist. -->
+                <Border x:Name="DropOverlay"
+                        Background="#E60B0E11"
+                        IsHitTestVisible="False">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10" Margin="12">
+                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/download.svg"
+                                       Width="44" Height="44"
+                                       HorizontalAlignment="Center"
+                                       IconBrush="{DynamicResource FP.Accent}"/>
+                        <TextBlock Text="Bild hier ablegen"
+                                   Foreground="{DynamicResource FP.Accent}"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+                </Border>
             </Panel>
         </Border>
         <StackPanel Spacing="4">
@@ -52,7 +99,8 @@
                        Classes="muted"
                        TextAlignment="Center"/>
         </StackPanel>
-        <TextBlock Text="Cover hierher ziehen"
+        <TextBlock x:Name="DropHint"
+                   Text="Cover hierher ziehen"
                    Classes="muted"
                    Margin="0,4,0,0"
                    TextWrapping="Wrap"

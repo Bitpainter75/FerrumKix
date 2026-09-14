@@ -33,8 +33,11 @@
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve">
     <value>{0} by {1}, system factor {2:0.##}</value>
   </data>
-  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_1_JPEG_2_221379d9" xml:space="preserve">
-    <value>{0} MP3 file(s) selected. Cover: {1}×{1}, JPEG {2} %.</value>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_a07793fc" xml:space="preserve">
+    <value>{0} MP3 file(s) selected. Cover: {1}</value>
+  </data>
+  <data name="0_MP3_Datei_en_ausgew_hlt_Kein_Cover_vorhanden_6730169f" xml:space="preserve">
+    <value>{0} MP3 file(s) selected. No cover present.</value>
   </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve">
     <value>{0} percent</value>
@@ -158,6 +161,9 @@
   </data>
   <data name="Bibliothek_aktualisieren_08c49af2" xml:space="preserve">
     <value>Refresh library</value>
+  </data>
+  <data name="Bild_hier_ablegen_eb5ee306" xml:space="preserve">
+    <value>Drop image here</value>
   </data>
   <data name="Bildkodierung_0e276e0e" xml:space="preserve">
     <value>Image encoding</value>

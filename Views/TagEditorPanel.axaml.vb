@@ -42,8 +42,17 @@ Namespace Views
   End Sub
 
   Private Sub Fill()
+   ' Tragen die Dateien ueberhaupt keine Kennzeichen, stuende das Formular sonst leer da und
+   ' jede Zeile muesste von Hand getippt werden. Stattdessen steht der Vorschlag aus Dateiname
+   ' und Ordner darin - siehe HasNoTags. Er wird wie jede Eingabe erst beim Speichern
+   ' geschrieben und laesst sich vorher ueberall aendern.
+   Dim suggest = HasNoTags()
+   ' Erst sortieren, dann durchzaehlen: die fortlaufende Nummer ergibt sich aus der Reihenfolge
+   ' der Dateinamen und nicht daraus, wie die Titel gerade in der Liste angeklickt wurden.
+   If suggest Then _tracks.Sort(Function(left, right) StringComparer.CurrentCultureIgnoreCase.Compare(Path.GetFileName(left.FilePath), Path.GetFileName(right.FilePath)))
    Dim first = _tracks.FirstOrDefault() : If first Is Nothing Then Return
-   FindControl(Of TextBox)("ArtistBox").Text = first.Artist : FindControl(Of TextBox)("AlbumArtistBox").Text = first.AlbumArtist : FindControl(Of TextBox)("AlbumBox").Text = first.Album
+   Dim folder = If(suggest, FolderName(first), String.Empty)
+   FindControl(Of TextBox)("ArtistBox").Text = If(suggest, folder, first.Artist) : FindControl(Of TextBox)("AlbumArtistBox").Text = first.AlbumArtist : FindControl(Of TextBox)("AlbumBox").Text = If(suggest, folder, first.Album)
    FindControl(Of TextBox)("YearBox").Text = If(first.Year = 0, "", first.Year.ToString()) : FindControl(Of ComboBox)("GenreBox").ItemsSource = AppSettingsService.Current.TagGenres : FindControl(Of ComboBox)("GenreBox").Text = first.Genre : FindControl(Of TextBox)("SortBox").Text = first.AlbumSortOrder : FindControl(Of TextBox)("DiscBox").Text = String.Empty
    ' Die Discnummer startet LEER, auch wenn in den Dateien eine steht: sie gehoert nur zu
    ' mehrteiligen Alben und soll bewusst gesetzt werden. Bleibt das Feld leer, wird auch keine
@@ -58,14 +67,61 @@ Namespace Views
    AddHandler FindControl(Of TextBox)("ArtistBox").TextChanged, AddressOf OnArtistChanged
    AddHandler FindControl(Of TextBox)("YearBox").TextChanged, AddressOf OnYearChanged
    ApplyFollowUps()
+   Dim position = 0
    For Each track In _tracks
-    Dim title As New TextBox With {.Text = track.Title} : Dim number As New TextBox With {.Text = NumberText(track.TrackNumber), .Width = 90}
+    position += 1
+    Dim title As New TextBox With {.Text = If(suggest, Path.GetFileNameWithoutExtension(track.FilePath), track.Title)} : Dim number As New TextBox With {.Text = NumberText(If(suggest, position, track.TrackNumber)), .Width = 90}
     AddHandler number.LostFocus, AddressOf OnNumberLostFocus
     Dim row As New Grid With {.ColumnDefinitions = New ColumnDefinitions("90,*") , .ColumnSpacing = 10}
     row.Children.Add(number) : Grid.SetColumn(title, 1) : row.Children.Add(title) : FindControl(Of StackPanel)("TrackRows").Children.Add(row) : _rows.Add((track, title, number))
    Next
-   FindControl(Of TextBlock)("Hint").Text = LocalizationService.Format("{0} MP3-Datei(en) ausgewählt. Cover: {1}×{1}, JPEG {2} %.", _tracks.Count, AppSettingsService.Current.TagCoverSize, AppSettingsService.Current.TagCoverJpegQuality)
+   ShowSummaryHint()
   End Sub
+
+  ''' <summary>Das Mass des Bildes, das die Coverspalte gerade zeigt - leer, wenn keines drin
+  ''' steht. Hier stand vorher die eingestellte Kantenlaenge samt JPEG-Guete; die beschreibt
+  ''' aber nur, worauf ein Bild beim Speichern gebracht WUERDE, und sagte ueber das
+  ''' vorhandene nichts aus. Beim Taggen zaehlt genau das vorhandene: aus ihm ergibt sich,
+  ''' ob es fuer die eingestellte Kantenlaenge ueberhaupt genug hergibt.</summary>
+  Public Sub ShowCoverSize(text As String)
+   _coverSize = If(text, String.Empty).Trim()
+   ' Eine Meldung ueber ein gewaehltes Cover oder ueber das Schreiben ist die juengere
+   ' Nachricht. Ein Mass, das erst danach eintrifft - die Spalte liest das Bild nebenher -,
+   ' darf sie nicht verdraengen.
+   If _hintShowsSummary Then ShowSummaryHint()
+  End Sub
+
+  Private Sub ShowSummaryHint()
+   _hintShowsSummary = True
+   FindControl(Of TextBlock)("Hint").Text = If(_coverSize.Length = 0,
+                                               LocalizationService.Format("{0} MP3-Datei(en) ausgewählt. Kein Cover vorhanden.", _tracks.Count),
+                                               LocalizationService.Format("{0} MP3-Datei(en) ausgewählt. Cover: {1}", _tracks.Count, _coverSize))
+  End Sub
+
+  ''' <summary>Was in der Hinweiszeile steht, wenn sie die Auswahl beschreibt, und ob sie das
+  ''' gerade tut. Siehe <see cref="ShowCoverSize"/>.</summary>
+  Private _coverSize As String = String.Empty
+  Private _hintShowsSummary As Boolean
+  ''' <summary>Ob in den ausgewaehlten Dateien ueberhaupt kein Kennzeichen steht. Nur dann wird
+  ''' vorbelegt: sobald auch nur eine Datei etwas mitbringt, ist das der genauere Stand, und ein
+  ''' Vorschlag wuerde ihn ueberschreiben.</summary>
+  Private Function HasNoTags() As Boolean
+   Return Not _tracks.Any(Function(track) Not String.IsNullOrWhiteSpace(track.Title) OrElse Not String.IsNullOrWhiteSpace(track.Artist) OrElse
+                                          Not String.IsNullOrWhiteSpace(track.Album) OrElse Not String.IsNullOrWhiteSpace(track.AlbumArtist) OrElse
+                                          track.TrackNumber > 0)
+  End Function
+
+  ''' <summary>Der Name des Ordners, in dem die Dateien liegen. In einer aufgeraeumten Sammlung
+  ''' heisst er wie das Album, und damit ist er der beste Vorschlag, den es ohne Kennzeichen
+  ''' gibt.</summary>
+  Private Shared Function FolderName(track As Track) As String
+   Try
+    Return If(Path.GetFileName(Path.GetDirectoryName(track.FilePath)), String.Empty)
+   Catch
+    Return String.Empty
+   End Try
+  End Function
+
   Private Sub OnArtistChanged(sender As Object, e As TextChangedEventArgs)
    ApplyFollowUps()
   End Sub
@@ -103,6 +159,7 @@ Namespace Views
   Public Sub SetCover(bytes As Byte(), fileName As String)
    If bytes Is Nothing OrElse bytes.Length = 0 Then Return
    _cover = bytes
+   _hintShowsSummary = False
    FindControl(Of TextBlock)("Hint").Text = LocalizationService.Format("Neues Cover gewählt: {0}", fileName)
   End Sub
   Private Async Sub OnSaveClick(sender As Object, e As RoutedEventArgs)
@@ -133,6 +190,7 @@ Namespace Views
    ' Die Dateien heissen jetzt anders. Ohne dieses Speichern zeigte die gemerkte Wiedergabeliste
    ' nach dem naechsten Start auf die alten Namen, und jeder umbenannte Titel gaelte als fehlend.
    TryCast(DataContext, MainWindowViewModel)?.SavePlaylist()
+   _hintShowsSummary = False
    FindControl(Of TextBlock)("Hint").Text = If(errors.Count = 0, LocalizationService.T("Änderungen wurden übernommen."), String.Join(Environment.NewLine, errors)) : FindControl(Of Button)("SaveButton").IsEnabled = True
   End Sub
   Private Sub OnCloseClick(sender As Object, e As RoutedEventArgs)
