@@ -298,20 +298,18 @@ Namespace Services
         ''' <summary>Setzt die Umgebungsvariable, an der Avalonia die Vergroesserung abliest. MUSS
         ''' laufen, BEVOR Avalonia hochfaehrt: sie wird beim Aufbau des Fenstersystems einmal
         ''' gelesen und danach nie wieder. Eine Aenderung in den Einstellungen wirkt deshalb erst
-        ''' beim naechsten Start, und die Einstellungen sagen das auch.</summary>
-        ''' <summary>Der eingestellte Vergroesserungsfaktor eines Bildschirms, sonst 1,0.
-        '''
-        ''' <para>Frueher ging dieser Wert als AVALONIA_SCREEN_SCALE_FACTORS an das Fenstersystem.
-        ''' Die Variable liest aber nur Avalonias X11-Weg, und als eigener Wayland-Client blieb der
-        ''' Regler damit wirkungslos. Angewandt wird er jetzt im Fenster selbst, siehe
-        ''' <c>MainWindow.ApplyUiScale</c> - das haengt an keinem Fenstersystem und wirkt sofort.</para></summary>
-        Public Shared Function ScaleForScreen(screenName As String) As Double
-            Dim name = NormalizeScreenName(screenName)
-            If String.IsNullOrEmpty(name) Then Return 1.0
-            Dim match = NormalizeScreenScaleFactors(Current.ApplicationScaleFactors).
-                        FirstOrDefault(Function(entry) String.Equals(entry.ScreenName, name, StringComparison.Ordinal))
-            Return If(match Is Nothing, 1.0, match.Scale)
-        End Function
+        ''' beim naechsten Start.</summary>
+        Public Shared Sub ApplyApplicationScaleEnvironment()
+            ' Wie FerrumPix: Die Vorgabe ist fuer Avalonias Linux/X11-Weg. Unter Windows und macOS
+            ' skaliert Avalonia selbst pro Bildschirm.
+            If Not OperatingSystem.IsLinux() Then Return
+
+            Dim value = BuildScreenScaleFactors(Current.ApplicationScaleFactors)
+            ' Kein Eintrag ueber 1,0: die Variable ganz weglassen. Ein leerer Wert wuerde die
+            ' eigene Erkennung Avalonias verdraengen und ueberall den Faktor 1 erzwingen.
+            Environment.SetEnvironmentVariable("AVALONIA_SCREEN_SCALE_FACTORS",
+                                               If(value.Length > 0, value, Nothing))
+        End Sub
 
     End Class
 

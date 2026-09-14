@@ -211,7 +211,7 @@
     <value>浏览你的 Lyrion 媒体库，并在 FerrumPlay 中直接播放专辑。</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>每块屏幕可设单独的倍率，用于应用在该屏上显得过小时。立即生效。</value>
+    <value>每块屏幕可设单独的缩放倍率，用于应用在该屏上显得过小时。仅在下次启动时生效：窗口系统只会在启动时读取此值。</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>每行一个流派。该列表会在 MP3 打标签时作为选项出现，届时仍可自行输入。</value>

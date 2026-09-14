@@ -45,14 +45,6 @@ Namespace Views
             If Not String.IsNullOrWhiteSpace(chosen) Then FindControl(Of TextBox)("CdRipFolderBox").Text = chosen
         End Sub
 
-        ''' <summary>Der Vergroesserungsregler wurde losgelassen. ERST JETZT wird das Fenster
-        ''' neu vermessen: waehrend des Zuges geschah das bei jeder Zwischenstellung, und das ist
-        ''' bei jedem Bildpunkt ein kompletter Durchgang durch den Baum. Die Prozentzahl daneben
-        ''' laeuft weiterhin mit - sie haengt am Wert, nicht an diesem Ereignis.</summary>
-        Private Sub OnScreenScaleCommitted()
-            TryCast(DataContext, MainWindowViewModel)?.CommitUiScale()
-        End Sub
-
         Private Sub OnSectionNavClick(sender As Object, e As RoutedEventArgs)
             Dim button = TryCast(sender, Button)
             Dim name = TryCast(button?.Tag, String)

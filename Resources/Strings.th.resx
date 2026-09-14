@@ -211,7 +211,7 @@
     <value>เรียกดูคลัง Lyrion ของคุณและเล่นอัลบั้มใน FerrumPlay ได้โดยตรง</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>ตัวคูณแยกตามจอ สำหรับกรณีที่แอปดูเล็กเกินไปบนจอนั้น มีผลทันที</value>
+    <value>ตัวคูณการปรับขนาดแยกตามจอ สำหรับกรณีที่แอปดูเล็กเกินไปบนจอนั้น จะมีผลเมื่อเริ่มครั้งถัดไปเท่านั้น: ระบบหน้าต่างจะอ่านค่านี้เฉพาะตอนเริ่มทำงาน</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>หนึ่งแนวเพลงต่อบรรทัด รายการนี้จะปรากฏเป็นตัวเลือกเมื่อใส่แท็ก MP3 และยังพิมพ์ค่าของคุณเองได้</value>

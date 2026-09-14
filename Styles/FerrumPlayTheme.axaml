@@ -10,12 +10,6 @@
              zurueck. Uebernommen aus FerrumPix, wo derselbe Befund gemacht wurde. -->
         <Thickness x:Key="MenuInputGestureTextMargin">0</Thickness>
 
-        <!-- DIE VERGROESSERUNG FUER ALLES, WAS IN EINEM EIGENEN FENSTER STEHT. Kontextmenues,
-             Tooltips und Aufklapplisten zeichnet Avalonia in ein eigenes Popup-Fenster; das liegt
-             ausserhalb des WindowFrame und erbt dessen Vergroesserung nicht. Der PopupRoot-Stil
-             weiter unten holt sie sich von hier. Den Wert setzt MainWindow.ApplyUiScale. -->
-        <ScaleTransform x:Key="FP.UiScale" ScaleX="1" ScaleY="1"/>
-
         <!-- Schriftgroessen. Eine Vergroesserung der ganzen Anwendung ist eine Aenderung an diesen
              neun Zahlen und nicht an jeder AXAML-Datei. -->
         <x:Double x:Key="FP.Font.Label">9</x:Double>
@@ -591,37 +585,6 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Padding" Value="16"/>
-    </Style>
-
-    <!-- KONTEXTMENUES UND TOOLTIPS WACHSEN MIT. Sie stehen in einem eigenen Fenster und sind
-         damit kein Kind des WindowFrame, dessen RenderTransform die Anwendung vergroessert - ohne
-         diesen Stil blieben sie in Originalgroesse stehen, waehrend alles andere waechst (Befund
-         zur 0.9.0; bis 0.8.0 erledigte das die Umgebungsvariable AVALONIA_SCREEN_SCALE_FACTORS
-         fuer das ganze Fenstersystem mit).
-
-         Der Griff sitzt bewusst am PopupRoot und nicht an ContextMenu oder ToolTip einzeln: so
-         gilt er fuer jedes Popup, auch fuer Untermenues und Aufklapplisten, und keine neue Stelle
-         im Programm kann ihn vergessen.
-
-         LayoutTransform und nicht RenderTransform: das Popup-Fenster misst sich an seinem Inhalt.
-         Ein RenderTransform laeuft erst nach dieser Messung, blaest den Inhalt also ueber den
-         Fensterrand hinaus auf und schneidet das Menue ab. -->
-    <Style Selector="PopupRoot">
-        <Setter Property="Template">
-            <ControlTemplate TargetType="PopupRoot">
-                <Panel>
-                    <Border Name="PART_TransparencyFallback" IsHitTestVisible="False"/>
-                    <Border Background="{TemplateBinding Background}"/>
-                    <VisualLayerManager>
-                        <LayoutTransformControl LayoutTransform="{DynamicResource FP.UiScale}">
-                            <ContentPresenter Name="PART_ContentPresenter"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              Content="{TemplateBinding Content}"/>
-                        </LayoutTransformControl>
-                    </VisualLayerManager>
-                </Panel>
-            </ControlTemplate>
-        </Setter>
     </Style>
 
     <Style Selector="ToolTip">

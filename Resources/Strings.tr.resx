@@ -211,7 +211,7 @@
     <value>Lyrion kitaplığınıza göz atın ve albümleri doğrudan FerrumPlay'de çalın.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>Uygulama orada çok küçük görünüyorsa, her ekran için ayrı bir çarpan. Hemen geçerli olur.</value>
+    <value>Uygulama orada çok küçük görünüyorsa, her ekran için ayrı bir ölçeklendirme katsayısı. Yalnızca sonraki başlangıçta geçerli olur: pencere sistemi değeri yalnızca başlangıçta okur.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Satır başına bir tür. Bu liste MP3 etiketlemede seçenek olarak görünür; orada kendi değerinizi de yazabilirsiniz.</value>

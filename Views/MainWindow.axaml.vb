@@ -6,7 +6,6 @@ Imports Avalonia.Controls
 Imports Avalonia.Input
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
-Imports Avalonia.Media
 Imports Avalonia.Platform.Storage
 Imports FerrumPlay.Services
 Imports FerrumPlay.ViewModels
@@ -29,22 +28,9 @@ Namespace Views
             ' Bildschirmliste und das Fenster unvergroessert. Unter X11 kommt es einmal zusaetzlich
             ' und schadet nicht.
             AddHandler Screens.Changed, AddressOf OnScreensChanged
-            AddHandler PositionChanged, AddressOf OnWindowPositionChanged
-            ' Wann das Fenster welche Groesse bekommt und warum. Steht nur im Protokoll, kostet
-            ' also ausgeschaltet nichts - und ist die einzige Stelle, an der sich eine Groesse, die
-            ' erst verspaetet ankommt, von einer falsch berechneten unterscheiden laesst.
-            AddHandler Resized, AddressOf OnWindowResized
             ' Kommt das Fenster wieder nach vorn, wird nachgesehen, ob fehlende Dateien wieder da
             ' sind - oder weitere fehlen. Das Viewmodel drosselt selbst.
             AddHandler Activated, Sub(sender, e) ViewModel?.RecheckMissingFiles()
-            ' Ein verstellter Faktor wirkt sofort; ohne das bliebe das Fenster stehen, bis jemand
-            ' die Anwendung neu startet.
-            AddHandler DataContextChanged,
-                Sub(sender, e)
-                    Dim viewModel = Me.ViewModel
-                    If viewModel Is Nothing Then Return
-                    AddHandler viewModel.UiScaleChanged, AddressOf ApplyUiScale
-                End Sub
             ' Die Beschreibung der Bildschirme ist ein fertiger Satz aus dem Code und wird beim
             ' Sprachwechsel neu gebaut. Die Faktoren kommen dabei aus den Einstellungen und bleiben.
             AddHandler LocalizationService.LanguageChanged, Sub(sender, e) OnWindowOpened(Me, EventArgs.Empty)
@@ -202,34 +188,13 @@ Namespace Views
 
         ''' <summary>Die Bildschirme kennt Avalonia erst, wenn das Fenster steht. Die Einstellungen
         ''' brauchen sie, um je Bildschirm einen Vergroesserungsfaktor anbieten zu koennen.</summary>
-        ''' <summary>Ein Bildschirm kam dazu, fiel weg oder aenderte sich. Beides haengt daran: die
-        ''' Liste in den Einstellungen und die Vergroesserung des Fensters.</summary>
+        ''' <summary>Ein Bildschirm kam dazu, fiel weg oder aenderte sich. Die Liste in den
+        ''' Einstellungen muss dann neu aufgebaut werden.</summary>
         Private Sub OnScreensChanged(sender As Object, e As EventArgs)
             OnWindowOpened(Me, EventArgs.Empty)
         End Sub
 
-        ''' <summary>Wann das Fenster welche Groesse bekommt und warum. Der Anlass ist die
-        ''' entscheidende Angabe: "Layout" heisst, dass die Anwendung selbst die Groesse betreibt,
-        ''' und genau daran liess sich erkennen, dass sie gegen die Kachelverwaltung arbeitete -
-        ''' und daran liess sich erkennen, wer die Groesse gerade betreibt.</summary>
-        Private Sub OnWindowResized(sender As Object, e As WindowResizedEventArgs)
-            DiagnosticLogService.Log("Window.Size", $"{e.ClientSize.Width:0}x{e.ClientSize.Height:0}, Anlass={e.Reason}, Zustand={WindowState}")
-            ' MIT DER GROESSE AUS DEM EREIGNIS. Die Eigenschaft ClientSize traegt zu diesem
-            ' Zeitpunkt unter Umstaenden noch den alten Wert; der Rahmen rechnete dann mit der
-            ' Groesse von vorher weiter.
-            ApplyUiScale(e.ClientSize)
-        End Sub
-
-        ''' <summary>Das Fenster steht jetzt woanders - unter Umstaenden auf einem Bildschirm mit
-        ''' einem anderen Faktor.</summary>
-        Private Sub OnWindowPositionChanged(sender As Object, e As PixelPointEventArgs)
-            ApplyUiScale()
-        End Sub
-
         Private Sub OnWindowOpened(sender As Object, e As EventArgs)
-            ' VOR der Pruefung auf die Ansicht: die Vergroesserung haengt an den Einstellungen und
-            ' nicht an ihr, und ohne Ansicht bliebe das Fenster sonst unvergroessert stehen.
-            ApplyUiScale()
             Dim viewModel = Me.ViewModel
             If viewModel Is Nothing Then Return
 
@@ -245,57 +210,6 @@ Namespace Views
                 viewModel.SetScreens(rows)
             Catch ex As Exception
                 DiagnosticLogService.LogException("Window.Screens", ex)
-            End Try
-        End Sub
-
-        ''' <summary>Legt die eingestellte Vergroesserung auf das Fenster.
-        '''
-        ''' <para>Genommen wird der Faktor des Bildschirms, auf dem das Fenster gerade steht - die
-        ''' Einstellung fuehrt einen je Bildschirm, weil an einem kleinen Zweitschirm etwas anderes
-        ''' noetig ist als am grossen. Findet sich keiner, bleibt es bei 1,0.</para>
-        '''
-        ''' <para>Frueher stand der Wert in einer Umgebungsvariablen, die nur Avalonias X11-Weg
-        ''' liest; unter Wayland war der Regler damit wirkungslos. Ueber die Layout-Vergroesserung
-        ''' gilt er ueberall und sofort.</para></summary>
-        Friend Sub ApplyUiScale()
-            ApplyUiScale(ClientSize)
-        End Sub
-
-        ''' <param name="size">Die Groesse, mit der gerechnet werden soll. Aus einem Ereignis die
-        ''' dort mitgelieferte: die Eigenschaft <c>ClientSize</c> hinkt ihr unter Umstaenden noch
-        ''' hinterher.</param>
-        Friend Sub ApplyUiScale(size As Size)
-            Try
-                Dim frame = Me.FindControl(Of Border)("WindowFrame")
-                Dim scale = TryCast(frame?.RenderTransform, ScaleTransform)
-                If frame Is Nothing OrElse scale Is Nothing Then Return
-                If size.Width <= 0 OrElse size.Height <= 0 Then Return
-
-                Dim screenName = Screens.ScreenFromWindow(Me)?.DisplayName
-                Dim factor = Math.Max(0.1, AppSettingsService.ScaleForScreen(screenName))
-
-                ' Der Rahmen wird KLEINER als das Fenster gebaut und von der Vergroesserung wieder
-                ' genau darauf gebracht. Sein Mass steht damit fest und haengt nicht daran, was der
-                ' Inhalt sich wuenscht - das war die Stelle, an der es nach einem Wechsel des
-                ' Arbeitsbereichs auseinanderlief.
-                frame.Width = size.Width / factor
-                frame.Height = size.Height / factor
-                scale.ScaleX = factor
-                scale.ScaleY = factor
-
-                ' Popups - Kontextmenue, Tooltip, Aufklappliste - stehen in einem eigenen Fenster
-                ' und liegen damit ausserhalb dieses Rahmens. Sie holen sich den Faktor ueber diese
-                ' Ressource; siehe den PopupRoot-Stil in Styles/FerrumPlayTheme.axaml. Ein NEUES
-                ' Transform und kein Aendern des vorhandenen: nur der Austausch des Werts sagt den
-                ' DynamicResource-Bindungen Bescheid, ein offenes Popup misst sich sonst nicht neu.
-                Dim app = Application.Current
-                If app IsNot Nothing Then app.Resources("FP.UiScale") = New ScaleTransform(factor, factor)
-
-                DiagnosticLogService.Log("Window.UiScale",
-                                         $"Faktor={factor:0.##}, Fenster={size.Width:0}x{size.Height:0}, " &
-                                         $"Rahmen={frame.Width:0}x{frame.Height:0}, Bildschirm={If(screenName, "?")}")
-            Catch ex As Exception
-                DiagnosticLogService.LogException("Window.UiScale", ex)
             End Try
         End Sub
 

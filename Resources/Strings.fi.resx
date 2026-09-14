@@ -211,7 +211,7 @@
     <value>Selaa Lyrion-kirjastoasi ja toista albumeita suoraan FerrumPlayssa.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>Oma kerroin kullekin näytölle, jos sovellus näyttää siellä liian pieneltä. Tulee voimaan heti.</value>
+    <value>Oma skaalauskerroin kullekin näytölle, jos sovellus näyttää siellä liian pieneltä. Tulee voimaan vasta seuraavalla käynnistyskerralla: ikkunajärjestelmä lukee arvon vain käynnistyksen yhteydessä.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Yksi laji riviä kohden. Luettelo näkyy valintana MP3-tunnisteita kirjoitettaessa; oma arvo on siellä edelleen mahdollinen.</value>

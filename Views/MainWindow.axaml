@@ -11,45 +11,11 @@
         WindowStartupLocation="Manual"
         Background="Transparent">
 
-    <!-- DIE VERGROESSERUNG DER ANWENDUNG.
-         Sie sitzt bewusst NICHT im Layout. Ein LayoutTransformControl an der Fensterwurzel nimmt
-         an der Groessenberechnung des Fensters teil, und die ist damit zirkulaer: die Fenstergroesse
-         haengt am Inhalt, der Inhalt an der Fenstergroesse, ein Faktor dazwischen. Beim Start loeste
-         sich das zufaellig richtig auf, nach einem Wechsel des Arbeitsbereichs nicht mehr - der
-         Rahmen stand dann auf zwei Dritteln der Kachel (gemessen: Fenster 1241x705, Rahmen 353
-         statt 564).
-
-         RenderTransform laeuft NACH dem Layout und kann es deshalb nicht stoeren. Der Rahmen
-         bekommt sein Mass ausgerechnet - Fenstergroesse geteilt durch den Faktor, siehe
-         MainWindow.ApplyUiScale -, und die Vergroesserung blaest genau das wieder auf die
-         Fenstergroesse auf. Links oben verankert, damit sie dort ansetzt, wo der Rahmen beginnt.
-
-         DIESER RAHMEN DARF NICHT ClipToBounds TRAGEN. Avalonia rechnet das Sichtfenster, das jedes
-         virtualisierende Steuerelement darunter zu sehen bekommt, in
-         LayoutManager.CalculateEffectiveViewport aus - und zwar in dieser Reihenfolge: erst am
-         Bounds des Rahmens zuschneiden, DANN die Vergroesserung herausrechnen. Bounds ist hier
-         aber bereits die geteilte Groesse (Fenster durch Faktor), die Teilung geschieht damit
-         zweimal. Bei Faktor 1,68 meldete der Zuschnitt dem Alben-Repeater des Lyrion-Browsers ein
-         Sichtfenster von 660x375 statt 1108x630, beim Rollen zusaetzlich an der falschen Stelle.
-         Seine Buchhaltung ueber die gebauten Kacheln lief daran auseinander und die Anwendung
-         stuerzte in FlowLayoutAlgorithm.RaiseLineArranged ab. Ohne Zuschnitt geht das ungeteilte
-         Fenstermass in die Rechnung und kommt richtig unten an; die Ecken schneidet der Rahmen
-         darunter. -->
     <Border x:Name="WindowFrame"
             CornerRadius="8"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            RenderTransformOrigin="0%,0%"
+            ClipToBounds="True"
             Background="{DynamicResource FP.Bg.Root}">
-        <Border.RenderTransform>
-            <ScaleTransform ScaleX="1" ScaleY="1"/>
-        </Border.RenderTransform>
-        <!-- DAS SCHNEIDEN AUF DIE ABGERUNDETEN ECKEN LIEGT HIER UND NICHT AM WINDOWFRAME.
-             Es muss UNTERHALB der Vergroesserung sitzen: siehe die Begruendung am Rahmen
-             darueber. Dieser Rahmen traegt kein RenderTransform, sein Zuschnitt ist damit
-             harmlos. -->
-        <Border CornerRadius="8" ClipToBounds="True">
-            <Grid>
+        <Grid>
                 <Grid RowDefinitions="Auto,*">
 
                     <!-- DIE FENSTERLEISTE. Hier laesst sich das Fenster verschieben; die Hoehe steht an
@@ -136,7 +102,6 @@
                      wird, ist sie unsichtbar und faengt nichts ab. -->
                 <views:ConfirmDialogOverlay/>
 
-            </Grid>
-        </Border>
+        </Grid>
     </Border>
 </Window>

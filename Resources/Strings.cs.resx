@@ -211,7 +211,7 @@
     <value>Procházejte svou knihovnu Lyrion a přehrávejte alba přímo ve FerrumPlay.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>Vlastní faktor pro každou obrazovku, pokud je tam aplikace příliš malá. Platí okamžitě.</value>
+    <value>Vlastní faktor pro každou obrazovku, pokud je tam aplikace příliš malá. Projeví se až při příštím spuštění: okenní systém hodnotu načítá jen při spuštění.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Jeden žánr na řádek. Tento seznam se objeví jako výběr při značkování MP3; vlastní hodnota tam zůstává možná.</value>

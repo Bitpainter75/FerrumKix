@@ -211,7 +211,7 @@
     <value>Przeglądaj swoją bibliotekę Lyrion i odtwarzaj albumy bezpośrednio w FerrumPlay.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>Własny współczynnik dla każdego ekranu, gdy aplikacja jest tam za mała. Działa od razu.</value>
+    <value>Własny współczynnik skalowania dla każdego ekranu, gdy aplikacja jest tam za mała. Zadziała dopiero przy następnym uruchomieniu: system okien odczytuje wartość tylko podczas uruchamiania.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Jeden gatunek w wierszu. Ta lista pojawia się jako wybór przy znakowaniu MP3; własna wartość nadal jest tam możliwa.</value>

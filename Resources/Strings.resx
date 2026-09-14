@@ -280,7 +280,7 @@
     <value>Browse your Lyrion library and play albums directly in FerrumPlay.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>A factor of its own per screen, in case the application looks too small there. Takes effect at once.</value>
+    <value>A separate scale factor for each screen, in case the application looks too small there. Takes effect only after the next start: the window system reads the value only during startup.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>One genre per line. This list appears as a choice when tagging MP3 files; a value of your own remains possible there.</value>

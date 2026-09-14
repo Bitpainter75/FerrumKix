@@ -211,7 +211,7 @@
     <value>Bla gjennom Lyrion-biblioteket ditt og spill album direkte i FerrumPlay.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>En egen faktor per skjerm, hvis programmet står for lite der. Gjelder med en gang.</value>
+    <value>En egen skaleringsfaktor per skjerm, hvis programmet står for lite der. Virker først ved neste oppstart: vindussystemet leser bare verdien ved oppstart.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Én sjanger per linje. Listen vises som valg ved MP3-tagging; en egen verdi er fortsatt mulig der.</value>

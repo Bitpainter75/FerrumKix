@@ -211,7 +211,7 @@
     <value>अपनी Lyrion लाइब्रेरी देखें और एल्बम सीधे FerrumPlay में चलाएँ।</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>हर स्क्रीन के लिए अलग कारक, यदि वहाँ ऐप्लिकेशन बहुत छोटा दिखे। तुरंत लागू होता है।</value>
+    <value>हर स्क्रीन के लिए अलग स्केल कारक, यदि वहाँ ऐप्लिकेशन बहुत छोटा दिखे। इसका असर अगले शुरू होने पर ही होगा: विंडो सिस्टम यह मान केवल शुरू होते समय पढ़ता है।</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>प्रति पंक्ति एक शैली। यह सूची MP3 टैग करते समय विकल्प के रूप में दिखती है; वहाँ अपना मान भी लिखा जा सकता है।</value>

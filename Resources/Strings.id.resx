@@ -211,7 +211,7 @@
     <value>Telusuri pustaka Lyrion Anda dan putar album langsung di FerrumPlay.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>Faktor tersendiri per layar, jika aplikasi tampak terlalu kecil di sana. Langsung berlaku.</value>
+    <value>Faktor skala tersendiri per layar, jika aplikasi tampak terlalu kecil di sana. Baru berlaku pada peluncuran berikutnya: sistem jendela hanya membaca nilai ini saat memulai.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Satu genre per baris. Daftar ini muncul sebagai pilihan saat menandai MP3; nilai sendiri tetap dapat dituliskan di sana.</value>

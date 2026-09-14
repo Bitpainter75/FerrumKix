@@ -103,6 +103,7 @@ Namespace ViewModels
         Private _currentTrack As Track
         Private _currentCover As Bitmap
         Private _mode As AppMode = AppMode.Player
+        Private _restartNeeded As Boolean
         Private _searchText As String = String.Empty
         Private _statusText As String = String.Empty
         ' Konvertieren und CD-Rippen beanspruchen dieselben Laufwerke und Dateien wie die
@@ -733,11 +734,13 @@ Namespace ViewModels
         Public ReadOnly Property SetFontSizeCommand As DelegateCommand
         Public ReadOnly Property SetAccentColorCommand As DelegateCommand
 
-        ''' <summary>Ein Vergroesserungsfaktor wurde verstellt. Das Fenster legt ihn daraufhin
-        ''' sofort an - siehe <c>MainWindow.ApplyUiScale</c>. Frueher stand hier ein Hinweis auf
-        ''' den naechsten Start: der Wert ging damals als Umgebungsvariable an das Fenstersystem
-        ''' und wurde nur beim Hochfahren gelesen.</summary>
-        Public Event UiScaleChanged()
+        ''' <summary>True, sobald ein Faktor verstellt wurde. Die Einstellungen zeigen daraufhin
+        ''' den Hinweis, dass es erst beim naechsten Start wirkt.</summary>
+        Public ReadOnly Property IsRestartNeeded As Boolean
+            Get
+                Return _restartNeeded
+            End Get
+        End Property
 
         Private Sub SetFontSizeOffset(offset As Integer)
             Dim normalized = FontScaleService.Normalize(offset)
@@ -811,12 +814,9 @@ Namespace ViewModels
                     .ScreenName = r.ScreenName,
                     .Scale = r.Scale}).ToList()
 
-        End Sub
-
-        ''' <summary>Der Regler ist losgelassen - jetzt gilt der Faktor. Getrennt vom Verstellen,
-        ''' damit das Fenster nicht bei jeder Zwischenstellung eines Zuges neu vermessen wird.</summary>
-        Public Sub CommitUiScale()
-            RaiseEvent UiScaleChanged()
+            If _restartNeeded Then Return
+            _restartNeeded = True
+            RaisePropertyChanged(NameOf(IsRestartNeeded))
         End Sub
 
         ''' <summary>Die laufende Fassung, so wie sie auch auf dem Paket steht. Sie kommt aus

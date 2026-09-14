@@ -287,7 +287,7 @@
                         <StackPanel Spacing="8" IsVisible="{Binding AreScreenScalesVisible}">
                             <TextBlock Text="Vergrößerung der Anwendung" Classes="setting-title"/>
                             <TextBlock Classes="setting-note"
-                                       Text="Ein eigener Faktor je Bildschirm, für den Fall, dass die Anwendung dort zu klein steht. Gilt sofort."/>
+                                       Text="Ein eigener Faktor je Bildschirm, für den Fall, dass die Anwendung dort zu klein steht. Wirkt erst beim nächsten Start: das Fenstersystem liest den Wert nur beim Hochfahren."/>
                             <ItemsControl ItemsSource="{Binding ScreenScales}" Margin="0,4,0,0">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -298,16 +298,10 @@
                                             </StackPanel>
                                             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12"
                                                         VerticalAlignment="Center">
-                                                <!-- Ein Prozent je Raststellung. Fuenf waren zu grob: zwischen 120 und 125 Prozent
-                                                     liegt sichtbar etwas, und AppSettingsService.NormalizeScale
-                                                     rundet ohnehin erst auf zwei Nachkommastellen. Das Rad behaelt
-                                                     die groeberen Spruenge - damit will man schnell hin, nicht
-                                                     genau treffen. -->
                                                 <icons:RoundSlider Width="220" Minimum="1" Maximum="2.5"
-                                                                   Step="0.01" WheelIncrement="0.05" DefaultValue="1"
+                                                                   Step="0.05" DefaultValue="1"
                                                                    VerticalAlignment="Center"
                                                                    ToolTip.Tip="Doppelklick setzt auf 100 Prozent zurück"
-                                                                   ValueCommitted="OnScreenScaleCommitted"
                                                                    Value="{Binding Scale, Mode=TwoWay}"/>
                                                 <TextBlock Text="{Binding ScaleText}"
                                                            VerticalAlignment="Center" MinWidth="86"
@@ -317,6 +311,10 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <TextBlock Classes="setting-note"
+                                       Foreground="{DynamicResource FP.Accent}"
+                                       IsVisible="{Binding IsRestartNeeded}"
+                                       Text="Die neue Vergrößerung gilt, sobald FerrumPlay das nächste Mal gestartet wird."/>
                         </StackPanel>
 
                         <Grid ColumnDefinitions="*,Auto">

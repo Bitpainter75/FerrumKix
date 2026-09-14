@@ -211,7 +211,7 @@
     <value>Explora tu biblioteca de Lyrion y reproduce álbumes directamente en FerrumPlay.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>Un factor propio por pantalla, por si la aplicación se ve demasiado pequeña. Se aplica de inmediato.</value>
+    <value>Un factor de escala propio por pantalla, por si la aplicación se ve demasiado pequeña. Solo se aplica al reiniciar: el sistema de ventanas lee el valor únicamente durante el arranque.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Un género por línea. Esta lista aparece como selección al etiquetar MP3; allí sigue siendo posible un valor propio.</value>

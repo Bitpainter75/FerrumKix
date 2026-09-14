@@ -211,7 +211,7 @@
     <value>Doorzoek je Lyrion-bibliotheek en speel albums rechtstreeks in FerrumPlay af.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>Een eigen factor per scherm, als de toepassing daar te klein oogt. Geldt meteen.</value>
+    <value>Een eigen schaalfactor per scherm, als de toepassing daar te klein oogt. Werkt pas bij de volgende start: het venstersysteem leest de waarde alleen bij het opstarten.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>Eén genre per regel. Deze lijst verschijnt als keuze bij het taggen van MP3's; een eigen waarde blijft daar mogelijk.</value>

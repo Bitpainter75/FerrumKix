@@ -211,7 +211,7 @@
     <value>Lyrion ライブラリーを見ながら、アルバムを FerrumPlay で直接再生できます。</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
-    <value>画面ごとの倍率。そこでアプリが小さすぎる場合に。すぐに反映されます。</value>
+    <value>画面ごとの拡大率。そこでアプリが小さすぎる場合に使います。次回の起動時にのみ反映されます。ウィンドウシステムは起動時にしかこの値を読み込みません。</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
     <value>1 行に 1 つのジャンル。この一覧は MP3 タグ付け時の選択肢として表示され、独自の値もそのまま入力できます。</value>

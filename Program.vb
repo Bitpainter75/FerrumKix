@@ -24,6 +24,11 @@ Module Program
         ' laesst RefreshEnabled ohnehin stehen.
         DiagnosticLogService.RefreshEnabled(AppSettingsService.Current.EnableDiagnosticLogging)
 
+        ' Wie FerrumPix: Avalonia liest die Faktoren beim Aufbau des Fenstersystems. Die
+        ' Umgebungsvariable muss deshalb vor BuildAvaloniaApp gesetzt sein, damit Fenster und
+        ' Popups dieselbe Skalierung direkt vom Toolkit erhalten.
+        AppSettingsService.ApplyApplicationScaleEnvironment()
+
         ' DIE BEIDEN SICHERHEITSNETZE GEHOEREN HIERHER und nicht in die Anwendungsklasse. Dort
         ' werden sie erst angemeldet, wenn Avalonia schon steht; ein Absturz beim Aufbau des
         ' Toolkits faellt vorher und hinterliesse keine Spur.
