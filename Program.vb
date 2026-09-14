@@ -24,8 +24,6 @@ Module Program
         ' laesst RefreshEnabled ohnehin stehen.
         DiagnosticLogService.RefreshEnabled(AppSettingsService.Current.EnableDiagnosticLogging)
 
-        _forceX11 = args IsNot Nothing AndAlso args.Any(Function(a) String.Equals(a, X11Switch, StringComparison.OrdinalIgnoreCase))
-
         ' DIE BEIDEN SICHERHEITSNETZE GEHOEREN HIERHER und nicht in die Anwendungsklasse. Dort
         ' werden sie erst angemeldet, wenn Avalonia schon steht; ein Absturz beim Aufbau des
         ' Toolkits faellt vorher und hinterliesse keine Spur.
@@ -47,8 +45,7 @@ Module Program
             Return 0
         End If
 
-        DiagnosticLogService.LogAlways("App.Start", $"pid={Environment.ProcessId}, paths={_startupPaths.Count}, " &
-                                                    $"Fenstersystem={If(OperatingSystem.IsLinux() AndAlso Not _forceX11, "Wayland (Rueckfall X11)", "Erkennung")}")
+        DiagnosticLogService.LogAlways("App.Start", $"pid={Environment.ProcessId}, paths={_startupPaths.Count}")
         Try
             Return BuildAvaloniaApp().StartWithClassicDesktopLifetime(ForwardedArguments(remaining))
         Finally
@@ -104,43 +101,13 @@ Module Program
     ''' meldet sie als Fehler.</summary>
     Private Function ForwardedArguments(args As String()) As String()
         If args Is Nothing Then Return Array.Empty(Of String)()
-        Return args.Where(Function(a) Not String.Equals(a, DebugSwitch, StringComparison.OrdinalIgnoreCase) AndAlso
-                                      Not String.Equals(a, X11Switch, StringComparison.OrdinalIgnoreCase)).ToArray()
+        Return args.Where(Function(a) Not String.Equals(a, DebugSwitch, StringComparison.OrdinalIgnoreCase)).ToArray()
     End Function
 
-    ''' <summary>Startparameter, der den alten X11-Weg erzwingt.</summary>
-    Private Const X11Switch As String = "--x11"
-
-    ''' <summary>Baut die Anwendung auf dem Fenstersystem auf, das dazu passt.
-    '''
-    ''' <para>Unter Linux ueber WAYLAND, mit Rueckfall auf X11, wenn keines da ist. Nicht aus
-    ''' Vorliebe: Avalonia.Desktop bringt nur das X11-Backend mit, und auf einem Wayland-Schreibtisch
-    ''' laeuft die Anwendung dann unter XWayland. Deren Bruecke zwischen den beiden Welten reicht
-    ''' beim Ablegen zwar die angebotenen Formen durch, als Daten aber den Inhalt der
-    ''' ZWISCHENABLAGE - ein aus Dolphin gezogenes Bild kam nie an. Als eigener Wayland-Client
-    ''' gibt es diese Bruecke nicht mehr.</para>
-    '''
-    ''' <para>Windows und macOS bleiben bei der Erkennung; dort gibt es kein Wayland, und ein
-    ''' Rueckfall, der erst scheitern muss, waere nur eine Fehlerquelle mehr.</para></summary>
     Public Function BuildAvaloniaApp() As AppBuilder
-        ' Die Erkennung steht ZUERST, auch auf dem Wayland-Weg: UseWaylandWithFallback verlangt
-        ' ein bereits eingerichtetes Rueckfall-Backend und wirft sonst beim Aufbau.
-        Dim builder = AppBuilder.Configure(Of App)().UsePlatformDetect()
-        If OperatingSystem.IsLinux() AndAlso Not _forceX11 Then builder = builder.UseWaylandWithFallback()
-        Return builder.LogToTrace()
+        Return AppBuilder.Configure(Of App)() _
+            .UsePlatformDetect() _
+            .LogToTrace()
     End Function
-
-    ''' <summary>Ob die Anwendung auf dem Wayland-Backend laeuft. Ein paar Entscheidungen haengen
-    ''' daran, die sich sonst nirgends ablesen lassen - siehe MainWindow.RestoreWindowPlacement.</summary>
-    Public ReadOnly Property UsesWayland As Boolean
-        Get
-            Return OperatingSystem.IsLinux() AndAlso Not _forceX11 AndAlso
-                   Not String.IsNullOrEmpty(Environment.GetEnvironmentVariable("WAYLAND_DISPLAY"))
-        End Get
-    End Property
-
-    ''' <summary>Ob <c>--x11</c> uebergeben wurde. Das Wayland-Backend ist das juengere von
-    ''' beiden; geht dort etwas schief, muss der alte Weg ohne neue Fassung erreichbar sein.</summary>
-    Private _forceX11 As Boolean
 
 End Module

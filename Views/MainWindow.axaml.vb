@@ -36,16 +36,7 @@ Namespace Views
             AddHandler Resized, AddressOf OnWindowResized
             ' Kommt das Fenster wieder nach vorn, wird nachgesehen, ob fehlende Dateien wieder da
             ' sind - oder weitere fehlen. Das Viewmodel drosselt selbst.
-            AddHandler Activated,
-                Sub(sender, e)
-                    DiagnosticLogService.LogAlways("Window.Focus", $"Activated, Zustand={WindowState}, {ClientSize.Width:0}x{ClientSize.Height:0}")
-                    ViewModel?.RecheckMissingFiles()
-                End Sub
-            ' Der Gegenpunkt: verliert das Fenster die Aktivierung, schickt der Compositor eine
-            ' neue Konfiguration mit - und ob darin "maximiert" noch steht, entscheidet, ob
-            ' Avalonia auf seine hinterlegte Wiederherstellungsgroesse zurueckstellt.
-            AddHandler Deactivated,
-                Sub(sender, e) DiagnosticLogService.LogAlways("Window.Focus", $"Deactivated, Zustand={WindowState}, {ClientSize.Width:0}x{ClientSize.Height:0}")
+            AddHandler Activated, Sub(sender, e) ViewModel?.RecheckMissingFiles()
             ' Ein verstellter Faktor wirkt sofort; ohne das bliebe das Fenster stehen, bis jemand
             ' die Anwendung neu startet.
             AddHandler DataContextChanged,
@@ -194,20 +185,7 @@ Namespace Views
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             End If
 
-            ' UNTER WAYLAND NICHT MAXIMIEREN.
-            '
-            ' Der Compositor schickt "aktiviert" und "maximiert" in derselben Konfiguration. Unter
-            ' Hyprland verliert ein Fenster beim Wegwandern des Zeigers die Aktivierung - und mit
-            ' ihr den maximierten Zustand. Avalonia stellt daraufhin die Groesse wieder her, die es
-            ' sich dazu gemerkt hat, und das Fenster fiel mitten in seiner Kachel auf die alte
-            ' Groesse zurueck. Im Protokoll steht genau das: "Deactivated, Zustand=Maximized,
-            ' 1241x705", zwei Sekunden spaeter "1035x588, Zustand=Normal".
-            '
-            ' In einer Kachelverwaltung bringt Maximieren ohnehin nichts - der Compositor gibt die
-            ' Groesse vor, und das Fenster fuellt seine Kachel von selbst. Auf einem Wayland-Tisch
-            ' mit frei liegenden Fenstern geht damit das maximierte Oeffnen verloren; das ist der
-            ' Preis dafuer, dass es ueberhaupt verlaesslich steht.
-            If settings.WindowMaximized AndAlso Not Program.UsesWayland Then WindowState = WindowState.Maximized
+            If settings.WindowMaximized Then WindowState = WindowState.Maximized
             UpdateMaximizeGlyph()
         End Sub
 
@@ -233,9 +211,9 @@ Namespace Views
         ''' <summary>Wann das Fenster welche Groesse bekommt und warum. Der Anlass ist die
         ''' entscheidende Angabe: "Layout" heisst, dass die Anwendung selbst die Groesse betreibt,
         ''' und genau daran liess sich erkennen, dass sie gegen die Kachelverwaltung arbeitete -
-        ''' siehe die Freigabe von Width/Height in OnWindowOpened.</summary>
+        ''' und daran liess sich erkennen, wer die Groesse gerade betreibt.</summary>
         Private Sub OnWindowResized(sender As Object, e As WindowResizedEventArgs)
-            DiagnosticLogService.LogAlways("Window.Size", $"{e.ClientSize.Width:0}x{e.ClientSize.Height:0}, Anlass={e.Reason}, Zustand={WindowState}")
+            DiagnosticLogService.Log("Window.Size", $"{e.ClientSize.Width:0}x{e.ClientSize.Height:0}, Anlass={e.Reason}, Zustand={WindowState}")
             ' MIT DER GROESSE AUS DEM EREIGNIS. Die Eigenschaft ClientSize traegt zu diesem
             ' Zeitpunkt unter Umstaenden noch den alten Wert; der Rahmen rechnete dann mit der
             ' Groesse von vorher weiter.
@@ -252,16 +230,6 @@ Namespace Views
             ' VOR der Pruefung auf die Ansicht: die Vergroesserung haengt an den Einstellungen und
             ' nicht an ihr, und ohne Ansicht bliebe das Fenster sonst unvergroessert stehen.
             ApplyUiScale()
-            ' DIE GEMERKTE GROESSE WIEDER FREIGEBEN. Width und Height sind gesetzte Werte, und
-            ' Avalonia legt gesetzte Werte bei JEDEM Layout-Durchgang erneut auf. In einer
-            ' Kachelverwaltung bestimmt aber der Compositor die Groesse: unter X11 korrigiert der
-            ' Fenstermanager das sofort weg, unter Wayland gewinnt der eigene Wert - das Fenster
-            ' bekam beim Zurueckkehren in den Arbeitsbereich die Kachel und fiel Sekunden spaeter
-            ' auf die gemerkte Groesse zurueck, gemessen im Protokoll als "Resized 1035x588,
-            ' Anlass=Layout". Als NaN gelten sie als nicht gesetzt, und das Fenster behaelt, was
-            ' ihm zugewiesen wurde.
-            Width = Double.NaN
-            Height = Double.NaN
             Dim viewModel = Me.ViewModel
             If viewModel Is Nothing Then Return
 
@@ -315,9 +283,7 @@ Namespace Views
                 scale.ScaleX = factor
                 scale.ScaleY = factor
 
-                ' Vorerst ohne Schalter: die Zahlen sind das Einzige, woran sich diese Sache
-                ' festmachen laesst, und sie mussten zu oft nachtraeglich erbeten werden.
-                DiagnosticLogService.LogAlways("Window.UiScale",
+                DiagnosticLogService.Log("Window.UiScale",
                                          $"Faktor={factor:0.##}, Fenster={size.Width:0}x{size.Height:0}, " &
                                          $"Rahmen={frame.Width:0}x{frame.Height:0}, Bildschirm={If(screenName, "?")}")
             Catch ex As Exception
@@ -335,11 +301,8 @@ Namespace Views
                 ' Anwender gewaehlt hat. Sie zu merken hiesse, das Fenster beim naechsten Start
                 ' bildschirmfuellend zu oeffnen, auch wenn es gar nicht maximiert werden soll.
                 If Not settings.WindowMaximized Then
-                    ' NICHT Width/Height: die sind seit dem Oeffnen freigegeben und stehen auf NaN.
-                    ' ClientSize ist ohnehin der genauere Wert - das Fenster traegt keine Rahmen
-                    ' des Systems, siehe WindowDecorations="None".
-                    settings.WindowWidth = ClientSize.Width
-                    settings.WindowHeight = ClientSize.Height
+                    settings.WindowWidth = Width
+                    settings.WindowHeight = Height
                     settings.WindowLeft = Position.X
                     settings.WindowTop = Position.Y
                 End If
