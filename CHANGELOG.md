@@ -1,15 +1,57 @@
 # Changelog
 
-## 0.8.1
+## 0.9.0
 
-- Ripping an audio CD now writes the MP3 tags through the same writer as the tag editor. FFmpeg
-  alone knew nothing of the ID3v2 conventions the editor follows - a track number padded against
-  the total, an album sort order, and old tags cleared out when that setting is on - so a ripped
-  track and a tagged one ended up carrying different tags for the same album. The file name now
-  comes from the same tag values as well, so the identified title reaches the file name too.
+### MP3 tags
+
+- Files without any tags get a proposal instead of an empty form. Sorted by file name, the track
+  numbers run through from one, the file name becomes the title, and the name of the parent folder
+  is offered as album and artist. It stays a proposal: nothing is written before "Apply changes",
+  and every field can still be edited.
+- The hint line reports the size of the cover that is actually in the files. It used to show the
+  configured edge length and JPEG quality, which describe what an image would be brought to and
+  said nothing about the one that is there - and that is the number that decides whether an image
+  has enough to give.
+- Ripping an audio CD writes the MP3 tags through the same writer as the tag editor. FFmpeg alone
+  knew nothing of the ID3v2 conventions the editor follows - a track number padded against the
+  total, an album sort order, and old tags cleared out when that setting is on - so a ripped track
+  and a tagged one ended up carrying different tags for the same album. The file name now comes
+  from the same tag values as well, so the identified title reaches the file name too.
+- Padding the track number with zeros is applied everywhere the setting promises. It only ever
+  reached the tag editor: the converter wrote the tag unpadded outside CD rips, and both the
+  converted and the CUE-split file names used a hardcoded two digits - wrong in both directions,
+  padding with the setting off and stopping at two digits on an album of a hundred. The number of
+  digits comes from the album, determined per folder for the whole run.
+
+### Cover
+
+- The cover column can be given an image through a file picker. Dragging one in remains, but it
+  depends on the desktop: under XWayland the bridge between the two worlds hands a drop the
+  contents of the clipboard instead of the dragged file, and no application-side fallback reaches
+  around that.
+- The drop zone says what it is. Passing over the column marks it with an accent border, and
+  during a drag a layer with an icon and a prompt lies over the cover - a border alone drowns in
+  the artwork underneath. A drop that carries nothing usable is no longer swallowed in silence.
+
+### Window and settings
+
+- The application scale no longer needs a restart. It went through an environment variable that
+  only Avalonia's X11 path reads; it is a transform on the window itself now, takes effect the
+  moment the slider is released, and moves with the window when it goes to a screen with a
+  different factor. One percent per notch instead of five.
+- A switch for the diagnostic log sits in the settings under "Troubleshooting", with the path to
+  the folder holding logs and settings and a button that opens it. The log could only be turned on
+  with --debug before, which means restarting from a terminal - no use to anyone already looking
+  at the thing that went wrong. Exceptions still go to errors.log regardless.
+- The play button no longer shows "pause" at startup. mpv reports the current value right after
+  the pause property is observed, and idle means "not paused" - with nothing loaded there is no
+  pause state to report.
+
+### Conversion and Lyrion
+
 - A conversion or rip can be stopped. The back arrow of the converter turns into "Cancel" while a
   run is going, and what is already written stays; only the file in flight is discarded.
-- A run now covers the window while it lasts. Converting reads the CD and writes files in one long
+- A run covers the window while it lasts. Converting reads the CD and writes files in one long
   stretch, and an action taken meanwhile - switching the view, ejecting the disc, starting a second
   run - would have pulled the ground out from under it. The cover says what is happening and takes
   every pointer and key until the run ends.
@@ -21,11 +63,17 @@
   and a switch that cannot do anything should not pretend otherwise.
 - The target folder for ripping sat in the Lyrion Media Server section of the settings, where it
   has nothing to do: it belongs to the audio converter, and that is where it now is.
+
+### Version and packages
+
 - The version in the settings is the one from the VERSION file, the same file the build and the
   packages take their number from - including the package revision, which the three-part assembly
   number could not carry. Opening the settings asks GitHub once per session which version is
   published; if it differs from the running one, a link to the release page appears next to the
   version. Nothing but that file is fetched, and a failed request stays silent.
+- The install table in the README names every package that is built: AppImage, ZIP, DEB, RPM and
+  the AUR one. Arch users had no instruction at all before - ferrumplay-bin was mentioned once, in
+  passing, as something that declares dependencies.
 - The number field for the cover edge length was square on its right side and its arrows were
   black on a dark ground. Its styling had never taken effect: the two spinner buttons live in the
   template of the spinner *inside* the template of the number field, and the rules were written for
