@@ -110,6 +110,9 @@ Namespace Services
         ''' siehe <see cref="AppSettingsService.ResolvedCdRipTarget"/>. Gemerkt wird der leere Wert
         ''' und nicht der aufgeloeste Pfad: zieht der Musikordner um, zieht das Ziel mit.</summary>
         Public Property CdRipTargetPath As String = String.Empty
+        ''' <summary>Optionaler Unterordner beim CD-Rip, mit den Tag-Platzhaltern wie beim
+        ''' Dateinamen, z. B. <c>%albumartist%/%year% - %album%</c>.</summary>
+        Public Property CdRipSubfolderPattern As String = String.Empty
 
         ''' <summary>Das Lyrion-Geraet, das ferngesteuert wird. LEER heisst: oertlich abspielen.
         ''' Gemerkt wird die Kennung, denn nur sie ist eindeutig; der Name steht daneben, damit die
@@ -121,7 +124,19 @@ Namespace Services
         ''' Er ist die EINZIGE Angabe dafuer - woher die Dateien kommen und wie der Serverpfad
         ''' abzuschneiden ist, erfragt der Abgleich beim Server.</summary>
         Public Property LyrionSyncTargetPath As String = String.Empty
+        ''' <summary>Drei getrennte LMS-Profile. Die alten Einzelwerte bleiben beim Einlesen
+        ''' kompatibel und werden einmalig in das erste Profil uebernommen.</summary>
+        Public Property LyrionServers As New List(Of LyrionServerProfile)()
+        Public Property ActiveLyrionServerIndex As Integer
 
+    End Class
+
+    Public NotInheritable Class LyrionServerProfile
+        Public Property Name As String = String.Empty
+        Public Property Url As String = String.Empty
+        Public Property SyncTargetPath As String = String.Empty
+        Public Property RemotePlayerId As String = String.Empty
+        Public Property RemotePlayerName As String = String.Empty
     End Class
 
     ''' <summary>Ein Bildschirm und der Faktor, mit dem die Anwendung darauf vergroessert wird.</summary>
@@ -156,7 +171,10 @@ Namespace Services
         Public Shared ReadOnly Property Current As AppSettings
             Get
                 SyncLock Gate
-                    If _current Is Nothing Then _current = LoadCore()
+                    If _current Is Nothing Then
+                        _current = LoadCore()
+                        NormalizeLyrionServers(_current)
+                    End If
                     Return _current
                 End SyncLock
             End Get
@@ -186,12 +204,32 @@ Namespace Services
                 loaded.ConverterDefaultMode = Math.Clamp(loaded.ConverterDefaultMode, 0, 2)
                 loaded.ConverterDefaultBitrate = NormalizeConverterBitrate(loaded.ConverterDefaultBitrate)
                 loaded.TagGenres = If(loaded.TagGenres, New List(Of String)()).Select(Function(entry) If(entry, String.Empty).Trim()).Where(Function(entry) entry.Length > 0).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList()
+                NormalizeLyrionServers(loaded)
                 Return loaded
             Catch ex As Exception
                 DiagnosticLogService.LogException("Settings.Load", ex)
                 Return New AppSettings()
             End Try
         End Function
+
+        Public Shared Sub NormalizeLyrionServers(settings As AppSettings)
+            If settings.LyrionServers Is Nothing Then settings.LyrionServers = New List(Of LyrionServerProfile)()
+            If settings.LyrionServers.Count = 0 AndAlso Not String.IsNullOrWhiteSpace(settings.LyrionServerUrl) Then
+                settings.LyrionServers.Add(New LyrionServerProfile With {.Url = settings.LyrionServerUrl, .SyncTargetPath = settings.LyrionSyncTargetPath,
+                                          .RemotePlayerId = settings.LyrionRemotePlayerId, .RemotePlayerName = settings.LyrionRemotePlayerName})
+            End If
+            While settings.LyrionServers.Count < 3 : settings.LyrionServers.Add(New LyrionServerProfile()) : End While
+            If settings.LyrionServers.Count > 3 Then settings.LyrionServers = settings.LyrionServers.Take(3).ToList()
+            settings.ActiveLyrionServerIndex = Math.Clamp(settings.ActiveLyrionServerIndex, 0, 2)
+        End Sub
+
+        Public Shared ReadOnly Property ActiveLyrionServer As LyrionServerProfile
+            Get
+                Dim settings = Current
+                NormalizeLyrionServers(settings)
+                Return settings.LyrionServers(settings.ActiveLyrionServerIndex)
+            End Get
+        End Property
 
         ''' <summary>Der Zielordner fuers Rippen, mit Vorgabe. Ohne eigene Einstellung der
         ''' Musikordner des Nutzers; unter Linux ist das der aus <c>user-dirs.dirs</c>, sonst

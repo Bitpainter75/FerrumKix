@@ -78,13 +78,13 @@ Namespace Services
         ''' bleibt wie bisher.</summary>
         Public Shared ReadOnly Property SelectedPlayerId As String
             Get
-                Return AppSettingsService.Current.LyrionRemotePlayerId
+                Return AppSettingsService.ActiveLyrionServer.RemotePlayerId
             End Get
         End Property
 
         Public Shared ReadOnly Property SelectedPlayerName As String
             Get
-                Return AppSettingsService.Current.LyrionRemotePlayerName
+                Return AppSettingsService.ActiveLyrionServer.RemotePlayerName
             End Get
         End Property
 
@@ -109,8 +109,8 @@ Namespace Services
             Dim wanted = If(playerId, String.Empty).Trim()
             If String.Equals(wanted, SelectedPlayerId, StringComparison.Ordinal) Then Return
 
-            AppSettingsService.Current.LyrionRemotePlayerId = wanted
-            AppSettingsService.Current.LyrionRemotePlayerName = If(playerName, String.Empty)
+            AppSettingsService.ActiveLyrionServer.RemotePlayerId = wanted
+            AppSettingsService.ActiveLyrionServer.RemotePlayerName = If(playerName, String.Empty)
             AppSettingsService.Save()
 
             SyncLock Gate

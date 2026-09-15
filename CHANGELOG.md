@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.9.2
+
+- Lyrion can keep up to three independent server profiles, each with its own tab name, address,
+  favorites-sync target and remote-player selection. The tab uses the configured name or, when
+  that is empty, the host name of the server address.
+- The Lyrion overview now reports album and favorite counts. Filtering to favorites also calculates
+  the number of tracks and their total size, so the required sync space is visible before starting
+  the transfer. An opened album shows its total running time and size as supplied by the server.
+- Album artwork is fetched only for tiles actually inside the visible Lyrion viewport; prepared
+  layout-buffer tiles no longer start network requests.
+- All album favorites can be removed in one confirmed action. The list is refreshed afterwards,
+  rather than continuing to show stale stars until the next application start.
+- Local playlists can be saved and loaded as portable M3U/M3U8 files. They preserve an optional
+  FerrumPlay sync target in a comment, resolve relative paths against the playlist, and can also be
+  opened through the command line, file manager, or drag and drop.
+- Entering the Audio-CD tab stops playback from another source and uses the first CD track as the
+  display context, so identified title, album, and cover appear in the cover column immediately.
+- CD-rip folder patterns can create album subfolders using the familiar tag placeholders. The
+  converter shows the complete resulting CD output path in its editable output field.
+- Converting or ripping now asks once before overwriting existing output files. It also refuses to
+  convert into a source folder when the selected target format matches a source file there.
+
 ## 0.9.1
 
 - Scrolling through the Lyrion albums no longer crashes the application. The scale of 0.9.0 is a

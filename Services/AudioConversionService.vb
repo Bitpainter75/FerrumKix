@@ -42,6 +42,11 @@ Namespace Services
             Public Property VariableBitrate As Boolean
             Public Property Mode As ConversionMode = ConversionMode.OneResultPerSource
             Public Property SplitExistingCue As Boolean
+            ''' <summary>Die Oberfläche kann bei reinen CD-Rips den bereits aufgelösten
+            ''' Album-Unterordner als Ausgabe zeigen und bearbeiten. Dann darf der Dienst das
+            ''' Muster nicht ein zweites Mal anfügen.</summary>
+            Public Property OutputDirectoryIncludesCdSubfolder As Boolean
+            Public Property OverwriteExisting As Boolean
             ''' <summary>Status je Ursprungszeile fuer die Warteschlange der Oberfläche. -1 steht
             ''' fuer einen Sammellauf, dessen Ergebnis mehrere Zeilen umfasst.</summary>
             Public Property ItemProgress As Action(Of Integer, String)
@@ -109,7 +114,10 @@ Namespace Services
                     albumLengths.TryGetValue(track.FolderPath, albumLength)
                     Dim input = Await GetInputAsync(track, request.OutputDirectory, cancellationToken)
                     Try
-                        Dim target = UniquePath(request.OutputDirectory, OutputFileName(track, request.Format, albumLength))
+                        Dim outputFolder = If(track.IsAudioCdTrack AndAlso Not request.OutputDirectoryIncludesCdSubfolder,
+                                              ResolveCdRipFolder(request.OutputDirectory, track), request.OutputDirectory)
+                        Directory.CreateDirectory(outputFolder)
+                        Dim target = TargetPath(outputFolder, OutputFileName(track, request.Format, albumLength), request.OverwriteExisting)
                         ' Bei einer Audio-CD traegt die Zwischendatei keine Kennzeichen; sie kommen
                         ' aus dem Titel, den die Erkennung gefuellt hat - Titelbild inbegriffen.
                         Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track, coverFile:=coverFile, totalTracks:=albumLength)
@@ -241,7 +249,7 @@ Namespace Services
                 ' Liste dann mit "unknown keyword" ab.
                 Await File.WriteAllLinesAsync(listPath, lines, New UTF8Encoding(encoderShouldEmitUTF8Identifier:=False), cancellationToken)
                 Dim stem = If(Not String.IsNullOrWhiteSpace(tracks(0).Album), tracks(0).Album, If(Not String.IsNullOrWhiteSpace(tracks(0).FolderPath), Path.GetFileName(tracks(0).FolderPath), "Zusammengeführt"))
-                Dim target = UniquePath(request.OutputDirectory, SafeFileName(stem) & ExtensionFor(request.Format))
+                Dim target = TargetPath(request.OutputDirectory, SafeFileName(stem) & ExtensionFor(request.Format), request.OverwriteExisting)
                 Await RunFfmpegAsync(listPath, target, request, Nothing, Nothing, cancellationToken, isConcatList:=True)
                 If writeCueFile Then WriteCue(target, tracks)
             Finally
@@ -279,7 +287,7 @@ Namespace Services
                 Dim entry = entries(index)
                 Dim endSeconds As Double? = If(index + 1 < total, entries(index + 1).StartSeconds, Nothing)
                 progress?.Report(LocalizationService.Format("Teile CUE {0} von {1}: {2}", index + 1, total, entry.Title))
-                Dim target = UniquePath(request.OutputDirectory, SafeFileName($"{Mp3TagWriteService.FormatTrackNumber(entry.Number, total)} - {entry.Title}") & ExtensionFor(request.Format))
+                Dim target = TargetPath(request.OutputDirectory, SafeFileName($"{Mp3TagWriteService.FormatTrackNumber(entry.Number, total)} - {entry.Title}") & ExtensionFor(request.Format), request.OverwriteExisting)
                 Await RunFfmpegAsync(source.FilePath, target, request, entry.StartSeconds, endSeconds, cancellationToken)
             Next
         End Function
@@ -358,6 +366,9 @@ Namespace Services
                 Case OutputFormat.Ogg
                     psi.ArgumentList.Add("-c:a") : psi.ArgumentList.Add("libvorbis") : psi.ArgumentList.Add("-q:a") : psi.ArgumentList.Add(If(request.BitrateKbps >= 256, "7", If(request.BitrateKbps >= 192, "5", "3")))
             End Select
+            ' Ohne -y wartet ffmpeg bei einer vorhandenen Datei auf eine Terminalantwort. Die
+            ' Entscheidung hat die Oberfläche bereits einmal für den gesamten Lauf eingeholt.
+            If request.OverwriteExisting Then psi.ArgumentList.Add("-y")
             psi.ArgumentList.Add(target)
             Try
                 Await RunProcessAsync(psi, cancellationToken)
@@ -430,6 +441,21 @@ Namespace Services
             Return SafeFileName(If(String.IsNullOrWhiteSpace(name), $"{TrackPrefix(track, values.TotalTracks)}{track.DisplayTitle}", name)) & ExtensionFor(format)
         End Function
 
+        ''' <summary>Der optionale Albumordner fuer CD-Rips. Trennzeichen sind erlaubt, jedes
+        ''' einzelne Segment wird aber wie ein Dateiname bereinigt.</summary>
+        Public Shared Function ResolveCdRipFolder(root As String, track As Track) As String
+            Dim pattern = AppSettingsService.Current.CdRipSubfolderPattern
+            If String.IsNullOrWhiteSpace(pattern) Then Return root
+            ' Erst nach Ordnerteilen zerlegen: BuildFileName bereinigt Dateinamen und wuerde
+            ' einen Schraegstrich sonst (zu Recht) entfernen, bevor er die Ordner trennen kann.
+            Dim values = CdTagValues(track)
+            Dim parts = pattern.Split({"/"c, "\"c}, StringSplitOptions.RemoveEmptyEntries).
+                Where(Function(part) Not String.IsNullOrWhiteSpace(part)).
+                Select(Function(part) SafeFileName(Mp3TagWriteService.BuildFileName(part, values))).
+                Where(Function(part) Not String.IsNullOrWhiteSpace(part))
+            Return parts.Aggregate(root, Function(folder, part) Path.Combine(folder, part))
+        End Function
+
         Private Shared Function CdTagValues(track As Track) As Mp3TagWriteService.Values
             Dim device As String = Nothing, number As Integer, lastTrack As Integer
             Track.TryGetAudioCdSource(track.FilePath, device, number, lastTrack)
@@ -460,6 +486,44 @@ Namespace Services
                 result = Path.Combine(folder, Path.GetFileNameWithoutExtension(fileName) & $" ({index})" & Path.GetExtension(fileName)) : index += 1
             End While
             Return result
+        End Function
+
+        Private Shared Function TargetPath(folder As String, fileName As String, overwrite As Boolean) As String
+            Return If(overwrite, Path.Combine(folder, fileName), UniquePath(folder, fileName))
+        End Function
+
+        ''' <summary>Prueft die unmittelbaren Einzeldatei-Ziele vor dem Start. Die Oberfläche
+        ''' entscheidet danach einmal fuer den gesamten Lauf ueber Überschreiben oder Abbruch.</summary>
+        Public Shared Function ExistingSingleOutputPaths(request As Request) As List(Of String)
+            If request Is Nothing OrElse request.Tracks Is Nothing Then Return New List(Of String)()
+            Dim tracks = request.Tracks.Where(Function(track) track IsNot Nothing).ToList()
+            If request.Mode = ConversionMode.AllSourcesOneResult OrElse request.Mode = ConversionMode.AllSourcesOneResultWithCue Then
+                Dim first = tracks.FirstOrDefault()
+                If first Is Nothing Then Return New List(Of String)()
+                Dim stem = If(Not String.IsNullOrWhiteSpace(first.Album), first.Album, If(Not String.IsNullOrWhiteSpace(first.FolderPath), Path.GetFileName(first.FolderPath), "Zusammengeführt"))
+                Dim merged = Path.Combine(request.OutputDirectory, SafeFileName(stem) & ExtensionFor(request.Format))
+                Return If(File.Exists(merged), New List(Of String) From {merged}, New List(Of String)())
+            End If
+            If request.Mode = ConversionMode.OneResultPerFolder OrElse request.Mode = ConversionMode.OneResultPerFolderWithCue Then
+                Return tracks.GroupBy(Function(track) track.FolderPath, StringComparer.OrdinalIgnoreCase).
+                    Select(Function(group)
+                               Dim first = group.First()
+                               Dim stem = If(Not String.IsNullOrWhiteSpace(first.Album), first.Album, Path.GetFileName(first.FolderPath))
+                               Return Path.Combine(request.OutputDirectory, SafeFileName(stem) & ExtensionFor(request.Format))
+                           End Function).
+                    Where(AddressOf File.Exists).Distinct(StringComparer.OrdinalIgnoreCase).ToList()
+            End If
+            Dim lengths = tracks.GroupBy(Function(track) track.FolderPath, StringComparer.OrdinalIgnoreCase).
+                ToDictionary(Function(group) group.Key, Function(group) group.Count(), StringComparer.OrdinalIgnoreCase)
+            Dim result As New List(Of String)()
+            For Each track In tracks
+                Dim count As Integer : lengths.TryGetValue(track.FolderPath, count)
+                Dim folder = If(track.IsAudioCdTrack AndAlso Not request.OutputDirectoryIncludesCdSubfolder,
+                                ResolveCdRipFolder(request.OutputDirectory, track), request.OutputDirectory)
+                Dim candidate = Path.Combine(folder, OutputFileName(track, request.Format, count))
+                If File.Exists(candidate) Then result.Add(candidate)
+            Next
+            Return result.Distinct(StringComparer.OrdinalIgnoreCase).ToList()
         End Function
 
         Private NotInheritable Class CueEntry

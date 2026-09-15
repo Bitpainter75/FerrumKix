@@ -47,6 +47,9 @@ Namespace ViewModels
         ''' <summary>Wird ausgelöst, wenn eine zuvor vorhandene Audio-CD entfernt wurde. Ansichten
         ''' können damit einen laufenden Rip-Vorgang beenden, bevor sie zur lokalen Liste gehen.</summary>
         Public Event AudioCdRemoved As EventHandler
+        ''' <summary>Die sichtbare Liste hat den Bereich gewechselt. Die Ansicht besitzt den
+        ''' Scrollzustand und setzt ihn deshalb selbst wieder an den Anfang.</summary>
+        Public Event PlaylistAreaChanged As EventHandler
         ' Die vom Lyrion-Album gestartete, flüchtige Reihenfolge wird nie gespeichert und tritt
         ' nur an die Stelle der lokalen Liste, solange einer ihrer Titel läuft.
         Private ReadOnly _lyrionTracks As New List(Of Track)()
@@ -185,7 +188,7 @@ Namespace ViewModels
             RemoveMissingTracksCommand = New DelegateCommand(AddressOf RemoveMissingTracks)
             IdentifyAudioCdCommand = New DelegateCommand(AddressOf IdentifyAudioCdAgain)
             OpenSettingsCommand = New DelegateCommand(Sub() Mode = AppMode.Settings)
-            ClosePanelCommand = New DelegateCommand(Sub() Mode = AppMode.Player)
+            ClosePanelCommand = New DelegateCommand(AddressOf CloseSettings)
             ' Der Parameter kommt aus dem AXAML und ist dort eine Zeichenkette, auch wenn eine Zahl
             ' darin steht. Ausdruecklich gewandelt statt CInt auf ein Object: das waere eine spaete
             ' Wandlung, die erst zur Laufzeit auffaellt, wenn jemand etwas anderes hineinschreibt.
@@ -321,7 +324,9 @@ Namespace ViewModels
                 RaisePropertyChanged(NameOf(IsFilesPlaylistSelected))
                 RaisePropertyChanged(NameOf(IsAudioCdPlaylistSelected))
                 RebuildRows()
+                If value = PlaylistKind.AudioCd Then ShowAudioCdContext()
                 ClearStatus()
+                RaiseEvent PlaylistAreaChanged(Me, EventArgs.Empty)
             End Set
         End Property
 
@@ -346,6 +351,26 @@ Namespace ViewModels
         Private Function ActiveTracks() As List(Of Track)
             Return If(_selectedPlaylist = PlaylistKind.AudioCd, _audioCdTracks, _tracks)
         End Function
+
+        ''' <summary>Das Öffnen des CD-Tabs ist ein Bereichswechsel, keine Wiedergabeaktion.
+        ''' Trotzdem darf keine Datei und kein Lyrion-Player im Hintergrund weiterlaufen. Der
+        ''' erste CD-Titel liefert zugleich die erkannte Albumansicht links; erst ein Doppelklick
+        ''' startet die CD wirklich.</summary>
+        Private Sub ShowAudioCdContext()
+            Dim context = _audioCdTracks.FirstOrDefault()
+            If context Is Nothing Then Return
+            If _currentTrack Is Nothing OrElse Not _currentTrack.IsAudioCdTrack Then StopPlayback()
+            _currentTrack = context
+            _isStopped = True
+            IsPlaying = False
+            PositionSeconds = 0
+            DurationSeconds = context.DurationSeconds
+            RaisePropertyChanged(NameOf(IsPlayingLyrion))
+            RaiseCurrentTrackChanged()
+            UpdatePlayingRow()
+            LoadCoverAsync(context)
+            PublishMpris()
+        End Sub
 
         ' Einstellungen. Sie stehen hier und nicht in einem eigenen Bauplan, weil es (noch) wenige
         ' sind und jede von ihnen unmittelbar auf den Spieler oder die Ansicht wirkt. Kommen mehr
@@ -505,10 +530,10 @@ Namespace ViewModels
         End Property
         Public Property LyrionServerUrl As String
             Get
-                Return AppSettingsService.Current.LyrionServerUrl
+                Return AppSettingsService.ActiveLyrionServer.Url
             End Get
             Set(value As String)
-                AppSettingsService.Current.LyrionServerUrl = If(value, String.Empty).Trim()
+                AppSettingsService.ActiveLyrionServer.Url = If(value, String.Empty).Trim()
                 AppSettingsService.Save()
                 RaisePropertyChanged()
                 RaisePropertyChanged(NameOf(HasLyrionServer))
@@ -518,7 +543,7 @@ Namespace ViewModels
         ''' hinterlegt ist. So bleibt die Wiedergabeliste ohne unkonfigurierten Leereintrag.</summary>
         Public ReadOnly Property HasLyrionServer As Boolean
             Get
-                Return Not String.IsNullOrWhiteSpace(AppSettingsService.Current.LyrionServerUrl)
+                Return AppSettingsService.Current.LyrionServers.Any(Function(server) Not String.IsNullOrWhiteSpace(server.Url))
             End Get
         End Property
         Public Property LyrionClientName As String
@@ -559,6 +584,31 @@ Namespace ViewModels
             End Set
         End Property
 
+        Public Property CdRipSubfolderPattern As String
+            Get
+                Return AppSettingsService.Current.CdRipSubfolderPattern
+            End Get
+            Set(value As String)
+                AppSettingsService.Current.CdRipSubfolderPattern = If(value, String.Empty).Trim()
+                AppSettingsService.Save()
+                RaisePropertyChanged()
+            End Set
+        End Property
+
+        ''' <summary>Ersetzt die lokale Liste durch die gelesene M3U. Das Einlesen der Tags bleibt
+        ''' derselbe Weg wie beim Hinzufuegen von Dateien.</summary>
+        Public Async Function LoadM3uAsync(path As String) As Task
+            Dim syncTarget As String = String.Empty
+            Dim paths = M3uPlaylistService.Load(path, syncTarget)
+            ClearPlaylist()
+            If Not String.IsNullOrWhiteSpace(syncTarget) Then LyrionSyncTargetPath = syncTarget
+            Await AddPathsAsync(paths)
+        End Function
+
+        Public Sub SaveM3u(path As String)
+            M3uPlaylistService.Save(path, _tracks, AppSettingsService.ActiveLyrionServer.SyncTargetPath)
+        End Sub
+
         ''' <summary>Was tatsaechlich genommen wird - damit im Dialog steht, wohin es geht, auch
         ''' wenn das Feld leer ist.</summary>
         Public ReadOnly Property CdRipTargetHint As String
@@ -571,14 +621,87 @@ Namespace ViewModels
         ''' <see cref="LyrionFavoriteSyncService"/>.</summary>
         Public Property LyrionSyncTargetPath As String
             Get
-                Return AppSettingsService.Current.LyrionSyncTargetPath
+                Return AppSettingsService.ActiveLyrionServer.SyncTargetPath
             End Get
             Set(value As String)
-                AppSettingsService.Current.LyrionSyncTargetPath = If(value, String.Empty).Trim()
+                AppSettingsService.ActiveLyrionServer.SyncTargetPath = If(value, String.Empty).Trim()
                 AppSettingsService.Save()
                 RaisePropertyChanged()
             End Set
         End Property
+
+        Public Function LyrionServerName(index As Integer) As String
+            AppSettingsService.NormalizeLyrionServers(AppSettingsService.Current)
+            Dim server = AppSettingsService.Current.LyrionServers(Math.Clamp(index, 0, 2))
+            If Not String.IsNullOrWhiteSpace(server.Name) Then Return server.Name
+            If String.IsNullOrWhiteSpace(server.Url) Then Return "Lyrion Server " & (index + 1).ToString(CultureInfo.InvariantCulture)
+            Try : Return New Uri(server.Url).Host : Catch : Return server.Url : End Try
+        End Function
+
+        Public ReadOnly Property LyrionServers As List(Of LyrionServerProfile)
+            Get
+                AppSettingsService.NormalizeLyrionServers(AppSettingsService.Current)
+                Return AppSettingsService.Current.LyrionServers
+            End Get
+        End Property
+
+        Public Function HasLyrionServerAt(index As Integer) As Boolean
+            AppSettingsService.NormalizeLyrionServers(AppSettingsService.Current)
+            Return Not String.IsNullOrWhiteSpace(AppSettingsService.Current.LyrionServers(Math.Clamp(index, 0, 2)).Url)
+        End Function
+
+        Public ReadOnly Property LyrionServerOneName As String
+            Get
+                Return LyrionServerName(0)
+            End Get
+        End Property
+        Public ReadOnly Property LyrionServerTwoName As String
+            Get
+                Return LyrionServerName(1)
+            End Get
+        End Property
+        Public ReadOnly Property LyrionServerThreeName As String
+            Get
+                Return LyrionServerName(2)
+            End Get
+        End Property
+        Public ReadOnly Property HasLyrionServerOne As Boolean
+            Get
+                Return HasLyrionServerAt(0)
+            End Get
+        End Property
+        Public ReadOnly Property HasLyrionServerTwo As Boolean
+            Get
+                Return HasLyrionServerAt(1)
+            End Get
+        End Property
+        Public ReadOnly Property HasLyrionServerThree As Boolean
+            Get
+                Return HasLyrionServerAt(2)
+            End Get
+        End Property
+
+        Public Sub SelectLyrionServer(index As Integer)
+            AppSettingsService.Current.ActiveLyrionServerIndex = Math.Clamp(index, 0, 2)
+            AppSettingsService.Save()
+            RaisePropertyChanged(NameOf(LyrionServerUrl))
+            RaisePropertyChanged(NameOf(LyrionSyncTargetPath))
+            RaisePropertyChanged(NameOf(LyrionServerOneName))
+            RaisePropertyChanged(NameOf(LyrionServerTwoName))
+            RaisePropertyChanged(NameOf(LyrionServerThreeName))
+        End Sub
+
+        Private Sub CloseSettings()
+            AppSettingsService.Save()
+            RaisePropertyChanged(NameOf(HasLyrionServer))
+            RaisePropertyChanged(NameOf(HasLyrionServerOne))
+            RaisePropertyChanged(NameOf(HasLyrionServerTwo))
+            RaisePropertyChanged(NameOf(HasLyrionServerThree))
+            RaisePropertyChanged(NameOf(LyrionServerOneName))
+            RaisePropertyChanged(NameOf(LyrionServerTwoName))
+            RaisePropertyChanged(NameOf(LyrionServerThreeName))
+            Mode = AppMode.Player
+        End Sub
 
         Public Property IsResumeOnStart As Boolean
             Get
@@ -1548,6 +1671,7 @@ Namespace ViewModels
             ' Eine Audio-CD traegt kein Bild in sich - es sei denn, die Erkennung hat eine Adresse
             ' dafuer hinterlegt. Dann gilt der gewoehnliche Weg fuer entfernte Bilder.
             If track.IsAudioCdTrack AndAlso String.IsNullOrWhiteSpace(track.RemoteCoverUrl) Then
+                Interlocked.Increment(_coverRequest)
                 _currentCover = Nothing
                 RaisePropertyChanged(NameOf(CurrentCover))
                 RaisePropertyChanged(NameOf(HasCover))
@@ -1627,6 +1751,16 @@ Namespace ViewModels
             Dim requested = paths.Where(Function(p) Not String.IsNullOrWhiteSpace(p)).ToList()
             If requested.Count = 0 Then Return
 
+            ' Eine per Kommandozeile, Dateimanager oder Ablegen übergebene M3U ist eine Liste,
+            ' keine Audiodatei. Sie ersetzt daher die lokale Liste und wird mit ihren relativen
+            ' Pfaden am Ort der M3U aufgelöst.
+            Dim playlists = requested.Where(AddressOf IsM3uPath).ToList()
+            If playlists.Count > 0 Then
+                Await LoadM3uAsync(playlists.Last())
+                requested = requested.Where(Function(path) Not IsM3uPath(path)).ToList()
+                If requested.Count = 0 Then Return
+            End If
+
             If _isScanning Then
                 _queuedAdds.Enqueue((requested, playFirst))
                 StatusText = LocalizationService.T("Es wird noch eingelesen.")
@@ -1668,6 +1802,12 @@ Namespace ViewModels
                 Dim queued = _queuedAdds.Dequeue()
                 Await AddPathsAsync(queued.Paths, queued.PlayFirst)
             End If
+        End Function
+
+        Private Shared Function IsM3uPath(value As String) As Boolean
+            Dim extension = Path.GetExtension(If(value, String.Empty))
+            Return String.Equals(extension, ".m3u", StringComparison.OrdinalIgnoreCase) OrElse
+                   String.Equals(extension, ".m3u8", StringComparison.OrdinalIgnoreCase)
         End Function
 
         ''' <summary>Liest die eingelegte Audio-CD ein. CDDA-Titel sind keine Dateien und werden

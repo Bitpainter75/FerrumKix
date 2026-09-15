@@ -94,9 +94,10 @@ Namespace Views
             ' Bei Dateien liegt der Ordner der Dateien nahe. Eine Audio-CD hat keinen - dafuer
             ' gibt es die Einstellung, und ohne sie den Musikordner des Nutzers.
             Dim firstFile = _tracks.FirstOrDefault(Function(track) Not track.IsAudioCdTrack)
-            FindControl(Of TextBox)("FolderBox").Text = If(firstFile Is Nothing,
-                                                          AppSettingsService.ResolvedCdRipTarget,
-                                                          Path.GetDirectoryName(firstFile.FilePath))
+            Dim root = If(firstFile Is Nothing, AppSettingsService.ResolvedCdRipTarget, Path.GetDirectoryName(firstFile.FilePath))
+            Dim cdTrack = _tracks.FirstOrDefault(Function(track) track.IsAudioCdTrack)
+            FindControl(Of TextBox)("FolderBox").Text = If(firstFile Is Nothing AndAlso cdTrack IsNot Nothing,
+                                                          AudioConversionService.ResolveCdRipFolder(root, cdTrack), root)
         End Sub
 
         Private Sub InitializeComponent()
@@ -150,19 +151,30 @@ Namespace Views
         Private Async Sub OnConvertClick(sender As Object, e As RoutedEventArgs)
             Dim folder = FindControl(Of TextBox)("FolderBox").Text
             If String.IsNullOrWhiteSpace(folder) Then Status(LocalizationService.T("Bitte zuerst einen Zielordner auswählen.")) : Return
+            Dim format = If(FindControl(Of RadioButton)("FlacRadio").IsChecked.GetValueOrDefault(), AudioConversionService.OutputFormat.Flac, If(FindControl(Of RadioButton)("OggRadio").IsChecked.GetValueOrDefault(), AudioConversionService.OutputFormat.Ogg, AudioConversionService.OutputFormat.Mp3))
+            If IsSameFormatInSourceFolder(folder, format) Then
+                Status(LocalizationService.T("Das Zielformat entspricht bereits der Quelldatei im selben Ordner. Bitte einen anderen Zielordner oder ein anderes Format wählen."))
+                Return
+            End If
+            Dim request As New AudioConversionService.Request With {
+                .Tracks = _tracks, .OutputDirectory = folder, .Format = format,
+                .OutputDirectoryIncludesCdSubfolder = _tracks.Count > 0 AndAlso _tracks.All(Function(track) track.IsAudioCdTrack),
+                .BitrateKbps = SelectedBitrate(), .VariableBitrate = FindControl(Of RadioButton)("VbrRadio").IsChecked.GetValueOrDefault(),
+                .Mode = SelectedMode(), .ItemProgress = AddressOf UpdateQueue}
+            Dim existing = AudioConversionService.ExistingSingleOutputPaths(request)
+            If existing.Count > 0 Then
+                Dim owner = TryCast(TopLevel.GetTopLevel(Me)?.DataContext, MainWindowViewModel)
+                Dim confirmed = If(owner Is Nothing, False, Await owner.ShowConfirmAsync(LocalizationService.T("Vorhandene Dateien überschreiben?"),
+                    LocalizationService.Format("{0} Zieldatei(en) existieren bereits.", existing.Count), String.Join(Environment.NewLine, existing.Take(8)), LocalizationService.T("Alle überschreiben"), LocalizationService.T("Abbrechen")))
+                If Not confirmed Then Return
+                request.OverwriteExisting = True
+            End If
             _cancel = New CancellationTokenSource()
             SetProcessingControls(True)
             FindControl(Of ProgressBar)("Progress").IsVisible = True
             For Each row In Queue : row.Status = LocalizationService.T("Wartet") : Next
             Try
-                Await AudioConversionService.ConvertAsync(New AudioConversionService.Request With {
-                    .Tracks = _tracks, .OutputDirectory = folder,
-                    .Format = If(FindControl(Of RadioButton)("FlacRadio").IsChecked.GetValueOrDefault(), AudioConversionService.OutputFormat.Flac, If(FindControl(Of RadioButton)("OggRadio").IsChecked.GetValueOrDefault(), AudioConversionService.OutputFormat.Ogg, AudioConversionService.OutputFormat.Mp3)),
-                    .BitrateKbps = SelectedBitrate(),
-                    .VariableBitrate = FindControl(Of RadioButton)("VbrRadio").IsChecked.GetValueOrDefault(),
-                    .Mode = SelectedMode(),
-                    .ItemProgress = AddressOf UpdateQueue
-                }, New Progress(Of String)(AddressOf Status), _cancel.Token)
+                Await AudioConversionService.ConvertAsync(request, New Progress(Of String)(AddressOf Status), _cancel.Token)
                 Status(LocalizationService.T("Fertig konvertiert."))
             Catch ex As OperationCanceledException
                 Status(LocalizationService.T("Konvertierung abgebrochen."))
@@ -176,6 +188,14 @@ Namespace Views
                 If _closeWhenFinished Then RaiseEvent CloseRequested(Me, EventArgs.Empty)
             End Try
         End Sub
+
+        Private Function IsSameFormatInSourceFolder(folder As String, format As AudioConversionService.OutputFormat) As Boolean
+            Dim target = Path.GetFullPath(folder).TrimEnd(Path.DirectorySeparatorChar)
+            Dim extension = If(format = AudioConversionService.OutputFormat.Mp3, ".mp3", If(format = AudioConversionService.OutputFormat.Flac, ".flac", ".ogg"))
+            Return _tracks.Any(Function(track) Not track.IsAudioCdTrack AndAlso
+                               String.Equals(Path.GetFullPath(Path.GetDirectoryName(track.FilePath)).TrimEnd(Path.DirectorySeparatorChar), target, StringComparison.OrdinalIgnoreCase) AndAlso
+                               String.Equals(Path.GetExtension(track.FilePath), extension, StringComparison.OrdinalIgnoreCase))
+        End Function
 
         ''' <summary>Eine entfernte CD macht jede CDDA-Quelle unlesbar. Der laufende Rip wird
         ''' abgebrochen; erst nach dem Aufraeumen schliesst sich das Panel, damit die lokale

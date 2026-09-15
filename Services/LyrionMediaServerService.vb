@@ -308,7 +308,7 @@ Namespace Services
         ''' <summary>Die Adresse, unter der der Server eine Titeldatei unveraendert herausgibt. Sie
         ''' liefert dieselben Bytes wie die Datei in der Ablage.</summary>
         Public Shared Function DownloadUrl(trackId As String) As String
-            Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
+            Dim baseUrl = AppSettingsService.ActiveLyrionServer.Url.Trim().TrimEnd("/"c)
             If String.IsNullOrWhiteSpace(baseUrl) OrElse String.IsNullOrWhiteSpace(trackId) Then Return String.Empty
             Return baseUrl & "/music/" & Uri.EscapeDataString(trackId) & "/download"
         End Function
@@ -344,7 +344,7 @@ Namespace Services
         End Function
 
         Public Shared Async Function GetAlbumSongsAsync(albumId As String, cancellationToken As CancellationToken) As Task(Of List(Of Song))
-            Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
+            Dim baseUrl = AppSettingsService.ActiveLyrionServer.Url.Trim().TrimEnd("/"c)
             If String.IsNullOrWhiteSpace(baseUrl) OrElse String.IsNullOrWhiteSpace(albumId) Then Return New List(Of Song)()
             ' Neben Interpret (a), Nummer (t) und Laufzeit (d) auch die technischen Angaben:
             ' Jahr (y), Inhaltstyp (o), Bitrate (r), Abtastrate (T) und Dateigroesse (f). Ohne
@@ -386,14 +386,14 @@ Namespace Services
         ''' Damit kann FerrumPlay die Bibliothek selbst wiedergeben, ohne als SlimProto-Client
         ''' beim Server angemeldet zu sein.</summary>
         Public Shared Function StreamUrl(songId As String) As String
-            Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
+            Dim baseUrl = AppSettingsService.ActiveLyrionServer.Url.Trim().TrimEnd("/"c)
             If String.IsNullOrWhiteSpace(baseUrl) OrElse String.IsNullOrWhiteSpace(songId) Then Return String.Empty
             Return baseUrl & "/music/" & Uri.EscapeDataString(songId) & "/download"
         End Function
         ''' <summary>Eine Abfrage an den Server. <paramref name="bulk"/> nimmt den Client mit dem
         ''' langen Zeitlimit - fuer die Abfragen des Abgleichs, die Megabyte am Stueck holen.</summary>
         Friend Shared Async Function RequestAsync(playerId As String, command As String(), cancellationToken As CancellationToken, Optional bulk As Boolean = False) As Task(Of JsonElement)
-            Dim baseUrl = AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c)
+            Dim baseUrl = AppSettingsService.ActiveLyrionServer.Url.Trim().TrimEnd("/"c)
             If String.IsNullOrWhiteSpace(baseUrl) Then Throw New InvalidOperationException(LocalizationService.T("Bitte zuerst die Adresse des Lyrion Media Server eintragen."))
             Dim body = JsonSerializer.Serialize(New With {.id = 3, .method = "slim.request", .params = New Object() {playerId, command}})
             Using response = Await If(bulk, BulkClient, Client).PostAsync(baseUrl & "/jsonrpc.js", New StringContent(body, Encoding.UTF8, "application/json"), cancellationToken)
@@ -405,7 +405,7 @@ Namespace Services
         End Function
         Public Shared Function ArtworkUrl(album As Album) As String
             If album Is Nothing OrElse String.IsNullOrWhiteSpace(album.ArtworkTrackId) Then Return String.Empty
-            Return AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c) & "/music/" & Uri.EscapeDataString(album.ArtworkTrackId) & "/cover.jpg"
+            Return AppSettingsService.ActiveLyrionServer.Url.Trim().TrimEnd("/"c) & "/music/" & Uri.EscapeDataString(album.ArtworkTrackId) & "/cover.jpg"
         End Function
 
         ''' <summary>Die Adresse eines vom Server verkleinerten Covers. Fuer eine Kachel von 160
@@ -414,7 +414,7 @@ Namespace Services
         Public Shared Function ThumbnailUrl(album As Album, size As Integer) As String
             If album Is Nothing OrElse String.IsNullOrWhiteSpace(album.ArtworkTrackId) Then Return String.Empty
             Dim edge = Math.Clamp(size, 32, 1024)
-            Return AppSettingsService.Current.LyrionServerUrl.Trim().TrimEnd("/"c) & "/music/" & Uri.EscapeDataString(album.ArtworkTrackId) & $"/cover_{edge}x{edge}_o.jpg"
+            Return AppSettingsService.ActiveLyrionServer.Url.Trim().TrimEnd("/"c) & "/music/" & Uri.EscapeDataString(album.ArtworkTrackId) & $"/cover_{edge}x{edge}_o.jpg"
         End Function
 
         Public Shared Async Function GetArtworkAsync(album As Album, cancellationToken As CancellationToken) As Task(Of Byte())

@@ -14,6 +14,7 @@ Namespace Views
 
         Public Sub New()
             InitializeComponent()
+            AddHandler DetachedFromVisualTree, Sub(sender, e) AppSettingsService.Save()
         End Sub
 
         Private Sub InitializeComponent()

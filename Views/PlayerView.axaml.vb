@@ -56,11 +56,13 @@ Namespace Views
             If _focusViewModel IsNot Nothing Then
                 RemoveHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
                 RemoveHandler _focusViewModel.AudioCdRemoved, AddressOf OnAudioCdRemoved
+                RemoveHandler _focusViewModel.PlaylistAreaChanged, AddressOf OnPlaylistAreaChanged
             End If
             _focusViewModel = ViewModel
             If _focusViewModel IsNot Nothing Then
                 AddHandler _focusViewModel.PlaylistFocusRequested, AddressOf OnPlaylistFocusRequested
                 AddHandler _focusViewModel.AudioCdRemoved, AddressOf OnAudioCdRemoved
+                AddHandler _focusViewModel.PlaylistAreaChanged, AddressOf OnPlaylistAreaChanged
             End If
             ' RestorePlaylist laeuft vor dem Anhaengen der Ansicht. Erst danach ist die ListBox
             ' vorhanden und kann den zuletzt gewaehlten Titel wirklich sichtbar machen.
@@ -83,6 +85,16 @@ Namespace Views
             _converterPanel?.CloseForRemovedAudioCd()
         End Sub
 
+        Private Sub OnPlaylistAreaChanged(sender As Object, e As EventArgs)
+            ' RebuildRows hat die Items gerade ersetzt. Erst im folgenden UI-Durchgang kennt die
+            ' ListBox ihre neue erste Zeile und kann ohne sichtbares Springen dorthin rollen.
+            Dispatcher.UIThread.Post(Sub()
+                                         Dim list = Me.FindControl(Of ListBox)("PlaylistBox")
+                                         Dim first = list?.Items.OfType(Of PlaylistRow)().FirstOrDefault()
+                                         If first IsNot Nothing Then list.ScrollIntoView(first)
+                                     End Sub)
+        End Sub
+
         Private Sub OnSeeked(seconds As Double)
             ViewModel?.SeekTo(seconds)
         End Sub
@@ -96,6 +108,39 @@ Namespace Views
             Else
                 viewModel.FocusTrackInPlaylist(track)
             End If
+        End Sub
+
+        Private Async Sub OnLoadM3uClick(sender As Object, e As RoutedEventArgs)
+            Dim storage = TopLevel.GetTopLevel(Me)?.StorageProvider
+            If storage Is Nothing Then Return
+            Dim files = Await storage.OpenFilePickerAsync(New FilePickerOpenOptions With {
+                .Title = "Wiedergabeliste laden", .AllowMultiple = False,
+                .FileTypeFilter = {New FilePickerFileType("M3U-Wiedergabeliste") With {.Patterns = {"*.m3u", "*.m3u8"}}}})
+            Dim path = files.FirstOrDefault()?.TryGetLocalPath()
+            If String.IsNullOrWhiteSpace(path) Then Return
+            Try
+                Await ViewModel.LoadM3uAsync(path)
+            Catch ex As Exception
+                DiagnosticLogService.LogException("Playlist.M3uLoad", ex)
+                ViewModel.StatusText = "Wiedergabeliste konnte nicht geladen werden."
+            End Try
+        End Sub
+
+        Private Async Sub OnSaveM3uClick(sender As Object, e As RoutedEventArgs)
+            Dim storage = TopLevel.GetTopLevel(Me)?.StorageProvider
+            If storage Is Nothing OrElse ViewModel Is Nothing Then Return
+            Dim file = Await storage.SaveFilePickerAsync(New FilePickerSaveOptions With {
+                .Title = "Wiedergabeliste speichern", .SuggestedFileName = "Wiedergabeliste.m3u",
+                .FileTypeChoices = {New FilePickerFileType("M3U-Wiedergabeliste") With {.Patterns = {"*.m3u"}}}})
+            Dim path = file?.TryGetLocalPath()
+            If String.IsNullOrWhiteSpace(path) Then Return
+            Try
+                ViewModel.SaveM3u(path)
+                ViewModel.StatusText = "Wiedergabeliste gespeichert."
+            Catch ex As Exception
+                DiagnosticLogService.LogException("Playlist.M3uSave", ex)
+                ViewModel.StatusText = "Wiedergabeliste konnte nicht gespeichert werden."
+            End Try
         End Sub
 
         Private Sub OnSidePanelDrag(sender As Object, e As VectorEventArgs)
@@ -197,6 +242,16 @@ Namespace Views
         End Sub
         Private Sub OnLyrionClick(sender As Object, e As RoutedEventArgs)
             ShowLyrionPanel()
+        End Sub
+
+        Private Sub OnLyrionOneClick(sender As Object, e As RoutedEventArgs)
+            ViewModel?.SelectLyrionServer(0) : ShowLyrionPanel()
+        End Sub
+        Private Sub OnLyrionTwoClick(sender As Object, e As RoutedEventArgs)
+            ViewModel?.SelectLyrionServer(1) : ShowLyrionPanel()
+        End Sub
+        Private Sub OnLyrionThreeClick(sender As Object, e As RoutedEventArgs)
+            ViewModel?.SelectLyrionServer(2) : ShowLyrionPanel()
         End Sub
         Private Sub ShowLyrionPanel(Optional tracks As IEnumerable(Of Track) = Nothing, Optional currentTrack As Track = Nothing)
             ClearStatus()

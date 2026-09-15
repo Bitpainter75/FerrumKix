@@ -102,6 +102,9 @@ Namespace Services
         ''' zu Beginn jedes Laufs geleert: eine Liste von vorgestern verleitete sonst dazu,
         ''' Eintraege zu loeschen, die es inzwischen wieder gibt.</summary>
         Private Shared _unresolved As New List(Of LyrionMediaServerService.FavoriteEntry)()
+        ''' <summary>Der komplette Favoritenbestand wurde veraendert. Die Ansicht haelt eine
+        ''' eigene, bereits geladene Favoritenmenge und muss sie danach neu vom Server holen.</summary>
+        Public Shared Event AllFavoritesCleared As EventHandler
 
         ''' <summary>Was der letzte Lauf an Favoriten NICHT aufloesen konnte. Daraus baut die
         ''' Ansicht ihre Nachfrage, ob diese Eintraege aus den Favoriten sollen.</summary>
@@ -130,7 +133,7 @@ Namespace Services
                 Return
             End If
 
-            Dim target = AppSettingsService.Current.LyrionSyncTargetPath
+            Dim target = AppSettingsService.ActiveLyrionServer.SyncTargetPath
             If String.IsNullOrWhiteSpace(target) Then
                 LyrionTaskState.SetStatus(LocalizationService.T("Bitte zuerst einen Zielordner für den Favoritenabgleich wählen."))
                 LyrionTaskState.Finish()
@@ -167,6 +170,35 @@ Namespace Services
 
             SetStatus(LocalizationService.Format("{0} Favoriten werden entfernt …", entries.Count))
             Task.Run(Function() CleanUpOnceAsync(entries, source.Token))
+        End Sub
+
+        ''' <summary>Entfernt bewusst alle Album-Favoriten. Die Sicherheitsabfrage liegt in der
+        ''' Ansicht; der Dienst bleibt auch hier ohne UI-Abhaengigkeit.</summary>
+        Public Shared Sub StartAllFavoritesCleanup()
+            Dim source = LyrionTaskState.TryBegin(LyrionTaskState.Kind.Cleanup)
+            If source Is Nothing Then
+                LyrionTaskState.SetStatus(LocalizationService.T("Es läuft gerade ein anderer Lyrion-Vorgang."))
+                Return
+            End If
+            SetStatus(LocalizationService.T("Album-Favoriten werden geladen …"))
+            Task.Run(Async Function()
+                         Try
+                             Dim entries = Await LyrionMediaServerService.GetFavoriteEntriesAsync(source.Token, bulk:=True)
+                             If entries.Count = 0 Then
+                                 LyrionTaskState.SetStatus(LocalizationService.T("Keine Album-Favoriten vorhanden."))
+                                 LyrionTaskState.Finish()
+                             Else
+                                 SetStatus(LocalizationService.Format("{0} Album-Favoriten werden entfernt …", entries.Count))
+                                 Await CleanUpOnceAsync(entries, source.Token)
+                             End If
+                             RaiseEvent AllFavoritesCleared(Nothing, EventArgs.Empty)
+                         Catch ex As Exception
+                             DiagnosticLogService.LogException("Lyrion.Favorites.Clear", ex)
+                             LyrionTaskState.SetStatus(LocalizationService.T("Favoriten konnten nicht gelöscht werden."))
+                             LyrionTaskState.Finish()
+                             RaiseEvent AllFavoritesCleared(Nothing, EventArgs.Empty)
+                         End Try
+                     End Function)
         End Sub
 
         Private Shared Async Function CleanUpOnceAsync(entries As List(Of LyrionMediaServerService.FavoriteEntry),

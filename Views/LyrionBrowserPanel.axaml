@@ -126,6 +126,10 @@
                         ToolTip.Tip="Favoriten in den Zielordner abgleichen">
                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/download.svg" Width="16" Height="16"/>
                 </Button>
+                <Button Classes="icon-btn" Click="OnClearAllFavoritesClick"
+                        ToolTip.Tip="Alle Album-Favoriten löschen">
+                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/trash-x.svg" Width="16" Height="16"/>
+                </Button>
                 <Button x:Name="ReloadButton" Classes="icon-btn" Click="OnReloadClick" ToolTip.Tip="Bibliothek aktualisieren">
                     <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/repeat.svg" Width="16" Height="16"/>
                 </Button>
@@ -161,7 +165,7 @@
             <Button x:Name="SortDirectionButton" Grid.Column="3" Classes="icon-btn"
                     Click="OnSortDirectionClick" ToolTip.Tip="Reihenfolge umkehren">
                 <icons:SvgIcon x:Name="SortDirectionIcon" Width="16" Height="16"
-                               Source="avares://FerrumPlay/Assets/Icons/outline/chevron-down.svg"/>
+                               Source="avares://FerrumPlay/Assets/Icons/outline/sort-ascending.svg"/>
             </Button>
             <Button x:Name="FavoriteFilterButton" Grid.Column="4" Classes="icon-btn"
                     Click="OnFavoriteFilterClick" ToolTip.Tip="Nur Favoriten zeigen">
@@ -209,7 +213,8 @@
                      kann sich zwei Ansichten nicht mit einer Liste teilen. -->
                 <ScrollViewer x:Name="AlbumScroll"
                               HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto">
+                              VerticalScrollBarVisibility="Auto"
+                              ScrollChanged="OnAlbumScrollChanged">
                     <!-- MinItemWidth/MinItemHeight werden bewusst nicht gesetzt: das Layout nimmt
                          sie unveraendert als Mass und vergleicht sie nicht mit der Kachel. Ohne
                          Angabe misst es das erste gebaute Element und trifft damit immer. -->

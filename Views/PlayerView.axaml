@@ -156,8 +156,12 @@
                                     Classes.active="{Binding IsFilesPlaylistSelected}"
                                     Command="{Binding ShowFilesPlaylistCommand}"
                                     Content="Wiedergabeliste"/>
-                            <Button Classes="playlist-tab" Content="Lyrion Media Server" Click="OnLyrionClick"
-                                    IsVisible="{Binding HasLyrionServer}"/>
+                            <Button Classes="playlist-tab" Content="{Binding LyrionServerOneName}" Click="OnLyrionOneClick"
+                                    IsVisible="{Binding HasLyrionServerOne}"/>
+                            <Button Classes="playlist-tab" Content="{Binding LyrionServerTwoName}" Click="OnLyrionTwoClick"
+                                    IsVisible="{Binding HasLyrionServerTwo}"/>
+                            <Button Classes="playlist-tab" Content="{Binding LyrionServerThreeName}" Click="OnLyrionThreeClick"
+                                    IsVisible="{Binding HasLyrionServerThree}"/>
                             <Button Classes="playlist-tab"
                                     Classes.active="{Binding IsAudioCdPlaylistSelected}"
                                     Command="{Binding ShowAudioCdPlaylistCommand}"
@@ -165,6 +169,12 @@
                                     Content="Audio-CD"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                            <Button Classes="icon-btn" Click="OnLoadM3uClick" ToolTip.Tip="Wiedergabeliste laden">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/folder.svg" Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="icon-btn" Click="OnSaveM3uClick" ToolTip.Tip="Wiedergabeliste als M3U speichern">
+                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/playlist.svg" Width="16" Height="16"/>
+                            </Button>
                             <Button Classes="icon-btn"
                                     IsEnabled="{Binding HasCurrentTrack}"
                                     Click="OnJumpToCurrentTrackClick"

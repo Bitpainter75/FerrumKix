@@ -20,20 +20,21 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Knows your tracks.** Artist, album, year, duration, sample rate and bitrate are read from the file's tags. The cover comes from the track itself or from an image in its folder.
 - **Groups by album.** Every folder becomes a group with a header, track count and total running time. Groups can be collapsed.
 - **Finds quickly.** The quick search filters by title, artist, album and file name.
-- **Takes what you give it.** Drag files and whole folders into the window, add them with the buttons below the list, or pass them on the command line.
+- **Takes what you give it.** Drag files and whole folders into the window, add them with the buttons below the list, or pass them on the command line. M3U/M3U8 playlists can be saved, loaded, and opened the same way.
 - **Shuffle and repeat.** Whole list or a single track. Don't want to hear a track right now? Untick it instead of removing it.
 - **Gapless.** A continuously mixed album plays from track to track without a break.
 - **Plays and identifies Audio CDs.** On Linux, an inserted Audio CD is detected automatically and
   appears as a separate temporary playlist. Its tracks can be selected, searched and played just
   like files; ejecting the disc removes the playlist again. The disc is looked up at MusicBrainz
   from its track lengths alone, so titles, artist, album and year are filled in instead of
-  "Track 01" — and they go into the tags, along with the cover art, when the CD is converted.
-- **Browses Lyrion.** Connect a Lyrion Media Server to search its albums as you type, view server
+  "Track 01" — and they go into the tags, along with the cover art, when the CD is converted. A
+  configurable placeholder pattern can place each rip in its own album subfolder.
+- **Browses Lyrion.** Connect up to three Lyrion Media Servers, each in its own named tab, to search its albums as you type, view server
   artwork, and play an album locally through FerrumPlay. The album becomes a temporary playlist,
   including next/previous, shuffle, repeat, and jump-to-current-track. Unchecking a track leaves it
   out of that playback, the same way it works in the playlist. Sort the overview by
   recently added, artist/year, album or year/album, in either direction, and filter it down to
-  your favorites. "Refresh library" asks the server to look for new and changed music first,
+  your favorites. The favorites filter also reports the space needed for syncing. "Refresh library" asks the server to look for new and changed music first,
   rather than showing the same state again.
 - **Works as a remote control.** A picker chooses where playback runs: locally, or on any player
   registered with the Lyrion server. With a device chosen, the whole transport bar controls it —
@@ -71,8 +72,8 @@ The transport sits on a dark deck at the bottom: the progress bar across the ful
 Accent colour, font size, language, the blurred cover background, the width of the cover column,
 gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start are all
 configurable. The MP3 editor and Lyrion browser also keep their own defaults; entering a Lyrion
-server address makes its player tab available, and a target folder there enables the favorites
-sync. The MP3 section also sets the edge length cover art is brought to, which governs the image
+server profile makes its own player tab available, and a separate target folder per server enables
+the favorites sync. The MP3 section also sets the edge length cover art is brought to, which governs the image
 fetched for an identified CD as well, and the audio converter section holds the target folder for
 ripping audio CDs, which defaults to your music folder. The version is shown there too, with a
 link to the release page whenever a newer one is published. On Linux, the whole interface can also
@@ -120,11 +121,13 @@ The code is prepared for both, but there are no packages yet and they are untest
 FerrumPlay [--debug] [file or folder ...]
 ```
 
-Files and folders passed on the command line are added to the playlist, folders including their subfolders, and the first track starts playing:
+Files, folders, and M3U/M3U8 playlists passed on the command line are opened directly. Folders are
+included with their subfolders, and the first supplied audio track starts playing:
 
 ```bash
 FerrumPlay ~/Music/Album
 FerrumPlay track.flac another.mp3
+FerrumPlay ~/Playlists/favorites.m3u
 ```
 
 If FerrumPlay is already running, the running instance takes the files and folders over, plays the
@@ -165,4 +168,4 @@ come from [MusicBrainz](https://musicbrainz.org) and are core data under
 their respective copyright owners. Only the disc id, computed from the track lengths, is sent; the
 disc itself is never read for the lookup.
 
-FerrumPlay is at version 0.9.1 and in active development.
+FerrumPlay is at version 0.9.2 and in active development.

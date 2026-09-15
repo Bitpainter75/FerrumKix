@@ -823,4 +823,19 @@
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>On a device the server plays the whole album.</value>
   </data>
+  <data name="Album_Favoriten_werden_geladen_cf7057d3" xml:space="preserve"><value>Album favorites are loading …</value></data>
+  <data name="Keine_Album_Favoriten_vorhanden_37194479" xml:space="preserve"><value>No album favorites found.</value></data>
+  <data name="0_Album_Favoriten_werden_entfernt_51d9b2d3" xml:space="preserve"><value>Removing {0} album favorites …</value></data>
+  <data name="Favoriten_konnten_nicht_gel_scht_werden_1f5ad076" xml:space="preserve"><value>Favorites could not be removed.</value></data>
+  <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>Calculating sync size …</value></data>
+  <data name="0_Titel_0_MB_f_r_Sync_f88865ad" xml:space="preserve"><value>0 tracks · 0 MB for sync</value></data>
+  <data name="0_Titel_1_f_r_Sync_85bf758a" xml:space="preserve"><value>{0} tracks · {1} for sync</value></data>
+  <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>Sync size could not be calculated.</value></data>
+  <data name="Alle_Album_Favoriten_l_schen_0caa2b6f" xml:space="preserve"><value>Delete all album favorites?</value></data>
+  <data name="Dieser_Vorgang_kann_nicht_r_ckg_ngig_gemacht_wer_77fa6480" xml:space="preserve"><value>This action cannot be undone.</value></data>
+  <data name="Alle_l_schen_a85903c2" xml:space="preserve"><value>Delete all</value></data>
+  <data name="Das_Zielformat_entspricht_bereits_der_Quelldatei_66fc4071" xml:space="preserve"><value>The target format already matches a source file in the same folder. Choose another target folder or format.</value></data>
+  <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>Overwrite existing files?</value></data>
+  <data name="0_Zieldatei_en_existieren_bereits_a1538e51" xml:space="preserve"><value>{0} target file(s) already exist.</value></data>
+  <data name="Alle_berschreiben_eaf7926d" xml:space="preserve"><value>Overwrite all</value></data>
 </root>

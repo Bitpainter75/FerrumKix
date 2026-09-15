@@ -68,7 +68,7 @@
           </WrapPanel>
           <Grid ColumnDefinitions="108,*,Auto" ColumnSpacing="8">
             <TextBlock Text="Ausgabe" Classes="section-header" VerticalAlignment="Center"/>
-            <TextBox x:Name="FolderBox" Grid.Column="1" PlaceholderText="Zielordner auswählen" IsReadOnly="True" VerticalAlignment="Center"/>
+            <TextBox x:Name="FolderBox" Grid.Column="1" PlaceholderText="Zielordner auswählen" VerticalAlignment="Center"/>
             <Button Grid.Column="2" x:Name="ChooseFolderButton" Content="..." Click="OnChooseFolderClick" VerticalAlignment="Center" Padding="12,7"/>
           </Grid>
           <Grid ColumnDefinitions="108,*,Auto" ColumnSpacing="8">

@@ -7,6 +7,7 @@ Imports Avalonia.Controls
 Imports Avalonia.Interactivity
 Imports Avalonia.Layout
 Imports Avalonia.Markup.Xaml
+Imports Avalonia.VisualTree
 Imports FerrumPlay.Models
 Imports FerrumPlay.Services
 Imports FerrumPlay.ViewModels
@@ -32,6 +33,8 @@ Namespace Views
   Private _sort As LyrionMediaServerService.AlbumSort = LyrionMediaServerService.AlbumSort.ArtistYear
   Private _descending As Boolean
   Private _favoritesOnly As Boolean
+  Private _favoriteSizeSummary As String = String.Empty
+  Private _favoriteSizeRequest As Integer
   ''' <summary>Das Fuellen des Auswahlfeldes loest selbst eine Auswahlaenderung aus. Ohne
   ''' diese Sperre laedt jeder Sprachwechsel die Bibliothek neu.</summary>
   Private _suppressSortChange As Boolean
@@ -56,10 +59,12 @@ Namespace Views
    ' aktuellen Stand - sonst saehe ein neu geoeffnetes Panel einen laufenden Abgleich nicht.
    AddHandler LyrionTaskState.Changed, AddressOf OnSyncStateChanged
    AddHandler LyrionLibraryScanService.Completed, AddressOf OnLibraryScanCompleted
+   AddHandler LyrionFavoriteSyncService.AllFavoritesCleared, AddressOf OnAllFavoritesCleared
    AddHandler DetachedFromVisualTree, Sub(sender, e)
                                         RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
                                         RemoveHandler LyrionTaskState.Changed, AddressOf OnSyncStateChanged
                                         RemoveHandler LyrionLibraryScanService.Completed, AddressOf OnLibraryScanCompleted
+                                        RemoveHandler LyrionFavoriteSyncService.AllFavoritesCleared, AddressOf OnAllFavoritesCleared
                                         ClearVisibleTracks()
                                       End Sub
    FillSortBox()
@@ -146,14 +151,38 @@ Namespace Views
   Private Sub UpdateSortDirection()
    Dim icon = FindControl(Of FerrumPlay.Controls.SvgIcon)("SortDirectionIcon")
    If icon Is Nothing Then Return
-   icon.Source = If(_descending, "avares://FerrumPlay/Assets/Icons/outline/chevron-up.svg", "avares://FerrumPlay/Assets/Icons/outline/chevron-down.svg")
+   icon.Source = If(_descending, "avares://FerrumPlay/Assets/Icons/outline/sort-descending.svg", "avares://FerrumPlay/Assets/Icons/outline/sort-ascending.svg")
   End Sub
 
   Private Sub OnFavoriteFilterClick(sender As Object, e As RoutedEventArgs)
    _favoritesOnly = Not _favoritesOnly
    Dim button = FindControl(Of Button)("FavoriteFilterButton")
    If _favoritesOnly Then button.Classes.Add("active") Else button.Classes.Remove("active")
+   If _favoritesOnly Then LoadFavoriteSizeAsync() Else Threading.Interlocked.Increment(_favoriteSizeRequest)
    ApplyAlbumView()
+  End Sub
+
+  ''' <summary>Die ganze Titelliste wird erst beim Favoritenfilter gelesen. So bleibt der normale
+  ''' Albumraster-Aufbau schnell, die angezeigte Größe entspricht aber dem Sync-Bedarf.</summary>
+  Private Async Sub LoadFavoriteSizeAsync()
+   Dim request = Threading.Interlocked.Increment(_favoriteSizeRequest)
+   _favoriteSizeSummary = LocalizationService.T("Sync-Größe wird ermittelt …")
+   Try
+    Dim favoriteIds = New HashSet(Of String)(_albums.Where(Function(album) _favoriteUrls.Contains(album.FavoritesUrl)).Select(Function(album) album.Id), StringComparer.Ordinal)
+    If favoriteIds.Count = 0 Then
+     _favoriteSizeSummary = LocalizationService.T("0 Titel · 0 MB für Sync")
+    Else
+     Dim tracks = Await LyrionMediaServerService.GetAllLibraryTracksAsync(Threading.CancellationToken.None)
+     If request <> Threading.Volatile.Read(_favoriteSizeRequest) OrElse Not _favoritesOnly Then Return
+     Dim selected = tracks.Where(Function(track) favoriteIds.Contains(track.AlbumId)).ToList()
+     _favoriteSizeSummary = LocalizationService.Format("{0} Titel · {1} für Sync", selected.Count, Track.FormatFileSize(selected.Sum(Function(track) track.Size)))
+    End If
+   Catch ex As Exception
+    If request <> Threading.Volatile.Read(_favoriteSizeRequest) OrElse Not _favoritesOnly Then Return
+    DiagnosticLogService.LogException("Lyrion.FavoriteSize", ex)
+    _favoriteSizeSummary = LocalizationService.T("Sync-Größe konnte nicht ermittelt werden.")
+   End Try
+   If request = Threading.Volatile.Read(_favoriteSizeRequest) AndAlso _favoritesOnly Then ApplyAlbumView()
   End Sub
 
   ''' <summary>Der Stern auf einer Kachel. Er steckt IN der Albumschaltflaeche, deren Klick das
@@ -166,7 +195,10 @@ Namespace Views
    ' Der Filter arbeitet auf dieser Menge: ohne den Nachtrag zeigte er ein gerade abgewaehltes
    ' Album weiter und ein neu gemerktes nicht.
    If tile.IsFavorite Then _favoriteUrls.Add(tile.Album.FavoritesUrl) Else _favoriteUrls.Remove(tile.Album.FavoritesUrl)
-   If _favoritesOnly Then ApplyAlbumView()
+   If _favoritesOnly Then
+    LoadFavoriteSizeAsync()
+    ApplyAlbumView()
+   End If
   End Sub
 
   ''' <summary>Holt die Albenliste vollstaendig und zeigt sie an. Die Favoriten kommen nur beim
@@ -178,7 +210,7 @@ Namespace Views
    scroll.IsVisible = True : FindControl(Of ScrollViewer)("TrackScroll").IsVisible = False
    ' Zurueck im Albengitter steht keine Titelliste mehr offen.
    ClearVisibleTracks()
-   FindControl(Of TextBlock)("PageTitle").Text = "Lyrion Media Server"
+   FindControl(Of TextBlock)("PageTitle").Text = ActiveServerName()
    FindControl(Of TextBlock)("Status").Text = LocalizationService.T("Alben werden geladen …")
    Try
     Dim albums = Await LyrionMediaServerService.GetAlbumsAsync(FindControl(Of TextBox)("SearchBox").Text, _sort, Threading.CancellationToken.None)
@@ -194,6 +226,12 @@ Namespace Views
     If request = Threading.Volatile.Read(_searchRequest) Then FindControl(Of TextBlock)("Status").Text = ex.Message
    End Try
   End Sub
+
+  Private Shared Function ActiveServerName() As String
+   Dim server = AppSettingsService.ActiveLyrionServer
+   If Not String.IsNullOrWhiteSpace(server.Name) Then Return server.Name
+   Try : Return New Uri(server.Url).Host : Catch : Return "Lyrion Media Server" : End Try
+  End Function
 
   ''' <summary>Baut aus der geholten Liste die sichtbaren Kacheln: erst der Favoritenfilter, dann
   ''' die Richtung. SORTIERT wird hier nicht - die Reihenfolge steht schon fest, sie wird
@@ -224,7 +262,10 @@ Namespace Views
 
   Private Function StatusText(count As Integer) As String
    If count = 0 Then Return LocalizationService.T("Keine Alben gefunden.")
-   If _favoritesOnly Then Return LocalizationService.Format("{0} von {1} Alben", count, _albums.Count)
+   If _favoritesOnly Then
+    Dim suffix = If(String.IsNullOrWhiteSpace(_favoriteSizeSummary), String.Empty, " · " & _favoriteSizeSummary)
+    Return LocalizationService.Format("{0} von {1} Alben · {2} Favoriten", count, _albums.Count, _favoriteUrls.Count) & suffix
+   End If
    If IsSearching() Then
     ' KEINE typografischen Anfuehrungszeichen in diesem Text: VB nimmt " und " als
     ' Zeichenkettengrenze an und beendet die Zeichenkette mittendrin. Siehe
@@ -232,13 +273,13 @@ Namespace Views
     ' Bei einer Suche sortiert der Dienst selbst - bis auf "zuletzt hinzugefuegt". Wann ein Album
     ' in die Bibliothek kam, sagt die Albenabfrage nicht, also bleibt die Reihenfolge des Servers
     ' stehen. Das gehoert gesagt, statt eine Reihenfolge vorzutaeuschen.
-    If _sort = LyrionMediaServerService.AlbumSort.Recent Then Return LocalizationService.Format("{0} Treffer · zuletzt hinzugefügt gilt für eine Suche nicht", count)
-    Return LocalizationService.Format("{0} Treffer", count)
+    If _sort = LyrionMediaServerService.AlbumSort.Recent Then Return LocalizationService.Format("{0} Treffer · {1} Favoriten · zuletzt hinzugefügt gilt für eine Suche nicht", count, _favoriteUrls.Count)
+    Return LocalizationService.Format("{0} Treffer · {1} Favoriten", count, _favoriteUrls.Count)
    End If
    ' Bei "Zuletzt hinzugefuegt" ist die Zahl NICHT die Bibliothek: der Server gibt davon nur so
    ' viele heraus, wie seine Einstellung browseagelimit erlaubt.
-   If _sort = LyrionMediaServerService.AlbumSort.Recent Then Return LocalizationService.Format("{0} zuletzt hinzugefügte Alben", count)
-   Return LocalizationService.Format("{0} Alben", count)
+   If _sort = LyrionMediaServerService.AlbumSort.Recent Then Return LocalizationService.Format("{0} zuletzt hinzugefügte Alben · {1} Favoriten", count, _favoriteUrls.Count)
+   Return LocalizationService.Format("{0} Alben · {1} Favoriten", count, _favoriteUrls.Count)
   End Function
 
   ''' <summary>Ob gerade nach einem Begriff gefiltert wird.</summary>
@@ -252,13 +293,40 @@ Namespace Views
   Private Sub OnAlbumTilePrepared(sender As Object, e As ItemsRepeaterElementPreparedEventArgs)
    Dim element = TryCast(e.Element, Control)
    If element IsNot Nothing Then LocalizationService.ApplyTo(element)
-   TryCast(element?.DataContext, LyrionAlbumTile)?.RequestCover()
+   QueueVisibleCoverRefresh()
   End Sub
 
   ''' <summary>Der Repeater reicht die Kachel weiter. Ihr Bild wird losgelassen, die Bilddaten
   ''' bleiben im Zwischenspeicher des Dienstes.</summary>
   Private Sub OnAlbumTileClearing(sender As Object, e As ItemsRepeaterElementClearingEventArgs)
    TryCast(TryCast(e.Element, Control)?.DataContext, LyrionAlbumTile)?.ReleaseCover()
+  End Sub
+
+  ''' <summary>ItemsRepeater darf Kacheln knapp ausserhalb des Sichtfensters vorbereiten. Das ist
+  ''' fuer fluessiges Layout gut, darf aber keine HTTP-Anfrage ausloesen. Nur die geometrisch
+  ''' sichtbaren Kacheln bekommen daher ein Cover; beim Weiterrollen werden die anderen sofort
+  ''' freigegeben, auch wenn der Repeater sie noch im kleinen Layout-Puffer behaelt.</summary>
+  Private Sub OnAlbumScrollChanged(sender As Object, e As ScrollChangedEventArgs)
+   RefreshVisibleCovers()
+  End Sub
+
+  Private Sub QueueVisibleCoverRefresh()
+   Avalonia.Threading.Dispatcher.UIThread.Post(AddressOf RefreshVisibleCovers,
+                                                Avalonia.Threading.DispatcherPriority.Loaded)
+  End Sub
+
+  Private Sub RefreshVisibleCovers()
+   Dim scroll = FindControl(Of ScrollViewer)("AlbumScroll")
+   Dim repeater = FindControl(Of ItemsRepeater)("Albums")
+   If scroll Is Nothing OrElse repeater Is Nothing OrElse Not scroll.IsVisible Then Return
+   Dim top = scroll.Offset.Y
+   Dim bottom = top + scroll.Bounds.Height
+   For Each element In repeater.GetVisualChildren().OfType(Of Control)()
+    Dim tile = TryCast(element.DataContext, LyrionAlbumTile)
+    If tile Is Nothing Then Continue For
+    Dim visible = element.Bounds.Bottom > top AndAlso element.Bounds.Top < bottom
+    If visible Then tile.RequestCover() Else tile.ReleaseCover()
+   Next
   End Sub
   Private Sub OnAlbumClick(sender As Object, e As RoutedEventArgs)
    Dim tile = TryCast(TryCast(sender, Button)?.Tag, LyrionAlbumTile)
@@ -283,9 +351,15 @@ Namespace Views
    Dim tracks = FindControl(Of ListBox)("Tracks") : tracks.Items.Clear()
    Try
     Dim songs = Await LyrionMediaServerService.GetAlbumSongsAsync(_shownAlbum.Id, Threading.CancellationToken.None)
-    FindControl(Of TextBlock)("PageTitle").Text = _shownAlbum.Title
-    FindControl(Of TextBlock)("Status").Text = _shownAlbum.Artist & If(String.IsNullOrWhiteSpace(_shownAlbum.Year), "", " · " & _shownAlbum.Year) & "  ·  " & LocalizationService.Format("{0} Titel", songs.Count)
     _albumTracks = songs.OrderBy(Function(entry) TrackNumber(entry.TrackNumber)).ThenBy(Function(entry) entry.Title).Select(AddressOf CreateTrack).ToList()
+    FindControl(Of TextBlock)("PageTitle").Text = _shownAlbum.Title
+    Dim totalSeconds = _albumTracks.Sum(Function(track) track.DurationSeconds)
+    Dim totalBytes = _albumTracks.Sum(Function(track) track.FileSize)
+    Dim summary = _shownAlbum.Artist & If(String.IsNullOrWhiteSpace(_shownAlbum.Year), "", " · " & _shownAlbum.Year) & "  ·  " &
+                  LocalizationService.Format("{0} Titel", _albumTracks.Count) & " · " & Track.FormatTotalDuration(totalSeconds)
+    Dim size = Track.FormatFileSize(totalBytes)
+    If size.Length > 0 Then summary &= " · " & size
+    FindControl(Of TextBlock)("Status").Text = summary
     RenderTracks(_albumTracks)
    Catch ex As Exception
     FindControl(Of TextBlock)("Status").Text = ex.Message
@@ -521,6 +595,15 @@ Namespace Views
    LyrionFavoriteSyncService.Toggle()
   End Sub
 
+  Private Async Sub OnClearAllFavoritesClick(sender As Object, e As RoutedEventArgs)
+   Dim viewModel = TryCast(DataContext, MainWindowViewModel)
+   If viewModel Is Nothing OrElse LyrionTaskState.IsBusy Then Return
+   Dim confirmed = Await viewModel.ShowConfirmAsync(LocalizationService.T("Alle Album-Favoriten löschen?"),
+                                                    LocalizationService.T("Dieser Vorgang kann nicht rückgängig gemacht werden."), String.Empty,
+                                                    LocalizationService.T("Alle löschen"), LocalizationService.T("Abbrechen"))
+   If confirmed Then LyrionFavoriteSyncService.StartAllFavoritesCleanup()
+  End Sub
+
   ''' <summary>Nimmt die Schlussmeldung weg. Einen LAUFENDEN Abgleich beendet dieser Knopf nicht -
   ''' waehrend des Laufs steht er deshalb gar nicht da.</summary>
   Private Sub OnSyncDismissClick(sender As Object, e As RoutedEventArgs)
@@ -535,6 +618,13 @@ Namespace Views
   ''' Oberflaechenfaden gehoert hierher.</summary>
   Private Sub OnSyncStateChanged(sender As Object, e As EventArgs)
    Avalonia.Threading.Dispatcher.UIThread.Post(AddressOf RenderSyncState)
+  End Sub
+
+  ''' <summary>Die Löschung passiert im Dienst im Hintergrund. Die Kacheln tragen ihren
+  ''' Favoritenstatus jedoch als Momentaufnahme; ohne diese Neuladung bliebe der Stern bis zum
+  ''' App-Neustart sichtbar, obwohl der Server ihn bereits entfernt hat.</summary>
+  Private Sub OnAllFavoritesCleared(sender As Object, e As EventArgs)
+   Avalonia.Threading.Dispatcher.UIThread.Post(AddressOf ReloadLibrary)
   End Sub
 
   ''' <summary>Zeichnet den Stand des Abgleichs: die eigene Meldungszeile, die Farbe des
