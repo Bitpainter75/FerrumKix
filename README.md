@@ -14,6 +14,8 @@ I wanted a player in the spirit of the classic desktop players: one window, a re
 
 FerrumPlay does not import or rearrange your collection. It reads what is in the files, groups the playlist by the folders your albums already live in, and remembers where you left off.
 
+<img src="Screenshot.png" height="550" />
+
 ## What it does
 
 - **Plays what you have.** MP3, FLAC, OGG, Opus, M4A, AAC, ALAC, WAV, AIFF, WavPack, APE, WMA, Musepack, DSF and MP2.
@@ -56,8 +58,6 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 - **Runs once.** Open a file or folder from the file manager while FerrumPlay is running, and the running window takes it over, plays it, expands its album group and scrolls directly to the requested track.
 - **Remembers everything.** Playlist, volume, window position and the last track are back at the next start - and if you like, playback resumes right where it stopped.
 - **Speaks your language.** Twenty-one languages, following your system by default.
-
-<img src="Screenshot.png" height="550" />
 
 ## The player
 
