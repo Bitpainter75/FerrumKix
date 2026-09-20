@@ -79,6 +79,8 @@ ripping audio CDs, which defaults to your music folder. The version is shown the
 link to the release page whenever a newer one is published. On Linux, the whole interface can also
 be scaled per screen, for displays where it would otherwise come out too small.
 
+<img src="MP3Tagger.png" height="550" />
+
 ## Installation
 
 ### Linux
