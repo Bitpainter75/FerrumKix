@@ -650,4 +650,19 @@
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>デバイスではサーバーがアルバム全体を再生します。</value>
   </data>
+  <data name="Erscheinungsbild_2822d8fb" xml:space="preserve">
+    <value>外観</value>
+  </data>
+  <data name="Dunkel_ec4616f8" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+  <data name="Grau_dunkel_920030ce" xml:space="preserve">
+    <value>グレー（濃）</value>
+  </data>
+  <data name="Grau_hell_d6f8b3ae" xml:space="preserve">
+    <value>グレー（淡）</value>
+  </data>
+  <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
+    <value>ダークと 2 段階のグレー。選択はすぐに反映され、ウィンドウ、一覧、フッターに適用されます。</value>
+  </data>
 </root>

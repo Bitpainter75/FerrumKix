@@ -650,4 +650,19 @@
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>किसी डिवाइस पर सर्वर पूरा एल्बम चलाता है।</value>
   </data>
+  <data name="Erscheinungsbild_2822d8fb" xml:space="preserve">
+    <value>रूप</value>
+  </data>
+  <data name="Dunkel_ec4616f8" xml:space="preserve">
+    <value>गहरा</value>
+  </data>
+  <data name="Grau_dunkel_920030ce" xml:space="preserve">
+    <value>धूसर गहरा</value>
+  </data>
+  <data name="Grau_hell_d6f8b3ae" xml:space="preserve">
+    <value>धूसर हल्का</value>
+  </data>
+  <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
+    <value>गहरा और धूसर के दो रंग। चुनाव तुरंत प्रभावी होता है और विंडो, सूची तथा नीचे की पट्टी पर लागू होता है।</value>
+  </data>
 </root>

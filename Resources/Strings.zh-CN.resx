@@ -650,4 +650,19 @@
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>在设备上，服务器会播放整张专辑。</value>
   </data>
+  <data name="Erscheinungsbild_2822d8fb" xml:space="preserve">
+    <value>外观</value>
+  </data>
+  <data name="Dunkel_ec4616f8" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="Grau_dunkel_920030ce" xml:space="preserve">
+    <value>深灰</value>
+  </data>
+  <data name="Grau_hell_d6f8b3ae" xml:space="preserve">
+    <value>浅灰</value>
+  </data>
+  <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
+    <value>深色以及两种灰度。选择立即生效，适用于窗口、列表和底栏。</value>
+  </data>
 </root>

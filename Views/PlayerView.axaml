@@ -59,7 +59,7 @@
                    Effect="blur(70)"
                    Opacity="0.5"/>
         </Border>
-        <Border Background="#CC0B0E11"/>
+        <Border Background="{DynamicResource FP.Bg.Scrim}"/>
 
         <Grid RowDefinitions="*,Auto">
 
@@ -148,7 +148,7 @@
                        DragDelta="OnSidePanelDrag"/>
 
                 <!-- Die Wiedergabeliste -->
-                <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto,Auto" Background="#66101418">
+                <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto,Auto" Background="{DynamicResource FP.Bg.Veil}">
 
                     <Grid x:Name="PlaylistHeader" Grid.Row="0" ColumnDefinitions="*,Auto" Margin="18,10,10,0">
                         <StackPanel Orientation="Horizontal">

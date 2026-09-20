@@ -13,7 +13,9 @@ Namespace Services
     ''' nach jedem Wechsel der Akzentfarbe weitere von Hand nachziehen.</para>
     '''
     ''' <para>Gemischt wird gegen Schwarz und Weiss, nicht gegen den Hintergrund: der Abstand
-    ''' zwischen Flaeche und Schrift soll bei jeder Farbe derselbe bleiben.</para></summary>
+    ''' zwischen Flaeche und Schrift soll bei jeder Farbe derselbe bleiben. Die Pinsel stehen
+    ''' trotzdem in denselben Ressourcen wie die Farben des Erscheinungsbildes - der Dienst laeuft
+    ''' deshalb auch nach jedem Wechsel des Bildes erneut, siehe <see cref="ThemeService"/>.</para></summary>
     Public NotInheritable Class AccentColorService
         Private Sub New()
         End Sub
@@ -52,12 +54,14 @@ Namespace Services
             SetBrush(app, "FP.Accent.Dim", Mix(base, Color.Parse("#0B0E11"), 0.78))
             SetBrush(app, "FP.Text.Accent", base)
 
-            ' Das Symbol im Wiedergabeknopf. Die Fussleiste selbst ist dunkel und haengt nicht an
-            ' der Akzentfarbe; nur der gefuellte Knopf darin braucht eine Schrift, die auf jeder
-            ' Farbe der Auswahl lesbar bleibt - und das ist ein sehr dunkler Ton derselben Farbe.
+            ' Das Symbol im gefuellten Wiedergabeknopf und die Schrift auf den Akzentknoepfen. Sie
+            ' bleibt in JEDEM Bild ein sehr dunkler Ton derselben Farbe: der Knopf traegt die
+            ' Akzentfarbe, nicht den Grund, und darauf ist Dunkel bei jeder Farbe der Auswahl
+            ' lesbar.
             SetBrush(app, "FP.Footer.OnAccent", Mix(base, Colors.Black, 0.82))
 
-            ' Die Zeile des laufenden Titels.
+            ' Die Zeile des laufenden Titels. Alle drei Erscheinungsbilder tragen helle Schrift,
+            ' der Balken geht deshalb in jedem nach Schwarz.
             SetBrush(app, "FP.Row.Playing", Mix(base, Colors.Black, 0.5))
             SetBrush(app, "FP.Row.PlayingHover", Mix(base, Colors.Black, 0.42))
 

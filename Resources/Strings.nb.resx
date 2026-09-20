@@ -650,4 +650,19 @@
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>På en enhet spiller serveren hele albumet.</value>
   </data>
+  <data name="Erscheinungsbild_2822d8fb" xml:space="preserve">
+    <value>Utseende</value>
+  </data>
+  <data name="Dunkel_ec4616f8" xml:space="preserve">
+    <value>Mørk</value>
+  </data>
+  <data name="Grau_dunkel_920030ce" xml:space="preserve">
+    <value>Grå mørk</value>
+  </data>
+  <data name="Grau_hell_d6f8b3ae" xml:space="preserve">
+    <value>Grå lys</value>
+  </data>
+  <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
+    <value>Mørk og to grånyanser. Valget trer i kraft med en gang og gjelder vindu, liste og bunnlinje.</value>
+  </data>
 </root>

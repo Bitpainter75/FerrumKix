@@ -650,4 +650,19 @@
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>Di perangkat, server memutar seluruh album.</value>
   </data>
+  <data name="Erscheinungsbild_2822d8fb" xml:space="preserve">
+    <value>Tampilan</value>
+  </data>
+  <data name="Dunkel_ec4616f8" xml:space="preserve">
+    <value>Gelap</value>
+  </data>
+  <data name="Grau_dunkel_920030ce" xml:space="preserve">
+    <value>Abu-abu gelap</value>
+  </data>
+  <data name="Grau_hell_d6f8b3ae" xml:space="preserve">
+    <value>Abu-abu terang</value>
+  </data>
+  <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
+    <value>Gelap dan dua nuansa abu-abu. Pilihan langsung berlaku untuk jendela, daftar, dan bilah bawah.</value>
+  </data>
 </root>

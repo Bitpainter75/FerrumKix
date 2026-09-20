@@ -70,6 +70,10 @@ Namespace Services
         ''' <see cref="FontScaleService"/>.</summary>
         Public Property FontSizeOffset As Integer = 0
 
+        ''' <summary>Das Erscheinungsbild: Dark, Light, GrayDark oder GrayLight, siehe
+        ''' <see cref="ThemeService"/>.</summary>
+        Public Property ThemeMode As String = "Dark"
+
         ''' <summary>Die Akzentfarbe als #RRGGBB. Aus ihr leiten sich die Farben der Fussleiste und
         ''' der laufenden Zeile ab, siehe <see cref="AccentColorService"/>.</summary>
         Public Property AccentColor As String = "#F08A1A"
@@ -191,6 +195,7 @@ Namespace Services
 
                 ' Was aus der Datei kommt, wird erst geprueft und dann geglaubt. Ein von Hand
                 ' verstellter Faktor von 12 machte die Anwendung sonst unbedienbar.
+                loaded.ThemeMode = ThemeService.Normalize(loaded.ThemeMode)
                 loaded.AccentColor = AccentColorService.Normalize(loaded.AccentColor)
                 loaded.FontSizeOffset = FontScaleService.Normalize(loaded.FontSizeOffset)
                 loaded.LanguageMode = LocalizationService.NormalizeLanguageMode(loaded.LanguageMode)

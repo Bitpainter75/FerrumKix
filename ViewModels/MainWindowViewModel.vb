@@ -199,6 +199,7 @@ Namespace ViewModels
                                         offset) Then SetFontSizeOffset(offset)
                 End Sub)
             SetAccentColorCommand = New DelegateCommand(Sub(parameter) SetAccentColor(TryCast(parameter, String)))
+            SetThemeModeCommand = New DelegateCommand(Sub(parameter) SetThemeMode(TryCast(parameter, String)))
 
             For Each language In LocalizationService.Languages
                 LanguageChoices.Add(New LanguageChoice(language.Key, language.Name))
@@ -856,6 +857,27 @@ Namespace ViewModels
 
         Public ReadOnly Property SetFontSizeCommand As DelegateCommand
         Public ReadOnly Property SetAccentColorCommand As DelegateCommand
+        Public ReadOnly Property SetThemeModeCommand As DelegateCommand
+
+        ''' <summary>Welches der drei Erscheinungsbilder gewaehlt ist. Die Einstellungen setzen
+        ''' daran den Rahmen um das gewaehlte Bild.</summary>
+        Public ReadOnly Property IsDarkThemeMode As Boolean
+            Get
+                Return ThemeService.Current = "Dark"
+            End Get
+        End Property
+
+        Public ReadOnly Property IsGrayDarkThemeMode As Boolean
+            Get
+                Return ThemeService.Current = "GrayDark"
+            End Get
+        End Property
+
+        Public ReadOnly Property IsGrayLightThemeMode As Boolean
+            Get
+                Return ThemeService.Current = "GrayLight"
+            End Get
+        End Property
 
         ''' <summary>True, sobald ein Faktor verstellt wurde. Die Einstellungen zeigen daraufhin
         ''' den Hinweis, dass es erst beim naechsten Start wirkt.</summary>
@@ -871,6 +893,18 @@ Namespace ViewModels
             FontScaleService.Apply(normalized)
             For Each choice In FontSizeChoices
                 choice.IsActive = choice.Offset = normalized
+            Next
+        End Sub
+
+        ''' <summary>Wechselt das Erscheinungsbild. Es wirkt sofort: die Farben stehen in
+        ''' Ressourcen, aus denen jede Ansicht ueber DynamicResource liest. Gespeichert wird - wie
+        ''' bei Schriftgrad und Akzentfarbe - beim Schliessen der Einstellungen.</summary>
+        Private Sub SetThemeMode(mode As String)
+            Dim normalized = ThemeService.Normalize(mode)
+            AppSettingsService.Current.ThemeMode = normalized
+            ThemeService.Apply(normalized)
+            For Each name In {NameOf(IsDarkThemeMode), NameOf(IsGrayDarkThemeMode), NameOf(IsGrayLightThemeMode)}
+                RaisePropertyChanged(name)
             Next
         End Sub
 

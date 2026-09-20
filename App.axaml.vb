@@ -14,11 +14,12 @@ Public Class App
     End Sub
 
     Public Overrides Sub OnFrameworkInitializationCompleted()
-        ' SCHRIFTGROESSE UND AKZENTFARBE ZUERST. Beide ueberschreiben Ressourcen des
+        ' SCHRIFTGROESSE UND ERSCHEINUNGSBILD ZUERST. Beide ueberschreiben Ressourcen des
         ' Erscheinungsbilds, und das muss stehen, bevor das erste Fenster daraus liest - sonst
-        ' blitzt beim Start kurz die ausgelieferte Farbe auf.
+        ' blitzt beim Start kurz das ausgelieferte Bild auf. Die Akzentfarbe zieht der Theme-Dienst
+        ' selbst nach: wie sie aufgehellt wird, haengt am Bild.
         FontScaleService.Apply(AppSettingsService.Current.FontSizeOffset)
-        AccentColorService.Apply(AppSettingsService.Current.AccentColor)
+        ThemeService.Apply(AppSettingsService.Current.ThemeMode)
 
         ' DIE SPRACHE VOR DEM VIEWMODEL: es baut Texte schon im Konstruktor.
         LocalizationService.LanguageMode = AppSettingsService.Current.LanguageMode

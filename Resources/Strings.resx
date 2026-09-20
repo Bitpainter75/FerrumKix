@@ -838,4 +838,19 @@
   <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>Overwrite existing files?</value></data>
   <data name="0_Zieldatei_en_existieren_bereits_a1538e51" xml:space="preserve"><value>{0} target file(s) already exist.</value></data>
   <data name="Alle_berschreiben_eaf7926d" xml:space="preserve"><value>Overwrite all</value></data>
+  <data name="Erscheinungsbild_2822d8fb" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Dunkel_ec4616f8" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Grau_dunkel_920030ce" xml:space="preserve">
+    <value>Gray dark</value>
+  </data>
+  <data name="Grau_hell_d6f8b3ae" xml:space="preserve">
+    <value>Gray light</value>
+  </data>
+  <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
+    <value>Dark and two shades of gray. The choice takes effect at once and applies to the window, the list and the footer.</value>
+  </data>
 </root>

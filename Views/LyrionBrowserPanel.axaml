@@ -110,7 +110,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,*"
-          Background="#66101418"
+          Background="{DynamicResource FP.Bg.Veil}"
           Margin="18,10,10,10">
         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
             <Button Classes="icon-btn back-navigation" Click="OnBackClick" ToolTip.Tip="Zurück zur Wiedergabeliste">

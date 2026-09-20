@@ -67,6 +67,13 @@
         <!-- Das Symbol im gefuellten Wiedergabeknopf. Wird aus der Akzentfarbe abgeleitet. -->
         <SolidColorBrush x:Key="FP.Footer.OnAccent" Color="#2B1A08"/>
 
+        <!-- Der Schleier ueber der Wiedergabeliste und den eingeblendeten Bereichen, und der
+             Schleier ueber dem unscharfen Titelbild. Beide standen fest verdrahtet in den
+             Ansichten und waeren damit in einem hellen Bild dunkel geblieben. Die Werte hier sind
+             die des dunklen Bildes; die drei anderen setzt ThemeService. -->
+        <SolidColorBrush x:Key="FP.Bg.Veil" Color="#66101418"/>
+        <SolidColorBrush x:Key="FP.Bg.Scrim" Color="#CC0B0E11"/>
+
         <!-- Die Zeile des gerade laufenden Titels in der Liste. -->
         <SolidColorBrush x:Key="FP.Row.Playing" Color="#7A4A12"/>
         <SolidColorBrush x:Key="FP.Row.PlayingHover" Color="#8C5616"/>
@@ -209,6 +216,26 @@
 
     <!-- Ein Farbfeld der Akzentauswahl. Der RAHMEN und nicht die Fuellung zeigt die Wahl an: die
          Fuellung IST die Farbe und kann sie deshalb nicht zugleich hervorheben. -->
+    <!-- Die vier Kacheln der Bildauswahl in den Einstellungen. Uebernommen aus FerrumPix, damit
+         die Auswahl in beiden Anwendungen dieselbe ist. -->
+    <Style Selector="Button.theme-choice">
+        <Setter Property="Background" Value="{DynamicResource FP.Bg.Content}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Normal}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    </Style>
+    <Style Selector="Button.theme-choice:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Bg.Elevated}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Border.Strong}"/>
+    </Style>
+    <Style Selector="Button.theme-choice.active">
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
     <Style Selector="Button.swatch">
         <Setter Property="Width" Value="28"/>
         <Setter Property="Height" Value="28"/>

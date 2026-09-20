@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
  xmlns:icons="clr-namespace:FerrumPlay.Controls" x:Class="FerrumPlay.Views.TagEditorPanel">
- <Grid RowDefinitions="Auto,*,Auto" Background="#66101418" Margin="18,10,10,10">
+ <Grid RowDefinitions="Auto,*,Auto" Background="{DynamicResource FP.Bg.Veil}" Margin="18,10,10,10">
   <Grid ColumnDefinitions="Auto,*,Auto"><Button Grid.Column="0" Classes="icon-btn back-navigation" Click="OnCloseClick" ToolTip.Tip="Zurück zur Wiedergabeliste"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/></Button><StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center"><TextBlock Text="MP3-Tags bearbeiten" FontSize="{DynamicResource FP.Font.Title}" FontWeight="SemiBold"/><TextBlock x:Name="Hint" Classes="muted" Text="Änderungen werden erst mit „Änderungen übernehmen“ geschrieben."/></StackPanel></Grid>
   <ScrollViewer Grid.Row="1" Margin="0,18,0,12"><StackPanel Spacing="16">
    <Grid ColumnDefinitions="*,*" ColumnSpacing="14"><StackPanel Spacing="5"><TextBlock Text="Artist"/><TextBox x:Name="ArtistBox"/></StackPanel><StackPanel x:Name="AlbumArtistField" Grid.Column="1" Spacing="5"><TextBlock Text="Album Artist"/><TextBox x:Name="AlbumArtistBox"/></StackPanel></Grid>

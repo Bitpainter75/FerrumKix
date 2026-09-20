@@ -34,7 +34,7 @@
                                 Height="24"
                                 Stretch="Uniform"
                                 VerticalAlignment="Center"
-                                Margin="14,0,0,0"
+                                Margin="14,6,0,0"
                                 IsHitTestVisible="False"/>
 
                             <!-- Der laufende Titel als Fenstertitel. Ueber ALLE Spalten und darin

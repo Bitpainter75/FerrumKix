@@ -650,4 +650,19 @@
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>Bir cihazda sunucu albümün tamamını çalar.</value>
   </data>
+  <data name="Erscheinungsbild_2822d8fb" xml:space="preserve">
+    <value>Görünüm</value>
+  </data>
+  <data name="Dunkel_ec4616f8" xml:space="preserve">
+    <value>Koyu</value>
+  </data>
+  <data name="Grau_dunkel_920030ce" xml:space="preserve">
+    <value>Gri koyu</value>
+  </data>
+  <data name="Grau_hell_d6f8b3ae" xml:space="preserve">
+    <value>Gri açık</value>
+  </data>
+  <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
+    <value>Koyu ve iki gri tonu. Seçim hemen etkili olur; pencere, liste ve alt çubuk için geçerlidir.</value>
+  </data>
 </root>
