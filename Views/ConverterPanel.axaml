@@ -77,7 +77,7 @@
               <ComboBoxItem Content="Gesamtauswahl zusammenführen"/>
               <ComboBoxItem Content="Je Ordner zusammenführen"/>
             </ComboBox>
-            <Button Grid.Column="2" x:Name="ConvertButton" Classes="converter-primary" Content="Konvertierung starten" Click="OnConvertClick" VerticalAlignment="Center"/>
+            <Button Grid.Column="2" x:Name="ConvertButton" Classes="primary-action" Content="Konvertierung starten" Click="OnConvertClick" VerticalAlignment="Center"/>
           </Grid>
         </StackPanel>
       </Border>

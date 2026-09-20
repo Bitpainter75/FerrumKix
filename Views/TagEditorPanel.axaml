@@ -9,6 +9,6 @@
    <Grid ColumnDefinitions="Auto,*,*,Auto" ColumnSpacing="14"><StackPanel Spacing="5"><TextBlock Text="Jahr"/><TextBox x:Name="YearBox" Width="100"/></StackPanel><StackPanel x:Name="AlbumSortField" Grid.Column="1" Spacing="5"><TextBlock Text="Album-Sortierung"/><TextBox x:Name="SortBox"/></StackPanel><Grid Grid.Column="2" RowDefinitions="Auto,*" RowSpacing="5"><TextBlock Text="Genre"/><ComboBox x:Name="GenreBox" Grid.Row="1" IsEditable="True" HorizontalAlignment="Stretch"/></Grid><StackPanel Grid.Column="3" Spacing="5"><TextBlock Text="Discnummer"/><TextBox x:Name="DiscBox" Width="100"/></StackPanel></Grid>
    <TextBlock Text="Titel und Tracknummer" FontSize="{DynamicResource FP.Font.ItemTitle}" FontWeight="SemiBold" Margin="0,8,0,0"/><StackPanel x:Name="TrackRows" Spacing="7"/>
   </StackPanel></ScrollViewer>
-  <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="14"><Button Grid.Column="1" Classes="accent" x:Name="SaveButton" Content="Änderungen übernehmen" Click="OnSaveClick"/></Grid>
+  <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="14"><Button Grid.Column="1" Classes="primary-action" x:Name="SaveButton" Content="Änderungen übernehmen" Click="OnSaveClick"/></Grid>
  </Grid>
 </UserControl>
