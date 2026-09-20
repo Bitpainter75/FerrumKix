@@ -665,4 +665,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>มืดและเทาอีกสองระดับ การเลือกมีผลทันทีกับหน้าต่าง รายการ และแถบด้านล่าง</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>แปลงเพลงนี้</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{0} จาก {1} เพลง</value>
+  </data>
 </root>

@@ -665,4 +665,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>Escuro e dois tons de cinzento. A escolha tem efeito imediato e aplica-se à janela, à lista e à barra inferior.</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>Converter faixa</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{0} de {1} faixas</value>
+  </data>
 </root>

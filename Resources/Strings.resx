@@ -853,4 +853,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>Dark and two shades of gray. The choice takes effect at once and applies to the window, the list and the footer.</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>Convert track</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{0} of {1} tracks</value>
+  </data>
 </root>

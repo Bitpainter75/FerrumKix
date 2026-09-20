@@ -665,4 +665,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>Mørk og to grånyanser. Valget trer i kraft med en gang og gjelder vindu, liste og bunnlinje.</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>Konverter spor</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{0} av {1} spor</value>
+  </data>
 </root>

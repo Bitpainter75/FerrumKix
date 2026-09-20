@@ -665,4 +665,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>Sombre et deux nuances de gris. Le choix prend effet immédiatement et s'applique à la fenêtre, à la liste et à la barre inférieure.</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>Convertir le titre</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{0} sur {1} titres</value>
+  </data>
 </root>

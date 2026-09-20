@@ -665,4 +665,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>Gelap dan dua nuansa abu-abu. Pilihan langsung berlaku untuk jendela, daftar, dan bilah bawah.</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>Konversi lagu</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{0} dari {1} lagu</value>
+  </data>
 </root>

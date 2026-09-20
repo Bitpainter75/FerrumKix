@@ -665,4 +665,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>ダークと 2 段階のグレー。選択はすぐに反映され、ウィンドウ、一覧、フッターに適用されます。</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>この曲を変換</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{1} 曲中 {0} 曲</value>
+  </data>
 </root>

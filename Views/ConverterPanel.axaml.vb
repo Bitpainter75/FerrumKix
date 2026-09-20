@@ -17,22 +17,53 @@ Namespace Views
     Public NotInheritable Class ConversionQueueRow
         Inherits ViewModelBase
         Private _status As String
-        Public Sub New(track As Track)
+        Private _isEnabled As Boolean = True
+        Private _isConverting As Boolean
+        Public Sub New(track As Track, number As Integer)
             Me.Track = track
             Me.Title = track.DisplayTitle
             Me.Detail = track.FormatText
+            Me.Number = number
             _status = LocalizationService.T("Wartet")
         End Sub
         Public ReadOnly Property Track As Track
         Public ReadOnly Property Title As String
         Public ReadOnly Property Detail As String
-        ''' <summary>Die Kennzeichen-Tracknummer bleibt beim Konvertieren sichtbar. Hat die Datei
-        ''' keine, zeigt der Strich bewusst an, dass keine Nummer erfunden wurde.</summary>
-        Public ReadOnly Property TrackNumberText As String
+
+        ''' <summary>Die Stelle IN DER GRUPPE, genau wie in der Wiedergabeliste - und nicht die
+        ''' Nummer aus den Kennzeichen: eine Liste, deren Zahlen springen, weil ein Album
+        ''' unvollstaendig ist, liest sich falsch.</summary>
+        Public ReadOnly Property Number As Integer
+
+        Public ReadOnly Property NumberedTitle As String
             Get
-                Return If(Track.TrackNumber > 0, Track.TrackNumber.ToString(), "–")
+                Return $"{Number}. {Title}"
             End Get
         End Property
+
+        ''' <summary>Das Haekchen vor dem Titel. Ohne Haken bleibt die Zeile stehen, wird aber
+        ''' nicht umgewandelt - dasselbe Verhalten wie in der Wiedergabeliste, wo ein abgehakter
+        ''' Titel uebersprungen wird.</summary>
+        Public Property IsEnabled As Boolean
+            Get
+                Return _isEnabled
+            End Get
+            Set(value As Boolean)
+                SetField(_isEnabled, value)
+            End Set
+        End Property
+
+        ''' <summary>Dieser Titel ist gerade an der Reihe. Faerbt die Zeile wie der laufende Titel
+        ''' in der Wiedergabeliste.</summary>
+        Public Property IsConverting As Boolean
+            Get
+                Return _isConverting
+            End Get
+            Set(value As Boolean)
+                SetField(_isConverting, value)
+            End Set
+        End Property
+
         Public Property Status As String
             Get
                 Return _status
@@ -59,6 +90,11 @@ Namespace Views
         Private _tracks As List(Of Track) = New List(Of Track)()
         Private _cancel As CancellationTokenSource
         Private _closeWhenFinished As Boolean
+        ''' <summary>Die Zeilen des laufenden Auftrags IN DER REIHENFOLGE DES DIENSTES. Seine
+        ''' Fortschrittsmeldungen nennen eine Stelle in seiner eigenen, sortierten Liste (siehe
+        ''' AudioConversionService.ConvertAsync) - und die ist eine andere als die Reihenfolge in
+        ''' der Anzeige, sobald nicht alles abgehakt ist oder die Auswahl anders sortiert war.</summary>
+        Private _running As List(Of ConversionQueueRow) = New List(Of ConversionQueueRow)()
         Public Event CloseRequested As EventHandler
         Public ReadOnly Property Queue As New ObservableCollection(Of ConversionQueueRow)()
         Public ReadOnly Property DisplayRows As New ObservableCollection(Of Object)()
@@ -90,7 +126,7 @@ Namespace Views
             Me.New()
             _tracks = tracks.Where(Function(track) track IsNot Nothing).ToList()
             AddQueueRows()
-            FindControl(Of TextBlock)("CountText").Text = LocalizationService.Format("{0} Titel", _tracks.Count)
+            UpdateCountText()
             ' Bei Dateien liegt der Ordner der Dateien nahe. Eine Audio-CD hat keinen - dafuer
             ' gibt es die Einstellung, und ohne sie den Musikordner des Nutzers.
             Dim firstFile = _tracks.FirstOrDefault(Function(track) Not track.IsAudioCdTrack)
@@ -117,13 +153,46 @@ Namespace Views
 
                 Dim groupTracks = _tracks.GetRange(start, [end] - start)
                 DisplayRows.Add(New ConversionQueueGroupRow(DescribeGroup(folder, groupTracks), groupTracks.Count))
+                Dim number = 0
                 For Each track In groupTracks
-                    Dim row As New ConversionQueueRow(track)
+                    number += 1
+                    Dim row As New ConversionQueueRow(track, number)
+                    ' Der Kopf zeigt, wie viele Titel abgehakt sind, und ohne einen einzigen Haken
+                    ' laesst sich nichts starten. Beides haengt an jedem einzelnen Haekchen.
+                    AddHandler row.PropertyChanged, AddressOf OnQueueRowChanged
                     Queue.Add(row)
                     DisplayRows.Add(row)
                 Next
                 start = [end]
             End While
+        End Sub
+
+        Private Sub OnQueueRowChanged(sender As Object, e As ComponentModel.PropertyChangedEventArgs)
+            If e.PropertyName <> NameOf(ConversionQueueRow.IsEnabled) Then Return
+            ' Ein abgehakter Titel wartet auf nichts mehr. Waehrend eines Laufs bleibt der Stand
+            ' dagegen stehen: dort zaehlt, was der Dienst gemeldet hat.
+            Dim row = TryCast(sender, ConversionQueueRow)
+            If row IsNot Nothing AndAlso _cancel Is Nothing Then row.Status = If(row.IsEnabled, LocalizationService.T("Wartet"), String.Empty)
+            UpdateCountText()
+        End Sub
+
+        ''' <summary>Die Zeilen mit Haken - und nur die werden umgewandelt.</summary>
+        Private Function CheckedRows() As List(Of ConversionQueueRow)
+            Return Queue.Where(Function(row) row.IsEnabled).ToList()
+        End Function
+
+        ''' <summary>Rechts im Kopf steht, wie viele Titel an der Reihe sind. Sind alle abgehakt,
+        ''' bleibt es bei der blossen Anzahl - die zweite Zahl saehe dort nur nach einer Auswahl
+        ''' aus, die niemand getroffen hat.</summary>
+        Private Sub UpdateCountText()
+            ' Ueber Where und nicht ueber Count(Bedingung): die Sammlung hat eine eigene
+            ' Eigenschaft Count, und VB liest den Klammerausdruck dann als Zugriff darauf.
+            Dim checkedCount = Queue.Where(Function(row) row.IsEnabled).Count()
+            FindControl(Of TextBlock)("CountText").Text = If(checkedCount = Queue.Count,
+                LocalizationService.Format("{0} Titel", Queue.Count),
+                LocalizationService.Format("{0} von {1} Titeln", checkedCount, Queue.Count))
+            Dim convertButton = FindControl(Of Button)("ConvertButton")
+            If convertButton IsNot Nothing AndAlso _cancel Is Nothing Then convertButton.IsEnabled = checkedCount > 0
         End Sub
 
         Private Shared Function DescribeGroup(folder As String, tracks As List(Of Track)) As String
@@ -149,16 +218,26 @@ Namespace Views
         End Sub
 
         Private Async Sub OnConvertClick(sender As Object, e As RoutedEventArgs)
+            ' Ohne Haken keine Umwandlung: die Zeile bleibt stehen, bleibt aber aussen vor.
+            Dim chosen = CheckedRows()
+            If chosen.Count = 0 Then Status(LocalizationService.T("Keine Titel zum Konvertieren ausgewählt.")) : Return
+            Dim chosenTracks = chosen.Select(Function(row) row.Track).ToList()
             Dim folder = FindControl(Of TextBox)("FolderBox").Text
             If String.IsNullOrWhiteSpace(folder) Then Status(LocalizationService.T("Bitte zuerst einen Zielordner auswählen.")) : Return
             Dim format = If(FindControl(Of RadioButton)("FlacRadio").IsChecked.GetValueOrDefault(), AudioConversionService.OutputFormat.Flac, If(FindControl(Of RadioButton)("OggRadio").IsChecked.GetValueOrDefault(), AudioConversionService.OutputFormat.Ogg, AudioConversionService.OutputFormat.Mp3))
-            If IsSameFormatInSourceFolder(folder, format) Then
+            If IsSameFormatInSourceFolder(chosenTracks, folder, format) Then
                 Status(LocalizationService.T("Das Zielformat entspricht bereits der Quelldatei im selben Ordner. Bitte einen anderen Zielordner oder ein anderes Format wählen."))
                 Return
             End If
+            ' DIESELBE SORTIERUNG WIE IM DIENST. Er ordnet die Titel selbst nach Disc, Nummer und
+            ' Dateiname und meldet danach seine Stellen; ohne dieselbe Ordnung hier landete der
+            ' Stand eines Titels in der Zeile eines anderen.
+            _running = chosen.OrderBy(Function(row) row.Track.DiscNumber).
+                              ThenBy(Function(row) row.Track.TrackNumber).
+                              ThenBy(Function(row) row.Track.FilePath, StringComparer.OrdinalIgnoreCase).ToList()
             Dim request As New AudioConversionService.Request With {
-                .Tracks = _tracks, .OutputDirectory = folder, .Format = format,
-                .OutputDirectoryIncludesCdSubfolder = _tracks.Count > 0 AndAlso _tracks.All(Function(track) track.IsAudioCdTrack),
+                .Tracks = chosenTracks, .OutputDirectory = folder, .Format = format,
+                .OutputDirectoryIncludesCdSubfolder = chosenTracks.Count > 0 AndAlso chosenTracks.All(Function(track) track.IsAudioCdTrack),
                 .BitrateKbps = SelectedBitrate(), .VariableBitrate = FindControl(Of RadioButton)("VbrRadio").IsChecked.GetValueOrDefault(),
                 .Mode = SelectedMode(), .ItemProgress = AddressOf UpdateQueue}
             Dim existing = AudioConversionService.ExistingSingleOutputPaths(request)
@@ -171,8 +250,8 @@ Namespace Views
             End If
             _cancel = New CancellationTokenSource()
             SetProcessingControls(True)
-            FindControl(Of ProgressBar)("Progress").IsVisible = True
-            For Each row In Queue : row.Status = LocalizationService.T("Wartet") : Next
+            ShowProgress(True)
+            For Each row In Queue : row.Status = If(row.IsEnabled, LocalizationService.T("Wartet"), String.Empty) : Next
             Try
                 Await AudioConversionService.ConvertAsync(request, New Progress(Of String)(AddressOf Status), _cancel.Token)
                 Status(LocalizationService.T("Fertig konvertiert."))
@@ -182,17 +261,21 @@ Namespace Views
                 DiagnosticLogService.LogException("Conversion", ex)
                 Status(ex.Message)
             Finally
-                FindControl(Of ProgressBar)("Progress").IsVisible = False
-                SetProcessingControls(False)
+                ShowProgress(False)
+                For Each row In Queue : row.IsConverting = False : Next
+                _running = New List(Of ConversionQueueRow)()
+                ' Erst die Abbruchquelle aufloesen, dann die Bedienung zurueckholen: solange sie
+                ' steht, gilt der Lauf als laufend, und der Startknopf bliebe gesperrt.
                 _cancel?.Dispose() : _cancel = Nothing
+                SetProcessingControls(False)
                 If _closeWhenFinished Then RaiseEvent CloseRequested(Me, EventArgs.Empty)
             End Try
         End Sub
 
-        Private Function IsSameFormatInSourceFolder(folder As String, format As AudioConversionService.OutputFormat) As Boolean
+        Private Shared Function IsSameFormatInSourceFolder(tracks As List(Of Track), folder As String, format As AudioConversionService.OutputFormat) As Boolean
             Dim target = Path.GetFullPath(folder).TrimEnd(Path.DirectorySeparatorChar)
             Dim extension = If(format = AudioConversionService.OutputFormat.Mp3, ".mp3", If(format = AudioConversionService.OutputFormat.Flac, ".flac", ".ogg"))
-            Return _tracks.Any(Function(track) Not track.IsAudioCdTrack AndAlso
+            Return tracks.Any(Function(track) Not track.IsAudioCdTrack AndAlso
                                String.Equals(Path.GetFullPath(Path.GetDirectoryName(track.FilePath)).TrimEnd(Path.DirectorySeparatorChar), target, StringComparison.OrdinalIgnoreCase) AndAlso
                                String.Equals(Path.GetExtension(track.FilePath), extension, StringComparison.OrdinalIgnoreCase))
         End Function
@@ -227,13 +310,17 @@ Namespace Views
 
         Private Sub UpdateQueue(index As Integer, text As String)
             Dispatcher.UIThread.Post(Sub()
-                                         If index < 0 OrElse index >= Queue.Count Then Return
-                                         Queue(index).Status = text
-                                         ' Die Warteschlange waechst nach unten. Beim Wechsel zum
-                                         ' naechsten Titel bleibt er automatisch im sichtbaren Bereich,
-                                         ' auch wenn die vorherigen Ergebnisse die Liste gefuellt haben.
-                                         Dim queueBox = FindControl(Of ListBox)("QueueBox")
-                                         queueBox?.ScrollIntoView(Queue(index))
+                                         If index < 0 OrElse index >= _running.Count Then Return
+                                         Dim row = _running(index)
+                                         row.Status = text
+                                         ' Fertig ist nicht mehr an der Reihe. Sonst blieben beim
+                                         ' Zusammenfuehren alle Zeilen des Ordners hervorgehoben.
+                                         Dim isDone = String.Equals(text, LocalizationService.T("Fertig"), StringComparison.Ordinal)
+                                         For Each other In Queue : other.IsConverting = False : Next
+                                         row.IsConverting = Not isDone
+                                         ' Die Liste rollt dem Titel nach, der gerade an der Reihe
+                                         ' ist - auch wenn er weit unten steht.
+                                         FindControl(Of ListBox)("QueueBox")?.ScrollIntoView(row)
                                      End Sub)
         End Sub
 
@@ -260,8 +347,11 @@ Namespace Views
         End Sub
 
         ''' <summary>Die Warteschlange bleibt bewusst aktiv und scrollbar. Gesperrt werden nur
-        ''' Eingaben, die den bereits gestarteten Auftrag veraendern koennten.</summary>
+        ''' Eingaben, die den bereits gestarteten Auftrag veraendern koennten - und weil daran
+        ''' waehrend eines Laufs ohnehin nichts mehr zu aendern ist, verschwindet der ganze Block
+        ''' und gibt seinen Platz der Liste.</summary>
         Private Sub SetProcessingControls(isProcessing As Boolean)
+            FindControl(Of Border)("SettingsBox").IsVisible = Not isProcessing
             FindControl(Of Button)("BackButton").IsVisible = Not isProcessing
             Dim cancelButton = FindControl(Of Button)("CancelButton")
             cancelButton.IsVisible = isProcessing
@@ -274,10 +364,22 @@ Namespace Views
             For Each controlName In {"Mp3Radio", "FlacRadio", "OggRadio", "CbrRadio", "VbrRadio", "B128Radio", "B192Radio", "B256Radio", "B320Radio"}
                 FindControl(Of RadioButton)(controlName).IsEnabled = Not isProcessing
             Next
+            If Not isProcessing Then UpdateCountText()
         End Sub
 
+        ''' <summary>Die Statuszeile traegt den Text UND ihre Sichtbarkeit: solange nichts zu
+        ''' melden ist, gibt die Leiste ihren Platz an die Liste ab.</summary>
         Private Sub Status(text As String)
             FindControl(Of TextBlock)("StatusText").Text = text
+            FindControl(Of Border)("StatusBar").IsVisible = Not String.IsNullOrWhiteSpace(text) OrElse
+                                                            FindControl(Of ProgressBar)("Progress").IsVisible
+        End Sub
+
+        ''' <summary>Der Laufbalken gehoert in dieselbe Leiste. Er bringt sie mit, auch wenn noch
+        ''' keine Meldung da steht - sonst faenge ein Lauf ohne jedes Zeichen an.</summary>
+        Private Sub ShowProgress(isVisible As Boolean)
+            FindControl(Of ProgressBar)("Progress").IsVisible = isVisible
+            If isVisible Then FindControl(Of Border)("StatusBar").IsVisible = True
         End Sub
     End Class
 End Namespace

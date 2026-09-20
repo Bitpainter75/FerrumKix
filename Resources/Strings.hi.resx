@@ -665,4 +665,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>गहरा और धूसर के दो रंग। चुनाव तुरंत प्रभावी होता है और विंडो, सूची तथा नीचे की पट्टी पर लागू होता है।</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>ट्रैक बदलें</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{1} में से {0} ट्रैक</value>
+  </data>
 </root>

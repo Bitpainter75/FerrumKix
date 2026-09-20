@@ -18,32 +18,44 @@
     <Grid Grid.Row="1" RowDefinitions="*,Auto" Margin="18,0,18,12" RowSpacing="10">
       <Border BorderBrush="{DynamicResource FP.Border.Normal}" BorderThickness="1" CornerRadius="7" ClipToBounds="True">
         <ListBox x:Name="QueueBox" ItemsSource="{Binding DisplayRows}" BorderThickness="0">
+          <!-- Dieselbe Darstellung wie die Wiedergabeliste: Haekchen, Nummer und Titel, darunter
+               die Angaben zur Datei. Die Klassen track-row und group-row stehen im Thema, damit
+               beide Listen nicht auseinanderlaufen. Rechts steht statt der Spielzeit der Stand
+               der Umwandlung. -->
           <ListBox.DataTemplates>
             <DataTemplate DataType="local:ConversionQueueGroupRow">
-              <Border Background="{DynamicResource FP.Bg.Panel}" BorderBrush="{DynamicResource FP.Border.Normal}" BorderThickness="0,0,0,1" Padding="10,7">
+              <Border Classes="group-row" Padding="12,7,16,7">
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                  <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                  <TextBlock Grid.Column="1" Text="{Binding Summary}" Classes="muted" VerticalAlignment="Center"/>
+                  <TextBlock Text="{Binding Title}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Summary}" VerticalAlignment="Center"/>
                 </Grid>
               </Border>
             </DataTemplate>
             <DataTemplate DataType="local:ConversionQueueRow">
-              <Grid ColumnDefinitions="*,Auto" Margin="10,6">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                  <TextBlock Text="{Binding TrackNumberText}" Classes="muted" Width="28" TextAlignment="Right"/>
-                  <StackPanel>
-                    <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
-                  <TextBlock Text="{Binding Detail}" Classes="muted" TextTrimming="CharacterEllipsis"/>
+              <Border Classes="track-row" Classes.playing="{Binding IsConverting}" Padding="12,5,16,5">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                  <CheckBox Grid.Column="0"
+                            IsChecked="{Binding IsEnabled}"
+                            VerticalAlignment="Center"
+                            ToolTip.Tip="Titel umwandeln"/>
+                  <StackPanel Grid.Column="1" Spacing="1">
+                    <TextBlock Text="{Binding NumberedTitle}"
+                               TextTrimming="CharacterEllipsis"
+                               FontSize="{DynamicResource FP.Font.ItemTitle}"/>
+                    <TextBlock Text="{Binding Detail}" Classes="muted" TextTrimming="CharacterEllipsis"/>
                   </StackPanel>
-                </StackPanel>
-                <TextBlock Grid.Column="1" Text="{Binding Status}" Classes="secondary" VerticalAlignment="Center" Margin="12,0,0,0"/>
-              </Grid>
+                  <TextBlock Grid.Column="2" Text="{Binding Status}" Classes="secondary" VerticalAlignment="Center"/>
+                </Grid>
+              </Border>
             </DataTemplate>
           </ListBox.DataTemplates>
         </ListBox>
       </Border>
 
-      <Border Grid.Row="1" Background="{DynamicResource FP.Bg.Panel}" BorderBrush="{DynamicResource FP.Border.Normal}" BorderThickness="1" CornerRadius="7" Padding="12">
+      <!-- Waehrend eines Laufs laesst sich hier nichts mehr aendern. Der Block verschwindet
+           dann ganz und gibt seinen Platz der Liste: man sieht mehr davon, und die Liste rollt
+           dem Titel nach, der gerade an der Reihe ist. -->
+      <Border Grid.Row="1" x:Name="SettingsBox" Background="{DynamicResource FP.Bg.Panel}" BorderBrush="{DynamicResource FP.Border.Normal}" BorderThickness="1" CornerRadius="7" Padding="12">
         <StackPanel Spacing="10">
           <WrapPanel>
             <TextBlock Text="Zielformat" Classes="section-header" Width="108" VerticalAlignment="Center"/>
@@ -82,7 +94,9 @@
         </StackPanel>
       </Border>
     </Grid>
-    <Border Grid.Row="2" Background="{DynamicResource FP.Footer.Bg}" Padding="18,7">
+    <!-- Die Statuszeile steht erst da, wenn sie etwas zu sagen hat. Eine leere Leiste am
+         unteren Rand nahm der Liste nur Platz weg. -->
+    <Border Grid.Row="2" x:Name="StatusBar" IsVisible="False" Background="{DynamicResource FP.Footer.Bg}" Padding="18,7">
       <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
         <TextBlock x:Name="StatusText" Classes="secondary" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
         <ProgressBar Grid.Column="1" x:Name="Progress" Width="130" Height="5" IsIndeterminate="True" IsVisible="False" VerticalAlignment="Center"/>

@@ -5,50 +5,6 @@
              xmlns:vm="clr-namespace:FerrumPlay.ViewModels"
              x:Class="FerrumPlay.Views.PlayerView">
 
-    <UserControl.Styles>
-        <!-- DIE ZEILEN MALEN IHREN HINTERGRUND SELBST. Vier Zustaende ueberlagern sich: gewoehnlich,
-             ausgewaehlt, unter dem Zeiger und laufend. In Avalonia gewinnt bei gleicher Trefferlage
-             die SPAETER stehende Regel - die Reihenfolge hier unten IST die Rangfolge, und wer sie
-             umstellt, stellt das Verhalten um. Der laufende Titel steht bewusst ganz unten: er soll
-             auch dann zu sehen sein, wenn die Auswahl woanders liegt. -->
-        <Style Selector="Border.track-row">
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
-        <Style Selector="ListBoxItem:selected Border.track-row">
-            <Setter Property="Background" Value="{DynamicResource FP.Sel.Bg}"/>
-        </Style>
-        <Style Selector="Border.track-row:pointerover">
-            <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
-        </Style>
-        <Style Selector="ListBoxItem:selected Border.track-row:pointerover">
-            <Setter Property="Background" Value="{DynamicResource FP.Sel.Hover}"/>
-        </Style>
-        <Style Selector="Border.track-row.playing">
-            <Setter Property="Background" Value="{DynamicResource FP.Row.Playing}"/>
-        </Style>
-        <Style Selector="Border.track-row.playing:pointerover">
-            <Setter Property="Background" Value="{DynamicResource FP.Row.PlayingHover}"/>
-        </Style>
-
-        <!-- Ein Titel ohne Datei bleibt stehen, tritt aber zurueck. Die Deckkraft liegt auf den
-             Texten und nicht auf der ganzen Zeile: das Haekchen bleibt voll zu sehen. -->
-        <Style Selector="Border.track-row.missing TextBlock">
-            <Setter Property="Opacity" Value="0.45"/>
-        </Style>
-
-        <Style Selector="Border.group-row">
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
-        <Style Selector="Border.group-row:pointerover">
-            <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
-        </Style>
-        <Style Selector="Border.group-row TextBlock">
-            <Setter Property="Foreground" Value="{DynamicResource FP.Accent}"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="{DynamicResource FP.Font.ItemTitle}"/>
-        </Style>
-    </UserControl.Styles>
-
     <Grid>
         <!-- DER UNSCHARFE HINTERGRUND. Das Titelbild fuellt das ganze Fenster, ist weichgezeichnet
              und liegt unter einer dunklen Scheibe. Ohne das Beschneiden traegt die Weichzeichnung

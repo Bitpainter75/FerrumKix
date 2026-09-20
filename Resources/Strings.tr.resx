@@ -665,4 +665,10 @@
   <data name="Dunkel_und_zwei_graue_Abstufungen_Die_Wahl_wirkt_50868817" xml:space="preserve">
     <value>Koyu ve iki gri tonu. Seçim hemen etkili olur; pencere, liste ve alt çubuk için geçerlidir.</value>
   </data>
+  <data name="Titel_umwandeln_7b44db72" xml:space="preserve">
+    <value>Parçayı dönüştür</value>
+  </data>
+  <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
+    <value>{1} parçadan {0}</value>
+  </data>
 </root>
