@@ -17,9 +17,9 @@
 - The AppStream metadata declares the old id under `<provides>` and `<replaces>`, and the AUR
   package replaces `ferrumplay-bin`, so software centres and package managers see one application
   that was renamed rather than two that compete.
-- The icon is new as well: the play triangle with the level bars around it and a knob in the
-  corner. It reads as one shape instead of a stack of motifs, and it survives being scaled down to
-  the 16 pixels a window list and a task bar show it at.
+- The icon is new as well. The old one carried the play triangle of the old name; the record with
+  the level bars beside it stands on its own and survives being scaled down to 16 pixels, which is
+  where a window list and a task bar show it.
 
 ## 0.9.5
 
