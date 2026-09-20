@@ -16,7 +16,7 @@ Namespace Controls
     ''' annehmen. Eine fertig gerasterte Grafik kann das nicht.</para>
     '''
     ''' <para>Anders als in FerrumPix wird hier NICHT vorgeladen: FerrumPix haelt mehrere tausend
-    ''' Symbole, FerrumPlay knapp drei Dutzend. Das erste Zeichnen zerlegt sie, danach stehen sie im
+    ''' Symbole, FerrumKix knapp drei Dutzend. Das erste Zeichnen zerlegt sie, danach stehen sie im
     ''' Speicher.</para></summary>
     Public Class SvgIcon
         Inherits Control

@@ -3,7 +3,7 @@ Imports System.Collections.Generic
 
 Namespace Services
 
-    ''' <summary>Sorgt dafuer, dass FerrumPlay nur einmal laeuft.
+    ''' <summary>Sorgt dafuer, dass FerrumKix nur einmal laeuft.
     '''
     ''' <para>Der Weg ist der uebliche unter Linux: die erste Instanz haelt den Namen
     ''' <see cref="BusName"/> auf dem Sitzungsbus. Jeder weitere Aufruf findet ihn belegt, reicht
@@ -21,9 +21,9 @@ Namespace Services
         Private Sub New()
         End Sub
 
-        Public Const BusName As String = "io.github.Bitpainter75.FerrumPlay"
-        Private Const ObjectPath As String = "/io/github/Bitpainter75/FerrumPlay"
-        Private Const InterfaceName As String = "io.github.Bitpainter75.FerrumPlay"
+        Public Const BusName As String = "io.github.Bitpainter75.FerrumKix"
+        Private Const ObjectPath As String = "/io/github/Bitpainter75/FerrumKix"
+        Private Const InterfaceName As String = "io.github.Bitpainter75.FerrumKix"
 
         Private Const IntrospectionXml As String =
 "<node>
@@ -34,7 +34,7 @@ Namespace Services
     <method name='Ping'/>
     <method name='GetMachineId'><arg name='machine_uuid' type='s' direction='out'/></method>
   </interface>
-  <interface name='io.github.Bitpainter75.FerrumPlay'>
+  <interface name='io.github.Bitpainter75.FerrumKix'>
     <method name='Open'><arg name='paths' type='as' direction='in'/></method>
   </interface>
 </node>"

@@ -9,9 +9,9 @@ Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
 Imports Avalonia.Media.Imaging
 Imports Avalonia.Platform.Storage
-Imports FerrumPlay.Models
-Imports FerrumPlay.Services
-Imports FerrumPlay.ViewModels
+Imports FerrumKix.Models
+Imports FerrumKix.Services
+Imports FerrumKix.ViewModels
 
 Namespace Views
  Public Class TagEditorPanel

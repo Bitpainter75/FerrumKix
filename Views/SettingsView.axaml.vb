@@ -1,8 +1,8 @@
 Imports Avalonia.Controls
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
-Imports FerrumPlay.Services
-Imports FerrumPlay.ViewModels
+Imports FerrumKix.Services
+Imports FerrumKix.ViewModels
 Imports System.Linq
 Imports Avalonia.Platform.Storage
 Imports System.Diagnostics

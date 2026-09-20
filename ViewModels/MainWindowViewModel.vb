@@ -9,8 +9,8 @@ Imports System.Threading
 Imports System.Threading.Tasks
 Imports Avalonia.Media.Imaging
 Imports Avalonia.Threading
-Imports FerrumPlay.Models
-Imports FerrumPlay.Services
+Imports FerrumKix.Models
+Imports FerrumKix.Services
 
 Namespace ViewModels
 
@@ -96,7 +96,7 @@ Namespace ViewModels
         ''' erneuten Oeffnen neu gebaut, und die Haken stuenden danach stillschweigend wieder alle
         ''' da. Die Adresse traegt die Titelkennung des Servers und bleibt dieselbe.
         '''
-        ''' <para>Der Satz gilt nur fuer die Wiedergabe in FerrumPlay. Laeuft die Wiedergabe auf
+        ''' <para>Der Satz gilt nur fuer die Wiedergabe in FerrumKix. Laeuft die Wiedergabe auf
         ''' einem Geraet, fuehrt der Server seine eigene Warteschlange; dort spielt das ganze
         ''' Album, und die Haken sind in der Ansicht ausgegraut.</para></summary>
         Private ReadOnly _lyrionDisabledTracks As New HashSet(Of String)(StringComparer.Ordinal)
@@ -1272,8 +1272,8 @@ Namespace ViewModels
         Public ReadOnly Property PlayPauseIconSource As String
             Get
                 Return If(_isPlaying,
-                          "avares://FerrumPlay/Assets/Icons/outline/player-pause.svg",
-                          "avares://FerrumPlay/Assets/Icons/outline/player-play.svg")
+                          "avares://FerrumKix/Assets/Icons/outline/player-pause.svg",
+                          "avares://FerrumKix/Assets/Icons/outline/player-play.svg")
             End Get
         End Property
 
@@ -1312,10 +1312,10 @@ Namespace ViewModels
         ''' beidem laesst sich mit einem Klick rueckgaengig machen.</summary>
         Public ReadOnly Property VolumeIconSource As String
             Get
-                If _isMuted Then Return "avares://FerrumPlay/Assets/Icons/outline/volume-3.svg"
-                If _volume < 1 Then Return "avares://FerrumPlay/Assets/Icons/outline/volume-3.svg"
-                If _volume < 50 Then Return "avares://FerrumPlay/Assets/Icons/outline/volume-2.svg"
-                Return "avares://FerrumPlay/Assets/Icons/outline/volume.svg"
+                If _isMuted Then Return "avares://FerrumKix/Assets/Icons/outline/volume-3.svg"
+                If _volume < 1 Then Return "avares://FerrumKix/Assets/Icons/outline/volume-3.svg"
+                If _volume < 50 Then Return "avares://FerrumKix/Assets/Icons/outline/volume-2.svg"
+                Return "avares://FerrumKix/Assets/Icons/outline/volume.svg"
             End Get
         End Property
 
@@ -1358,8 +1358,8 @@ Namespace ViewModels
         Public ReadOnly Property RepeatIconSource As String
             Get
                 Return If(_repeat = RepeatMode.Single,
-                          "avares://FerrumPlay/Assets/Icons/outline/repeat-once.svg",
-                          "avares://FerrumPlay/Assets/Icons/outline/repeat.svg")
+                          "avares://FerrumKix/Assets/Icons/outline/repeat-once.svg",
+                          "avares://FerrumKix/Assets/Icons/outline/repeat.svg")
             End Get
         End Property
 
@@ -1595,7 +1595,7 @@ Namespace ViewModels
             Return row.IsEnabled AndAlso Not row.IsMissing
         End Function
 
-        ''' <summary>Ob ein Lyrion-Titel bei der Wiedergabe in FerrumPlay drankommt. Ohne Eintrag
+        ''' <summary>Ob ein Lyrion-Titel bei der Wiedergabe in FerrumKix drankommt. Ohne Eintrag
         ''' kommt er dran - abgewaehlt wird gemerkt, angehakt ist der Normalfall.</summary>
         Public Function IsLyrionTrackEnabled(track As Track) As Boolean
             If track Is Nothing OrElse String.IsNullOrEmpty(track.FilePath) Then Return True
@@ -2366,7 +2366,7 @@ Namespace ViewModels
             AddHandler _player.EndReached, AddressOf OnEndReached
             AddHandler _player.InitializationFailed,
                 Sub(ex) Dispatcher.UIThread.Post(
-                    Sub() StatusText = LocalizationService.T("libmpv lässt sich nicht laden. Ohne sie spielt FerrumPlay nichts ab."))
+                    Sub() StatusText = LocalizationService.T("libmpv lässt sich nicht laden. Ohne sie spielt FerrumKix nichts ab."))
             AddHandler _player.PlaybackTerminated,
                 Sub() Dispatcher.UIThread.Post(
                     Sub()

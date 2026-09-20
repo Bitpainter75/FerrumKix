@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:icons="clr-namespace:FerrumPlay.Controls"
-             xmlns:vm="clr-namespace:FerrumPlay.ViewModels"
-             x:Class="FerrumPlay.Views.LyrionBrowserPanel">
+             xmlns:icons="clr-namespace:FerrumKix.Controls"
+             xmlns:vm="clr-namespace:FerrumKix.ViewModels"
+             x:Class="FerrumKix.Views.LyrionBrowserPanel">
     <UserControl.Styles>
         <!-- Die Cover sind Kacheln, keine Schaltflaechen: ihr Rand bleibt deshalb unsichtbar. -->
         <Style Selector="Button.lyrion-album">
@@ -76,7 +76,7 @@
                     <Border Width="160" Height="160" CornerRadius="5" ClipToBounds="True"
                             Background="#22FFFFFF">
                         <Panel>
-                            <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/music.svg"
+                            <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/music.svg"
                                            Width="36" Height="36"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"
                                            IconBrush="{DynamicResource FP.Text.Muted}"/>
@@ -91,10 +91,10 @@
                                     Tag="{Binding}" Click="OnFavoriteBadgeClick"
                                     ToolTip.Tip="Album als Favorit merken">
                                 <Panel>
-                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/star.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/star.svg"
                                                    Width="16" Height="16" IsVisible="{Binding !IsFavorite}"
                                                    IconBrush="#F0FFFFFF"/>
-                                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/star-filled.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/star-filled.svg"
                                                    Width="16" Height="16" IsVisible="{Binding IsFavorite}"
                                                    IconBrush="{DynamicResource FP.Accent}"/>
                                 </Panel>
@@ -114,24 +114,24 @@
           Margin="18,10,10,10">
         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
             <Button Classes="icon-btn back-navigation" Click="OnBackClick" ToolTip.Tip="Zurück zur Wiedergabeliste">
-                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/>
+                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/>
             </Button>
             <TextBlock x:Name="PageTitle" Grid.Column="1" Text="Lyrion Media Server"
                        FontSize="{DynamicResource FP.Font.Heading}" VerticalAlignment="Center"/>
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6">
                 <Button Classes="icon-btn" Click="OnJumpToCurrentTrackClick" ToolTip.Tip="Zum aktuellen Titel springen">
-                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/target.svg" Width="16" Height="16"/>
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/target.svg" Width="16" Height="16"/>
                 </Button>
                 <Button x:Name="SyncButton" Classes="icon-btn" Click="OnSyncClick"
                         ToolTip.Tip="Favoriten in den Zielordner abgleichen">
-                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/download.svg" Width="16" Height="16"/>
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/download.svg" Width="16" Height="16"/>
                 </Button>
                 <Button Classes="icon-btn" Click="OnClearAllFavoritesClick"
                         ToolTip.Tip="Alle Album-Favoriten löschen">
-                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/trash-x.svg" Width="16" Height="16"/>
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/trash-x.svg" Width="16" Height="16"/>
                 </Button>
                 <Button x:Name="ReloadButton" Classes="icon-btn" Click="OnReloadClick" ToolTip.Tip="Bibliothek aktualisieren">
-                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/repeat.svg" Width="16" Height="16"/>
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/repeat.svg" Width="16" Height="16"/>
                 </Button>
             </StackPanel>
         </Grid>
@@ -156,7 +156,7 @@
                         Width="22" Height="22" Margin="0,0,6,0"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                         Click="OnClearSearchClick" ToolTip.Tip="Suche zurücksetzen">
-                    <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/x.svg"
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/x.svg"
                                    Width="12" Height="12" Opacity="0.75"/>
                 </Button>
             </Panel>
@@ -165,12 +165,12 @@
             <Button x:Name="SortDirectionButton" Grid.Column="3" Classes="icon-btn"
                     Click="OnSortDirectionClick" ToolTip.Tip="Reihenfolge umkehren">
                 <icons:SvgIcon x:Name="SortDirectionIcon" Width="16" Height="16"
-                               Source="avares://FerrumPlay/Assets/Icons/outline/sort-ascending.svg"/>
+                               Source="avares://FerrumKix/Assets/Icons/outline/sort-ascending.svg"/>
             </Button>
             <Button x:Name="FavoriteFilterButton" Grid.Column="4" Classes="icon-btn"
                     Click="OnFavoriteFilterClick" ToolTip.Tip="Nur Favoriten zeigen">
                 <icons:SvgIcon Width="16" Height="16"
-                               Source="avares://FerrumPlay/Assets/Icons/outline/star.svg"/>
+                               Source="avares://FerrumKix/Assets/Icons/outline/star.svg"/>
             </Button>
         </Grid>
 
@@ -196,13 +196,13 @@
                             Width="22" Height="22" IsVisible="False"
                             Click="OnRemoveUnresolvedClick"
                             ToolTip.Tip="Favoriten ohne passendes Album aus den Favoriten nehmen">
-                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/trash.svg"
+                        <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/trash.svg"
                                        Width="13" Height="13"/>
                     </Button>
                     <Button x:Name="SyncDismissButton" Grid.Column="2" Classes="icon-btn"
                             Width="22" Height="22" Click="OnSyncDismissClick"
                             ToolTip.Tip="Meldung ausblenden">
-                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/x.svg"
+                        <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/x.svg"
                                        Width="12" Height="12"/>
                     </Button>
                 </Grid>

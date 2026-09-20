@@ -247,7 +247,7 @@ Namespace Services
         Public NotInheritable Class ScanProgress
             Public Property Running As Boolean
             ''' <summary>Was der Server zum laufenden Schritt sagt - in SEINER Sprache, nicht in
-            ''' der von FerrumPlay. Der Server kennt die Sprache der Anwendung nicht, und einen
+            ''' der von FerrumKix. Der Server kennt die Sprache der Anwendung nicht, und einen
             ''' Schrittnamen wie "discovering_directory" selbst zu uebersetzen hiesse, eine Liste
             ''' zu pflegen, die mit jeder Servererweiterung veraltet. Der Rahmen um diesen Text
             ''' herum ist uebersetzt, der Text selbst kommt, wie er kommt.</summary>
@@ -383,7 +383,7 @@ Namespace Services
             Await RequestAsync(player.Id, {"playlistcontrol", "cmd:load", "track_id:" & songId}, cancellationToken)
         End Function
         ''' <summary>Die HTTP-Download-Adresse ist zugleich ein direkt abspielbarer Stream.
-        ''' Damit kann FerrumPlay die Bibliothek selbst wiedergeben, ohne als SlimProto-Client
+        ''' Damit kann FerrumKix die Bibliothek selbst wiedergeben, ohne als SlimProto-Client
         ''' beim Server angemeldet zu sein.</summary>
         Public Shared Function StreamUrl(songId As String) As String
             Dim baseUrl = AppSettingsService.ActiveLyrionServer.Url.Trim().TrimEnd("/"c)

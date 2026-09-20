@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:icons="clr-namespace:FerrumPlay.Controls"
-             x:Class="FerrumPlay.Views.SettingsView"
+             xmlns:icons="clr-namespace:FerrumKix.Controls"
+             x:Class="FerrumKix.Views.SettingsView"
              Classes="settings-view"
              Background="{DynamicResource FP.Bg.Root}">
 
@@ -48,7 +48,7 @@
                         Margin="0,10,0,0"
                         Command="{Binding ClosePanelCommand}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg"
+                        <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/chevron-left.svg"
                                        Width="16" Height="16"/>
                         <TextBlock Text="Zurück zur Wiedergabe"/>
                     </StackPanel>
@@ -58,30 +58,30 @@
                     <StackPanel Spacing="10">
                         <Button Classes="ghost nav" Tag="AboutSection" Click="OnSectionNavClick">
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg"
                                                Width="16" Height="16"/>
-                                <TextBlock Text="Über FerrumPlay"/>
+                                <TextBlock Text="Über FerrumKix"/>
                             </StackPanel>
                         </Button>
                         <Button Classes="ghost nav" Tag="PlaybackSection" Click="OnSectionNavClick">
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/player-play.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/player-play.svg"
                                                Width="16" Height="16"/>
                                 <TextBlock Text="Wiedergabe"/>
                             </StackPanel>
                         </Button>
                         <Button Classes="ghost nav" Tag="AppearanceSection" Click="OnSectionNavClick">
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/adjustments-horizontal.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/adjustments-horizontal.svg"
                                                Width="16" Height="16"/>
                                 <TextBlock Text="Darstellung"/>
                             </StackPanel>
                         </Button>
-                        <Button Classes="ghost nav" Tag="TaggingSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/disc.svg" Width="16" Height="16"/><TextBlock Text="MP3-Tags"/></StackPanel></Button>
-                        <Button Classes="ghost nav" Tag="ConverterSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/arrows-sort.svg" Width="16" Height="16"/><TextBlock Text="Audio-Konverter"/></StackPanel></Button>
-                        <Button Classes="ghost nav" Tag="LyrionSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/music.svg" Width="16" Height="16"/><TextBlock Text="Lyrion Media Server"/></StackPanel></Button>
-                        <Button Classes="ghost nav" Tag="DiagnosticsSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/alert-triangle.svg" Width="16" Height="16"/><TextBlock Text="Fehlersuche"/></StackPanel></Button>
-                        <Button Classes="ghost nav" Tag="TechnologySection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="16" Height="16"/><TextBlock Text="Technologie &amp; Lizenzen"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="TaggingSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/disc.svg" Width="16" Height="16"/><TextBlock Text="MP3-Tags"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="ConverterSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/arrows-sort.svg" Width="16" Height="16"/><TextBlock Text="Audio-Konverter"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="LyrionSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/music.svg" Width="16" Height="16"/><TextBlock Text="Lyrion Media Server"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="DiagnosticsSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/alert-triangle.svg" Width="16" Height="16"/><TextBlock Text="Fehlersuche"/></StackPanel></Button>
+                        <Button Classes="ghost nav" Tag="TechnologySection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="16" Height="16"/><TextBlock Text="Technologie &amp; Lizenzen"/></StackPanel></Button>
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>
@@ -96,9 +96,9 @@
                 <Border x:Name="AboutSection" Classes="section">
                     <StackPanel Spacing="16">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="avares://FerrumPlay/Assets/FerrumPlay_Icon_256.png"
+                            <Image Source="avares://FerrumKix/Assets/FerrumKix_Icon_256.png"
                                    Height="46" Stretch="Uniform" HorizontalAlignment="Left"/>
-                            <Image Source="avares://FerrumPlay/Assets/FerrumPlay_TopBar.png"
+                            <Image Source="avares://FerrumKix/Assets/FerrumKix_TopBar.png"
                                    Margin="10 4 0 0" Height="46" Stretch="Uniform" HorizontalAlignment="Left"/>
                         </StackPanel>
                         <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto"
@@ -113,7 +113,7 @@
                                         Click="OnReleasePageClick"
                                         ToolTip.Tip="Veröffentlichte Fassung herunterladen">
                                     <StackPanel Orientation="Horizontal" Spacing="7">
-                                        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/external-link.svg"
+                                        <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/external-link.svg"
                                                        Width="14" Height="14" IconBrush="{DynamicResource FP.Accent}"/>
                                         <TextBlock Text="Aktualisierung verfügbar:" Foreground="{DynamicResource FP.Accent}"/>
                                         <TextBlock Text="{Binding AvailableVersion}" Foreground="{DynamicResource FP.Accent}"/>
@@ -189,7 +189,7 @@
                             <StackPanel Spacing="3">
                                 <TextBlock Text="Beim Start fortsetzen" Classes="setting-title"/>
                                 <TextBlock Classes="setting-note"
-                                           Text="FerrumPlay nimmt den zuletzt gespielten Titel an der Stelle wieder auf, an der er unterbrochen wurde. Ausgeschaltet wird der Titel nur ausgewählt und nicht gestartet."/>
+                                           Text="FerrumKix nimmt den zuletzt gespielten Titel an der Stelle wieder auf, an der er unterbrochen wurde. Ausgeschaltet wird der Titel nur ausgewählt und nicht gestartet."/>
                             </StackPanel>
                             <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
                                           OnContent="" OffContent=""
@@ -249,7 +249,7 @@
                                         Margin="0,0,6,0">
                                     <StackPanel Spacing="8">
                                         <Border Height="76" CornerRadius="6" ClipToBounds="True" Background="#11161B">
-                                            <Image Source="avares://FerrumPlay/Assets/Themes/Player_Dark.png" Stretch="UniformToFill"/>
+                                            <Image Source="avares://FerrumKix/Assets/Themes/Player_Dark.png" Stretch="UniformToFill"/>
                                         </Border>
                                         <TextBlock Text="Dunkel" Classes="setting-note" HorizontalAlignment="Center"/>
                                     </StackPanel>
@@ -262,7 +262,7 @@
                                         Margin="6,0">
                                     <StackPanel Spacing="8">
                                         <Border Height="76" CornerRadius="6" ClipToBounds="True" Background="#232628">
-                                            <Image Source="avares://FerrumPlay/Assets/Themes/Player_GrayDark.png" Stretch="UniformToFill"/>
+                                            <Image Source="avares://FerrumKix/Assets/Themes/Player_GrayDark.png" Stretch="UniformToFill"/>
                                         </Border>
                                         <TextBlock Text="Grau dunkel" Classes="setting-note" HorizontalAlignment="Center"/>
                                     </StackPanel>
@@ -275,7 +275,7 @@
                                         Margin="6,0,0,0">
                                     <StackPanel Spacing="8">
                                         <Border Height="76" CornerRadius="6" ClipToBounds="True" Background="#4A5057">
-                                            <Image Source="avares://FerrumPlay/Assets/Themes/Player_GrayLight.png" Stretch="UniformToFill"/>
+                                            <Image Source="avares://FerrumKix/Assets/Themes/Player_GrayLight.png" Stretch="UniformToFill"/>
                                         </Border>
                                         <TextBlock Text="Grau hell" Classes="setting-note" HorizontalAlignment="Center"/>
                                     </StackPanel>
@@ -371,7 +371,7 @@
                             <TextBlock Classes="setting-note"
                                        Foreground="{DynamicResource FP.Accent}"
                                        IsVisible="{Binding IsRestartNeeded}"
-                                       Text="Die neue Vergrößerung gilt, sobald FerrumPlay das nächste Mal gestartet wird."/>
+                                       Text="Die neue Vergrößerung gilt, sobald FerrumKix das nächste Mal gestartet wird."/>
                         </StackPanel>
 
                         <Grid ColumnDefinitions="*,Auto">
@@ -440,7 +440,7 @@
                 <Border x:Name="DiagnosticsSection" Classes="section">
                     <StackPanel Spacing="16">
                         <TextBlock Text="Fehlersuche" Classes="group-caption"/>
-                        <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="3"><TextBlock Text="Diagnoseprotokoll" Classes="setting-title"/><TextBlock Text="Schreibt ausführliche Zeilen zum Ablauf nach ferrumplay.log. Nur zur Fehlersuche einschalten: im Normalbetrieb wächst die Datei bei jedem Schritt weiter." Classes="setting-note" TextWrapping="Wrap"/></StackPanel><ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding EnableDiagnosticLogging, Mode=TwoWay}"/></Grid>
+                        <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="3"><TextBlock Text="Diagnoseprotokoll" Classes="setting-title"/><TextBlock Text="Schreibt ausführliche Zeilen zum Ablauf nach ferrumkix.log. Nur zur Fehlersuche einschalten: im Normalbetrieb wächst die Datei bei jedem Schritt weiter." Classes="setting-note" TextWrapping="Wrap"/></StackPanel><ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding EnableDiagnosticLogging, Mode=TwoWay}"/></Grid>
                         <StackPanel Spacing="5">
                             <TextBlock Text="Ordner für Protokolle und Einstellungen" Classes="setting-title"/>
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
@@ -455,7 +455,7 @@
                 </Border>
 
                 <Border x:Name="TechnologySection" Classes="section">
-                    <StackPanel Spacing="14"><StackPanel Spacing="2"><TextBlock Text="Technologie" Classes="group-caption"/><TextBlock Text="FerrumPlay baut auf diesen Projekten auf. Die Schaltflächen öffnen Projektseite und Lizenztext im Browser." Classes="setting-note"/><TextBlock Text="Die Angaben zu Audio-CDs kommen von MusicBrainz und sind gemeinfrei (CC0). Die Titelbilder der Cover Art Archive sind es nicht: sie gehören ihren jeweiligen Rechteinhabern und werden nur angezeigt." Classes="setting-note" TextWrapping="Wrap"/></StackPanel>
+                    <StackPanel Spacing="14"><StackPanel Spacing="2"><TextBlock Text="Technologie" Classes="group-caption"/><TextBlock Text="FerrumKix baut auf diesen Projekten auf. Die Schaltflächen öffnen Projektseite und Lizenztext im Browser." Classes="setting-note"/><TextBlock Text="Die Angaben zu Audio-CDs kommen von MusicBrainz und sind gemeinfrei (CC0). Die Titelbilder der Cover Art Archive sind es nicht: sie gehören ihren jeweiligen Rechteinhabern und werden nur angezeigt." Classes="setting-note" TextWrapping="Wrap"/></StackPanel>
                         <StackPanel Spacing="8">
                             <TextBlock Text="Zusätzliche Werkzeuge" Classes="setting-title"/>
                             <Grid ColumnDefinitions="150,*" ColumnSpacing="12">
@@ -472,18 +472,18 @@
                             </Grid>
                         </StackPanel>
                         <UniformGrid Columns="2">
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="FerrumPlay" FontWeight="SemiBold"/><TextBlock Text="Diese Anwendung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/Bitpainter75/FerrumPlay" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://www.gnu.org/licenses/gpl-3.0.html" Click="OnLicenseLinkClick">GPL-3.0</Button></Grid>
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text=".NET 10" FontWeight="SemiBold"/><TextBlock Text="Laufzeitumgebung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/dotnet/runtime" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/dotnet/runtime/blob/main/LICENSE.TXT" Click="OnLicenseLinkClick">MIT</Button></Grid>
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="Avalonia UI" FontWeight="SemiBold"/><TextBlock Text="Oberfläche" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/AvaloniaUI/Avalonia" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md" Click="OnLicenseLinkClick">MIT</Button></Grid>
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="SkiaSharp" FontWeight="SemiBold"/><TextBlock Text="Bildkodierung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/SkiaSharp" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/SkiaSharp/blob/main/LICENSE.md" Click="OnLicenseLinkClick">MIT</Button></Grid>
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="TagLib#" FontWeight="SemiBold"/><TextBlock Text="Audiodatei-Tags" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/taglib-sharp" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html" Click="OnLicenseLinkClick">LGPL-2.1</Button></Grid>
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="libmpv" FontWeight="SemiBold"/><TextBlock Text="Wiedergabe" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://mpv.io/" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/mpv-player/mpv/blob/master/Copyright" Click="OnLicenseLinkClick">GPL-2.0+</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="FerrumKix" FontWeight="SemiBold"/><TextBlock Text="Diese Anwendung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/Bitpainter75/FerrumKix" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://www.gnu.org/licenses/gpl-3.0.html" Click="OnLicenseLinkClick">GPL-3.0</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text=".NET 10" FontWeight="SemiBold"/><TextBlock Text="Laufzeitumgebung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/dotnet/runtime" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/dotnet/runtime/blob/main/LICENSE.TXT" Click="OnLicenseLinkClick">MIT</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="Avalonia UI" FontWeight="SemiBold"/><TextBlock Text="Oberfläche" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/AvaloniaUI/Avalonia" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md" Click="OnLicenseLinkClick">MIT</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="SkiaSharp" FontWeight="SemiBold"/><TextBlock Text="Bildkodierung" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/SkiaSharp" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/SkiaSharp/blob/main/LICENSE.md" Click="OnLicenseLinkClick">MIT</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="TagLib#" FontWeight="SemiBold"/><TextBlock Text="Audiodatei-Tags" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://github.com/mono/taglib-sharp" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html" Click="OnLicenseLinkClick">LGPL-2.1</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="libmpv" FontWeight="SemiBold"/><TextBlock Text="Wiedergabe" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://mpv.io/" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://github.com/mpv-player/mpv/blob/master/Copyright" Click="OnLicenseLinkClick">GPL-2.0+</Button></Grid>
                                                     <!-- Zwei DATENQUELLEN, keine mitgelieferten Bibliotheken. Sie stehen
                                  trotzdem hier, weil die Anwendung sie im Betrieb befragt und weil
                                  sich die Rechtslage der beiden UNTERSCHEIDET: die Angaben sind
                                  gemeinfrei, die Bilder nicht. -->
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="MusicBrainz" FontWeight="SemiBold"/><TextBlock Text="Erkennung von Audio-CDs" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://musicbrainz.org" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost no-translate" Padding="8,5" Tag="https://musicbrainz.org/doc/About/Data_License" Click="OnLicenseLinkClick">CC0</Button></Grid>
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="Cover Art Archive" FontWeight="SemiBold"/><TextBlock Text="Titelbilder zu erkannten CDs" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://coverartarchive.org" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://musicbrainz.org/doc/Cover_Art_Archive" Click="OnLicenseLinkClick">Rechteinhaber</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="MusicBrainz" FontWeight="SemiBold"/><TextBlock Text="Erkennung von Audio-CDs" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://musicbrainz.org" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost no-translate" Padding="8,5" Tag="https://musicbrainz.org/doc/About/Data_License" Click="OnLicenseLinkClick">CC0</Button></Grid>
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4" Margin="0,0,12,6"><StackPanel><TextBlock Text="Cover Art Archive" FontWeight="SemiBold"/><TextBlock Text="Titelbilder zu erkannten CDs" Classes="muted"/></StackPanel><Button Grid.Column="1" Classes="ghost" Padding="8,5" Tag="https://coverartarchive.org" Click="OnLicenseLinkClick"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/info-circle.svg" Width="13" Height="13"/></Button><Button Grid.Column="2" Classes="ghost" Padding="8,5" Tag="https://musicbrainz.org/doc/Cover_Art_Archive" Click="OnLicenseLinkClick">Rechteinhaber</Button></Grid>
                         </UniformGrid>
                     </StackPanel>
                 </Border>

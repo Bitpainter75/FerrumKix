@@ -8,14 +8,14 @@ Imports System.Threading.Tasks
 
 Namespace Services
 
-    ''' <summary>FerrumPlay als Fernbedienung: statt selbst zu spielen, steuert es einen Player,
+    ''' <summary>FerrumKix als Fernbedienung: statt selbst zu spielen, steuert es einen Player,
     ''' der am Lyrion-Server angemeldet ist.
     '''
     ''' <para>Dafuer braucht es KEIN SlimProto. Der Server nimmt jeden Befehl mit der Kennung des
     ''' Players entgegen (<c>playerid</c> als erster Parameter von <c>slim.request</c>), und
     ''' <c>status</c> gibt seinen ganzen Zustand heraus. Die drei Wege aus
     ''' <c>LYRION_MEDIA_SERVER.md</c> beantworten eine ANDERE Frage - dort ging es darum, dass
-    ''' FerrumPlay selbst als Player in der Lyrion-Oberflaeche steht. Hier ist es umgekehrt.</para>
+    ''' FerrumKix selbst als Player in der Lyrion-Oberflaeche steht. Hier ist es umgekehrt.</para>
     '''
     ''' <para>Der Server schickt von sich aus nichts (JSON-RPC kennt kein Abonnement), also wird
     ''' gefragt - einmal je Sekunde, solange ein Geraet gewaehlt ist. Das ist eine winzige Abfrage
@@ -303,7 +303,7 @@ Namespace Services
             Return SendAsync({"mixer", "muting", If(muted, "1", "0")}, cancellationToken)
         End Function
 
-        ''' <summary>Zufall: 0 aus, 1 nach Titeln, 2 nach Alben. FerrumPlay kennt nur an und aus
+        ''' <summary>Zufall: 0 aus, 1 nach Titeln, 2 nach Alben. FerrumKix kennt nur an und aus
         ''' und meint damit die Titel.</summary>
         Public Shared Function SetShuffleAsync(shuffle As Boolean, cancellationToken As CancellationToken) As Task
             Return SendAsync({"playlist", "shuffle", If(shuffle, "1", "0")}, cancellationToken)

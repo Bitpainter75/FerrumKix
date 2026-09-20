@@ -7,7 +7,7 @@ Imports SkiaSharp
 
 Namespace Services
 
-    ''' <summary>Schreibt den bewusst kleinen, albumorientierten ID3v2-Bestand von FerrumPlay.
+    ''' <summary>Schreibt den bewusst kleinen, albumorientierten ID3v2-Bestand von FerrumKix.
     ''' Diese Klasse fasst ausschliesslich MP3 an; andere Dateiformate werden nie implizit
     ''' konvertiert oder umgetaggt.</summary>
     Public NotInheritable Class Mp3TagWriteService

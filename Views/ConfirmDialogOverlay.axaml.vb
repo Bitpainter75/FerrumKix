@@ -1,7 +1,7 @@
 Imports Avalonia.Controls
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
-Imports FerrumPlay.ViewModels
+Imports FerrumKix.ViewModels
 
 Namespace Views
 

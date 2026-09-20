@@ -37,7 +37,7 @@ Namespace Services
         Public Shared Event LanguageChanged As EventHandler
 
         Private Shared _languageMode As String = "System"
-        Private Shared ReadOnly Strings As New ResourceManager("FerrumPlay.Strings", GetType(LocalizationService).Assembly)
+        Private Shared ReadOnly Strings As New ResourceManager("FerrumKix.Strings", GetType(LocalizationService).Assembly)
 
         ''' <summary>Der URSPRUNGStext je Anzeige, schwach referenziert. Ohne ihn laese der
         ''' Durchlauf den ANGEZEIGTEN Text als Quelle: nach dem ersten Wechsel steht dort die

@@ -156,8 +156,8 @@
   <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
     <value>Keeps only the intended ID3v2 fields and removes ID3v1, APEv2 and further markers.</value>
   </data>
-  <data name="ber_FerrumPlay_b435431b" xml:space="preserve">
-    <value>About FerrumPlay</value>
+  <data name="ber_FerrumKix_b435431b" xml:space="preserve">
+    <value>About FerrumKix</value>
   </data>
   <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
     <value>Handles audio output for files, audio CDs and Lyrion streams.</value>
@@ -280,7 +280,7 @@
     <value>Double-click resets to 300</value>
   </data>
   <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
-    <value>Browse your Lyrion library and play albums directly in FerrumPlay.</value>
+    <value>Browse your Lyrion library and play albums directly in FerrumKix.</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
     <value>A separate scale factor for each screen, in case the application looks too small there. Takes effect only after the next start: the window system reads the value only during startup.</value>
@@ -312,14 +312,14 @@
   <data name="Fehlersuche_5ab03ccc" xml:space="preserve">
     <value>Troubleshooting</value>
   </data>
-  <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
-    <value>FerrumPlay builds on these projects. The buttons open the project page and the licence text in the browser.</value>
+  <data name="FerrumKix_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+    <value>FerrumKix builds on these projects. The buttons open the project page and the licence text in the browser.</value>
   </data>
-  <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve">
-    <value>FerrumPlay picks up the last played track where it was interrupted. When off, the track is only selected, not started.</value>
+  <data name="FerrumKix_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve">
+    <value>FerrumKix picks up the last played track where it was interrupted. When off, the track is only selected, not started.</value>
   </data>
-  <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
-    <value>FerrumPlay plays the selected tracks directly through the server; an additional Lyrion client is not required.</value>
+  <data name="FerrumKix_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
+    <value>FerrumKix plays the selected tracks directly through the server; an additional Lyrion client is not required.</value>
   </data>
   <data name="ffnen_fc718f82" xml:space="preserve">
     <value>Open</value>
@@ -397,7 +397,7 @@
     <value>cdparanoia missing</value>
   </data>
   <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve">
-    <value>libmpv cannot be loaded. Without it, FerrumPlay cannot play anything.</value>
+    <value>libmpv cannot be loaded. Without it, FerrumKix cannot play anything.</value>
   </data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve">
     <value>Clear list</value>
@@ -484,7 +484,7 @@
     <value>Quick search</value>
   </data>
   <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_1f9b34d7" xml:space="preserve">
-    <value>Writes detailed lines about what happens to ferrumplay.log. Turn on only to track something down: in normal use the file keeps growing with every step.</value>
+    <value>Writes detailed lines about what happens to ferrumkix.log. Turn on only to track something down: in normal use the file keeps growing with every step.</value>
   </data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve">
     <value>Font size</value>
@@ -564,8 +564,8 @@
   <data name="Wiedergabe_f50f85c1" xml:space="preserve">
     <value>Playback</value>
   </data>
-  <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
-    <value>Playing in FerrumPlay: {0}</value>
+  <data name="Wiedergabe_in_FerrumKix_0_f5c2c332" xml:space="preserve">
+    <value>Playing in FerrumKix: {0}</value>
   </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve">
     <value>Play and pause</value>
@@ -826,8 +826,8 @@
   <data name="Ver_ffentlichte_Fassung_herunterladen_08d01ad8" xml:space="preserve">
     <value>Download the published release</value>
   </data>
-  <data name="Titel_beim_Abspielen_in_FerrumPlay_ber_cksichtig_5a5e3054" xml:space="preserve">
-    <value>Include this track when playing in FerrumPlay</value>
+  <data name="Titel_beim_Abspielen_in_FerrumKix_ber_cksichtig_5a5e3054" xml:space="preserve">
+    <value>Include this track when playing in FerrumKix</value>
   </data>
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>On a device the server plays the whole album.</value>

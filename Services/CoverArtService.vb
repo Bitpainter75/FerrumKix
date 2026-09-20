@@ -175,7 +175,7 @@ Namespace Services
             End Try
         End Sub
 
-        ''' <summary>$XDG_CACHE_HOME/FerrumPlay/covers, ersatzweise ~/.cache/FerrumPlay/covers. Ein
+        ''' <summary>$XDG_CACHE_HOME/FerrumKix/covers, ersatzweise ~/.cache/FerrumKix/covers. Ein
         ''' Zwischenspeicher gehoert nicht zu den Einstellungen: wer ihn loescht, verliert nichts.</summary>
         Private Shared ReadOnly Property ArtCacheDirectory As String
             Get
@@ -183,7 +183,7 @@ Namespace Services
                 If String.IsNullOrWhiteSpace(baseDir) Then
                     baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".cache")
                 End If
-                Return Path.Combine(baseDir, "FerrumPlay", "covers")
+                Return Path.Combine(baseDir, "FerrumKix", "covers")
             End Get
         End Property
 

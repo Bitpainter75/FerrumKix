@@ -3,7 +3,7 @@ Imports System.Collections.Generic
 Imports System.Globalization
 Imports System.Runtime.InteropServices
 Imports System.Threading
-Imports FerrumPlay.Models
+Imports FerrumKix.Models
 
 Namespace Services
 

@@ -1,9 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="FerrumPlay.Views.ConfirmDialogOverlay">
+             x:Class="FerrumKix.Views.ConfirmDialogOverlay">
 
     <!-- Die Sicherheitsabfrage des Fensters, uebernommen aus FerrumPix (DialogOverlayView):
-         eine Decke ueber dem ganzen Inhalt statt eines eigenen Fensters. FerrumPlay traegt seine
+         eine Decke ueber dem ganzen Inhalt statt eines eigenen Fensters. FerrumKix traegt seine
          Fensterleiste selbst; ein zweites Fenster braechte seine eigene mit.
 
          Die dunkle Flaeche hat einen Hintergrund und faengt damit jeden Klick ab - was darunter

@@ -7,7 +7,7 @@ Imports System.Linq
 Imports System.Text
 Imports System.Threading
 Imports System.Threading.Tasks
-Imports FerrumPlay.Models
+Imports FerrumKix.Models
 
 Namespace Services
 
@@ -160,7 +160,7 @@ Namespace Services
                     ' Die Ablage heisst NICHT "file": VB unterscheidet keine Gross- und
                     ' Kleinschreibung, und ein so benannter Wert verdeckt die Klasse IO.File im
                     ' ganzen Rumpf. Dieselbe Falle wie bei "path" in CoverArtService.
-                    Dim coverPath = Path.Combine(Path.GetTempPath(), $"ferrumplay-cover-{Guid.NewGuid():N}.jpg")
+                    Dim coverPath = Path.Combine(Path.GetTempPath(), $"ferrumkix-cover-{Guid.NewGuid():N}.jpg")
                     Await File.WriteAllBytesAsync(coverPath, scaled, cancellationToken)
                     Return coverPath
                 End Using
@@ -242,7 +242,7 @@ Namespace Services
         Private Shared Async Function ConvertMergedAsync(tracks As List(Of Track), request As Request, progress As IProgress(Of String), cancellationToken As CancellationToken, writeCueFile As Boolean) As Task
             If tracks.Count = 0 Then Return
             If tracks.Any(Function(track) track.IsAudioCdTrack) Then Throw New InvalidOperationException(LocalizationService.T("Audio-CD-Titel werden einzeln gerippt. Bitte den Modus 'Eine Quelle – ein Ergebnis' wählen."))
-            Dim listPath = Path.Combine(Path.GetTempPath(), $"ferrumplay-concat-{Guid.NewGuid():N}.txt")
+            Dim listPath = Path.Combine(Path.GetTempPath(), $"ferrumkix-concat-{Guid.NewGuid():N}.txt")
             Try
                 Dim lines = tracks.Select(Function(track) "file '" & track.FilePath.Replace("'", "'\\''") & "'")
                 ' Der concat-Demuxer erwartet sein erstes Schlüsselwort bytegenau als "file".
@@ -316,7 +316,7 @@ Namespace Services
             If Not IsCdParanoiaAvailable() Then Throw New InvalidOperationException(LocalizationService.T("Zum Rippen einer Audio-CD fehlt 'cdparanoia'."))
             Dim device As String = Nothing, number As Integer, last As Integer
             If Not Track.TryGetAudioCdSource(track.FilePath, device, number, last) Then Throw New InvalidOperationException(LocalizationService.T("Die Audio-CD-Quelle ist ungültig."))
-            Dim temporary = Path.Combine(Path.GetTempPath(), $"ferrumplay-cd-{Guid.NewGuid():N}.wav")
+            Dim temporary = Path.Combine(Path.GetTempPath(), $"ferrumkix-cd-{Guid.NewGuid():N}.wav")
             Dim psi As New ProcessStartInfo("cdparanoia") With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
             psi.ArgumentList.Add("-d") : psi.ArgumentList.Add(device) : psi.ArgumentList.Add(number.ToString(CultureInfo.InvariantCulture)) : psi.ArgumentList.Add(temporary)
             Try

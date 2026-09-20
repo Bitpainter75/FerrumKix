@@ -6,8 +6,8 @@ Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Threading.Tasks
 Imports Avalonia.Threading
-Imports FerrumPlay.Models
-Imports FerrumPlay.Services
+Imports FerrumKix.Models
+Imports FerrumKix.Services
 
 Namespace ViewModels
 
@@ -151,7 +151,7 @@ Namespace ViewModels
         Private Shared Function MprisTrackId(track As Track) As String
             Using sha = SHA1.Create()
                 Dim hash = Convert.ToHexString(sha.ComputeHash(Encoding.UTF8.GetBytes(track.FilePath))).Substring(0, 16)
-                Return "/io/github/Bitpainter75/FerrumPlay/Track/T" & hash
+                Return "/io/github/Bitpainter75/FerrumKix/Track/T" & hash
             End Using
         End Function
 

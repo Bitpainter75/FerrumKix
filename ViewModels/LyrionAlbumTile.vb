@@ -4,7 +4,7 @@ Imports System.Threading
 Imports System.Threading.Tasks
 Imports Avalonia.Media.Imaging
 Imports Avalonia.Threading
-Imports FerrumPlay.Services
+Imports FerrumKix.Services
 
 Namespace ViewModels
 

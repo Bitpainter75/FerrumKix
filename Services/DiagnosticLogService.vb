@@ -55,17 +55,17 @@ Namespace Services
             Get
                 Dim baseDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
                 If String.IsNullOrEmpty(baseDir) Then baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config")
-                Return Path.Combine(baseDir, "FerrumPlay")
+                Return Path.Combine(baseDir, "FerrumKix")
             End Get
         End Property
 
         Public Shared Sub Log(area As String, message As String)
             If Not IsEnabled Then Return
-            Write("ferrumplay.log", area, message)
+            Write("ferrumkix.log", area, message)
         End Sub
 
         Public Shared Sub LogAlways(area As String, message As String)
-            Write("ferrumplay.log", area, message)
+            Write("ferrumkix.log", area, message)
         End Sub
 
         Public Shared Sub LogException(area As String, ex As Exception)

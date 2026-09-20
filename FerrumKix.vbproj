@@ -3,8 +3,8 @@
     <RuntimeIdentifiers>win-x64;win-arm64;linux-x64;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>FerrumPlay</RootNamespace>
-    <AssemblyName>FerrumPlay</AssemblyName>
+    <RootNamespace>FerrumKix</RootNamespace>
+    <AssemblyName>FerrumKix</AssemblyName>
     <!-- Die Nummer steht in der Datei VERSION und NUR dort: dasselbe, was packaging/package.sh
          liest und was die Update-Pruefung aus dem Hauptzweig holt. Eine zweite Nummer hier waere
          die naechste, die auseinanderlaeuft - genau das war vor 0.8.1 der Fall.
@@ -12,13 +12,13 @@
          Zahlengruppen davor, die Paketkennung selbst traegt die InformationalVersion.
          Das Bauskript setzt beide zusaetzlich ueber -p:, und eine Eigenschaft von der Befehlszeile
          gewinnt gegen diese hier. -->
-    <FerrumPlayRelease>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/VERSION').Trim())</FerrumPlayRelease>
-    <FerrumPlayVersion>$(FerrumPlayRelease)</FerrumPlayVersion>
-    <FerrumPlayVersion Condition="$(FerrumPlayRelease.Contains('-'))">$(FerrumPlayRelease.Substring(0, $(FerrumPlayRelease.IndexOf('-'))))</FerrumPlayVersion>
-    <Version>$(FerrumPlayVersion)</Version>
-    <AssemblyVersion>$(FerrumPlayVersion).0</AssemblyVersion>
-    <FileVersion>$(FerrumPlayVersion).0</FileVersion>
-    <InformationalVersion>$(FerrumPlayRelease)</InformationalVersion>
+    <FerrumKixRelease>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/VERSION').Trim())</FerrumKixRelease>
+    <FerrumKixVersion>$(FerrumKixRelease)</FerrumKixVersion>
+    <FerrumKixVersion Condition="$(FerrumKixRelease.Contains('-'))">$(FerrumKixRelease.Substring(0, $(FerrumKixRelease.IndexOf('-'))))</FerrumKixVersion>
+    <Version>$(FerrumKixVersion)</Version>
+    <AssemblyVersion>$(FerrumKixVersion).0</AssemblyVersion>
+    <FileVersion>$(FerrumKixVersion).0</FileVersion>
+    <InformationalVersion>$(FerrumKixRelease)</InformationalVersion>
     <Nullable>enable</Nullable>
     <PublishTrimmed>false</PublishTrimmed>
     <PublishSingleFile>true</PublishSingleFile>
@@ -26,7 +26,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
-    <ApplicationIcon>FerrumPlay_Icon.ico</ApplicationIcon>
+    <ApplicationIcon>FerrumKix_Icon.ico</ApplicationIcon>
     <!-- Wie in FerrumPix: ohne diesen Schalter uebersetzen spaete Bindung und verengende
          Umwandlungen stillschweigend, und die Warnungen dazu sind mit abgeschaltet. In VB ist
          das teuer, weil True zur Zahl -1 wird und nicht zu 1. -->

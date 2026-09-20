@@ -1,6 +1,6 @@
 Imports System
 Imports Avalonia.Media
-Imports FerrumPlay.Services
+Imports FerrumKix.Services
 
 Namespace ViewModels
 

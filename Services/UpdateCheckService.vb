@@ -26,10 +26,10 @@ Namespace Services
         Private Sub New()
         End Sub
 
-        Public Const VersionAddress As String = "https://raw.githubusercontent.com/Bitpainter75/FerrumPlay/main/VERSION"
+        Public Const VersionAddress As String = "https://raw.githubusercontent.com/Bitpainter75/FerrumKix/main/VERSION"
 
         ''' <summary>Wohin der Hinweis fuehrt: die zuletzt veroeffentlichte Fassung mit allen Paketen.</summary>
-        Public Const ReleasesAddress As String = "https://github.com/Bitpainter75/FerrumPlay/releases/latest"
+        Public Const ReleasesAddress As String = "https://github.com/Bitpainter75/FerrumKix/releases/latest"
 
         Private Shared ReadOnly _client As New Lazy(Of HttpClient)(
             Function()
@@ -37,7 +37,7 @@ Namespace Services
                 ' Kurz gehalten: die Anzeige darf niemand aufhalten, und wer offline ist, wartet
                 ' sonst eine halbe Minute auf ein Ergebnis, das ohnehin nicht kommt.
                 client.Timeout = TimeSpan.FromSeconds(10)
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("FerrumPlay")
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("FerrumKix")
                 ' Ohne diese Bitte liefert ein Zwischenspeicher auf dem Weg unter Umstaenden noch
                 ' die Nummer von gestern, und die Anzeige bliebe nach einer Veroeffentlichung leer.
                 client.DefaultRequestHeaders.CacheControl = New Net.Http.Headers.CacheControlHeaderValue With {.NoCache = True}

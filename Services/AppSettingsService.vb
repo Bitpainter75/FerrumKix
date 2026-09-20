@@ -117,7 +117,7 @@ Namespace Services
         Public Property TagGenres As New List(Of String)()
         ''' <summary>Vollständige LMS-Basisadresse, etwa https://music.example.lan/.</summary>
         Public Property LyrionServerUrl As String = String.Empty
-        Public Property LyrionClientName As String = "FerrumPlay"
+        Public Property LyrionClientName As String = "FerrumKix"
         ''' <summary>Wohin eine Audio-CD gerippt wird. LEER heisst: der Musikordner des Nutzers -
         ''' siehe <see cref="AppSettingsService.ResolvedCdRipTarget"/>. Gemerkt wird der leere Wert
         ''' und nicht der aufgeloeste Pfad: zieht der Musikordner um, zieht das Ziel mit.</summary>

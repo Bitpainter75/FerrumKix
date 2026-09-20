@@ -7,7 +7,7 @@ Namespace ViewModels
     ''' (DialogOverlayView): KEIN eigenes Fenster, sondern eine Decke ueber dem Inhalt, die an
     ''' diesen Eigenschaften haengt.
     '''
-    ''' <para>Ein eigenes Fenster waere hier das Falsche: FerrumPlay traegt seine Fensterleiste
+    ''' <para>Ein eigenes Fenster waere hier das Falsche: FerrumKix traegt seine Fensterleiste
     ''' selbst (<c>WindowDecorations="None"</c>), ein zweites Fenster braechte seine eigene mit und
     ''' saehe fremd aus. Die Decke liegt im selben Rahmen und erbt Farben und Schrift.</para>
     '''

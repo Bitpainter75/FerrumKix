@@ -3,7 +3,7 @@ Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Threading.Tasks
 Imports Avalonia.Threading
-Imports FerrumPlay.Services
+Imports FerrumKix.Services
 
 Namespace ViewModels
 

@@ -119,7 +119,7 @@
   <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
     <value>คงไว้เฉพาะฟิลด์ ID3v2 ที่กำหนด และลบ ID3v1, APEv2 รวมถึงเครื่องหมายอื่น ๆ</value>
   </data>
-  <data name="ber_FerrumPlay_b435431b" xml:space="preserve"><value>เกี่ยวกับ FerrumPlay</value></data>
+  <data name="ber_FerrumKix_b435431b" xml:space="preserve"><value>เกี่ยวกับ FerrumKix</value></data>
   <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
     <value>ดูแลการส่งออกเสียงสำหรับไฟล์ ซีดีเสียง และสตรีม Lyrion</value>
   </data>
@@ -211,7 +211,7 @@
   <data name="Doppelklick_setzt_auf_100_Prozent_zur_ck_2f182d5b" xml:space="preserve"><value>ดับเบิลคลิกจะรีเซ็ตเป็น 100 เปอร์เซ็นต์</value></data>
   <data name="Doppelklick_setzt_auf_300_zur_ck_5a2a2017" xml:space="preserve"><value>ดับเบิลคลิกรีเซ็ตเป็น 300</value></data>
   <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
-    <value>เรียกดูคลัง Lyrion ของคุณและเล่นอัลบั้มใน FerrumPlay ได้โดยตรง</value>
+    <value>เรียกดูคลัง Lyrion ของคุณและเล่นอัลบั้มใน FerrumKix ได้โดยตรง</value>
   </data>
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
     <value>ตัวคูณการปรับขนาดแยกตามจอ สำหรับกรณีที่แอปดูเล็กเกินไปบนจอนั้น จะมีผลเมื่อเริ่มครั้งถัดไปเท่านั้น: ระบบหน้าต่างจะอ่านค่านี้เฉพาะตอนเริ่มทำงาน</value>
@@ -235,12 +235,12 @@
   <data name="Fehlersuche_5ab03ccc" xml:space="preserve">
     <value>การแก้ปัญหา</value>
   </data>
-  <data name="FerrumPlay_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
-    <value>FerrumPlay สร้างขึ้นบนโครงการเหล่านี้ ปุ่มจะเปิดหน้าโครงการและข้อความสัญญาอนุญาตในเบราว์เซอร์</value>
+  <data name="FerrumKix_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+    <value>FerrumKix สร้างขึ้นบนโครงการเหล่านี้ ปุ่มจะเปิดหน้าโครงการและข้อความสัญญาอนุญาตในเบราว์เซอร์</value>
   </data>
-  <data name="FerrumPlay_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumPlay จะหยิบแทร็กที่เล่นล่าสุดซึ่งถูกขัดจังหวะ เมื่อปิด แทร็กจะถูกเลือกเท่านั้น ไม่ใช่เริ่ม</value></data>
-  <data name="FerrumPlay_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
-    <value>FerrumPlay เล่นเพลงที่เลือกผ่านเซิร์ฟเวอร์โดยตรง ไม่จำเป็นต้องมีไคลเอนต์ Lyrion เพิ่ม</value>
+  <data name="FerrumKix_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumKix จะหยิบแทร็กที่เล่นล่าสุดซึ่งถูกขัดจังหวะ เมื่อปิด แทร็กจะถูกเลือกเท่านั้น ไม่ใช่เริ่ม</value></data>
+  <data name="FerrumKix_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
+    <value>FerrumKix เล่นเพลงที่เลือกผ่านเซิร์ฟเวอร์โดยตรง ไม่จำเป็นต้องมีไคลเอนต์ Lyrion เพิ่ม</value>
   </data>
   <data name="ffnen_fc718f82" xml:space="preserve">
     <value>เปิด</value>
@@ -289,7 +289,7 @@
   <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>FFmpeg หายไป</value></data>
   <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>พบความหวาดระแวง</value></data>
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>ไม่มีความหวาดระแวง</value></data>
-  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>โหลด libmpv ไม่ได้ หากไม่มีมัน FerrumPlay ก็ไม่สามารถเล่นอะไรได้เลย</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>โหลด libmpv ไม่ได้ หากไม่มีมัน FerrumKix ก็ไม่สามารถเล่นอะไรได้เลย</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>ล้างรายการ</value></data>
   <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
     <value>กำลังโหลด Lyrion Media Server …</value>
@@ -357,7 +357,7 @@
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>ปิด</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>ค้นหาอย่างรวดเร็ว</value></data>
   <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_1f9b34d7" xml:space="preserve">
-    <value>เขียนรายละเอียดการทำงานลงใน ferrumplay.log เปิดเฉพาะตอนหาสาเหตุเท่านั้น เพราะการใช้งานปกติไฟล์จะโตขึ้นทุกขั้นตอน</value>
+    <value>เขียนรายละเอียดการทำงานลงใน ferrumkix.log เปิดเฉพาะตอนหาสาเหตุเท่านั้น เพราะการใช้งานปกติไฟล์จะโตขึ้นทุกขั้นตอน</value>
   </data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>ขนาดตัวอักษร</value></data>
   <data name="Serveradresse_70863d55" xml:space="preserve">
@@ -405,8 +405,8 @@
     <value>เลือก …</value>
   </data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>การเล่น</value></data>
-  <data name="Wiedergabe_in_FerrumPlay_0_f5c2c332" xml:space="preserve">
-    <value>กำลังเล่นใน FerrumPlay: {0}</value>
+  <data name="Wiedergabe_in_FerrumKix_0_f5c2c332" xml:space="preserve">
+    <value>กำลังเล่นใน FerrumKix: {0}</value>
   </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>เล่นและหยุดชั่วคราว</value></data>
   <data name="Wiedergabeliste_8b44a7ef" xml:space="preserve"><value>เพลย์ลิสต์</value></data>
@@ -653,8 +653,8 @@
   <data name="Ver_ffentlichte_Fassung_herunterladen_08d01ad8" xml:space="preserve">
     <value>ดาวน์โหลดเวอร์ชันที่เผยแพร่</value>
   </data>
-  <data name="Titel_beim_Abspielen_in_FerrumPlay_ber_cksichtig_5a5e3054" xml:space="preserve">
-    <value>รวมเพลงนี้เมื่อเล่นใน FerrumPlay</value>
+  <data name="Titel_beim_Abspielen_in_FerrumKix_ber_cksichtig_5a5e3054" xml:space="preserve">
+    <value>รวมเพลงนี้เมื่อเล่นใน FerrumKix</value>
   </data>
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
     <value>บนอุปกรณ์ เซิร์ฟเวอร์จะเล่นทั้งอัลบั้ม</value>

@@ -3,7 +3,7 @@ Imports System.Collections.Generic
 Imports System.IO
 Imports System.Runtime.InteropServices
 Imports Microsoft.Win32.SafeHandles
-Imports FerrumPlay.Models
+Imports FerrumKix.Models
 
 Namespace Services
 

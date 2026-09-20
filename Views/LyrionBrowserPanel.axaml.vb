@@ -8,9 +8,9 @@ Imports Avalonia.Interactivity
 Imports Avalonia.Layout
 Imports Avalonia.Markup.Xaml
 Imports Avalonia.VisualTree
-Imports FerrumPlay.Models
-Imports FerrumPlay.Services
-Imports FerrumPlay.ViewModels
+Imports FerrumKix.Models
+Imports FerrumKix.Services
+Imports FerrumKix.ViewModels
 
 Namespace Views
  Public Class LyrionBrowserPanel
@@ -149,9 +149,9 @@ Namespace Views
   End Sub
 
   Private Sub UpdateSortDirection()
-   Dim icon = FindControl(Of FerrumPlay.Controls.SvgIcon)("SortDirectionIcon")
+   Dim icon = FindControl(Of FerrumKix.Controls.SvgIcon)("SortDirectionIcon")
    If icon Is Nothing Then Return
-   icon.Source = If(_descending, "avares://FerrumPlay/Assets/Icons/outline/sort-descending.svg", "avares://FerrumPlay/Assets/Icons/outline/sort-ascending.svg")
+   icon.Source = If(_descending, "avares://FerrumKix/Assets/Icons/outline/sort-descending.svg", "avares://FerrumKix/Assets/Icons/outline/sort-ascending.svg")
   End Sub
 
   Private Sub OnFavoriteFilterClick(sender As Object, e As RoutedEventArgs)
@@ -375,7 +375,7 @@ Namespace Views
    Dim viewModel = TryCast(DataContext, MainWindowViewModel)
    ' Auf einem Geraet laedt der Server das ganze Album und fuehrt die Reihenfolge selbst. Der
    ' Haken kann dort nichts ausrichten, also steht er gesetzt und ausgegraut da, statt etwas zu
-   ' versprechen, was erst bei der Wiedergabe in FerrumPlay gilt.
+   ' versprechen, was erst bei der Wiedergabe in FerrumKix gilt.
    Dim remote = LyrionRemoteService.IsRemote
    tracks.Items.Clear()
    For Each track In tracksToShow
@@ -409,7 +409,7 @@ Namespace Views
     .VerticalAlignment = VerticalAlignment.Center}
    ToolTip.SetTip(tick, If(remote,
                            LocalizationService.T("Auf einem Gerät spielt der Server das ganze Album."),
-                           LocalizationService.T("Titel beim Abspielen in FerrumPlay berücksichtigen")))
+                           LocalizationService.T("Titel beim Abspielen in FerrumKix berücksichtigen")))
    If remote OrElse viewModel Is Nothing Then Return tick
    AddHandler tick.IsCheckedChanged,
     Sub(sender As Object, e As RoutedEventArgs)
@@ -473,7 +473,7 @@ Namespace Views
     End If
 
     player.PlayLyrionAlbum(_albumTracks, track)
-    FindControl(Of TextBlock)("Status").Text = LocalizationService.Format("Wiedergabe in FerrumPlay: {0}", track.Title)
+    FindControl(Of TextBlock)("Status").Text = LocalizationService.Format("Wiedergabe in FerrumKix: {0}", track.Title)
    Catch ex As Exception
     FindControl(Of TextBlock)("Status").Text = ex.Message
    End Try

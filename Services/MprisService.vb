@@ -57,7 +57,7 @@ Namespace Services
         Sub SetLoopStatus(value As String)
     End Interface
 
-    ''' <summary>FerrumPlay als MPRIS-Spieler (org.mpris.MediaPlayer2).
+    ''' <summary>FerrumKix als MPRIS-Spieler (org.mpris.MediaPlayer2).
     '''
     ''' <para>Darueber finden Waybar, playerctl, die Benachrichtigungen und die Multimedia-Tasten
     ''' des Systems die Anwendung - auch dann, wenn ihr Fenster nicht den Eingabefokus hat. Die
@@ -72,14 +72,14 @@ Namespace Services
     Friend NotInheritable Class MprisService
         Implements IDisposable
 
-        Private Const BusName As String = "org.mpris.MediaPlayer2.FerrumPlay"
+        Private Const BusName As String = "org.mpris.MediaPlayer2.FerrumKix"
         Private Const ObjectPath As String = "/org/mpris/MediaPlayer2"
         Private Const RootInterface As String = "org.mpris.MediaPlayer2"
         Private Const PlayerInterface As String = "org.mpris.MediaPlayer2.Player"
         Private Const PropertiesInterface As String = "org.freedesktop.DBus.Properties"
         Private Const IntrospectableInterface As String = "org.freedesktop.DBus.Introspectable"
         Private Const PeerInterface As String = "org.freedesktop.DBus.Peer"
-        Private Const DesktopEntry As String = "io.github.Bitpainter75.FerrumPlay"
+        Private Const DesktopEntry As String = "io.github.Bitpainter75.FerrumKix"
 
         ''' <summary>Der Pfad, den die Spezifikation fuer "kein Titel" vorsieht.</summary>
         Private Const NoTrackId As String = "/org/mpris/MediaPlayer2/TrackList/NoTrack"
@@ -372,7 +372,7 @@ Namespace Services
                 {"CanSetFullscreen", DBusVariant.FromBoolean(False)},
                 {"CanRaise", DBusVariant.FromBoolean(True)},
                 {"HasTrackList", DBusVariant.FromBoolean(False)},
-                {"Identity", DBusVariant.FromString("FerrumPlay")},
+                {"Identity", DBusVariant.FromString("FerrumKix")},
                 {"DesktopEntry", DBusVariant.FromString(DesktopEntry)},
                 {"SupportedUriSchemes", DBusVariant.FromStrings({"file"})},
                 {"SupportedMimeTypes", DBusVariant.FromStrings(SupportedMimeTypes)}

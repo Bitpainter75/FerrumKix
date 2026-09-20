@@ -5,7 +5,7 @@ Namespace ViewModels
 
     ''' <summary>Die Grundlage aller Bauplaene.
     '''
-    ''' <para>Von Hand und nicht ueber eine Bibliothek: FerrumPlay hat wenige Bauplaene, und die
+    ''' <para>Von Hand und nicht ueber eine Bibliothek: FerrumKix hat wenige Bauplaene, und die
     ''' Meldung ueber eine geaenderte Eigenschaft ist die einzige Aufgabe, die sie sich teilen.</para></summary>
     Public MustInherit Class ViewModelBase
         Implements INotifyPropertyChanged

@@ -1,12 +1,12 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:icons="clr-namespace:FerrumPlay.Controls"
-             xmlns:local="clr-namespace:FerrumPlay.Views"
-             x:Class="FerrumPlay.Views.ConverterPanel">
+             xmlns:icons="clr-namespace:FerrumKix.Controls"
+             xmlns:local="clr-namespace:FerrumKix.Views"
+             x:Class="FerrumKix.Views.ConverterPanel">
   <Grid RowDefinitions="Auto,*,Auto" Background="{DynamicResource FP.Bg.Veil}">
     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="18,10,14,7">
       <Button Grid.Column="0" x:Name="BackButton" Classes="icon-btn back-navigation" Click="OnBackClick" ToolTip.Tip="Zurück zur Wiedergabeliste">
-        <icons:SvgIcon Source="avares://FerrumPlay/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/>
+        <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/chevron-left.svg" Width="17" Height="17"/>
       </Button>
       <Button Grid.Column="0" x:Name="CancelButton" Content="Abbrechen" Click="OnCancelClick" IsVisible="False"/>
       <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">

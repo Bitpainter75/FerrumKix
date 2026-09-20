@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/checkout@v7
         with:
-          repository: Bitpainter75/FerrumPlay-Build
+          repository: Bitpainter75/FerrumKix-Build
           path: packaging
           ssh-key: ${{ secrets.PACKAGING_DEPLOY_KEY }}
       - name: AUR-ZIP und Versionsrelease
@@ -23,7 +23,7 @@ jobs:
           packaging/package.sh aurzip
           packaging/publish-github-release.sh --only-version
         env:
-          FERRUMPLAY_BUILD_BOX: ""
+          FERRUMKIX_BUILD_BOX: ""
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: AUR veroeffentlichen
         run: |
@@ -31,18 +31,18 @@ jobs:
           printf '%s\n' "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/aur
           chmod 600 ~/.ssh/aur
           export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new"
-          if ! git clone ssh://aur@aur.archlinux.org/ferrumplay-bin.git packaging/.aur-work || ! test -f packaging/.aur-work/PKGBUILD; then
+          if ! git clone ssh://aur@aur.archlinux.org/ferrumkix-bin.git packaging/.aur-work || ! test -f packaging/.aur-work/PKGBUILD; then
             # Ein Paket entsteht auf dem AUR durch seinen ersten Push. Der Runner legt deshalb
             # den vollstaendigen Anfangsstand selbst an, wenn der Name noch nicht existiert.
             rm -rf packaging/.aur-work
             mkdir packaging/.aur-work
             cp packaging/AUR/PKGBUILD packaging/.aur-work/PKGBUILD
-            cp packaging/io.github.Bitpainter75.FerrumPlay.desktop packaging/.aur-work/
-            cp packaging/icon.png packaging/.aur-work/io.github.Bitpainter75.FerrumPlay.png
+            cp packaging/io.github.Bitpainter75.FerrumKix.desktop packaging/.aur-work/
+            cp packaging/icon.png packaging/.aur-work/io.github.Bitpainter75.FerrumKix.png
             git -C packaging/.aur-work init -b master
             git -C packaging/.aur-work config user.name "Bitpainter75"
             git -C packaging/.aur-work config user.email "55985980+Bitpainter75@users.noreply.github.com"
-            git -C packaging/.aur-work remote add origin ssh://aur@aur.archlinux.org/ferrumplay-bin.git
+            git -C packaging/.aur-work remote add origin ssh://aur@aur.archlinux.org/ferrumkix-bin.git
           fi
           useradd -m builder
           chown -R builder:builder .
@@ -52,8 +52,8 @@ jobs:
           su builder -c "git config --global user.email '55985980+Bitpainter75@users.noreply.github.com'"
           if ! su builder -c "git -C packaging/.aur-work rev-parse --verify HEAD >/dev/null 2>&1"; then
             su builder -c "cd packaging/.aur-work && makepkg --printsrcinfo > .SRCINFO"
-            su builder -c "git -C packaging/.aur-work add PKGBUILD .SRCINFO io.github.Bitpainter75.FerrumPlay.desktop io.github.Bitpainter75.FerrumPlay.png"
-            su builder -c "git -C packaging/.aur-work commit -m 'Initial ferrumplay-bin package'"
+            su builder -c "git -C packaging/.aur-work add PKGBUILD .SRCINFO io.github.Bitpainter75.FerrumKix.desktop io.github.Bitpainter75.FerrumKix.png"
+            su builder -c "git -C packaging/.aur-work commit -m 'Initial ferrumkix-bin package'"
             su builder -c "GIT_SSH_COMMAND='ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new' git -C packaging/.aur-work push -u origin master"
           fi
           su builder -c "GIT_SSH_COMMAND='ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new' packaging/publish-aur.sh"

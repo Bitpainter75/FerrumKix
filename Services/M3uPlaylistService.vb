@@ -3,7 +3,7 @@ Imports System.Collections.Generic
 Imports System.IO
 Imports System.Linq
 Imports System.Text
-Imports FerrumPlay.Models
+Imports FerrumKix.Models
 
 Namespace Services
 
@@ -13,7 +13,7 @@ Namespace Services
         Private Sub New()
         End Sub
 
-        Private Const SyncTargetPrefix As String = "#FERRUMPLAY-SYNC-TARGET:"
+        Private Const SyncTargetPrefix As String = "#FERRUMKIX-SYNC-TARGET:"
 
         Public Shared Sub Save(filePath As String, tracks As IEnumerable(Of Track), syncTarget As String)
             If String.IsNullOrWhiteSpace(filePath) Then Throw New ArgumentException(NameOf(filePath))

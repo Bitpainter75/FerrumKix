@@ -1,18 +1,18 @@
 <img src="Banner.png" height="250" />
 
-# FerrumPlay
+# FerrumKix
 
-FerrumPlay is a music player for the Linux desktop. Dark, tidy and without detours: the cover art and the details of the current track on the left, the playlist grouped by album on the right, the transport controls at the bottom. You point it at your music folders, and it plays.
+FerrumKix is a music player for the Linux desktop. Dark, tidy and without detours: the cover art and the details of the current track on the left, the playlist grouped by album on the right, the transport controls at the bottom. You point it at your music folders, and it plays.
 
 It is built with [Avalonia UI](https://avaloniaui.net/) and .NET 10, in VB.NET, and plays through [libmpv](https://mpv.io/). Like its sibling [FerrumPix](https://github.com/Bitpainter75/FerrumPix), it started as a private project - an application built exactly the way I wanted one to look and work - and it is free and open source for anyone who finds it useful.
 
 To be transparent: yes, I use AI to support my development workflow. It still takes a lot of manual work, planning and debugging, and a lot of care went into the details.
 
-## Why FerrumPlay?
+## Why FerrumKix?
 
 I wanted a player in the spirit of the classic desktop players: one window, a real playlist, the album in front of you - no streaming service, no library database to maintain, no account. Files and folders go in, music comes out, and everything stays on your own machine.
 
-FerrumPlay does not import or rearrange your collection. It reads what is in the files, groups the playlist by the folders your albums already live in, and remembers where you left off.
+FerrumKix does not import or rearrange your collection. It reads what is in the files, groups the playlist by the folders your albums already live in, and remembers where you left off.
 
 <img src="Screenshot.png" height="550" />
 
@@ -32,7 +32,7 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
   "Track 01" — and they go into the tags, along with the cover art, when the CD is converted. A
   configurable placeholder pattern can place each rip in its own album subfolder.
 - **Browses Lyrion.** Connect up to three Lyrion Media Servers, each in its own named tab, to search its albums as you type, view server
-  artwork, and play an album locally through FerrumPlay. The album becomes a temporary playlist,
+  artwork, and play an album locally through FerrumKix. The album becomes a temporary playlist,
   including next/previous, shuffle, repeat, and jump-to-current-track. Unchecking a track leaves it
   out of that playback, the same way it works in the playlist. Sort the overview by
   recently added, artist/year, album or year/album, in either direction, and filter it down to
@@ -54,8 +54,8 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
   queue that follows the title currently being converted.
 - **Evens out loudness.** ReplayGain by track, by album, or automatically: by album while an album plays through, by track when shuffling.
 - **Notices missing files.** Tracks whose file is gone are greyed out and skipped instead of stopping playback. Plug the drive back in and they return; one click removes them all.
-- **Fits into the desktop.** FerrumPlay speaks MPRIS, so Waybar, playerctl, notifications and the media keys reach it even while its window is in the background - with title, artist, album and cover.
-- **Runs once.** Open a file or folder from the file manager while FerrumPlay is running, and the running window takes it over, plays it, expands its album group and scrolls directly to the requested track.
+- **Fits into the desktop.** FerrumKix speaks MPRIS, so Waybar, playerctl, notifications and the media keys reach it even while its window is in the background - with title, artist, album and cover.
+- **Runs once.** Open a file or folder from the file manager while FerrumKix is running, and the running window takes it over, plays it, expands its album group and scrolls directly to the requested track.
 - **Remembers everything.** Playlist, volume, window position and the last track are back at the next start - and if you like, playback resumes right where it stopped.
 - **Speaks your language.** Twenty-one languages, following your system by default.
 
@@ -63,7 +63,7 @@ FerrumPlay does not import or rearrange your collection. It reads what is in the
 
 The window is split into three areas. The cover column on the left shows the artwork, title, artist, album and the technical details of the track; its width can be dragged. The playlist on the right lists your albums with their tracks, while an inserted Audio CD has its own tab. The track that is playing stays highlighted even when the selection is somewhere else. Behind both, the cover of the current track fills the window, softly blurred.
 
-The transport sits on a dark deck at the bottom: the progress bar across the full width, shuffle and repeat on the left, previous, stop, play and next in the middle, and the volume on the right. The volume is a rotary knob, taken from the FerrumPlay logo - drag it up or to the right to turn it up, or use the mouse wheel or the arrow keys.
+The transport sits on a dark deck at the bottom: the progress bar across the full width, shuffle and repeat on the left, previous, stop, play and next in the middle, and the volume on the right. The volume is a rotary knob, taken from the FerrumKix logo - drag it up or to the right to turn it up, or use the mouse wheel or the arrow keys.
 
 <img src="AudioConverter.png" height="550" />
 
@@ -87,13 +87,13 @@ be scaled per screen, for displays where it would otherwise come out too small.
 
 | Package | For | Get it |
 |---|---|---|
-| AUR | Arch, CachyOS, Manjaro, EndeavourOS | `paru -S ferrumplay-bin` (or `yay -S ferrumplay-bin`) |
-| AppImage | Any distribution, runs without installing | [FerrumPlay-x86_64.AppImage](https://github.com/Bitpainter75/FerrumPlay/releases/download/latest/FerrumPlay-x86_64.AppImage) |
-| DEB | Debian, Ubuntu, Mint | [FerrumPlay-amd64.deb](https://github.com/Bitpainter75/FerrumPlay/releases/download/latest/FerrumPlay-amd64.deb) |
-| RPM | Fedora, openSUSE | [FerrumPlay-x86_64.rpm](https://github.com/Bitpainter75/FerrumPlay/releases/download/latest/FerrumPlay-x86_64.rpm) |
-| ZIP | Portable, unpack and run (x64) | [FerrumPlay-linux-x64.zip](https://github.com/Bitpainter75/FerrumPlay/releases/download/latest/FerrumPlay-linux-x64.zip) |
+| AUR | Arch, CachyOS, Manjaro, EndeavourOS | `paru -S ferrumkix-bin` (or `yay -S ferrumkix-bin`) |
+| AppImage | Any distribution, runs without installing | [FerrumKix-x86_64.AppImage](https://github.com/Bitpainter75/FerrumKix/releases/download/latest/FerrumKix-x86_64.AppImage) |
+| DEB | Debian, Ubuntu, Mint | [FerrumKix-amd64.deb](https://github.com/Bitpainter75/FerrumKix/releases/download/latest/FerrumKix-amd64.deb) |
+| RPM | Fedora, openSUSE | [FerrumKix-x86_64.rpm](https://github.com/Bitpainter75/FerrumKix/releases/download/latest/FerrumKix-x86_64.rpm) |
+| ZIP | Portable, unpack and run (x64) | [FerrumKix-linux-x64.zip](https://github.com/Bitpainter75/FerrumKix/releases/download/latest/FerrumKix-linux-x64.zip) |
 
-[`ferrumplay-bin`](https://aur.archlinux.org/packages/ferrumplay-bin) tracks each release and pulls
+[`ferrumkix-bin`](https://aur.archlinux.org/packages/ferrumkix-bin) tracks each release and pulls
 in the dependencies below on its own. The download addresses above stay the same from version to
 version, so a bookmark or an update script keeps working; the AppImage also carries update
 information, so tools that manage AppImages find new versions by themselves.
@@ -106,7 +106,7 @@ The packages are self-contained and bring the .NET runtime with them. **libmpv i
 | Debian, Ubuntu, Mint | `libmpv2` |
 | Fedora | `mpv-libs` |
 
-Without it FerrumPlay starts, but tells you it cannot play anything. The converter additionally
+Without it FerrumKix starts, but tells you it cannot play anything. The converter additionally
 uses **FFmpeg** (`ffmpeg` on Arch, Debian/Ubuntu and Fedora); Audio-CD ripping uses
 **cdparanoia**. The DEB, RPM and AUR packages declare both as dependencies.
 
@@ -120,19 +120,19 @@ The code is prepared for both, but there are no packages yet and they are untest
 ## Usage
 
 ```
-FerrumPlay [--debug] [file or folder ...]
+FerrumKix [--debug] [file or folder ...]
 ```
 
 Files, folders, and M3U/M3U8 playlists passed on the command line are opened directly. Folders are
 included with their subfolders, and the first supplied audio track starts playing:
 
 ```bash
-FerrumPlay ~/Music/Album
-FerrumPlay track.flac another.mp3
-FerrumPlay ~/Playlists/favorites.m3u
+FerrumKix ~/Music/Album
+FerrumKix track.flac another.mp3
+FerrumKix ~/Playlists/favorites.m3u
 ```
 
-If FerrumPlay is already running, the running instance takes the files and folders over, plays the
+If FerrumKix is already running, the running instance takes the files and folders over, plays the
 first track, and scrolls the playlist to it; the new call exits right away without opening a second
 window. Called without paths, it brings the running window to the front.
 
@@ -146,22 +146,22 @@ window. Called without paths, it brings the running window to the front.
 
 Double-click a track to play it, double-click an album header to collapse or expand the group.
 
-Settings and the playlist are stored in `~/.config/FerrumPlay/`.
+Settings and the playlist are stored in `~/.config/FerrumKix/`.
 
 ## Building from source
 
 Requires the [.NET SDK 10](https://dotnet.microsoft.com/) or newer, and libmpv to actually hear something.
 
 ```bash
-dotnet build FerrumPlay.sln
-dotnet run --project FerrumPlay.vbproj
+dotnet build FerrumKix.sln
+dotnet run --project FerrumKix.vbproj
 ```
 
 `packaging/package.sh` builds the AppImage and the portable ZIP.
 
 ## Licence
 
-FerrumPlay is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI and SkiaSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) and [Tabler Icons](https://github.com/tabler/tabler-icons) (MIT). [libmpv](https://mpv.io/) (GPL-2.0-or-later) is not bundled; it is loaded from your system.
+FerrumKix is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI and SkiaSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) and [Tabler Icons](https://github.com/tabler/tabler-icons) (MIT). [libmpv](https://mpv.io/) (GPL-2.0-or-later) is not bundled; it is loaded from your system.
 
 Two services are queried at runtime rather than shipped, and their footing differs. The CD details
 come from [MusicBrainz](https://musicbrainz.org) and are core data under
@@ -170,4 +170,4 @@ come from [MusicBrainz](https://musicbrainz.org) and are core data under
 their respective copyright owners. Only the disc id, computed from the track lengths, is sent; the
 disc itself is never read for the lookup.
 
-FerrumPlay is at version 0.9.5 and in active development.
+FerrumKix is at version 0.9.6 and in active development.

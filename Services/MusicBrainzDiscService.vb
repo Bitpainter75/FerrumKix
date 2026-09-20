@@ -36,7 +36,7 @@ Namespace Services
         Private Shared ReadOnly Client As New HttpClient With {.Timeout = TimeSpan.FromSeconds(20)}
 
         Shared Sub New()
-            Client.DefaultRequestHeaders.UserAgent.ParseAdd("FerrumPlay/" & VersionText)
+            Client.DefaultRequestHeaders.UserAgent.ParseAdd("FerrumKix/" & VersionText)
         End Sub
 
         Private Shared ReadOnly Property VersionText As String

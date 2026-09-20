@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.9.6
+
+- The application is now called FerrumKix. The old name was already taken by other products, and a
+  name that has to share its search results is worth changing before 1.0 rather than after it.
+  Everything that carried the name moved with it: the binary, the application id
+  `io.github.Bitpainter75.FerrumKix`, the D-Bus name behind single-instance and MPRIS, the AUR
+  package `ferrumkix-bin` and the GitHub repository.
+- Settings and cached cover art are not carried over. They live under the application name, and at
+  this stage re-entering them costs less than the code that would move them; the old
+  `~/.config/FerrumPlay` and `~/.cache/FerrumPlay` can simply be deleted.
+- The AppStream metadata declares the old id under `<provides>` and `<replaces>`, and the AUR
+  package replaces `ferrumplay-bin`, so software centres and package managers see one application
+  that was renamed rather than two that compete.
+- The icon is new as well. The old one carried the play triangle of the old name; the record with
+  the level bars beside it stands on its own and survives being scaled down to 16 pixels, which is
+  where a window list and a task bar show it.
+
 ## 0.9.5
 
 - The converter names its files from a pattern of its own, set in the Audio-Konverter section of
@@ -92,7 +109,7 @@
 - All album favorites can be removed in one confirmed action. The list is refreshed afterwards,
   rather than continuing to show stale stars until the next application start.
 - Local playlists can be saved and loaded as portable M3U/M3U8 files. They preserve an optional
-  FerrumPlay sync target in a comment, resolve relative paths against the playlist, and can also be
+  FerrumKix sync target in a comment, resolve relative paths against the playlist, and can also be
   opened through the command line, file manager, or drag and drop.
 - Entering the Audio-CD tab stops playback from another source and uses the first CD track as the
   display context, so identified title, album, and cover appear in the cover column immediately.
@@ -120,7 +137,7 @@
   environment variable had scaled the whole windowing system. The factor is applied in the popup
   template rather than to each menu, which takes submenus and drop-downs along with it.
 - The update check no longer announces an update that is none. The number after the hyphen is the
-  package revision, not a program version - 0.9.1-1 and 0.9.1-2 are the same FerrumPlay - but it
+  package revision, not a program version - 0.9.1-1 and 0.9.1-2 are the same FerrumKix - but it
   went into the comparison, so a repackaged release looked like a new one.
 
 ## 0.9.0
@@ -180,7 +197,7 @@
   every pointer and key until the run ends.
 - The check mark in a Lyrion track list does something now. It sat there looking like a switch and
   was decoration - fixed, checked and dead - so that the row lined up with the playlist next to it.
-  Unchecking a track now takes it out of playback in FerrumPlay, just as in the playlist; the state
+  Unchecking a track now takes it out of playback in FerrumKix, just as in the playlist; the state
   is remembered per track of the server, so sorting or reopening the album keeps it. On a device
   the check marks are greyed out: there the server loads the whole album and runs the order itself,
   and a switch that cannot do anything should not pretend otherwise.
@@ -195,7 +212,7 @@
   published; if it differs from the running one, a link to the release page appears next to the
   version. Nothing but that file is fetched, and a failed request stays silent.
 - The install table in the README names every package that is built: AppImage, ZIP, DEB, RPM and
-  the AUR one. Arch users had no instruction at all before - ferrumplay-bin was mentioned once, in
+  the AUR one. Arch users had no instruction at all before - ferrumkix-bin was mentioned once, in
   passing, as something that declares dependencies.
 - The number field for the cover edge length was square on its right side and its arrows were
   black on a dark ground. Its styling had never taken effect: the two spinner buttons live in the
@@ -204,14 +221,14 @@
 
 ## 0.8.0
 
-- FerrumPlay can now act as a remote control for the Lyrion server. A picker next to the album
+- FerrumKix can now act as a remote control for the Lyrion server. A picker next to the album
   search chooses where playback runs: locally, as before, or on any player registered with the
   server. With a device chosen, the whole transport bar controls it - play, pause, next, previous,
   seek, volume, mute, shuffle and repeat - and title, cover, position and volume come from the
   server's own status, polled once a second because JSON-RPC has no subscription. Local playback
   stops when a device is picked; nobody wants two sources at once.
   This needs no SlimProto. The three routes sketched in the audit answer a different question -
-  they were about FerrumPlay *appearing* as a player in the Lyrion interface. Controlling one that
+  they were about FerrumKix *appearing* as a player in the Lyrion interface. Controlling one that
   is already there is plain JSON-RPC with the player's id.
 - MPRIS follows the device: Waybar and notifications show what plays on it, and the media keys
   control it. This needed no extra work - MPRIS builds its state from the same display fields.
@@ -220,7 +237,7 @@
   its own order and under shuffle the position would point elsewhere.
 - Audio CDs are now identified. A CD carries nothing itself - its table of contents knows only
   where each track starts and ends - so the titles read "Track 01" and the album "Audio CD", and
-  that is what ended up in the MP3 tags when ripping. FerrumPlay now computes the MusicBrainz disc
+  that is what ended up in the MP3 tags when ripping. FerrumKix now computes the MusicBrainz disc
   id from the track lengths alone and looks the CD up; the CD itself is never read for this and
   nothing but those lengths is sent. freedb, the obvious candidate, was shut down in 2020.
   Where several editions share the same track lengths - the disc id is a fingerprint of the table
@@ -353,7 +370,7 @@
   showed none. The artwork of a streamed track is now cached as a file like an embedded cover.
 - Fixed: `xesam:url` mangled the address of a Lyrion stream into an unusable
   `file:///https%3A///…` instead of passing the stream URL through.
-- The Lyrion settings no longer show the client-name field. It never had any effect: FerrumPlay
+- The Lyrion settings no longer show the client-name field. It never had any effect: FerrumKix
   plays the server's files itself and does not register as a player.
 
 ## 0.6.0
@@ -435,10 +452,10 @@
 
 ## 0.2.0
 
-- MPRIS: Waybar, playerctl, system notifications, and multimedia keys can now control FerrumPlay
+- MPRIS: Waybar, playerctl, system notifications, and multimedia keys can now control FerrumKix
   while its window is in the background. The title, artist, album, duration, and cover art are
   published as metadata.
-- FerrumPlay now runs as a single instance. Opening a file or folder while it is already running
+- FerrumKix now runs as a single instance. Opening a file or folder while it is already running
   sends it to the existing instance for playback. The desktop entry accepts both files and folders.
 - ReplayGain volume normalization: off, track, album, or automatic, with a configurable preamp.
 - Missing tracks are detected on startup, dimmed, and skipped. They return when the file is
@@ -454,10 +471,10 @@
 
 Initial release.
 
-FerrumPlay plays music in MP3, FLAC, OGG, Opus, M4A, and other common formats. The playlist is
+FerrumKix plays music in MP3, FLAC, OGG, Opus, M4A, and other common formats. The playlist is
 grouped by album; cover art and track details are shown on the left, with transport controls along
 the bottom and a rotary volume control. Files and folders can be dropped onto the window or passed
-on launch (`FerrumPlay ~/Music/Album`); the first track starts playing automatically.
+on launch (`FerrumKix ~/Music/Album`); the first track starts playing automatically.
 
 Accent colour, font size, language (German or English), and application scaling are configurable.
 The playlist and last played track are restored on the next launch.

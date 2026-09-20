@@ -2,9 +2,9 @@ Imports Avalonia
 Imports Avalonia.Controls
 Imports Avalonia.Controls.ApplicationLifetimes
 Imports Avalonia.Markup.Xaml
-Imports FerrumPlay.Services
-Imports FerrumPlay.ViewModels
-Imports FerrumPlay.Views
+Imports FerrumKix.Services
+Imports FerrumKix.ViewModels
+Imports FerrumKix.Views
 
 Public Class App
     Inherits Application

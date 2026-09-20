@@ -1,5 +1,5 @@
 Imports System
-Imports FerrumPlay.Models
+Imports FerrumKix.Models
 
 Namespace ViewModels
 
@@ -56,8 +56,8 @@ Namespace ViewModels
         Public ReadOnly Property ChevronSource As String
             Get
                 Return If(_isExpanded,
-                          "avares://FerrumPlay/Assets/Icons/outline/chevron-up.svg",
-                          "avares://FerrumPlay/Assets/Icons/outline/chevron-down.svg")
+                          "avares://FerrumKix/Assets/Icons/outline/chevron-up.svg",
+                          "avares://FerrumKix/Assets/Icons/outline/chevron-down.svg")
             End Get
         End Property
 

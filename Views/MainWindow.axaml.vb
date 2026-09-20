@@ -7,8 +7,8 @@ Imports Avalonia.Input
 Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
 Imports Avalonia.Platform.Storage
-Imports FerrumPlay.Services
-Imports FerrumPlay.ViewModels
+Imports FerrumKix.Services
+Imports FerrumKix.ViewModels
 
 Namespace Views
 

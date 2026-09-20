@@ -10,8 +10,8 @@ Imports Avalonia.Markup.Xaml
 Imports Avalonia.Media.Imaging
 Imports Avalonia.Platform.Storage
 Imports Avalonia.Threading
-Imports FerrumPlay.Models
-Imports FerrumPlay.Services
+Imports FerrumKix.Models
+Imports FerrumKix.Services
 
 Namespace Views
 

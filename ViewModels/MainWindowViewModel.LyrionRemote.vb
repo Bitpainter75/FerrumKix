@@ -2,12 +2,12 @@ Imports System
 Imports System.Threading
 Imports System.Threading.Tasks
 Imports Avalonia.Threading
-Imports FerrumPlay.Models
-Imports FerrumPlay.Services
+Imports FerrumKix.Models
+Imports FerrumKix.Services
 
 Namespace ViewModels
 
-    ''' <summary>FerrumPlay als Fernbedienung eines Lyrion-Players.
+    ''' <summary>FerrumKix als Fernbedienung eines Lyrion-Players.
     '''
     ''' <para>Ist ein Geraet gewaehlt, spielt die Anwendung NICHT selbst: jeder Transportbefehl geht
     ''' an den Server, und Titel, Position, Laufzeit und Lautstaerke kommen aus dessen Antwort. Die
@@ -235,7 +235,7 @@ Namespace ViewModels
             Return True
         End Function
 
-        ''' <summary>FerrumPlay kennt aus, einen Titel, alle; der Server ebenso (0, 1, 2).</summary>
+        ''' <summary>FerrumKix kennt aus, einen Titel, alle; der Server ebenso (0, 1, 2).</summary>
         Private Function RemoteSetRepeat(mode As RepeatMode) As Boolean
             If Not IsRemoteActive Then Return False
             Dim serverMode = Select_RepeatMode(mode)

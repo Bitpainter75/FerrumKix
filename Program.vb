@@ -2,7 +2,7 @@ Imports System
 Imports System.Collections.Generic
 Imports System.Linq
 Imports Avalonia
-Imports FerrumPlay.Services
+Imports FerrumKix.Services
 
 Module Program
 
@@ -42,7 +42,7 @@ Module Program
 
         Dim remaining = SplitStartupPaths(args)
 
-        ' EINE INSTANZ. Laeuft FerrumPlay schon, bekommt die laufende Instanz die Pfade und dieser
+        ' EINE INSTANZ. Laeuft FerrumKix schon, bekommt die laufende Instanz die Pfade und dieser
         ' Prozess endet hier - noch vor Avalonia, damit kein zweites Fenster aufblitzt. Siehe
         ' SingleInstanceService.
         If SingleInstanceService.ClaimOrHandOver(_startupPaths) Then
@@ -60,7 +60,7 @@ Module Program
 
     Private ReadOnly _startupPaths As New List(Of String)()
 
-    ''' <summary>Dateien und Ordner, die beim Aufruf uebergeben wurden: "FerrumPlay a.mp3 ~/Musik/Album".
+    ''' <summary>Dateien und Ordner, die beim Aufruf uebergeben wurden: "FerrumKix a.mp3 ~/Musik/Album".
     ''' Sie kommen in die Wiedergabeliste, und der erste davon wird gespielt. Leer, wenn nichts
     ''' uebergeben wurde.</summary>
     Public ReadOnly Property StartupPaths As IReadOnlyList(Of String)

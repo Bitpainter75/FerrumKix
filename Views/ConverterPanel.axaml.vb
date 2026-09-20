@@ -9,9 +9,9 @@ Imports Avalonia.Interactivity
 Imports Avalonia.Markup.Xaml
 Imports Avalonia.Platform.Storage
 Imports Avalonia.Threading
-Imports FerrumPlay.Models
-Imports FerrumPlay.Services
-Imports FerrumPlay.ViewModels
+Imports FerrumKix.Models
+Imports FerrumKix.Services
+Imports FerrumKix.ViewModels
 
 Namespace Views
     Public NotInheritable Class ConversionQueueRow
