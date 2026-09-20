@@ -63,18 +63,18 @@
                                 <TextBlock Text="Über FerrumKix"/>
                             </StackPanel>
                         </Button>
-                        <Button Classes="ghost nav" Tag="PlaybackSection" Click="OnSectionNavClick">
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/player-play.svg"
-                                               Width="16" Height="16"/>
-                                <TextBlock Text="Wiedergabe"/>
-                            </StackPanel>
-                        </Button>
                         <Button Classes="ghost nav" Tag="AppearanceSection" Click="OnSectionNavClick">
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/adjustments-horizontal.svg"
                                                Width="16" Height="16"/>
                                 <TextBlock Text="Darstellung"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="ghost nav" Tag="PlaybackSection" Click="OnSectionNavClick">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/player-play.svg"
+                                               Width="16" Height="16"/>
+                                <TextBlock Text="Wiedergabe"/>
                             </StackPanel>
                         </Button>
                         <Button Classes="ghost nav" Tag="TaggingSection" Click="OnSectionNavClick"><StackPanel Orientation="Horizontal" Spacing="10"><icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/disc.svg" Width="16" Height="16"/><TextBlock Text="MP3-Tags"/></StackPanel></Button>
@@ -128,83 +128,6 @@
                             <TextBlock Grid.Row="2" Text="Wiedergabeliste" Foreground="{DynamicResource FP.Text.Muted}"/>
                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PlaylistFilePath}"
                                        TextWrapping="Wrap"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="PlaybackSection" Classes="section">
-                    <StackPanel Spacing="18">
-                        <TextBlock Text="Wiedergabe" Classes="group-caption"/>
-
-                        <Grid ColumnDefinitions="*,Auto">
-                            <StackPanel Spacing="3">
-                                <TextBlock Text="Lückenlose Wiedergabe" Classes="setting-title"/>
-                                <TextBlock Classes="setting-note"
-                                           Text="Die Stille am Dateiende wird übersprungen, damit ein durchgehend gemischtes Album ohne Bruch läuft. Wirkt ab dem nächsten Titel."/>
-                            </StackPanel>
-                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
-                                          OnContent="" OffContent=""
-                                          IsChecked="{Binding IsGaplessEnabled, Mode=TwoWay}"/>
-                        </Grid>
-
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
-                            <StackPanel Spacing="3">
-                                <TextBlock Text="Lautstärke angleichen (ReplayGain)" Classes="setting-title"/>
-                                <TextBlock Classes="setting-note"
-                                           Text="Gleicht die Lautstärke nach den ReplayGain-Angaben in den Dateien an. „Nach Album“ lässt die leisen und lauten Stellen innerhalb eines Albums stehen, „Automatisch“ nimmt bei zufälliger Reihenfolge die Angabe des Titels. Titel ohne diese Angaben spielen unverändert."/>
-                            </StackPanel>
-                            <ComboBox Grid.Column="1" MinWidth="200" VerticalAlignment="Center"
-                                      ItemsSource="{Binding ReplayGainChoices}"
-                                      SelectedItem="{Binding SelectedReplayGain, Mode=TwoWay}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </Grid>
-
-                        <!-- Die Vorverstaerkung steht nur da, wenn angeglichen wird: ohne Angleichung
-                             bewirkt sie nichts, und ein Regler ohne Wirkung verwirrt. -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20" IsVisible="{Binding IsReplayGainEnabled}">
-                            <StackPanel Spacing="3">
-                                <TextBlock Text="Vorverstärkung" Classes="setting-title"/>
-                                <TextBlock Classes="setting-note"
-                                           Text="Hebt oder senkt alle angeglichenen Titel um denselben Betrag. ReplayGain zielt eher leise; ein paar Dezibel mehr gleichen das aus. Übersteuern verhindert mpv von sich aus."/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12"
-                                        VerticalAlignment="Center">
-                                <icons:RoundSlider Width="220" Minimum="-15" Maximum="15"
-                                                   Step="0.5" WheelIncrement="0.5" DefaultValue="0"
-                                                   VerticalAlignment="Center"
-                                                   ToolTip.Tip="Doppelklick setzt auf 0 dB zurück"
-                                                   Value="{Binding ReplayGainPreamp, Mode=TwoWay}"/>
-                                <TextBlock Text="{Binding ReplayGainPreampText}"
-                                           VerticalAlignment="Center" MinWidth="64"
-                                           Foreground="{DynamicResource FP.Text.Secondary}"/>
-                            </StackPanel>
-                        </Grid>
-
-                        <Grid ColumnDefinitions="*,Auto">
-                            <StackPanel Spacing="3">
-                                <TextBlock Text="Beim Start fortsetzen" Classes="setting-title"/>
-                                <TextBlock Classes="setting-note"
-                                           Text="FerrumKix nimmt den zuletzt gespielten Titel an der Stelle wieder auf, an der er unterbrochen wurde. Ausgeschaltet wird der Titel nur ausgewählt und nicht gestartet."/>
-                            </StackPanel>
-                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
-                                          OnContent="" OffContent=""
-                                          IsChecked="{Binding IsResumeOnStart, Mode=TwoWay}"/>
-                        </Grid>
-
-                        <Grid ColumnDefinitions="*,Auto">
-                            <StackPanel Spacing="3">
-                                <TextBlock Text="Tonausgabe" Classes="setting-title"/>
-                                <TextBlock Classes="setting-note"
-                                           Text="Der Ton läuft über libmpv und damit über das Ausgabegerät des Systems."/>
-                            </StackPanel>
-                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
-                                       Text="{Binding AudioBackendText}"
-                                       Foreground="{DynamicResource FP.Text.Secondary}"/>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -402,6 +325,83 @@
                                            VerticalAlignment="Center" MinWidth="34"
                                            Foreground="{DynamicResource FP.Text.Secondary}"/>
                             </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="PlaybackSection" Classes="section">
+                    <StackPanel Spacing="18">
+                        <TextBlock Text="Wiedergabe" Classes="group-caption"/>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Lückenlose Wiedergabe" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Die Stille am Dateiende wird übersprungen, damit ein durchgehend gemischtes Album ohne Bruch läuft. Wirkt ab dem nächsten Titel."/>
+                            </StackPanel>
+                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
+                                          OnContent="" OffContent=""
+                                          IsChecked="{Binding IsGaplessEnabled, Mode=TwoWay}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Lautstärke angleichen (ReplayGain)" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Gleicht die Lautstärke nach den ReplayGain-Angaben in den Dateien an. „Nach Album“ lässt die leisen und lauten Stellen innerhalb eines Albums stehen, „Automatisch“ nimmt bei zufälliger Reihenfolge die Angabe des Titels. Titel ohne diese Angaben spielen unverändert."/>
+                            </StackPanel>
+                            <ComboBox Grid.Column="1" MinWidth="200" VerticalAlignment="Center"
+                                      ItemsSource="{Binding ReplayGainChoices}"
+                                      SelectedItem="{Binding SelectedReplayGain, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+
+                        <!-- Die Vorverstaerkung steht nur da, wenn angeglichen wird: ohne Angleichung
+                             bewirkt sie nichts, und ein Regler ohne Wirkung verwirrt. -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20" IsVisible="{Binding IsReplayGainEnabled}">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Vorverstärkung" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Hebt oder senkt alle angeglichenen Titel um denselben Betrag. ReplayGain zielt eher leise; ein paar Dezibel mehr gleichen das aus. Übersteuern verhindert mpv von sich aus."/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12"
+                                        VerticalAlignment="Center">
+                                <icons:RoundSlider Width="220" Minimum="-15" Maximum="15"
+                                                   Step="0.5" WheelIncrement="0.5" DefaultValue="0"
+                                                   VerticalAlignment="Center"
+                                                   ToolTip.Tip="Doppelklick setzt auf 0 dB zurück"
+                                                   Value="{Binding ReplayGainPreamp, Mode=TwoWay}"/>
+                                <TextBlock Text="{Binding ReplayGainPreampText}"
+                                           VerticalAlignment="Center" MinWidth="64"
+                                           Foreground="{DynamicResource FP.Text.Secondary}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Beim Start fortsetzen" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="FerrumKix nimmt den zuletzt gespielten Titel an der Stelle wieder auf, an der er unterbrochen wurde. Ausgeschaltet wird der Titel nur ausgewählt und nicht gestartet."/>
+                            </StackPanel>
+                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
+                                          OnContent="" OffContent=""
+                                          IsChecked="{Binding IsResumeOnStart, Mode=TwoWay}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Tonausgabe" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Der Ton läuft über libmpv und damit über das Ausgabegerät des Systems."/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       Text="{Binding AudioBackendText}"
+                                       Foreground="{DynamicResource FP.Text.Secondary}"/>
                         </Grid>
                     </StackPanel>
                 </Border>
