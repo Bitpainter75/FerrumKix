@@ -348,8 +348,15 @@
                                             </StackPanel>
                                             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12"
                                                         VerticalAlignment="Center">
+                                                <!-- Ein Prozent je Schritt: gespeichert wird der Faktor
+                                                     ohnehin auf zwei Nachkommastellen genau, siehe
+                                                     AppSettingsService.NormalizeScale. Fuenf Prozent
+                                                     waren dafuer zu grob, wenn ein Bildschirm genau
+                                                     dazwischen liegt. Am Rad bleibt es bei fuenf:
+                                                     eine Umdrehung soll den Regler sichtbar bewegen
+                                                     und nicht hundertmal einrasten. -->
                                                 <icons:RoundSlider Width="220" Minimum="1" Maximum="2.5"
-                                                                   Step="0.05" DefaultValue="1"
+                                                                   Step="0.01" WheelIncrement="0.05" DefaultValue="1"
                                                                    VerticalAlignment="Center"
                                                                    ToolTip.Tip="Doppelklick setzt auf 100 Prozent zurück"
                                                                    Value="{Binding Scale, Mode=TwoWay}"/>
