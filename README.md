@@ -170,4 +170,4 @@ come from [MusicBrainz](https://musicbrainz.org) and are core data under
 their respective copyright owners. Only the disc id, computed from the track lengths, is sent; the
 disc itself is never read for the lookup.
 
-FerrumPlay is at version 0.9.4 and in active development.
+FerrumPlay is at version 0.9.5 and in active development.

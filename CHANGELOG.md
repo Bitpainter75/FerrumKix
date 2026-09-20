@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.9.5
+
+- The converter names its files from a pattern of its own, set in the Audio-Konverter section of
+  the settings with the placeholders already known from tagging and a sample name below the field.
+  The name of a converted file used to come out of the code - number, artist, title - and only a CD
+  rip took a pattern, the one meant for tagging. The pattern now holds for every conversion: files
+  from the list, a CD rip and the tracks cut out of a CUE. The extension comes from the chosen
+  format, not from the .mp3 the tag editor appends.
+- The zero padding of the track number is a switch of its own beside it. Whoever renames while
+  tagging does not necessarily mean the names a conversion creates, and one setting for both would
+  drag the two along with each other. A CD rip to MP3 still goes through the tag writer afterwards,
+  because it is the only place that knows the whole ID3v2 ruleset, but it no longer renames what
+  the converter has just named.
+- A missing number is no longer written as a zero. %track%, %totaltracks% and %disc% stay empty
+  where there is nothing, the way %year% has always done, so a file without a number is not called
+  "00 - Title"; what is left of the separators around an empty placeholder is removed, and a file
+  that carries no title at all falls back to its own name, as the playlist shows it.
+- The conversion queue reads like the playlist: a check box, the position within its group and the
+  file details below the title, with the row styles moved into the theme so the two lists cannot
+  drift apart. A title without its check stays in the list but is left out of the job. This
+  uncovered a mismatch that was there before - the service sorts the tracks itself and reports
+  positions in that order, so a status could land in the wrong row whenever the selection was
+  sorted differently. The status bar only appears once it has something to say, and the settings
+  make room for the list while a run is going.
+- The application scale moves in single percent, under the pointer and at the wheel. Five percent
+  was too coarse when a screen sits exactly between two steps, and the factor that fits could not
+  be reached at all as long as the wheel kept its five.
+- "Apply changes" in the tag editor carries dark text again. It used the class accent, which
+  belongs to the Fluent theme and brings its own white text per state; both filled buttons share a
+  class of our own now, one that Fluent does not know.
+
 ## 0.9.4
 
 - The interface comes in three appearances, chosen in the settings the same way FerrumPix offers
