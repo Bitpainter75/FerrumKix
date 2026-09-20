@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.9.3
+
+- The MP3 tag editor fills in empty fields one by one instead of all or nothing. Until now the
+  selection decided as a whole: if a single file carried any tag at all, every empty field of
+  every other file stayed empty and had to be typed by hand. What is in the file still wins
+  wherever there is something; only what is missing gets a proposal - the file name without its
+  extension as the title, the name of the parent folder as artist and album. A field holding
+  nothing but spaces counts as empty, because that is what it looks like in the form and it would
+  be worth as little as a tag.
+- A missing track number is proposed from the order of the file names. The list is sorted by file
+  name as soon as any number is missing, so the rows stand in the order they are numbered in.
+  Numbers that are already in the files are left alone, and where every file has one the
+  selection keeps its order - there is nothing to guess there.
+- The genre box completes what is typed from the genre defaults in the settings. After "Ro" the
+  field reads "Rock" with the added part selected: the next character replaces it, backspace
+  throws it away, and the typed characters keep their own capitalisation. Completion only happens
+  at the end of the text, a genre that is in no default can still be typed freely, and the
+  drop-down list is unchanged.
+- While playback runs and nothing has been done in the application for a minute, the view
+  returns to the track that is playing and stays with it from then on: the list scrolls along with
+  every following track. Any movement of the mouse or a key press postpones it again. The areas
+  that are worked in are left out - the audio CD, the converter and the tag editor - because a
+  view that jumps away on its own would be in the way there. The Lyrion area follows only while it
+  is the one playing, so it is never closed unasked.
+- Page up, page down, home and end scroll the playlist even when the focus sits elsewhere, on the
+  volume knob or one of the buttons in the bar. They scroll and do not select: what is selected
+  decides what gets tagged or converted, and a key pressed from outside the list must not overturn
+  it. With the list focused, its own handling including the selection is unchanged.
+- The filled accent buttons - "Start conversion" and "Apply changes" - carry dark text again
+  instead of white, in the very dark shade of the accent colour that the play symbol also uses.
+  Both now take their surface from the same keys as well, so they follow a changed accent colour
+  alike.
+
 ## 0.9.2
 
 - Lyrion can keep up to three independent server profiles, each with its own tab name, address,
