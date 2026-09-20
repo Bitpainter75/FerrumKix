@@ -335,16 +335,41 @@
         <Setter Property="IconBrush" Value="{DynamicResource FP.Footer.OnAccent}"/>
     </Style>
 
-    <!-- Primaere Aktion im Konverter: bewusst wie die Wiedergabe akzentuiert, aber als
-         normaler Textknopf statt als runder Transportknopf. -->
-    <Style Selector="Button.converter-primary">
+    <!-- Die gefuellten Akzentknoepfe: "Konvertierung starten" im Konverter und "Aenderungen
+         uebernehmen" im Tag-Editor. Bewusst wie die Wiedergabe akzentuiert, aber als normale
+         Textknoepfe statt als runde Transportknoepfe.
+
+         Die Schrift darin ist SCHWARZ - genauer der sehr dunkle Ton der Akzentfarbe, den auch das
+         Symbol im Wiedergabeknopf traegt (FP.Footer.OnAccent). Weiss stand hier eine Fassung lang
+         und war auf dem hellen Orange zu blass.
+
+         Die Klasse accent kommt aus dem Fluent-Thema und bringt von dort ihre eigene Flaeche und
+         ihre weisse Schrift mit - je Zustand am ContentPresenter gesetzt. Ein Foreground am Knopf
+         allein erreicht den Text in diesen Zustaenden nicht, deshalb steht jeder Zustand hier
+         noch einmal. Die Flaeche kommt damit zugleich aus unseren Schluesseln, und beide Knoepfe
+         folgen einer gewechselten Akzentfarbe gleich. -->
+    <Style Selector="Button.converter-primary, Button.accent">
         <Setter Property="Background" Value="{DynamicResource FP.Accent}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Footer.OnAccent}"/>
     </Style>
-    <Style Selector="Button.converter-primary:pointerover /template/ ContentPresenter">
+    <Style Selector="Button.converter-primary:pointerover /template/ ContentPresenter, Button.accent:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource FP.Accent.Light}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent.Light}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Footer.OnAccent}"/>
+    </Style>
+    <!-- Gedrueckt und ausgeschaltet: die Flaeche bleibt, gedaempft wird ueber die Deckkraft aus
+         der allgemeinen Knopfregel. Ohne diese beiden Zeilen zoege das Fluent-Thema den
+         accent-Knopf in diesen Zustaenden in sein eigenes Grau samt weisser Schrift. -->
+    <Style Selector="Button.converter-primary:pressed /template/ ContentPresenter, Button.accent:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Accent}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Footer.OnAccent}"/>
+    </Style>
+    <Style Selector="Button.converter-primary:disabled /template/ ContentPresenter, Button.accent:disabled /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Accent}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource FP.Accent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FP.Footer.OnAccent}"/>
     </Style>
 
     <!-- Die kleinen Schalter links: Zufall, Wiederholen, dazu der Stummschalter rechts.

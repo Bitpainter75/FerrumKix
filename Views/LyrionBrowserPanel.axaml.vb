@@ -758,6 +758,13 @@ Namespace Views
   End Sub
 
   Private Sub OnJumpToCurrentTrackClick(sender As Object, e As RoutedEventArgs)
+   JumpToCurrentTrack()
+  End Sub
+
+  ''' <summary>Holt den laufenden Titel auf den Schirm. Haengt nicht mehr allein am Knopf: nach
+  ''' einer Ruhezeit ruft das auch die Wiedergabeansicht von selbst, damit der Bereich beim
+  ''' naechsten Titel mitzieht.</summary>
+  Public Sub JumpToCurrentTrack()
    ' Ferngesteuert steht der laufende Titel nicht in einer hiesigen Liste, sondern auf dem Geraet.
    ' Sein Album wird deshalb beim Server nachgeschlagen und aufgeschlagen.
    If LyrionRemoteService.IsRemote Then

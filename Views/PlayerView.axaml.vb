@@ -11,6 +11,7 @@ Imports Avalonia.Markup.Xaml
 Imports Avalonia.Media
 Imports Avalonia.Platform.Storage
 Imports Avalonia.Threading
+Imports Avalonia.VisualTree
 Imports FerrumPlay.Models
 Imports FerrumPlay.Services
 Imports FerrumPlay.ViewModels
@@ -40,6 +41,121 @@ Namespace Views
             Me.AddHandler(DragDrop.DropEvent, New EventHandler(Of DragEventArgs)(AddressOf OnTagCoverDrop))
             Me.AddHandler(DragDrop.DragLeaveEvent, New EventHandler(Of DragEventArgs)(AddressOf OnTagCoverDragLeave))
             AddHandler DataContextChanged, AddressOf OnViewModelDataContextChanged
+            AddHandler _idleTimer.Tick, AddressOf OnIdleTick
+            AddHandler AttachedToVisualTree, Sub(sender, e) StartWatchingInput()
+            AddHandler DetachedFromVisualTree, Sub(sender, e) StopWatchingInput()
+        End Sub
+
+        ' --- Ruhezeit und Tastatur ---------------------------------------------------------
+
+        ''' <summary>Solange nichts geschieht, holt die Anzeige nach dieser Zeit den laufenden
+        ''' Titel zurueck und bleibt danach bei jedem Titelwechsel an ihm dran. Lang genug, dass
+        ''' niemandem beim Suchen in der Liste die Ansicht wegspringt, kurz genug, dass die Liste
+        ''' nach einem Blick woanders hin von selbst wieder zeigt, was laeuft.</summary>
+        Private Const IdleFollowSeconds As Double = 60
+
+        Private ReadOnly _idleTimer As New DispatcherTimer With {.Interval = TimeSpan.FromSeconds(1)}
+        Private _lastInputUtc As DateTime = DateTime.UtcNow
+        Private _followedTrack As Track
+        Private _inputRoot As TopLevel
+        ' Fuer jedes Ereignis ein eigener Griff: die Anmeldung ist an den Sondertyp der Argumente
+        ' gebunden, und abmelden laesst sich nur genau der Griff, der angemeldet wurde.
+        Private ReadOnly _onAnyPointerPressed As EventHandler(Of PointerPressedEventArgs) = Sub(sender, e) NoteUserInput()
+        Private ReadOnly _onAnyPointerMoved As EventHandler(Of PointerEventArgs) = Sub(sender, e) NoteUserInput()
+        Private ReadOnly _onAnyPointerWheel As EventHandler(Of PointerWheelEventArgs) = Sub(sender, e) NoteUserInput()
+        Private ReadOnly _onAnyKeyDown As EventHandler(Of KeyEventArgs) = AddressOf OnAnyKeyDown
+
+        ''' <summary>Horcht am Fenster statt an dieser Ansicht, und zwar auf dem Weg nach unten
+        ''' (Tunnel): so zaehlt jede Regung, auch die in einem Feld, das das Ereignis fuer sich
+        ''' behaelt, und die Blaettertasten kommen an, bevor sie jemand anders verbraucht.</summary>
+        Private Sub StartWatchingInput()
+            StopWatchingInput()
+            _inputRoot = TopLevel.GetTopLevel(Me)
+            If _inputRoot Is Nothing Then Return
+            _inputRoot.[AddHandler](InputElement.PointerPressedEvent, _onAnyPointerPressed, RoutingStrategies.Tunnel)
+            _inputRoot.[AddHandler](InputElement.PointerMovedEvent, _onAnyPointerMoved, RoutingStrategies.Tunnel)
+            _inputRoot.[AddHandler](InputElement.PointerWheelChangedEvent, _onAnyPointerWheel, RoutingStrategies.Tunnel)
+            _inputRoot.[AddHandler](InputElement.KeyDownEvent, _onAnyKeyDown, RoutingStrategies.Tunnel)
+            _idleTimer.Start()
+        End Sub
+
+        Private Sub StopWatchingInput()
+            _idleTimer.Stop()
+            If _inputRoot Is Nothing Then Return
+            _inputRoot.[RemoveHandler](InputElement.PointerPressedEvent, _onAnyPointerPressed)
+            _inputRoot.[RemoveHandler](InputElement.PointerMovedEvent, _onAnyPointerMoved)
+            _inputRoot.[RemoveHandler](InputElement.PointerWheelChangedEvent, _onAnyPointerWheel)
+            _inputRoot.[RemoveHandler](InputElement.KeyDownEvent, _onAnyKeyDown)
+            _inputRoot = Nothing
+        End Sub
+
+        ''' <summary>Jede Regung setzt die Ruhezeit zurueck. Der gemerkte Titel faellt dabei weg:
+        ''' wer gerade weggerollt ist, soll nach der Ruhezeit wieder zurueckgeholt werden, auch
+        ''' wenn noch derselbe Titel laeuft.</summary>
+        Private Sub NoteUserInput()
+            _lastInputUtc = DateTime.UtcNow
+            _followedTrack = Nothing
+        End Sub
+
+        ''' <summary>Bild auf, Bild ab, Pos 1 und Ende rollen die Wiedergabeliste auch dann, wenn
+        ''' der Fokus woanders sitzt - am Lautstaerkeknopf etwa oder auf einem der Knoepfe in der
+        ''' Leiste. Bisher taten sie es nur mit der Liste im Fokus.
+        '''
+        ''' <para>Gerollt und NICHT ausgewaehlt: die Auswahl entscheidet, was getaggt oder
+        ''' umgewandelt wird, und die darf eine Taste von aussen nicht umwerfen. Hat die Liste den
+        ''' Fokus, bleibt es ohnehin bei ihrer eigenen Behandlung mitsamt Auswahl.</para></summary>
+        Private Sub OnAnyKeyDown(sender As Object, e As KeyEventArgs)
+            NoteUserInput()
+            If e.Handled OrElse e.KeyModifiers <> KeyModifiers.None Then Return
+            If e.Key <> Key.PageUp AndAlso e.Key <> Key.PageDown AndAlso e.Key <> Key.Home AndAlso e.Key <> Key.End Then Return
+            If Not Me.IsEffectivelyVisible Then Return
+            ' Steht eine Sicherheitsabfrage offen, gehoeren die Tasten ihr - hinter ihr zu rollen
+            ' waere eine Antwort auf eine Frage, die gar nicht gestellt wurde.
+            If Me.ViewModel IsNot Nothing AndAlso Me.ViewModel.IsDialogOpen Then Return
+            Dim list = Me.FindControl(Of ListBox)("PlaylistBox")
+            If list Is Nothing OrElse Not list.IsEffectivelyVisible Then Return
+            Dim focused = TryCast(_inputRoot?.FocusManager?.GetFocusedElement(), Avalonia.Visual)
+            If focused IsNot Nothing Then
+                ' In einem Eingabefeld gehoeren diese Tasten dem Text, und in der Liste selbst
+                ' ihrer eigenen Behandlung.
+                If focused.GetSelfAndVisualAncestors().Any(Function(step_) step_ Is list OrElse TypeOf step_ Is TextBox) Then Return
+            End If
+            Dim scroll = list.GetVisualDescendants().OfType(Of ScrollViewer)().FirstOrDefault()
+            If scroll Is Nothing Then Return
+            Select Case e.Key
+                Case Key.PageUp : scroll.PageUp()
+                Case Key.PageDown : scroll.PageDown()
+                Case Key.Home : scroll.ScrollToHome()
+                Case Key.End : scroll.ScrollToEnd()
+            End Select
+            e.Handled = True
+        End Sub
+
+        ''' <summary>Nach der Ruhezeit zurueck zum laufenden Titel - und von da an bei jedem
+        ''' Titelwechsel mit.
+        '''
+        ''' <para>Aussen vor bleiben die Bereiche, in denen gearbeitet wird: die Audio-CD, der
+        ''' Konverter und der Tag-Editor. Dort waere eine Ansicht, die von selbst wegspringt, im
+        ''' Weg. Der Lyrion-Bereich zieht nur mit, wenn dort auch gespielt wird - sonst wuerde er
+        ''' sich beim Zurueckholen in die Wiedergabeliste ungefragt schliessen.</para></summary>
+        Private Sub OnIdleTick(sender As Object, e As EventArgs)
+            If (DateTime.UtcNow - _lastInputUtc).TotalSeconds < IdleFollowSeconds Then Return
+            If Not Me.IsEffectivelyVisible Then Return
+            Dim viewModel = Me.ViewModel
+            If viewModel Is Nothing OrElse Not viewModel.IsPlaying OrElse viewModel.IsDialogOpen Then Return
+            Dim track = viewModel.CurrentTrack
+            If track Is Nothing OrElse track.IsAudioCdTrack OrElse viewModel.IsAudioCdPlaylistSelected Then Return
+            If Object.ReferenceEquals(track, _followedTrack) Then Return
+            Dim host = Me.FindControl(Of ContentControl)("ConverterHost")
+            If host IsNot Nothing AndAlso host.IsVisible Then
+                Dim lyrion = TryCast(host.Content, LyrionBrowserPanel)
+                If lyrion Is Nothing OrElse Not viewModel.IsPlayingLyrion Then Return
+                _followedTrack = track
+                lyrion.JumpToCurrentTrack()
+                Return
+            End If
+            _followedTrack = track
+            viewModel.FocusTrackInPlaylist(track)
         End Sub
 
         Private Sub InitializeComponent()
