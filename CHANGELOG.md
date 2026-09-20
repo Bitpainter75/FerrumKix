@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.9.4
+
+- The interface comes in three appearances, chosen in the settings the same way FerrumPix offers
+  them: dark, gray dark and gray light. The colours are not four stylesheets but one set of keys
+  that is rewritten at runtime, so a change takes effect at once, without a restart. A genuinely
+  light appearance - dark text on a white ground - was built alongside them and dropped again: it
+  looked wrong in this player.
+- The player is part of the appearance now. The footer deck, its edge and the seek track, the veil
+  over the playlist and over the converter, tag and Lyrion areas, and the scrim over the blurred
+  cover used to stand as fixed dark values inside the views; they come from the chosen appearance
+  instead, so the two gray ones are not a dark player with a gray window around it.
+- Drop-down lists, menus and list rows follow a change of appearance. They read the keys of the
+  Fluent theme and not ours, and those are now mirrored after every change - otherwise they stayed
+  in the colours of the previous appearance.
+
 ## 0.9.3
 
 - The MP3 tag editor fills in empty fields one by one instead of all or nothing. Until now the
