@@ -179,13 +179,20 @@ Namespace Services
         ''' Zwischenspeicher gehoert nicht zu den Einstellungen: wer ihn loescht, verliert nichts.</summary>
         Private Shared ReadOnly Property ArtCacheDirectory As String
             Get
-                Dim baseDir = Environment.GetEnvironmentVariable("XDG_CACHE_HOME")
-                If String.IsNullOrWhiteSpace(baseDir) Then
-                    baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".cache")
-                End If
-                Return Path.Combine(baseDir, "FerrumKix", "covers")
+                Return Path.Combine(CacheDirectoryFor("FerrumKix"), "covers")
             End Get
         End Property
+
+        ''' <summary>Der Zwischenspeicher-Ordner der Anwendung, ohne das Unterverzeichnis. Der
+        ''' Umzug von FerrumPlay benennt ihn als Ganzes um, nicht nur die Titelbilder darin.
+        ''' Siehe <see cref="LegacyNameMigration"/>.</summary>
+        Friend Shared Function CacheDirectoryFor(applicationName As String) As String
+            Dim baseDir = Environment.GetEnvironmentVariable("XDG_CACHE_HOME")
+            If String.IsNullOrWhiteSpace(baseDir) Then
+                baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".cache")
+            End If
+            Return Path.Combine(baseDir, applicationName)
+        End Function
 
         Private Shared Function LoadEmbedded(filePath As String) As Bitmap
             Try

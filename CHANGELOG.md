@@ -7,9 +7,13 @@
   Everything that carried the name moved with it: the binary, the application id
   `io.github.Bitpainter75.FerrumKix`, the D-Bus name behind single-instance and MPRIS, the AUR
   package `ferrumkix-bin` and the GitHub repository.
-- Settings and cached cover art are not carried over. They live under the application name, and at
-  this stage re-entering them costs less than the code that would move them; the old
-  `~/.config/FerrumPlay` and `~/.cache/FerrumPlay` can simply be deleted.
+- Settings, playlist and cover art come along by themselves. The first start renames
+  `~/.config/FerrumPlay` to `~/.config/FerrumKix` and `~/.cache/FerrumPlay` to
+  `~/.cache/FerrumKix`. It is a rename and not a copy: old and new sit side by side in the same
+  parent, so even a cache of a few hundred megabytes moves in no time. An existing FerrumKix
+  folder is never touched - whoever has both has used the new name already, and that state is the
+  younger one. A move that fails is swallowed; the application then starts on factory settings and
+  the old folder lies there untouched.
 - The AppStream metadata declares the old id under `<provides>` and `<replaces>`, and the AUR
   package replaces `ferrumplay-bin`, so software centres and package managers see one application
   that was renamed rather than two that compete.

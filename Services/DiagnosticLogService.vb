@@ -53,11 +53,19 @@ Namespace Services
         ''' Anwendung nicht im Heimatverzeichnis herumliegt.</summary>
         Public Shared ReadOnly Property AppDataDirectory As String
             Get
-                Dim baseDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                If String.IsNullOrEmpty(baseDir) Then baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config")
-                Return Path.Combine(baseDir, "FerrumKix")
+                Return AppDataDirectoryFor("FerrumKix")
             End Get
         End Property
+
+        ''' <summary>Derselbe Ort, aber fuer einen frei gewaehlten Anwendungsnamen. Der Umzug von
+        ''' FerrumPlay braucht den Pfad des alten Namens, und zwar nach genau dieser Regel; eine
+        ''' zweite Fassung davon waere die naechste, die auseinanderlaeuft.
+        ''' Siehe <see cref="LegacyNameMigration"/>.</summary>
+        Friend Shared Function AppDataDirectoryFor(applicationName As String) As String
+            Dim baseDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            If String.IsNullOrEmpty(baseDir) Then baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config")
+            Return Path.Combine(baseDir, applicationName)
+        End Function
 
         Public Shared Sub Log(area As String, message As String)
             If Not IsEnabled Then Return

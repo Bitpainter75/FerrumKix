@@ -11,6 +11,11 @@ Module Program
 
     <STAThread>
     Function Main(args As String()) As Integer
+        ' DER UMZUG NOCH VOR DEM PROTOKOLLSCHALTER. Einstellungen wie Protokoll legen ihr
+        ' Verzeichnis beim ersten Schreiben selbst an, und ein angelegtes Ziel laesst den Umzug
+        ' fuer immer ausfallen - der Ordner von FerrumPlay bliebe dann unberuehrt liegen.
+        LegacyNameMigration.Run()
+
         ' DER PROTOKOLLSCHALTER ZUERST, noch vor allem anderen. Er ist fuer den Fall gebaut, in dem
         ' die Anwendung ueberhaupt nicht hochkommt: das Protokoll liegt ab Werk aus und liesse sich
         ' sonst nur in einer Anwendung einschalten, die man nicht starten kann.
