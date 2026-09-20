@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Soubor nenalezen: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Přidat soubory</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Sem přetáhněte soubory nebo složky</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>Název souboru při převodu</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>Název souboru při značkování</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>Přednastavené žánry</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>Platí pro název souboru převodu: počet číslic se řídí počtem skladeb alba, například 01 u 10 skladeb nebo 001 u 100.</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>Platí pro značku, vstupní pole editoru značek i název souboru: počet číslic se řídí počtem skladeb alba, například 01 u 10 skladeb nebo 001 u 100.</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>Upravit značky MP3</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>Vzor pro vytvořené soubory, i při ripování zvukového CD: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Přípona vychází ze zvoleného formátu; prázdné pole obnoví výchozí hodnotu.</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>Vzor pro přejmenování: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. O úvodních nulách u %track% rozhoduje nastavení výše. Přípona .mp3 se doplní sama; prázdné pole obnoví výchozí hodnotu.</value>

@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Nie znaleziono pliku: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Dodaj pliki</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Przeciągnij tutaj pliki lub foldery</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>Nazwa pliku przy konwersji</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>Nazwa pliku przy znakowaniu</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>Gotowe gatunki</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>Dotyczy nazwy pliku konwersji: liczba cyfr zależy od liczby utworów na albumie, na przykład 01 przy 10 utworach lub 001 przy 100.</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>Dotyczy znacznika, pól edytora znaczników i nazwy pliku: liczba cyfr zależy od liczby utworów na albumie, na przykład 01 przy 10 utworach lub 001 przy 100.</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>Edytuj znaczniki MP3</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>Wzorzec tworzonych plików, także przy zgrywaniu płyty audio CD: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Rozszerzenie wynika z wybranego formatu; puste pole przywraca wartość domyślną.</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>Wzorzec zmiany nazwy: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. O zerach wiodących przy %track% decyduje ustawienie powyżej. Rozszerzenie .mp3 dodaje się samo; puste pole przywraca wartość domyślną.</value>

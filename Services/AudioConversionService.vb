@@ -123,10 +123,11 @@ Namespace Services
                         Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track, coverFile:=coverFile, totalTracks:=albumLength)
                         ' Der MP3-Schreiber ist die einzige Stelle, die die ID3v2-Regeln vollstaendig
                         ' kennt (aufgefuellte TRCK-Nummer, Album-Sortierung, alte Tags entfernen).
-                        ' Beim Rippen wird er daher nach FFmpeg nochmals angewandt; sein Name ist
-                        ' zugleich derselbe wie im MP3-Tag-Editor.
+                        ' Beim Rippen wird er daher nach FFmpeg nochmals angewandt - nur benennen
+                        ' darf er nicht: den Namen hat oben das Muster des KONVERTERS vergeben,
+                        ' und der Schreiber wuerde ihn nach dem des Taggens wieder umbenennen.
                         If track.IsAudioCdTrack AndAlso request.Format = OutputFormat.Mp3 Then
-                            target = Mp3TagWriteService.Write(target, CdTagValues(track))
+                            target = Mp3TagWriteService.Write(target, CdTagValues(track), rename:=False)
                         End If
                         request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig"))
                     Finally
@@ -287,9 +288,21 @@ Namespace Services
                 Dim entry = entries(index)
                 Dim endSeconds As Double? = If(index + 1 < total, entries(index + 1).StartSeconds, Nothing)
                 progress?.Report(LocalizationService.Format("Teile CUE {0} von {1}: {2}", index + 1, total, entry.Title))
-                Dim target = TargetPath(request.OutputDirectory, SafeFileName($"{Mp3TagWriteService.FormatTrackNumber(entry.Number, total)} - {entry.Title}") & ExtensionFor(request.Format), request.OverwriteExisting)
+                Dim target = TargetPath(request.OutputDirectory, CueFileName(source, entry, total, request.Format), request.OverwriteExisting)
                 Await RunFfmpegAsync(source.FilePath, target, request, entry.StartSeconds, endSeconds, cancellationToken)
             Next
+        End Function
+
+        ''' <summary>Der Name eines aus einer CUE geschnittenen Titels. Dasselbe Muster wie bei
+        ''' jeder anderen Umwandlung; Titel und Nummer kommen aus der CUE, Album und Interpret
+        ''' aus der grossen Quelldatei daneben.</summary>
+        Private Shared Function CueFileName(source As Track, entry As CueEntry, total As Integer, format As OutputFormat) As String
+            Dim values = FileTagValues(source, total)
+            values.Title = If(entry.Title, String.Empty).Trim()
+            values.TrackNumber = Math.Max(0, entry.Number)
+            Dim name = BuildName(values)
+            If String.IsNullOrWhiteSpace(name) Then name = $"{Mp3TagWriteService.FormatTrackNumber(entry.Number, total, PadTrackNumber)} - {entry.Title}"
+            Return SafeFileName(name) & ExtensionFor(format)
         End Function
 
         ' Der alte Pfad blieb hier bewusst nicht stehen: die Entscheidung ob zusammengeführt
@@ -429,16 +442,65 @@ Namespace Services
         ''' trotz eingeschalteter Einstellung zweistellig.</summary>
         Private Shared Function TrackPrefix(track As Track, totalTracks As Integer) As String
             If track.TrackNumber <= 0 Then Return String.Empty
-            Return Mp3TagWriteService.FormatTrackNumber(track.TrackNumber, totalTracks) & " - "
+            Return Mp3TagWriteService.FormatTrackNumber(track.TrackNumber, totalTracks, PadTrackNumber) & " - "
         End Function
 
-        ''' <summary>Wendet beim CD-Rip dieselben Benennungs- und Standardisierungsregeln an wie
-        ''' der MP3-Tag-Editor. Andere Konvertierungen behalten bewusst ihre bisherige Benennung.</summary>
+        ''' <summary>Ob die Nummer im erzeugten Dateinamen aufgefuellt wird. Der Konverter hat
+        ''' dafuer eine eigene Einstellung: sein Ergebnis ist eine neue Datei und nicht die
+        ''' Umbenennung einer getaggten.</summary>
+        Private Shared ReadOnly Property PadTrackNumber As Boolean
+            Get
+                Return AppSettingsService.Current.ConverterPadTrackNumberToAlbumLength
+            End Get
+        End Property
+
+        ''' <summary>Das eingestellte Benennungsmuster, auf einen Titel angewandt. Es gilt fuer
+        ''' jede Umwandlung - fuer die Datei aus der Liste ebenso wie fuer den CD-Rip, der bis
+        ''' dahin das Muster des Taggens mitbenutzt hat. Bleibt nichts uebrig, weil alle
+        ''' verwendeten Platzhalter leer sind, benennt der frueher feste Weg weiter.</summary>
         Private Shared Function OutputFileName(track As Track, format As OutputFormat, totalTracks As Integer) As String
-            If Not track.IsAudioCdTrack Then Return SafeFileName($"{TrackPrefix(track, totalTracks)}{track.DisplayTitle}") & ExtensionFor(format)
-            Dim values = CdTagValues(track)
-            Dim name = Mp3TagWriteService.BuildFileName(AppSettingsService.Current.TagFileNamePattern, values)
+            Dim values = If(track.IsAudioCdTrack, CdTagValues(track), FileTagValues(track, totalTracks))
+            Dim name = BuildName(values)
             Return SafeFileName(If(String.IsNullOrWhiteSpace(name), $"{TrackPrefix(track, values.TotalTracks)}{track.DisplayTitle}", name)) & ExtensionFor(format)
+        End Function
+
+        ''' <summary>Das eingestellte Muster, gefuellt und von den Resten leerer Platzhalter
+        ''' befreit. Fehlt einem Titel der Interpret, stuende sonst " - - " mitten im Namen.</summary>
+        Private Shared Function BuildName(values As Mp3TagWriteService.Values) As String
+            Dim name = Mp3TagWriteService.BuildFileName(
+                AppSettingsService.NormalizeConverterFileNamePattern(AppSettingsService.Current.ConverterFileNamePattern), values, PadTrackNumber)
+            While name.Contains("- -") : name = name.Replace("- -", "-") : End While
+            Return name.Trim().Trim("-"c, "_"c, "."c).Trim()
+        End Function
+
+        ''' <summary>Die Kennzeichen einer Datei aus der Liste, in der Form, die das
+        ''' Benennungsmuster liest. Die Titelzahl kommt vom Ordner, so wie sie auch die
+        ''' aufgefuellte Nummer bestimmt.</summary>
+        Private Shared Function FileTagValues(track As Track, totalTracks As Integer) As Mp3TagWriteService.Values
+            Return New Mp3TagWriteService.Values With {
+                .Artist = If(track.Artist, String.Empty).Trim(),
+                .AlbumArtist = If(track.AlbumArtist, String.Empty).Trim(),
+                .Album = If(track.Album, String.Empty).Trim(),
+                .Year = Math.Max(0, track.Year),
+                .Genre = If(track.Genre, String.Empty).Trim(),
+                .AlbumSortOrder = If(track.AlbumSortOrder, String.Empty).Trim(),
+                .DiscNumber = Math.Max(0, track.DiscNumber),
+                .Title = FileTitle(track),
+                .TrackNumber = Math.Max(0, track.TrackNumber),
+                .TotalTracks = Math.Max(0, totalTracks)}
+        End Function
+
+        ''' <summary>Der Titel einer Datei, und wenn sie keinen traegt, ihr Name ohne Endung.
+        ''' Dieselbe Aushilfe, die auch die Wiedergabeliste anzeigt: eine Datei ohne Kennzeichen
+        ''' soll nach der Umwandlung nicht namenlos dastehen.</summary>
+        Private Shared Function FileTitle(track As Track) As String
+            Dim title = If(track.Title, String.Empty).Trim()
+            If title.Length > 0 Then Return title
+            Try
+                Return If(Path.GetFileNameWithoutExtension(track.FilePath), String.Empty)
+            Catch
+                Return String.Empty
+            End Try
         End Function
 
         ''' <summary>Der optionale Albumordner fuer CD-Rips. Trennzeichen sind erlaubt, jedes
@@ -451,7 +513,7 @@ Namespace Services
             Dim values = CdTagValues(track)
             Dim parts = pattern.Split({"/"c, "\"c}, StringSplitOptions.RemoveEmptyEntries).
                 Where(Function(part) Not String.IsNullOrWhiteSpace(part)).
-                Select(Function(part) SafeFileName(Mp3TagWriteService.BuildFileName(part, values))).
+                Select(Function(part) SafeFileName(Mp3TagWriteService.BuildFileName(part, values, PadTrackNumber))).
                 Where(Function(part) Not String.IsNullOrWhiteSpace(part))
             Return parts.Aggregate(root, Function(folder, part) Path.Combine(folder, part))
         End Function

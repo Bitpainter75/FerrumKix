@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Filen ble ikke funnet: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Legg til filer</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Dra filer eller mapper hit</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>Filnavn ved konvertering</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>Filnavn ved tagging</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>Forhåndsdefinerte sjangre</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>Gjelder filnavnet ved konverteringen: antallet sifre følger albumets antall spor, for eksempel 01 ved 10 spor eller 001 ved 100.</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>Gjelder taggen, inntastingsfeltene i taggredigereren og filnavnet: antallet sifre følger albumets antall spor, for eksempel 01 ved 10 spor eller 001 ved 100.</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>Rediger MP3-tagger</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>Mønster for filene som lages, også når en lyd-CD rippes: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Endelsen kommer fra det valgte formatet; et tomt felt gjenoppretter standarden.</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>Mønster for omdøpingen: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Innledende nuller for %track% styres av innstillingen over. Endelsen .mp3 kommer av seg selv; et tomt felt gjenoppretter standarden.</value>

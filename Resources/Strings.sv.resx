@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Filen hittades inte: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Lägg till filer</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Dra filer eller mappar hit</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>Filnamn vid konvertering</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>Filnamn vid taggning</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>Fördefinierade genrer</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>Gäller filnamnet vid konverteringen: antalet siffror följer albumets antal spår, till exempel 01 vid 10 spår eller 001 vid 100.</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>Gäller taggen, inmatningsfälten i taggredigeraren och filnamnet: antalet siffror följer albumets antal spår, till exempel 01 vid 10 spår eller 001 vid 100.</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>Redigera MP3-taggar</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>Mönster för filerna som skapas, även när en ljud-cd rippas: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Ändelsen kommer från det valda formatet; ett tomt fält återställer standardvärdet.</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>Mönster för namnbytet: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Inledande nollor för %track% styrs av inställningen ovan. Ändelsen .mp3 läggs till av sig själv; ett tomt fält återställer standardvärdet.</value>

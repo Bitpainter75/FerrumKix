@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>ファイルが見つかりません: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>ファイルを追加する</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>ファイルまたはフォルダーをここにドラッグします</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>変換時のファイル名</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>タグ付け時のファイル名</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>ジャンルの既定値</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>変換後のファイル名に適用されます。桁数はアルバムの曲数に従い、10 曲なら 01、100 曲なら 001 になります。</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>タグ、タグエディターの入力欄、ファイル名に適用されます。桁数はアルバムの曲数に従い、10 曲なら 01、100 曲なら 001 になります。</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>MP3 タグを編集</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>作成されるファイルの書式で、オーディオ CD の取り込みにも使われます: %artist%、%albumartist%、%album%、%title%、%track%、%totaltracks%、%disc%、%year%、%genre%。拡張子は選んだ形式から決まります。空欄にすると既定値に戻ります。</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>名前を変更する書式: %artist%、%albumartist%、%album%、%title%、%track%、%totaltracks%、%disc%、%year%、%genre%。%track% の先頭のゼロは上の設定で決まります。拡張子 .mp3 は自動で付きます。空欄にすると既定値に戻ります。</value>

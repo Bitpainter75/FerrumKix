@@ -228,6 +228,9 @@
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve">
     <value>Drag files or folders here</value>
   </data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>File name when converting</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>File name when tagging</value>
   </data>
@@ -327,6 +330,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>Genre presets</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>Applies to the file name of the conversion: the number of digits follows the album's track count, for example 01 with 10 tracks or 001 with 100.</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>Applies to the tag, the input fields in the tag editor and the file name: the number of digits follows the album's track count, for example 01 with 10 tracks or 001 with 100.</value>
   </data>
@@ -416,6 +422,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>Edit MP3 tags</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>Pattern for the created files, including when ripping an audio CD: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. The extension comes from the chosen format; an empty field restores the default.</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>Pattern for renaming: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Leading zeros for %track% are governed by the setting above. The .mp3 extension is added automatically; an empty field restores the default.</value>

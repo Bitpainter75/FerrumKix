@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>फ़ाइल नहीं मिली: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>फ़ाइलें जोड़ें</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>फ़ाइलों या फ़ोल्डरों को यहां खींचें</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>बदलते समय फ़ाइल नाम</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>टैग करते समय फ़ाइल नाम</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>शैली की पूर्वनिर्धारित सूची</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>यह रूपांतरण की फ़ाइल के नाम पर लागू होता है: अंकों की संख्या एल्बम के गीतों की संख्या पर निर्भर करती है, जैसे 10 गीतों पर 01 और 100 पर 001।</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>यह टैग, टैग संपादक के इनपुट फ़ील्ड और फ़ाइल नाम पर लागू होता है: अंकों की संख्या एल्बम के गीतों की संख्या पर निर्भर करती है, जैसे 10 गीतों पर 01 और 100 पर 001।</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>MP3 टैग संपादित करें</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>बनने वाली फ़ाइलों का प्रारूप, ऑडियो सीडी रिप करते समय भी: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%। एक्सटेंशन चुने गए प्रारूप से आता है; खाली फ़ील्ड डिफ़ॉल्ट लौटा देता है।</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>नाम बदलने का प्रारूप: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%। %track% के आगे के शून्य ऊपर की सेटिंग तय करती है। .mp3 एक्सटेंशन अपने आप जुड़ जाता है; खाली फ़ील्ड डिफ़ॉल्ट लौटा देता है।</value>

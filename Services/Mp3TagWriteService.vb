@@ -28,7 +28,11 @@ Namespace Services
             Public Property CoverSource As Byte()
         End Class
 
-        Public Shared Function Write(filePath As String, values As Values) As String
+        ''' <summary>Schreibt die Kennzeichen und benennt die Datei nach dem Muster des Taggens
+        ''' um. <paramref name="rename"/> schaltet das Umbenennen ab: der Konverter hat seinen
+        ''' Namen aus seinem EIGENEN Muster schon vergeben, und das Muster des Taggens duerfte
+        ''' ihn sonst gleich wieder ueberschreiben.</summary>
+        Public Shared Function Write(filePath As String, values As Values, Optional rename As Boolean = True) As String
             If String.IsNullOrWhiteSpace(filePath) OrElse Not String.Equals(Path.GetExtension(filePath), ".mp3", StringComparison.OrdinalIgnoreCase) Then Throw New ArgumentException(LocalizationService.T("Nur MP3-Dateien können getaggt werden."))
             If values Is Nothing Then Throw New ArgumentNullException(NameOf(values))
             Dim genre = SingleGenre(values.Genre)
@@ -67,7 +71,7 @@ Namespace Services
                 End If
                 file.Save()
             End Using
-            Dim target = RenameForTags(filePath, values)
+            Dim target = If(rename, RenameForTags(filePath, values), filePath)
             ' Die Datei hat jetzt ein anderes Bild - und moeglicherweise einen anderen Namen. Beide
             ' Pfade muessen aus dem Zwischenspeicher, sonst zeigt die Anwendung weiter das alte
             ' Cover samt seinem alten Mass.
@@ -128,10 +132,16 @@ Namespace Services
         ''' Speichern und fuer die Vorschau in den Einstellungen verwendet, damit die Vorschau nie
         ''' etwas anderes zeigt als das spaetere Ergebnis.</summary>
         Public Shared Function BuildFileName(pattern As String, values As Values) As String
+            Return BuildFileName(pattern, values, AppSettingsService.Current.TagPadTrackNumberToAlbumLength)
+        End Function
+
+        ''' <summary>Dasselbe mit ausdruecklich gewaehltem Auffuellen der Tracknummer. Der
+        ''' Konverter hat dafuer eine eigene Einstellung und darf nicht die des Taggens lesen.</summary>
+        Public Shared Function BuildFileName(pattern As String, values As Values, padTrackNumber As Boolean) As String
             If values Is Nothing Then Throw New ArgumentNullException(NameOf(values))
             Dim text = AppSettingsService.NormalizeTagFileNamePattern(pattern)
             For Each name In PlaceholderNames
-                text = text.Replace(name, TextFor(name, values), StringComparison.OrdinalIgnoreCase)
+                text = text.Replace(name, TextFor(name, values, padTrackNumber), StringComparison.OrdinalIgnoreCase)
             Next
             Return Sanitize(text)
         End Function
@@ -139,16 +149,19 @@ Namespace Services
         ''' <summary>Der Wert eines Platzhalters. Die Tracknummer bekommt ihre fuehrenden Nullen
         ''' aus der Einstellung dazu, alles andere steht so da, wie es im Tag steht. Ein
         ''' unbekannter Name bleibt stehen: wer ihn eintippt, meinte vermutlich diesen Text.</summary>
-        Private Shared Function TextFor(name As String, values As Values) As String
+        Private Shared Function TextFor(name As String, values As Values, padTrackNumber As Boolean) As String
             Select Case name.ToLowerInvariant()
                 Case "%artist%" : Return Clean(values.Artist)
                 Case "%albumartist%" : Return Clean(values.AlbumArtist)
                 Case "%album%" : Return Clean(values.Album)
                 Case "%title%" : Return Clean(values.Title)
                 Case "%genre%" : Return SingleGenre(values.Genre)
-                Case "%track%" : Return FormatTrackNumber(values.TrackNumber, values.TotalTracks)
-                Case "%totaltracks%" : Return Math.Max(0, values.TotalTracks).ToString(CultureInfo.InvariantCulture)
-                Case "%disc%" : Return Math.Max(0, values.DiscNumber).ToString(CultureInfo.InvariantCulture)
+                ' Eine fehlende Zahl ist keine Null, sondern nichts: sonst hiesse eine Datei
+                ' ohne Nummer "00 - Titel" und eine ohne Disc-Angabe traege eine "0" im Namen.
+                ' %year% haelt es seit jeher so; die drei Zahlen tun es jetzt ebenso.
+                Case "%track%" : Return If(values.TrackNumber > 0, FormatTrackNumber(values.TrackNumber, values.TotalTracks, padTrackNumber), String.Empty)
+                Case "%totaltracks%" : Return If(values.TotalTracks > 0, values.TotalTracks.ToString(CultureInfo.InvariantCulture), String.Empty)
+                Case "%disc%" : Return If(values.DiscNumber > 0, values.DiscNumber.ToString(CultureInfo.InvariantCulture), String.Empty)
                 Case "%year%" : Return If(values.Year > 0, values.Year.ToString(CultureInfo.InvariantCulture), String.Empty)
                 Case Else : Return name
             End Select
@@ -159,8 +172,14 @@ Namespace Services
         ''' Stellenzahl nach der Titelzahl des Albums: 01 bei zehn Titeln, 001 bei hundert.
         ''' An einer Stelle entschieden, damit Feld, Tag und Dateiname nie auseinanderlaufen.</summary>
         Public Shared Function FormatTrackNumber(number As Integer, totalTracks As Integer) As String
+            Return FormatTrackNumber(number, totalTracks, AppSettingsService.Current.TagPadTrackNumberToAlbumLength)
+        End Function
+
+        ''' <summary>Dieselbe Darstellung mit ausdruecklich gewaehltem Auffuellen, fuer den
+        ''' Konverter und seine eigene Einstellung.</summary>
+        Public Shared Function FormatTrackNumber(number As Integer, totalTracks As Integer, pad As Boolean) As String
             Dim value = Math.Max(0, number)
-            If Not AppSettingsService.Current.TagPadTrackNumberToAlbumLength Then Return value.ToString(CultureInfo.InvariantCulture)
+            If Not pad Then Return value.ToString(CultureInfo.InvariantCulture)
             Dim digits = Math.Max(1, Math.Max(totalTracks, value)).ToString(CultureInfo.InvariantCulture).Length
             Return value.ToString(New String("0"c, digits), CultureInfo.InvariantCulture)
         End Function

@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Arquivo não encontrado: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Adicionar arquivos</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Arraste arquivos ou pastas aqui</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>Nome do ficheiro ao converter</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>Nome do ficheiro ao etiquetar</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>Géneros predefinidos</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>Aplica-se ao nome do ficheiro da conversão: o número de algarismos segue o número de faixas do álbum, por exemplo 01 com 10 faixas ou 001 com 100.</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>Aplica-se à etiqueta, aos campos do editor de etiquetas e ao nome do ficheiro: o número de algarismos segue o número de faixas do álbum, por exemplo 01 com 10 faixas ou 001 com 100.</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>Editar etiquetas MP3</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>Padrão para os ficheiros criados, também ao extrair um CD de áudio: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. A extensão vem do formato escolhido; um campo vazio repõe a predefinição.</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>Padrão para a mudança de nome: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Os zeros à esquerda em %track% dependem da definição acima. A extensão .mp3 é acrescentada sozinha; um campo vazio repõe a predefinição.</value>

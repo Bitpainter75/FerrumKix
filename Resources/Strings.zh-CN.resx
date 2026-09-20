@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>未找到文件：{0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>添加文件</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>将文件或文件夹拖到此处</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>转换时的文件名</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>打标签时的文件名</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>预设流派</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>适用于转换后的文件名：位数取决于专辑的曲目数，例如 10 首时为 01，100 首时为 001。</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>适用于标签、标签编辑器中的输入框以及文件名：位数取决于专辑的曲目数，例如 10 首时为 01，100 首时为 001。</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>编辑 MP3 标签</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>生成文件的格式，抓取音频 CD 时同样适用：%artist%、%albumartist%、%album%、%title%、%track%、%totaltracks%、%disc%、%year%、%genre%。扩展名取决于所选格式；留空则恢复默认值。</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>重命名格式：%artist%、%albumartist%、%album%、%title%、%track%、%totaltracks%、%disc%、%year%、%genre%。%track% 的前导零由上面的设置决定。扩展名 .mp3 会自动加上；留空则恢复默认值。</value>

@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>ไม่พบไฟล์: {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>เพิ่มไฟล์</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>ลากไฟล์หรือโฟลเดอร์มาที่นี่</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>ชื่อไฟล์เมื่อแปลง</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>ชื่อไฟล์เมื่อใส่แท็ก</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>แนวเพลงที่กำหนดไว้</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>ใช้กับชื่อไฟล์ของการแปลง จำนวนหลักเป็นไปตามจำนวนเพลงในอัลบั้ม เช่น 01 เมื่อมี 10 เพลง หรือ 001 เมื่อมี 100 เพลง</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>ใช้กับแท็ก ช่องกรอกในตัวแก้ไขแท็ก และชื่อไฟล์ จำนวนหลักเป็นไปตามจำนวนเพลงในอัลบั้ม เช่น 01 เมื่อมี 10 เพลง หรือ 001 เมื่อมี 100 เพลง</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>แก้ไขแท็ก MP3</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>รูปแบบของไฟล์ที่สร้างขึ้น รวมถึงเมื่อริปซีดีเพลง: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre% นามสกุลมาจากรูปแบบที่เลือก ช่องว่างจะคืนค่าเริ่มต้น</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>รูปแบบการเปลี่ยนชื่อ: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre% ศูนย์นำหน้าของ %track% กำหนดโดยการตั้งค่าด้านบน นามสกุล .mp3 จะเติมให้เอง ช่องว่างจะคืนค่าเริ่มต้น</value>

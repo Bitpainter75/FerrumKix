@@ -496,6 +496,8 @@ Namespace ViewModels
             Set(value As Integer)
                 AppSettingsService.Current.ConverterDefaultFormat = Math.Clamp(value, 0, 2)
                 AppSettingsService.Save()
+                ' Die Vorschau des Dateinamens traegt die Endung des Standardformats.
+                RaisePropertyChanged(NameOf(ConverterFileNamePatternPreview))
             End Set
         End Property
         Public Property ConverterDefaultBitrateIndex As Integer
@@ -517,6 +519,57 @@ Namespace ViewModels
             Set(value As Boolean)
                 AppSettingsService.Current.ConverterDefaultVbr = value
                 AppSettingsService.Save()
+            End Set
+        End Property
+
+        ''' <summary>Das Benennungsmuster fuer die erzeugten Dateien des Konverters, in
+        ''' derselben Schreibweise wie beim Taggen. Es gilt auch fuer den Rip einer Audio-CD.</summary>
+        Public Property ConverterFileNamePattern As String
+            Get
+                Return AppSettingsService.Current.ConverterFileNamePattern
+            End Get
+            Set(value As String)
+                AppSettingsService.Current.ConverterFileNamePattern = AppSettingsService.NormalizeConverterFileNamePattern(value)
+                AppSettingsService.Save()
+                RaisePropertyChanged()
+                RaisePropertyChanged(NameOf(ConverterFileNamePatternPreview))
+            End Set
+        End Property
+
+        ''' <summary>Derselbe erfundene Titel wie beim Taggen, am Muster des Konverters
+        ''' vorgefuehrt - mit der Endung des eingestellten Standardformats.</summary>
+        Public ReadOnly Property ConverterFileNamePatternPreview As String
+            Get
+                Try
+                    Return Mp3TagWriteService.BuildFileName(ConverterFileNamePattern, SampleTagValues,
+                                                            AppSettingsService.Current.ConverterPadTrackNumberToAlbumLength) & ConverterPreviewExtension
+                Catch ex As Exception
+                    Return String.Empty
+                End Try
+            End Get
+        End Property
+
+        Private Shared ReadOnly Property ConverterPreviewExtension As String
+            Get
+                Select Case AppSettingsService.Current.ConverterDefaultFormat
+                    Case 1 : Return ".flac"
+                    Case 2 : Return ".ogg"
+                    Case Else : Return ".mp3"
+                End Select
+            End Get
+        End Property
+
+        ''' <summary>Die Tracknummer im Dateinamen einer Umwandlung auffuellen. Getrennt von der
+        ''' gleichlautenden Einstellung des Taggens.</summary>
+        Public Property ConverterPadTrackNumberToAlbumLength As Boolean
+            Get
+                Return AppSettingsService.Current.ConverterPadTrackNumberToAlbumLength
+            End Get
+            Set(value As Boolean)
+                AppSettingsService.Current.ConverterPadTrackNumberToAlbumLength = value
+                AppSettingsService.Save()
+                RaisePropertyChanged()
+                RaisePropertyChanged(NameOf(ConverterFileNamePatternPreview))
             End Set
         End Property
         Public Property TagGenresText As String

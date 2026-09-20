@@ -175,6 +175,9 @@
   <data name="Datei_nicht_gefunden_0_1a1d9222" xml:space="preserve"><value>Fichier introuvable : {0}</value></data>
   <data name="Dateien_hinzuf_gen_a13edc03" xml:space="preserve"><value>Ajouter des fichiers</value></data>
   <data name="Dateien_oder_Ordner_hierher_ziehen_ce01dd7d" xml:space="preserve"><value>Faites glisser des fichiers ou des dossiers ici</value></data>
+  <data name="Dateiname_beim_Konvertieren_12f340c2" xml:space="preserve">
+    <value>Nom de fichier lors de la conversion</value>
+  </data>
   <data name="Dateiname_beim_Taggen_461cdae5" xml:space="preserve">
     <value>Nom de fichier lors du tagage</value>
   </data>
@@ -248,6 +251,9 @@
   <data name="Genre_Vorgaben_60473851" xml:space="preserve">
     <value>Genres prédéfinis</value>
   </data>
+  <data name="Gilt_f_r_den_Dateinamen_der_Umwandlung_die_Stell_1ccb7768" xml:space="preserve">
+    <value>S'applique au nom de fichier de la conversion : le nombre de chiffres suit le nombre de titres de l'album, par exemple 01 pour 10 titres ou 001 pour 100.</value>
+  </data>
   <data name="Gilt_f_r_den_Tag_die_Eingabefelder_im_Tag_Editor_139e1c3f" xml:space="preserve">
     <value>S'applique au tag, aux champs de saisie de l'éditeur de tags et au nom de fichier : le nombre de chiffres suit le nombre de titres de l'album, par exemple 01 pour 10 titres ou 001 pour 100.</value>
   </data>
@@ -301,6 +307,9 @@
   </data>
   <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
     <value>Modifier les tags MP3</value>
+  </data>
+  <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
+    <value>Modèle des fichiers créés, y compris lors de l'extraction d'un CD audio : %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. L'extension provient du format choisi ; un champ vide rétablit la valeur par défaut.</value>
   </data>
   <data name="Muster_f_r_die_Umbenennung_artist_albumartist_al_71284eab" xml:space="preserve">
     <value>Modèle de renommage : %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Les zéros initiaux de %track% sont réglés par le paramètre ci-dessus. L'extension .mp3 est ajoutée d'elle-même ; un champ vide rétablit la valeur par défaut.</value>

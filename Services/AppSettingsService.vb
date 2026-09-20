@@ -105,6 +105,14 @@ Namespace Services
         Public Property ConverterDefaultBitrate As Integer = 192
         Public Property ConverterDefaultVbr As Boolean = False
         Public Property ConverterDefaultMode As Integer = 0
+        ''' <summary>Das Benennungsmuster fuer die erzeugten Dateien einer Umwandlung - fuer
+        ''' Dateien ebenso wie fuer den Rip einer Audio-CD. Es kennt dieselben Platzhalter wie das
+        ''' Muster beim Taggen; die Endung kommt vom gewaehlten Format.</summary>
+        Public Property ConverterFileNamePattern As String = AppSettingsService.DefaultConverterFileNamePattern
+        ''' <summary>Die Tracknummer im Dateinamen einer Umwandlung auffuellen. Bewusst getrennt
+        ''' von der Tag-Einstellung: wer beim Taggen umbenennt, meint damit nicht zwingend auch
+        ''' die Namen, die der Konverter erzeugt.</summary>
+        Public Property ConverterPadTrackNumberToAlbumLength As Boolean = True
         ''' <summary>Eigene Genre-Vorgaben, eine je Zeile im Einstellungsdialog.</summary>
         Public Property TagGenres As New List(Of String)()
         ''' <summary>Vollständige LMS-Basisadresse, etwa https://music.example.lan/.</summary>
@@ -157,6 +165,11 @@ Namespace Services
         ''' anderes eingestellt ist. Die Schreibweise ist die von Puddletag.</summary>
         Public Const DefaultTagFileNamePattern As String = "%artist% - %track% - %title%"
 
+        ''' <summary>Das Muster fuer die Dateinamen einer Umwandlung, solange nichts anderes
+        ''' eingestellt ist. Es benennt genau so, wie der Konverter frueher fest benannt hat:
+        ''' Nummer, Interpret, Titel.</summary>
+        Public Const DefaultConverterFileNamePattern As String = "%track% - %artist% - %title%"
+
         Private Shared ReadOnly Gate As New Object()
         Private Shared _current As AppSettings
 
@@ -205,6 +218,7 @@ Namespace Services
                 loaded.TagCoverSize = Math.Clamp(loaded.TagCoverSize, 64, 3000)
                 loaded.TagCoverJpegQuality = Math.Clamp(loaded.TagCoverJpegQuality, 1, 100)
                 loaded.TagFileNamePattern = NormalizeTagFileNamePattern(loaded.TagFileNamePattern)
+                loaded.ConverterFileNamePattern = NormalizeConverterFileNamePattern(loaded.ConverterFileNamePattern)
                 loaded.ConverterDefaultFormat = Math.Clamp(loaded.ConverterDefaultFormat, 0, 2)
                 loaded.ConverterDefaultMode = Math.Clamp(loaded.ConverterDefaultMode, 0, 2)
                 loaded.ConverterDefaultBitrate = NormalizeConverterBitrate(loaded.ConverterDefaultBitrate)
@@ -291,6 +305,13 @@ Namespace Services
         Public Shared Function NormalizeTagFileNamePattern(value As String) As String
             Dim text = NumFunction.Replace(If(value, String.Empty), "$1").Trim()
             Return If(text.Length = 0, DefaultTagFileNamePattern, text)
+        End Function
+
+        ''' <summary>Dasselbe fuer das Muster des Konverters - nur faellt ein leeres Feld hier auf
+        ''' dessen eigene Vorgabe zurueck und nicht auf die des Taggens.</summary>
+        Public Shared Function NormalizeConverterFileNamePattern(value As String) As String
+            Dim text = NumFunction.Replace(If(value, String.Empty), "$1").Trim()
+            Return If(text.Length = 0, DefaultConverterFileNamePattern, text)
         End Function
 
         ''' <summary>Die Vorverstaerkung in halben Dezibel zwischen -15 und +15. Feiner hoert man es
