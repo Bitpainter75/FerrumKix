@@ -2,6 +2,15 @@
 
 ## 0.9.6
 
+- The window buttons can sit on the left of the title bar. The application draws that bar itself and
+  inherits nothing from the desktop, so whoever has close, maximize and minimize on the left stood
+  here without them. The setting is in Darstellung and reads Systemvorgabe, Links or Rechts; by
+  default it asks the desktop - KDE, GNOME and its relatives, Xfce - and follows both the side
+  and the order it names. The wordmark moves to whichever side stays free. Taken from FerrumPix.
+- The wordmark in the title bar stands where it stands in FerrumPix. The bar had no inner margin
+  here, so the wordmark sat ten points closer to the window edge than in the other application -
+  the same bar in two sizes. Whoever needs a margin of their own sets it on the border itself, the
+  way the toolbar above the track list does.
 - The application is now called FerrumKix. The old name was already taken by other products, and a
   name that has to share its search results is worth changing before 1.0 rather than after it.
   Everything that carried the name moved with it: the binary, the application id

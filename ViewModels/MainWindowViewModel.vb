@@ -200,6 +200,7 @@ Namespace ViewModels
                 End Sub)
             SetAccentColorCommand = New DelegateCommand(Sub(parameter) SetAccentColor(TryCast(parameter, String)))
             SetThemeModeCommand = New DelegateCommand(Sub(parameter) SetThemeMode(TryCast(parameter, String)))
+            SetWindowButtonsSideCommand = New DelegateCommand(Sub(parameter) SetWindowButtonsSide(TryCast(parameter, String)))
 
             For Each language In LocalizationService.Languages
                 LanguageChoices.Add(New LanguageChoice(language.Key, language.Name))
@@ -911,6 +912,7 @@ Namespace ViewModels
         Public ReadOnly Property SetFontSizeCommand As DelegateCommand
         Public ReadOnly Property SetAccentColorCommand As DelegateCommand
         Public ReadOnly Property SetThemeModeCommand As DelegateCommand
+        Public ReadOnly Property SetWindowButtonsSideCommand As DelegateCommand
 
         ''' <summary>Welches der drei Erscheinungsbilder gewaehlt ist. Die Einstellungen setzen
         ''' daran den Rahmen um das gewaehlte Bild.</summary>
@@ -929,6 +931,36 @@ Namespace ViewModels
         Public ReadOnly Property IsGrayLightThemeMode As Boolean
             Get
                 Return ThemeService.Current = "GrayLight"
+            End Get
+        End Property
+
+        ' Die Seite der Fensterknoepfe
+
+        ''' <summary>Wo die Fensterknoepfe sitzen und in welcher Reihenfolge. Keine Bindung im
+        ''' XAML, sondern das Signal fuer MainWindow: daran haengen Ausrichtung, Rand, die
+        ''' Reihenfolge der Knoepfe und die Seite des Namenszugs - das laesst sich nicht an eine
+        ''' einzelne Eigenschaft binden. Uebernommen aus FerrumPix.</summary>
+        Public ReadOnly Property WindowButtonLayout As WindowButtonLayout
+            Get
+                Return WindowButtonSideService.Resolve(AppSettingsService.Current.WindowButtonsSide)
+            End Get
+        End Property
+
+        Public ReadOnly Property IsWindowButtonsSystem As Boolean
+            Get
+                Return AppSettingsService.Current.WindowButtonsSide = WindowButtonSideService.SideSystem
+            End Get
+        End Property
+
+        Public ReadOnly Property IsWindowButtonsLeft As Boolean
+            Get
+                Return AppSettingsService.Current.WindowButtonsSide = WindowButtonSideService.SideLeft
+            End Get
+        End Property
+
+        Public ReadOnly Property IsWindowButtonsRight As Boolean
+            Get
+                Return AppSettingsService.Current.WindowButtonsSide = WindowButtonSideService.SideRight
             End Get
         End Property
 
@@ -957,6 +989,20 @@ Namespace ViewModels
             AppSettingsService.Current.ThemeMode = normalized
             ThemeService.Apply(normalized)
             For Each name In {NameOf(IsDarkThemeMode), NameOf(IsGrayDarkThemeMode), NameOf(IsGrayLightThemeMode)}
+                RaisePropertyChanged(name)
+            Next
+        End Sub
+
+        ''' <summary>Stellt die Seite der Fensterknoepfe um. Wirkt sofort: das Fenster haengt an
+        ''' <see cref="WindowButtonLayout"/> und setzt Knoepfe und Namenszug um, sobald die
+        ''' Aenderung gemeldet ist. Geschrieben wird - wie bei Erscheinungsbild, Schriftgrad und
+        ''' Akzentfarbe - beim Schliessen der Einstellungen.</summary>
+        Private Sub SetWindowButtonsSide(mode As String)
+            Dim normalized = AppSettingsService.NormalizeWindowButtonsSide(mode)
+            If AppSettingsService.Current.WindowButtonsSide = normalized Then Return
+            AppSettingsService.Current.WindowButtonsSide = normalized
+            For Each name In {NameOf(IsWindowButtonsSystem), NameOf(IsWindowButtonsLeft),
+                              NameOf(IsWindowButtonsRight), NameOf(WindowButtonLayout)}
                 RaisePropertyChanged(name)
             Next
         End Sub

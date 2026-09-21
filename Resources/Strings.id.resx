@@ -680,4 +680,10 @@
   <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
     <value>{0} dari {1} lagu</value>
   </data>
+  <data name="Fensterkn_pfe_ad315b51" xml:space="preserve"><value>Tombol jendela</value></data>
+  <data name="Auf_welcher_Seite_der_Titelleiste_Schlie_en_Maxi_6e9100cf" xml:space="preserve"><value>Di sisi mana bilah judul tombol tutup, maksimalkan, dan minimalkan berada.</value></data>
+  <data name="Die_Systemvorgabe_bernimmt_die_Anordnung_der_Arb_9eb7da33" xml:space="preserve"><value>Bawaan sistem mengikuti susunan desktop.</value></data>
+  <data name="Links_014bcd65" xml:space="preserve"><value>Kiri</value></data>
+  <data name="Rechts_d2911a6a" xml:space="preserve"><value>Kanan</value></data>
+  <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Bawaan sistem</value></data>
 </root>

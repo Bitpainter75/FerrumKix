@@ -680,4 +680,10 @@
   <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
     <value>{1} में से {0} ट्रैक</value>
   </data>
+  <data name="Fensterkn_pfe_ad315b51" xml:space="preserve"><value>विंडो बटन</value></data>
+  <data name="Auf_welcher_Seite_der_Titelleiste_Schlie_en_Maxi_6e9100cf" xml:space="preserve"><value>शीर्षक पट्टी के किस ओर बंद करें, अधिकतम करें और न्यूनतम करें होते हैं।</value></data>
+  <data name="Die_Systemvorgabe_bernimmt_die_Anordnung_der_Arb_9eb7da33" xml:space="preserve"><value>सिस्टम डिफ़ॉल्ट डेस्कटॉप की व्यवस्था का पालन करता है।</value></data>
+  <data name="Links_014bcd65" xml:space="preserve"><value>बाएँ</value></data>
+  <data name="Rechts_d2911a6a" xml:space="preserve"><value>दाएँ</value></data>
+  <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>सिस्टम डिफ़ॉल्ट</value></data>
 </root>

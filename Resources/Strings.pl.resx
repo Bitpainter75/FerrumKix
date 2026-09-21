@@ -680,4 +680,10 @@
   <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
     <value>{0} z {1} utworów</value>
   </data>
+  <data name="Fensterkn_pfe_ad315b51" xml:space="preserve"><value>Przyciski okna</value></data>
+  <data name="Auf_welcher_Seite_der_Titelleiste_Schlie_en_Maxi_6e9100cf" xml:space="preserve"><value>Po której stronie paska tytułu znajdują się zamknij, maksymalizuj i minimalizuj.</value></data>
+  <data name="Die_Systemvorgabe_bernimmt_die_Anordnung_der_Arb_9eb7da33" xml:space="preserve"><value>Ustawienie systemowe przejmuje układ z pulpitu.</value></data>
+  <data name="Links_014bcd65" xml:space="preserve"><value>Z lewej</value></data>
+  <data name="Rechts_d2911a6a" xml:space="preserve"><value>Z prawej</value></data>
+  <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Ustawienie systemowe</value></data>
 </root>

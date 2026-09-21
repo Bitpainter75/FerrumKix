@@ -74,6 +74,10 @@ Namespace Services
         ''' <see cref="ThemeService"/>.</summary>
         Public Property ThemeMode As String = "Dark"
 
+        ''' <summary>Auf welcher Seite der Titelleiste die Fensterknoepfe sitzen: "System", "Left"
+        ''' oder "Right". Siehe <see cref="WindowButtonSideService"/>.</summary>
+        Public Property WindowButtonsSide As String = WindowButtonSideService.SideSystem
+
         ''' <summary>Die Akzentfarbe als #RRGGBB. Aus ihr leiten sich die Farben der Fussleiste und
         ''' der laufenden Zeile ab, siehe <see cref="AccentColorService"/>.</summary>
         Public Property AccentColor As String = "#F08A1A"
@@ -209,6 +213,7 @@ Namespace Services
                 ' Was aus der Datei kommt, wird erst geprueft und dann geglaubt. Ein von Hand
                 ' verstellter Faktor von 12 machte die Anwendung sonst unbedienbar.
                 loaded.ThemeMode = ThemeService.Normalize(loaded.ThemeMode)
+                loaded.WindowButtonsSide = NormalizeWindowButtonsSide(loaded.WindowButtonsSide)
                 loaded.AccentColor = AccentColorService.Normalize(loaded.AccentColor)
                 loaded.FontSizeOffset = FontScaleService.Normalize(loaded.FontSizeOffset)
                 loaded.LanguageMode = LocalizationService.NormalizeLanguageMode(loaded.LanguageMode)
@@ -312,6 +317,17 @@ Namespace Services
         Public Shared Function NormalizeConverterFileNamePattern(value As String) As String
             Dim text = NumFunction.Replace(If(value, String.Empty), "$1").Trim()
             Return If(text.Length = 0, DefaultConverterFileNamePattern, text)
+        End Function
+
+        ''' <summary>Die Seite der Fensterknoepfe auf einen der drei gueltigen Werte. Alles
+        ''' Unbekannte wird zu "System": das ist die Wahl, die sich dem Arbeitsplatz anpasst, und
+        ''' damit die harmloseste Antwort auf eine von Hand verstellte Einstellungsdatei.</summary>
+        Public Shared Function NormalizeWindowButtonsSide(value As String) As String
+            Select Case If(value, "").Trim()
+                Case WindowButtonSideService.SideRight : Return WindowButtonSideService.SideRight
+                Case WindowButtonSideService.SideLeft : Return WindowButtonSideService.SideLeft
+                Case Else : Return WindowButtonSideService.SideSystem
+            End Select
         End Function
 
         ''' <summary>Die Vorverstaerkung in halben Dezibel zwischen -15 und +15. Feiner hoert man es

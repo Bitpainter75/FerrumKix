@@ -680,4 +680,10 @@
   <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
     <value>{0} di {1} brani</value>
   </data>
+  <data name="Fensterkn_pfe_ad315b51" xml:space="preserve"><value>Pulsanti finestra</value></data>
+  <data name="Auf_welcher_Seite_der_Titelleiste_Schlie_en_Maxi_6e9100cf" xml:space="preserve"><value>Su quale lato della barra del titolo si trovano chiudi, ingrandisci e riduci a icona.</value></data>
+  <data name="Die_Systemvorgabe_bernimmt_die_Anordnung_der_Arb_9eb7da33" xml:space="preserve"><value>L'impostazione di sistema adotta la disposizione del desktop.</value></data>
+  <data name="Links_014bcd65" xml:space="preserve"><value>Sinistra</value></data>
+  <data name="Rechts_d2911a6a" xml:space="preserve"><value>Destra</value></data>
+  <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Impostazione di sistema</value></data>
 </root>

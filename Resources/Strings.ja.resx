@@ -680,4 +680,10 @@
   <data name="0_von_1_Titeln_ec9bc836" xml:space="preserve">
     <value>{1} 曲中 {0} 曲</value>
   </data>
+  <data name="Fensterkn_pfe_ad315b51" xml:space="preserve"><value>ウィンドウボタン</value></data>
+  <data name="Auf_welcher_Seite_der_Titelleiste_Schlie_en_Maxi_6e9100cf" xml:space="preserve"><value>タイトルバーのどちら側に閉じる、最大化、最小化を置くか。</value></data>
+  <data name="Die_Systemvorgabe_bernimmt_die_Anordnung_der_Arb_9eb7da33" xml:space="preserve"><value>システム設定はデスクトップの配置に従います。</value></data>
+  <data name="Links_014bcd65" xml:space="preserve"><value>左</value></data>
+  <data name="Rechts_d2911a6a" xml:space="preserve"><value>右</value></data>
+  <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>システム設定に従う</value></data>
 </root>

@@ -15,11 +15,16 @@ Namespace Views
     Public Class MainWindow
         Inherits Window
 
+        ''' <summary>Das ViewModel, an dessen Meldungen das Fenster haengt. Gemerkt, damit der
+        ''' Handler beim naechsten Wechsel des DataContext wieder abgehaengt werden kann.</summary>
+        Private _observedViewModel As MainWindowViewModel
+
         Public Sub New()
             InitializeComponent()
             WireWindowChrome()
             RestoreWindowPlacement()
 
+            AddHandler DataContextChanged, AddressOf OnWindowDataContextChanged
             AddHandler Closing, AddressOf OnWindowClosing
             AddHandler KeyDown, AddressOf OnWindowKeyDown
             AddHandler Opened, AddressOf OnWindowOpened
@@ -74,6 +79,76 @@ Namespace Views
 
             Dim frame = Me.FindControl(Of Border)("WindowFrame")
             If frame IsNot Nothing Then AddHandler frame.PointerPressed, AddressOf OnFramePointerPressed
+
+            ' Noch ohne ViewModel - die Seite kommt hier direkt aus der Einstellung. Das ist
+            ' dieselbe Quelle, und die Knoepfe stehen damit schon beim ersten Zeichnen richtig.
+            ApplyWindowButtonsSide()
+        End Sub
+
+        ''' <summary>Haengt sich an das ViewModel, sobald es steht. Gebraucht wird genau eine
+        ''' Meldung: die umgestellte Seite der Fensterknoepfe.</summary>
+        Private Sub OnWindowDataContextChanged(sender As Object, e As EventArgs)
+            If _observedViewModel IsNot Nothing Then
+                RemoveHandler _observedViewModel.PropertyChanged, AddressOf OnViewModelPropertyChanged
+            End If
+            _observedViewModel = Me.ViewModel
+            If _observedViewModel IsNot Nothing Then
+                AddHandler _observedViewModel.PropertyChanged, AddressOf OnViewModelPropertyChanged
+            End If
+            ApplyWindowButtonsSide()
+        End Sub
+
+        Private Sub OnViewModelPropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs)
+            If e.PropertyName = NameOf(MainWindowViewModel.WindowButtonLayout) Then ApplyWindowButtonsSide()
+        End Sub
+
+        ''' <summary>Setzt die Fensterknoepfe auf die eingestellte Seite - rechts wie ausgeliefert
+        ''' oder links, wenn die Einstellung oder der Arbeitsplatz es so will (siehe
+        ''' <see cref="WindowButtonSideService"/>). Uebernommen aus FerrumPix.
+        '''
+        ''' Drei Dinge wechseln gemeinsam, sonst stimmt das Bild nicht: die AUSRICHTUNG des
+        ''' Knopfblocks samt seinem Rand zur Fensterkante, die REIHENFOLGE der Knoepfe (auch sie
+        ''' kommt vom Arbeitsplatz) und der NAMENSZUG, der auf die frei gewordene Seite
+        ''' rueckt.</summary>
+        Private Sub ApplyWindowButtonsSide()
+            Dim host = Me.FindControl(Of Border)("CustomWindowControlsHost")
+            Dim panel = Me.FindControl(Of StackPanel)("CustomWindowControls")
+            Dim logo = Me.FindControl(Of StackPanel)("WindowLogoPanel")
+            If host Is Nothing OrElse panel Is Nothing Then Return
+
+            ' Beim Bauen des Fensters gibt es noch kein ViewModel - dann direkt ueber die
+            ' Einstellung, es ist dieselbe Quelle.
+            Dim layout = Me.ViewModel?.WindowButtonLayout
+            If layout Is Nothing Then layout = WindowButtonSideService.Resolve(AppSettingsService.Current.WindowButtonsSide)
+            Dim onLeft = layout.OnLeft
+
+            host.HorizontalAlignment = If(onLeft, Avalonia.Layout.HorizontalAlignment.Left,
+                                                  Avalonia.Layout.HorizontalAlignment.Right)
+            ' Derselbe Abstand zur Fensterkante, nur gespiegelt. Die 4 oben halten die 24 hohen
+            ' Knoepfe in der Mitte der 32 hohen Leiste - siehe TopWindowDragArea.
+            host.Margin = If(onLeft, New Thickness(8, 4, 0, 0), New Thickness(0, 4, 8, 0))
+
+            ' Die Knoepfe neu einhaengen statt sie zu tauschen: der Block ist drei Kinder gross,
+            ' und eine Reihenfolge zu beschreiben ist weniger fehleranfaellig, als sie zu sortieren.
+            ' Die Rollennamen sind so gewaehlt, dass Name plus "Button" der Name im Markup ist.
+            Dim buttons = layout.Order.
+                Select(Function(role) Me.FindControl(Of Button)(role & "Button")).
+                Where(Function(button) button IsNot Nothing).ToList()
+            If buttons.Count = panel.Children.Count Then
+                panel.Children.Clear()
+                For Each button In buttons
+                    panel.Children.Add(button)
+                Next
+            End If
+
+            ' Der Namenszug weicht den Knoepfen aus. Links stehende Knoepfe schoeben ihn sonst vor
+            ' sich her.
+            If logo IsNot Nothing Then
+                Grid.SetColumn(logo, If(onLeft, 2, 0))
+                logo.HorizontalAlignment = If(onLeft, Avalonia.Layout.HorizontalAlignment.Right,
+                                                      Avalonia.Layout.HorizontalAlignment.Left)
+                logo.Margin = If(onLeft, New Thickness(0, 0, 16, 0), New Thickness(16, 0, 0, 0))
+            End If
         End Sub
 
         Private Sub WireButton(name As String, action As Action)

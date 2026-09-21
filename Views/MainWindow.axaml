@@ -29,14 +29,24 @@
                         <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                             <!-- Der Namenszug liegt als Bild vor und nicht als Schrift: er traegt
                                  Verlauf und Schattierung, die sich mit einer Schriftart nicht
-                                 nachbauen lassen. Die Hoehe haengt an der Leiste darueber. -->
-                            <Image Grid.Column="0"
-                                Source="avares://FerrumKix/Assets/FerrumKix_TopBar.png"
-                                Height="22"
-                                Stretch="Uniform"
-                                VerticalAlignment="Center"
-                                Margin="14,4,0,0"
-                                IsHitTestVisible="False"/>
+                                 nachbauen lassen. Hoehe und Rand sind die von FerrumPix, damit
+                                 beide Leisten nebeneinander gleich aussehen; die Hoehe haengt
+                                 ausserdem an der Leiste darueber.
+                                 Der Rahmen darum traegt einen Namen und ist der Griff, mit dem
+                                 MainWindow.ApplyWindowButtonsSide den Namenszug auf die Seite
+                                 schiebt, die von den Fensterknoepfen frei bleibt. -->
+                            <StackPanel x:Name="WindowLogoPanel"
+                                        Grid.Column="0"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        Margin="16,0,0,0"
+                                        IsHitTestVisible="False">
+                                <Image Source="avares://FerrumKix/Assets/FerrumKix_TopBar.png"
+                                       Height="22"
+                                       Stretch="Uniform"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
 
                             <!-- Der laufende Titel als Fenstertitel. Ueber ALLE Spalten und darin
                                  zentriert: in Spalte 1 zentriert saesse er nicht in der Fenstermitte,
@@ -61,11 +71,15 @@
 
                 <!-- Die Knoepfe liegen NICHT in der Leiste, sondern darueber im Fenstergitter: der
                      obere Rand haelt sie in ihrer Mitte. Bei einer Leiste von 32 und Knoepfen von 24
-                     sind das 4 Punkte oben. -->
-                <Border HorizontalAlignment="Right"
+                     sind das 4 Punkte oben.
+                     Seite und Reihenfolge stehen hier nur als Auslieferungszustand: beides setzt
+                     MainWindow.ApplyWindowButtonsSide nach der Einstellung und der Vorgabe des
+                     Arbeitsplatzes. -->
+                <Border x:Name="CustomWindowControlsHost"
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Margin="0,4,8,0">
-                    <StackPanel Orientation="Horizontal" Spacing="7">
+                    <StackPanel x:Name="CustomWindowControls" Orientation="Horizontal" Spacing="7">
                         <Button Classes="wnd-btn" x:Name="MinimizeButton" ToolTip.Tip="Minimieren">
                             <TextBlock Text="−" FontSize="{DynamicResource FP.Glyph.Medium}"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
