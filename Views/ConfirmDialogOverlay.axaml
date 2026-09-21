@@ -50,6 +50,7 @@
                         MaxHeight="260">
                     <ListBox ItemsSource="{Binding DialogChoices}"
                              SelectedIndex="{Binding DialogSelectedChoice, Mode=TwoWay}"
+                             SelectionChanged="OnChoiceSelectionChanged"
                              Background="Transparent" BorderThickness="0"
                              Classes="no-translate"
                              SelectionMode="Single"/>

@@ -1,16 +1,28 @@
 # Changelog
 
+## 0.9.7
+
+- The window buttons can now sit on the left of the title bar. The application draws that bar
+  itself and inherits nothing from the desktop, so whoever has close, maximize and minimize on
+  the left stood here without them. The setting is in Darstellung and reads Systemvorgabe, Links
+  or Rechts; by default it asks the desktop - KDE, GNOME and its relatives, Xfce - and follows
+  both the side and the order it names. The wordmark moves to whichever side stays free.
+- The title-bar wordmark and the application icon have been revised. The wordmark now uses the
+  same spacing as FerrumPix, while the icon artwork and all of its packaged sizes were refreshed
+  to keep the identity clear at small task-bar sizes as well as in the window.
+- An inserted audio CD now opens its own playlist automatically, rather than merely appearing in
+  the sidebar until it is selected by hand. When MusicBrainz finds several editions with the same
+  table of contents, the choice list reliably transfers the clicked edition to the lookup.
+- The converter fixes the output mode to one result per track for an audio CD and disables the
+  other modes. A CD is physically read one track at a time; joining those reads was never a valid
+  rip and the service consequently rejected it only after the job was started.
+- The context menu of an audio-CD album now offers Eject CD. It opens the drive tray and immediately
+  removes the temporary CD playlist, including a running playback or rip. The new labels and the
+  error message are available in every application language.
+
+
 ## 0.9.6
 
-- The window buttons can sit on the left of the title bar. The application draws that bar itself and
-  inherits nothing from the desktop, so whoever has close, maximize and minimize on the left stood
-  here without them. The setting is in Darstellung and reads Systemvorgabe, Links or Rechts; by
-  default it asks the desktop - KDE, GNOME and its relatives, Xfce - and follows both the side
-  and the order it names. The wordmark moves to whichever side stays free. Taken from FerrumPix.
-- The wordmark in the title bar stands where it stands in FerrumPix. The bar had no inner margin
-  here, so the wordmark sat ten points closer to the window edge than in the other application -
-  the same bar in two sizes. Whoever needs a margin of their own sets it on the border itself, the
-  way the toolbar above the track list does.
 - The application is now called FerrumKix. The old name was already taken by other products, and a
   name that has to share its search results is worth changing before 1.0 rather than after it.
   Everything that carried the name moved with it: the binary, the application id

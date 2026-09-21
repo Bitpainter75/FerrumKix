@@ -1966,6 +1966,27 @@ Namespace ViewModels
             End Try
         End Function
 
+        ''' <summary>Wirft die eingelegte CD aus und entfernt ihre temporaere Wiedergabeliste
+        ''' sofort, statt auf den naechsten Durchlauf des Laufwerkmonitors zu warten.</summary>
+        Public Async Function EjectAudioCdAsync() As Task
+            Dim track = _audioCdTracks.FirstOrDefault()
+            If track Is Nothing Then Return
+            Dim devicePath As String = Nothing
+            Dim number As Integer
+            Dim lastTrack As Integer
+            If Not Track.TryGetAudioCdSource(track.FilePath, devicePath, number, lastTrack) Then Return
+
+            Dim ejected = Await Task.Run(Function() AudioCdService.Eject(devicePath))
+            If Not ejected Then
+                StatusText = LocalizationService.T("Die Audio-CD konnte nicht ausgeworfen werden.")
+                Return
+            End If
+            StopPlayback()
+            SetAudioCdTracks(New List(Of Track)(), selectPlaylist:=False)
+            SetAudioCdToc(Nothing)
+            IdentifyDisc(Nothing)
+        End Function
+
         ''' <summary>Der Monitor fragt in kleinen Abstaenden die TOC ab. Nur ein Lauf darf zugleich
         ''' lesen; optische Laufwerke reagieren auf parallele TOC-Anfragen teilweise traege.</summary>
         Private Async Sub CheckAudioCd()
@@ -1973,7 +1994,7 @@ Namespace ViewModels
             Try
                 Dim disc = Await Task.Run(AddressOf AudioCdService.ReadFirstDiscInfo)
                 Dispatcher.UIThread.Post(Sub()
-                                             SetAudioCdTracks(disc.Tracks, selectPlaylist:=False)
+                                             SetAudioCdTracks(disc.Tracks, selectPlaylist:=True)
                                              SetAudioCdToc(disc.Toc)
                                              IdentifyDisc(disc.Toc)
                                          End Sub)

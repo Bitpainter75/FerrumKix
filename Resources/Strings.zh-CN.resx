@@ -686,4 +686,6 @@
   <data name="Links_014bcd65" xml:space="preserve"><value>左侧</value></data>
   <data name="Rechts_d2911a6a" xml:space="preserve"><value>右侧</value></data>
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>系统默认</value></data>
+  <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>弹出 CD</value></data>
+  <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>无法弹出音频 CD。</value></data>
 </root>

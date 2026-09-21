@@ -686,4 +686,6 @@
   <data name="Links_014bcd65" xml:space="preserve"><value>左</value></data>
   <data name="Rechts_d2911a6a" xml:space="preserve"><value>右</value></data>
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>システム設定に従う</value></data>
+  <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>CD を取り出す</value></data>
+  <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>オーディオ CD を取り出せませんでした。</value></data>
 </root>

@@ -162,6 +162,7 @@
                                         <ContextMenu>
                                             <MenuItem Header="Album abspielen" Tag="{Binding}" Click="OnGroupPlayClick"/>
                                             <MenuItem Header="Album konvertieren…" Tag="{Binding}" Click="OnGroupConvertClick"/>
+                                            <MenuItem Header="CD auswerfen" Tag="{Binding}" Click="OnGroupEjectCdClick" IsVisible="{Binding IsAudioCdGroup}"/>
                                             <MenuItem Header="MP3-Tags bearbeiten…" Tag="{Binding}" Click="OnGroupTagClick" IsVisible="{Binding !IsAudioCdGroup}"/>
                                             <MenuItem Header="Auf- oder zuklappen" Tag="{Binding}" Click="OnGroupToggleMenuClick"/>
                                             <Separator/>

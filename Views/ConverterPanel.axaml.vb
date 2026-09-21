@@ -134,6 +134,13 @@ Namespace Views
             Dim cdTrack = _tracks.FirstOrDefault(Function(track) track.IsAudioCdTrack)
             FindControl(Of TextBox)("FolderBox").Text = If(firstFile Is Nothing AndAlso cdTrack IsNot Nothing,
                                                           AudioConversionService.ResolveCdRipFolder(root, cdTrack), root)
+            ' CDDA wird immer einzeln gelesen und geschrieben. Die Sammelmodi waeren nicht nur
+            ' irrefuehrend, sie werden vom Dienst auch bewusst abgelehnt.
+            If cdTrack IsNot Nothing Then
+                Dim modeBox = FindControl(Of ComboBox)("ModeBox")
+                modeBox.SelectedIndex = 0
+                modeBox.IsEnabled = False
+            End If
         End Sub
 
         Private Sub InitializeComponent()
@@ -360,7 +367,7 @@ Namespace Views
             For Each controlName In {"ConvertButton", "ChooseFolderButton"}
                 FindControl(Of Button)(controlName).IsEnabled = Not isProcessing
             Next
-            FindControl(Of ComboBox)("ModeBox").IsEnabled = Not isProcessing
+            FindControl(Of ComboBox)("ModeBox").IsEnabled = Not isProcessing AndAlso Not _tracks.Any(Function(track) track.IsAudioCdTrack)
             For Each controlName In {"Mp3Radio", "FlacRadio", "OggRadio", "CbrRadio", "VbrRadio", "B128Radio", "B192Radio", "B256Radio", "B320Radio"}
                 FindControl(Of RadioButton)(controlName).IsEnabled = Not isProcessing
             Next

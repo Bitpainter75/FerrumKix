@@ -686,4 +686,6 @@
   <data name="Links_014bcd65" xml:space="preserve"><value>Gauche</value></data>
   <data name="Rechts_d2911a6a" xml:space="preserve"><value>Droite</value></data>
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Valeur par défaut du système</value></data>
+  <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>Éjecter le CD</value></data>
+  <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>Le CD audio n’a pas pu être éjecté.</value></data>
 </root>

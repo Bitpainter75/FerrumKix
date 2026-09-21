@@ -35,6 +35,8 @@ Namespace Services
 
         Private Const CdromReadTocHeader As UInteger = &H5305UI
         Private Const CdromReadTocEntry As UInteger = &H5306UI
+        ''' <summary>CDROMEJECT: oeffnet die Lade des optischen Laufwerks.</summary>
+        Private Const CdromEject As UInteger = &H5309UI
         Private Const CdromLeadout As Byte = &HAA
         Private Const CdromDataTrack As Byte = &H4
 
@@ -108,6 +110,23 @@ Namespace Services
                 If info.Tracks.Count > 0 Then Return info
             Next
             Return New DiscInfo()
+        End Function
+
+        ''' <summary>Wirft die CD aus dem angegebenen Laufwerk aus. Das Oeffnen erfolgt wie beim
+        ''' TOC-Lesen nichtblockierend, damit ein nicht bereites Laufwerk die Oberflaeche nicht
+        ''' festhaelt.</summary>
+        Public Shared Function Eject(devicePath As String) As Boolean
+            If Not OperatingSystem.IsLinux() OrElse String.IsNullOrWhiteSpace(devicePath) Then Return False
+            Try
+                Dim descriptor = OpenDevice(devicePath, OpenReadOnly Or OpenNonBlock)
+                If descriptor < 0 Then Return False
+                Using handle As New SafeFileHandle(New IntPtr(descriptor), ownsHandle:=True)
+                    Return ioctl(handle, CdromEject, 0) = 0
+                End Using
+            Catch ex As Exception
+                DiagnosticLogService.LogException("AudioCd.Eject", ex)
+                Return False
+            End Try
         End Function
 
         Private Shared Iterator Function LinuxOpticalDevices() As IEnumerable(Of String)

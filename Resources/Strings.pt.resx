@@ -686,4 +686,6 @@
   <data name="Links_014bcd65" xml:space="preserve"><value>Esquerda</value></data>
   <data name="Rechts_d2911a6a" xml:space="preserve"><value>Direita</value></data>
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Predefinição do sistema</value></data>
+  <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>Ejetar CD</value></data>
+  <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>Não foi possível ejetar o CD de áudio.</value></data>
 </root>

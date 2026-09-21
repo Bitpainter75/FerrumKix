@@ -686,4 +686,6 @@
   <data name="Links_014bcd65" xml:space="preserve"><value>ซ้าย</value></data>
   <data name="Rechts_d2911a6a" xml:space="preserve"><value>ขวา</value></data>
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>ค่าเริ่มต้นของระบบ</value></data>
+  <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>นำแผ่นซีดีออก</value></data>
+  <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>ไม่สามารถนำแผ่นซีดีเพลงออกได้</value></data>
 </root>

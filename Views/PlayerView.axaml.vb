@@ -326,6 +326,13 @@ Namespace Views
             ' angeklickte Albumzeile dazugehört. So lassen sich mehrere Alben auf einmal senden.
             ShowConverter(ConversionTracksForContext(group))
         End Sub
+
+        Private Async Sub OnGroupEjectCdClick(sender As Object, e As RoutedEventArgs)
+            Dim group = TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow)
+            If group Is Nothing OrElse Not group.IsAudioCdGroup Then Return
+            Dim viewModel As MainWindowViewModel = Me.ViewModel
+            If viewModel IsNot Nothing Then Await viewModel.EjectAudioCdAsync()
+        End Sub
         Private Sub OnGroupTagClick(sender As Object, e As RoutedEventArgs)
             ShowTagEditor(ConversionTracksForContext(TryCast(TryCast(sender, MenuItem)?.Tag, PlaylistGroupRow)))
         End Sub
