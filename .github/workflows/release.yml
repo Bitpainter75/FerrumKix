@@ -1,20 +1,51 @@
+# Vorlage fuer das OEFFENTLICHE Repository: .github/workflows/release.yml
+# Das private Build-Repo liefert Packaging und Audits; gebaut und veroeffentlicht
+# wird im oeffentlichen FerrumKix-Repository, dessen Actions-Minuten frei sind.
+#
+# EIN LAUF FUER ALLES, DIE AUR EINGESCHLOSSEN, wie bei FerrumPix. Ein Job baut die Pakete und
+# veroeffentlicht sie in das eine Release "latest" (siehe publish-github-release.sh): eine neue
+# Version als Entwurf mit allen Dateien, der erst dann das bisherige Release archiviert und
+# ersetzt. ZULETZT geht der PKGBUILD in die AUR; sie nimmt das normale Linux-ZIP aus dem
+# veroeffentlichten Release. Ein Hotfix nur fuer die AUR ist ein Lauf mit "zip".
+#
+# NUR HANDSTART, kein Ausloeser per Tag: das Veroeffentlichen legt beim Archivieren selbst einen
+# Tag an (etwa 0.9.8-2), und ein Tag-Ausloeser startete daraufhin einen Lauf fuer die ALTE
+# Version.
+#
+# Benoetigte Secrets:
+#   PACKAGING_DEPLOY_KEY  liest das private Build-Repo
+#   AUR_SSH_KEY           schreibt in die AUR
+#   RELEASE_TOKEN         Fine-grained Token fuer dieses Repo, "Contents" und "Workflows" auf
+#                         Lesen und Schreiben. Ohne ihn nimmt der Lauf den eingebauten
+#                         GITHUB_TOKEN, und der darf keinen Tag auf einen Commit setzen, dessen
+#                         Workflow-Dateien vom Stand auf main abweichen - genau das tun
+#                         Archivieren und Umhaengen von "latest" nach einer Workflow-Aenderung.
+
 name: Release
 
 on:
   workflow_dispatch:
-  push:
-    tags: ['[0-9]+.[0-9]+.[0-9]+*']
+    inputs:
+      pakete:
+        description: "Welche Pakete? 'alle' baut alles und aktualisiert die AUR; 'zip' ebenfalls die AUR; sonst genau eines"
+        type: choice
+        default: alle
+        options:
+          - alle
+          - appimage
+          - zip
+          - deb
+          - rpm
 
-# Das automatisch ausgestellte Token darf ausschliesslich Releases dieses oeffentlichen
-# Repositories anlegen bzw. aktualisieren. Das Packaging-Repo wird nur lesend per Deploy-Key
-# ausgecheckt.
 permissions:
   contents: write
 
 jobs:
-  linux:
-    name: AppImage, ZIP, DEB und RPM
+  pakete:
+    name: Pakete bauen und veroeffentlichen
     runs-on: ubuntu-latest
+    env:
+      PAKETE: ${{ inputs.pakete || 'alle' }}
 
     steps:
       - uses: actions/checkout@v7
@@ -32,29 +63,70 @@ jobs:
       - name: Werkzeuge
         run: |
           sudo apt-get update
-          sudo apt-get install -y zip desktop-file-utils rpm
+          sudo apt-get install -y zip desktop-file-utils rpm jq
 
-      - name: AppImage
-        run: packaging/package.sh appimage
+      - name: Pakete bauen
+        run: |
+          if [ "$PAKETE" = "alle" ]; then
+            packaging/package.sh all
+          else
+            packaging/package.sh "$PAKETE"
+          fi
         env:
           FERRUMKIX_BUILD_BOX: ""
 
-      - name: Linux-ZIP
-        run: packaging/package.sh zip
-        env:
-          FERRUMKIX_BUILD_BOX: ""
+      - name: Dateien
+        run: ls -la packaging/build
 
-      - name: DEB
-        run: packaging/package.sh deb
+      # "alle" veroeffentlicht vollstaendig und darf eine neue Version anfangen. Ein Einzellauf
+      # traegt --partial: er ersetzt nur seine Dateien im bestehenden Release derselben Version
+      # und bricht ab, wenn die Version neu ist.
+      - name: Veroeffentlichen
+        run: |
+          if [ "$PAKETE" = "alle" ]; then
+            packaging/publish-github-release.sh
+          else
+            packaging/publish-github-release.sh --partial
+          fi
         env:
-          FERRUMKIX_BUILD_BOX: ""
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
 
-      - name: RPM
-        run: packaging/package.sh rpm
-        env:
-          FERRUMKIX_BUILD_BOX: ""
+  aur:
+    name: AUR
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    needs: pakete
+    # ZULETZT: der PKGBUILD laedt das Linux-ZIP aus dem veroeffentlichten Release und haelt seine
+    # Pruefsumme fest. Nur, wenn das Linux-ZIP in diesem Lauf mitkam.
+    if: ${{ needs.pakete.result == 'success' && (inputs.pakete == 'alle' || inputs.pakete == 'zip') }}
 
-      - name: Ins Latest-Release
-        run: packaging/publish-github-release.sh --only-latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Werkzeuge
+        run: pacman -Sy --noconfirm --needed git openssh jq curl python
+
+      - uses: actions/checkout@v7
+
+      - uses: actions/checkout@v7
+        with:
+          repository: Bitpainter75/FerrumKix-Build
+          path: packaging
+          ssh-key: ${{ secrets.PACKAGING_DEPLOY_KEY }}
+
+      - name: AUR-Repo klonen
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/aur
+          chmod 600 ~/.ssh/aur
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new"
+          git clone ssh://aur@aur.archlinux.org/ferrumkix-bin.git packaging/.aur-work
+
+      # makepkg laeuft nicht als root; die Identitaet entspricht der manuellen Veroeffentlichung.
+      - name: AUR veroeffentlichen
+        run: |
+          useradd -m builder
+          chown -R builder:builder .
+          cp -r ~/.ssh /home/builder/.ssh
+          chown -R builder:builder /home/builder/.ssh
+          su builder -c "git config --global user.name 'Bitpainter75'"
+          su builder -c "git config --global user.email '55985980+Bitpainter75@users.noreply.github.com'"
+          su builder -c "GIT_SSH_COMMAND='ssh -i ~/.ssh/aur -o StrictHostKeyChecking=accept-new' packaging/publish-aur.sh --aur-dir packaging/.aur-work"

@@ -85,18 +85,21 @@ be scaled per screen, for displays where it would otherwise come out too small.
 
 ### Linux
 
+All packages are in the [latest release](https://github.com/Bitpainter75/FerrumKix/releases/tag/latest).
+Every file name carries the build number, for example FerrumKix-0.9.8-1-x86_64.AppImage; the table
+says which ending belongs to which package.
+
 | Package | For | Get it |
 |---|---|---|
 | AUR | Arch, CachyOS, Manjaro, EndeavourOS | `paru -S ferrumkix-bin` (or `yay -S ferrumkix-bin`) |
-| AppImage | Any distribution, runs without installing | [FerrumKix-x86_64.AppImage](https://github.com/Bitpainter75/FerrumKix/releases/download/latest/FerrumKix-x86_64.AppImage) |
-| DEB | Debian, Ubuntu, Mint | [FerrumKix-amd64.deb](https://github.com/Bitpainter75/FerrumKix/releases/download/latest/FerrumKix-amd64.deb) |
-| RPM | Fedora, openSUSE | [FerrumKix-x86_64.rpm](https://github.com/Bitpainter75/FerrumKix/releases/download/latest/FerrumKix-x86_64.rpm) |
-| ZIP | Portable, unpack and run (x64) | [FerrumKix-linux-x64.zip](https://github.com/Bitpainter75/FerrumKix/releases/download/latest/FerrumKix-linux-x64.zip) |
+| AppImage | Any distribution, runs without installing | file ending in -x86_64.AppImage |
+| DEB | Debian, Ubuntu, Mint | file ending in -amd64.deb |
+| RPM | Fedora, openSUSE | file ending in -x86_64.rpm |
+| ZIP | Portable, unpack and run (x64) | file ending in -linux-x64.zip |
 
 [`ferrumkix-bin`](https://aur.archlinux.org/packages/ferrumkix-bin) tracks each release and pulls
-in the dependencies below on its own. The download addresses above stay the same from version to
-version, so a bookmark or an update script keeps working; the AppImage also carries update
-information, so tools that manage AppImages find new versions by themselves.
+in the dependencies below on its own. The AppImage carries update information, so tools that
+manage AppImages find new versions by themselves.
 
 The packages are self-contained and bring the .NET runtime with them. **libmpv is needed** and comes from your distribution:
 
