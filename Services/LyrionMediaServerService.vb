@@ -74,21 +74,34 @@ Namespace Services
         ''' die Abfrage eine Obergrenze raten.</para></summary>
         Public Shared Async Function GetAlbumsAsync(search As String, sort As AlbumSort, cancellationToken As CancellationToken, Optional bulk As Boolean = False) As Task(Of List(Of Album))
             Dim albums As New List(Of Album)()
-            Dim probe = Await RequestAsync("", AlbumCommand(0, sort, search), cancellationToken, bulk)
+            ' Die Volltextsuche des LMS-Albenbefehls findet je nach Serverversion nur Teile der
+            ' Albumdaten (oft den Albumnamen, nicht aber den Album-Interpreten). Die Liste ist
+            ' klein genug, um sie vollständig zu holen; das Filtern geschieht weiter unten über
+            ' beide sichtbaren Felder und ist damit auf allen LMS-Versionen identisch.
+            ' "new" ist dabei ungeeignet: es wird durch browseagelimit begrenzt und würde ältere
+            ' Treffer verschlucken. Für eine Suche wird daher die vollständige Artist/Year-Liste
+            ' als Quelle verwendet.
+            Dim sourceSort = If(String.IsNullOrWhiteSpace(search), sort, AlbumSort.ArtistYear)
+            Dim probe = Await RequestAsync("", AlbumCommand(0, sourceSort), cancellationToken, bulk)
             Dim total As Integer
             If Not Integer.TryParse(Text(probe, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) OrElse total <= 0 Then Return albums
 
-            Dim result = Await RequestAsync("", AlbumCommand(total, sort, search), cancellationToken, bulk)
+            Dim result = Await RequestAsync("", AlbumCommand(total, sourceSort), cancellationToken, bulk)
             Dim rows As JsonElement
             If Not result.TryGetProperty("albums_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return albums
             For Each row In rows.EnumerateArray()
                 albums.Add(New Album With {.Id = Text(row, "id"), .Title = FirstText(row, "album", "title"), .Artist = FirstText(row, "artist", "albumartist"),
                                            .Year = Text(row, "year"), .ArtworkTrackId = Text(row, "artwork_track_id"), .FavoritesUrl = Text(row, "favorites_url")})
             Next
-            ' MIT einem Suchbegriff sortiert der Server NICHT. Er nimmt "sort:" entgegen und gibt
-            ' fuer artflow, yearalbum und new dieselbe Reihenfolge heraus - die seiner
-            ' Volltextsuche. Geprueft an LMS 9.1.2: derselbe Begriff, 35 Treffer, drei
-            ' Sortierungen, Zeile fuer Zeile dieselbe Folge. Dann wird hier sortiert.
+            If Not String.IsNullOrWhiteSpace(search) Then
+                ' Die Albenliste enthaelt keinen Liedtitel. Die Titelsuche liefert dazu die
+                ' betroffenen Album-IDs; so bleibt das Ergebnis ein Albengitter, findet aber
+                ' auch beispielsweise ein Album ueber einen einzelnen Song darauf.
+                Dim titleAlbumIds = Await FindAlbumIdsByTitleSearchAsync(search, cancellationToken, bulk)
+                albums = albums.Where(Function(album) MatchesSearch(album, search) OrElse titleAlbumIds.Contains(album.Id)).ToList()
+            End If
+            ' Suchergebnisse stammen aus dem lokalen Filter. Daher wird ihre gewählte Reihenfolge
+            ' ebenfalls hier hergestellt.
             If sort = AlbumSort.AlbumTitle OrElse Not String.IsNullOrWhiteSpace(search) Then
                 albums = SortAlbums(albums, sort)
             End If
@@ -134,10 +147,37 @@ Namespace Services
         ''' <summary>"l" liefert den Albumnamen. Ohne dieses Tag kommen nur Cover und Metadaten an,
         ''' die Beschriftung der Album-Kacheln bliebe leer. Mit <paramref name="count"/> = 0 zaehlt
         ''' der Server nur.</summary>
-        Private Shared Function AlbumCommand(count As Integer, sort As AlbumSort, search As String) As String()
+        Private Shared Function AlbumCommand(count As Integer, sort As AlbumSort) As String()
             Dim command As New List(Of String) From {"albums", "0", Math.Max(0, count).ToString(CultureInfo.InvariantCulture), "tags:aljy", "sort:" & ServerSort(sort)}
-            If Not String.IsNullOrWhiteSpace(search) Then command.Add("search:" & search.Trim())
             Return command.ToArray()
+        End Function
+
+        ''' <summary>Vergleicht alle Suchwörter mit Albumtitel und -interpret. Das bleibt bewusst
+        ''' lokal: LMS durchsucht bei <c>albums</c> nicht auf jedem Server dieselben Felder.</summary>
+        Private Shared Function MatchesSearch(album As Album, search As String) As Boolean
+            Dim terms = search.Trim().Split(New Char() {" "c, ControlChars.Tab}, StringSplitOptions.RemoveEmptyEntries)
+            Dim searchable = String.Join(" ", {If(album?.Title, String.Empty), If(album?.Artist, String.Empty)})
+            Return terms.All(Function(term) searchable.IndexOf(term, StringComparison.CurrentCultureIgnoreCase) >= 0)
+        End Function
+
+        ''' <summary>Ermittelt die Alben von Titeln, die der LMS-Volltextindex findet. Anders als
+        ''' der <c>albums</c>-Befehl durchsucht <c>titles</c> auch Liedtitel zuverlässig.</summary>
+        Private Shared Async Function FindAlbumIdsByTitleSearchAsync(search As String, cancellationToken As CancellationToken, bulk As Boolean) As Task(Of HashSet(Of String))
+            Dim ids As New HashSet(Of String)(StringComparer.Ordinal)
+            Dim command = New String() {"titles", "0", "0", "tags:l", "search:" & search.Trim()}
+            Dim probe = Await RequestAsync("", command, cancellationToken, bulk)
+            Dim total As Integer
+            If Not Integer.TryParse(Text(probe, "count"), NumberStyles.Integer, CultureInfo.InvariantCulture, total) OrElse total <= 0 Then Return ids
+
+            command(2) = total.ToString(CultureInfo.InvariantCulture)
+            Dim result = Await RequestAsync("", command, cancellationToken, bulk)
+            Dim rows As JsonElement
+            If Not result.TryGetProperty("titles_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return ids
+            For Each row In rows.EnumerateArray()
+                Dim albumId = Text(row, "album_id")
+                If Not String.IsNullOrWhiteSpace(albumId) Then ids.Add(albumId)
+            Next
+            Return ids
         End Function
 
         ''' <summary>Nach dem Albumtitel kennt der Server keine Reihenfolge - er nimmt "sort:album"
