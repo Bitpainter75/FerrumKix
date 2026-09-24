@@ -206,6 +206,10 @@ Namespace Services
         Public NotInheritable Class FavoriteEntry
             Public Property Url As String = String.Empty
             Public Property Name As String = String.Empty
+            ''' <summary>Der Albuminterpret aus der Favoritenadresse. Der Server liefert bei
+            ''' einem Favoriten sonst nur dessen Namen; nach einem Umbenennen oder Loeschen ist
+            ''' dies die letzte noch vorhandene Kontextangabe.</summary>
+            Public Property Artist As String = String.Empty
         End Class
 
         ''' <summary>Ein Titel der Bibliothek mit dem, was der Abgleich braucht.</summary>
@@ -234,10 +238,26 @@ Namespace Services
             For Each row In rows.EnumerateArray()
                 Dim url = Text(row, "url")
                 If url.StartsWith(AlbumFavoritePrefix, StringComparison.Ordinal) Then
-                    entries.Add(New FavoriteEntry With {.Url = url, .Name = Text(row, "name")})
+                    entries.Add(New FavoriteEntry With {.Url = url, .Name = Text(row, "name"), .Artist = ArtistFromAlbumFavoriteUrl(url)})
                 End If
             Next
             Return entries
+        End Function
+
+        ''' <summary>Albumfavoriten werden vom Server als
+        ''' <c>db:album.title=...&amp;contributor.name=...</c> abgelegt. Das Jahr ist nicht Teil
+        ''' dieser Adresse und kann nach dem Verlust des Albums daher nicht verlaesslich angezeigt
+        ''' werden.</summary>
+        Private Shared Function ArtistFromAlbumFavoriteUrl(url As String) As String
+            Const artistMarker As String = "&contributor.name="
+            Dim position = url.IndexOf(artistMarker, StringComparison.Ordinal)
+            If position < 0 Then Return String.Empty
+            Try
+                Return Uri.UnescapeDataString(url.Substring(position + artistMarker.Length))
+            Catch ex As ArgumentException
+                ' Eine defekte alte Favoritenadresse soll die gesamte Bereinigung nicht verhindern.
+                Return String.Empty
+            End Try
         End Function
 
         ''' <summary>Die Ordner, in denen der Server seine Medien liegen hat. Damit laesst sich der

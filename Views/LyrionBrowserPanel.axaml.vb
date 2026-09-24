@@ -689,9 +689,7 @@ Namespace Views
    Dim viewModel = TryCast(DataContext, MainWindowViewModel)
    If entries.Count = 0 OrElse viewModel Is Nothing OrElse LyrionTaskState.IsBusy Then Return
 
-   Dim listed = String.Join(Environment.NewLine,
-                            entries.Select(Function(entry) "· " & If(String.IsNullOrWhiteSpace(entry.Name),
-                                                                     entry.Url, entry.Name)))
+   Dim listed = String.Join(Environment.NewLine, entries.Select(AddressOf UnresolvedFavoriteLabel))
    Dim confirmed = Await viewModel.ShowConfirmAsync(
     LocalizationService.T("Favoriten ohne passendes Album entfernen?"),
     LocalizationService.Format("Zu diesen {0} Favoriteneinträgen gibt es kein Album mehr: umbenannt, neu getaggt oder gelöscht. Sollen sie beim Server aus den Favoriten genommen werden? An der Musik ändert das nichts.", entries.Count),
@@ -701,6 +699,14 @@ Namespace Views
    If Not confirmed Then Return
    LyrionFavoriteSyncService.StartUnresolvedCleanup()
   End Sub
+
+  ''' <summary>Der Favoritenname ist der Albumtitel. Die interne Albumadresse bewahrt ausserdem
+  ''' den damaligen Interpreten, auch wenn das Album inzwischen nicht mehr in der Bibliothek ist.</summary>
+  Private Shared Function UnresolvedFavoriteLabel(entry As LyrionMediaServerService.FavoriteEntry) As String
+   Dim title = If(String.IsNullOrWhiteSpace(entry.Name), entry.Url, entry.Name)
+   If String.IsNullOrWhiteSpace(entry.Artist) Then Return "· " & title
+   Return "· " & title & " — " & entry.Artist
+  End Function
 
   ''' <summary>Schlaegt das Album auf, das gerade auf dem Geraet laeuft, und waehlt darin den
   ''' laufenden Titel. Die Album-Kennung kommt aus der Zustandsabfrage; das Album selbst wird aus
