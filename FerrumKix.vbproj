@@ -34,9 +34,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.1.2" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.1.2" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.2" />
+    <PackageReference Include="Avalonia" Version="12.1.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.3" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.3" />
     <!-- Wie in FerrumPix das virtualisierende Raster: der ItemsRepeater baut nur die Kacheln, die
          wirklich im Sichtbereich liegen, und reicht sie beim Rollen weiter. Ohne ihn erzeugt die
          Alben-Uebersicht des Lyrion-Servers jede Kachel der ganzen Bibliothek auf einmal. -->
