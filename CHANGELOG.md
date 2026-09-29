@@ -2,6 +2,14 @@
 
 ## 0.9.7
 
+- FerrumKix can now live in the system tray (#1). A click on the icon shows or hides the window,
+  and its menu offers show/hide, play/pause, next and previous track and quit; the tooltip names
+  the current track. Three switches in Darstellung, all off by default: show the icon, minimize
+  to the tray and close to the tray. Closing then only hides the window and playback continues;
+  quitting goes through the menu or MPRIS. The window only hides while a tray host is actually
+  running - on Linux one that speaks StatusNotifierItem, on GNOME the AppIndicator extension - so
+  a desktop without one cannot lock it away. MPRIS Raise and a second launch bring a hidden
+  window back, and a session shutdown still closes it.
 - The window buttons can now sit on the left of the title bar. The application draws that bar
   itself and inherits nothing from the desktop, so whoever has close, maximize and minimize on
   the left stood here without them. The setting is in Darstellung and reads Systemvorgabe, Links
