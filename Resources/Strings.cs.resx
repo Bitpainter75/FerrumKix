@@ -688,4 +688,15 @@
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Výchozí nastavení systému</value></data>
   <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>Vysunout CD</value></data>
   <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>Zvukové CD nelze vysunout.</value></data>
+  <data name="Fenster_zeigen_eb670e20" xml:space="preserve"><value>Zobrazit okno</value></data>
+  <data name="Fenster_verbergen_dbe607c1" xml:space="preserve"><value>Skrýt okno</value></data>
+  <data name="Pause_781961bc" xml:space="preserve"><value>Pozastavit</value></data>
+  <data name="Beenden_ce9e650e" xml:space="preserve"><value>Ukončit</value></data>
+  <data name="Symbol_im_Infobereich_d100eb4e" xml:space="preserve"><value>Ikona v oznamovací oblasti</value></data>
+  <data name="Zeigt_FerrumKix_im_Infobereich_der_Kontrollleist_d204df77" xml:space="preserve"><value>Zobrazí FerrumKix v oznamovací oblasti panelu. Kliknutím se okno přenese do popředí nebo skryje; nabídka ovládá přehrávání a ukončuje aplikaci.</value></data>
+  <data name="Unter_Linux_braucht_es_eine_Leiste_die_StatusNot_55540ced" xml:space="preserve"><value>V Linuxu je potřeba panel, který podporuje StatusNotifierItem. GNOME zobrazí ikonu až s rozšířením AppIndicator.</value></data>
+  <data name="Beim_Minimieren_in_den_Infobereich_379e7446" xml:space="preserve"><value>Minimalizovat do oznamovací oblasti</value></data>
+  <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>Okno zmizí z hlavního panelu a vrátí se přes ikonu.</value></data>
+  <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>Zavřít do oznamovací oblasti</value></data>
+  <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>Zavření pouze skryje okno, přehrávání pokračuje. Ukončuje se přes nabídku ikony.</value></data>
 </root>

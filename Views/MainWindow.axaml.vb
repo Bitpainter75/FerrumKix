@@ -19,6 +19,17 @@ Namespace Views
         ''' Handler beim naechsten Wechsel des DataContext wieder abgehaengt werden kann.</summary>
         Private _observedViewModel As MainWindowViewModel
 
+        ''' <summary>Gesetzt, sobald die Anwendung wirklich enden soll: ueber das Menue des Symbols
+        ''' oder MPRIS. Dann verbirgt das Schliessen nicht, auch wenn es so eingestellt ist.</summary>
+        Private _quitRequested As Boolean
+
+        ''' <summary>Der Zustand vor dem Verbergen, damit ein maximiertes Fenster maximiert
+        ''' zurueckkommt. Minimiert zaehlt nicht: wer das Fenster zurueckholt, will es sehen.</summary>
+        Private _stateBeforeHide As WindowState = WindowState.Normal
+
+        ''' <summary>Das Fenster ging in den Infobereich oder kam von dort zurueck.</summary>
+        Public Event TrayVisibilityChanged As EventHandler
+
         Public Sub New()
             InitializeComponent()
             WireWindowChrome()
@@ -28,6 +39,17 @@ Namespace Views
             AddHandler Closing, AddressOf OnWindowClosing
             AddHandler KeyDown, AddressOf OnWindowKeyDown
             AddHandler Opened, AddressOf OnWindowOpened
+            ' Auch das Minimieren durch den Fenstermanager - Tastenkuerzel, Taskleiste - soll in den
+            ' Infobereich fuehren, nicht nur der eigene Knopf.
+            AddHandler PropertyChanged,
+                Sub(sender, e)
+                    If e.Property IsNot WindowStateProperty Then Return
+                    If WindowState <> WindowState.Minimized Then
+                        _stateBeforeHide = WindowState
+                    ElseIf AppSettingsService.Current.MinimizeToTray AndAlso TrayIconService.CanHideToTray() Then
+                        HideToTray()
+                    End If
+                End Sub
             ' Das Wayland-Backend meldet die Bildschirme NACH dem Oeffnen nach - beim Opened steht
             ' Screens.All dort noch leer, und ohne dieses Ereignis blieben die Einstellungen ohne
             ' Bildschirmliste und das Fenster unvergroessert. Unter X11 kommt es einmal zusaetzlich
@@ -64,7 +86,7 @@ Namespace Views
         ' Fensterrahmen
 
         Private Sub WireWindowChrome()
-            WireButton("MinimizeButton", Sub() WindowState = WindowState.Minimized)
+            WireButton("MinimizeButton", AddressOf MinimizeWindow)
             WireButton("MaximizeButton", AddressOf ToggleMaximized)
             WireButton("CloseButton", Sub() Close())
 
@@ -149,6 +171,53 @@ Namespace Views
                                                       Avalonia.Layout.HorizontalAlignment.Left)
                 logo.Margin = If(onLeft, New Thickness(0, 0, 16, 0), New Thickness(16, 0, 0, 0))
             End If
+        End Sub
+
+        ' Infobereich
+
+        Public ReadOnly Property IsHiddenToTray As Boolean
+            Get
+                Return Not IsVisible
+            End Get
+        End Property
+
+        Private Sub MinimizeWindow()
+            If AppSettingsService.Current.MinimizeToTray AndAlso TrayIconService.CanHideToTray() Then
+                HideToTray()
+            Else
+                WindowState = WindowState.Minimized
+            End If
+        End Sub
+
+        ''' <summary>Verbirgt das Fenster. Die Wiedergabe laeuft weiter; zurueck kommt es ueber das
+        ''' Symbol, MPRIS oder einen zweiten Aufruf.</summary>
+        Public Sub HideToTray()
+            If WindowState <> WindowState.Minimized Then _stateBeforeHide = WindowState
+            Hide()
+            RaiseEvent TrayVisibilityChanged(Me, EventArgs.Empty)
+        End Sub
+
+        ''' <summary>Holt das Fenster zurueck - aus dem Infobereich ebenso wie aus der Taskleiste.</summary>
+        Public Sub ShowFromTray()
+            Dim wasHidden = Not IsVisible
+            If wasHidden Then Show()
+            If WindowState = WindowState.Minimized OrElse wasHidden Then WindowState = _stateBeforeHide
+            Activate()
+            If wasHidden Then RaiseEvent TrayVisibilityChanged(Me, EventArgs.Empty)
+        End Sub
+
+        Public Sub ToggleFromTray()
+            If IsVisible AndAlso WindowState <> WindowState.Minimized Then
+                HideToTray()
+            Else
+                ShowFromTray()
+            End If
+        End Sub
+
+        ''' <summary>Beendet die Anwendung, auch wenn das Schliessen sonst nur verbirgt.</summary>
+        Public Sub QuitApplication()
+            _quitRequested = True
+            Close()
         End Sub
 
         Private Sub WireButton(name As String, action As Action)
@@ -290,6 +359,15 @@ Namespace Views
 
 
         Private Sub OnWindowClosing(sender As Object, e As WindowClosingEventArgs)
+            ' Schliessen verbirgt nur, wenn es so eingestellt ist und der Anwender es war. Faehrt
+            ' die Sitzung herunter, muss das Fenster wirklich gehen - sonst haelt es die Abmeldung auf.
+            If Not _quitRequested AndAlso e.CloseReason = WindowCloseReason.WindowClosing AndAlso
+               AppSettingsService.Current.CloseToTray AndAlso TrayIconService.CanHideToTray() Then
+                e.Cancel = True
+                HideToTray()
+                Return
+            End If
+
             Try
                 Dim settings = AppSettingsService.Current
                 settings.WindowMaximized = WindowState = WindowState.Maximized OrElse WindowState = WindowState.FullScreen

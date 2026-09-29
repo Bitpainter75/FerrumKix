@@ -44,18 +44,29 @@ Public Class App
             ' MPRIS und ein zweiter Aufruf duerfen das Fenster nach vorn holen, MPRIS darf die
             ' Anwendung beenden. Ob das Fenster unter Wayland auch den Fokus bekommt, entscheidet
             ' der Compositor; Hyprland markiert es sonst nur als dringend.
-            AddHandler viewModel.RaiseRequested,
-                Sub(sender, e)
-                    If window.WindowState = WindowState.Minimized Then window.WindowState = WindowState.Normal
-                    window.Activate()
-                End Sub
-            AddHandler viewModel.QuitRequested, Sub(sender, e) window.Close()
+            ' Ein im Infobereich verborgenes Fenster kommt dabei ebenfalls zurueck.
+            AddHandler viewModel.RaiseRequested, Sub(sender, e) window.ShowFromTray()
+            AddHandler viewModel.QuitRequested, Sub(sender, e) window.QuitApplication()
+
+            ' DAS SYMBOL IM INFOBEREICH. Es wird immer gebaut und nur nach der Einstellung
+            ' eingeblendet, damit der Schalter ohne Neustart wirkt.
+            Dim tray As TrayIconService = Nothing
+            Try
+                tray = New TrayIconService(Me, window, viewModel)
+            Catch ex As Exception
+                DiagnosticLogService.LogException("App.Tray", ex)
+            End Try
 
             ' AUFRAEUMEN BEIM BEENDEN, und zwar hier und nicht im Fenster: das Fenster kann auch
             ' ohne Programmende geschlossen werden, und der Spieler haelt einen Fremdfaden. Wird er
             ' nicht abgebaut, bleibt libmpv mit seinem Ausgabegeraet stehen.
             AddHandler desktop.ShutdownRequested,
                 Sub(sender, e)
+                    Try
+                        tray?.Dispose()
+                    Catch ex As Exception
+                        DiagnosticLogService.LogException("App.Shutdown", ex)
+                    End Try
                     Try
                         viewModel.Dispose()
                     Catch ex As Exception

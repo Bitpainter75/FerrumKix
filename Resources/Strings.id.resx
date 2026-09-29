@@ -688,4 +688,15 @@
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Bawaan sistem</value></data>
   <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>Keluarkan CD</value></data>
   <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>CD Audio tidak dapat dikeluarkan.</value></data>
+  <data name="Fenster_zeigen_eb670e20" xml:space="preserve"><value>Tampilkan jendela</value></data>
+  <data name="Fenster_verbergen_dbe607c1" xml:space="preserve"><value>Sembunyikan jendela</value></data>
+  <data name="Pause_781961bc" xml:space="preserve"><value>Jeda</value></data>
+  <data name="Beenden_ce9e650e" xml:space="preserve"><value>Keluar</value></data>
+  <data name="Symbol_im_Infobereich_d100eb4e" xml:space="preserve"><value>Ikon di baki sistem</value></data>
+  <data name="Zeigt_FerrumKix_im_Infobereich_der_Kontrollleist_d204df77" xml:space="preserve"><value>Menampilkan FerrumKix di baki sistem panel. Satu klik membawa jendela ke depan atau menyembunyikannya; menu mengendalikan pemutaran dan menutup aplikasi.</value></data>
+  <data name="Unter_Linux_braucht_es_eine_Leiste_die_StatusNot_55540ced" xml:space="preserve"><value>Di Linux diperlukan panel yang mendukung StatusNotifierItem. GNOME baru menampilkan ikon dengan ekstensi AppIndicator.</value></data>
+  <data name="Beim_Minimieren_in_den_Infobereich_379e7446" xml:space="preserve"><value>Kecilkan ke baki sistem</value></data>
+  <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>Jendela menghilang dari bilah tugas dan kembali melalui ikon.</value></data>
+  <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>Tutup ke baki sistem</value></data>
+  <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>Menutup hanya menyembunyikan jendela, pemutaran tetap berjalan. Keluar melalui menu ikon.</value></data>
 </root>

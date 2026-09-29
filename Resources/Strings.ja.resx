@@ -688,4 +688,15 @@
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>システム設定に従う</value></data>
   <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>CD を取り出す</value></data>
   <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>オーディオ CD を取り出せませんでした。</value></data>
+  <data name="Fenster_zeigen_eb670e20" xml:space="preserve"><value>ウィンドウを表示</value></data>
+  <data name="Fenster_verbergen_dbe607c1" xml:space="preserve"><value>ウィンドウを隠す</value></data>
+  <data name="Pause_781961bc" xml:space="preserve"><value>一時停止</value></data>
+  <data name="Beenden_ce9e650e" xml:space="preserve"><value>終了</value></data>
+  <data name="Symbol_im_Infobereich_d100eb4e" xml:space="preserve"><value>システムトレイにアイコンを表示</value></data>
+  <data name="Zeigt_FerrumKix_im_Infobereich_der_Kontrollleist_d204df77" xml:space="preserve"><value>パネルのシステムトレイに FerrumKix を表示します。クリックするとウィンドウを前面に出すか隠します。メニューから再生を操作し、アプリケーションを終了できます。</value></data>
+  <data name="Unter_Linux_braucht_es_eine_Leiste_die_StatusNot_55540ced" xml:space="preserve"><value>Linux では StatusNotifierItem に対応したパネルが必要です。GNOME では AppIndicator 拡張機能がある場合のみアイコンが表示されます。</value></data>
+  <data name="Beim_Minimieren_in_den_Infobereich_379e7446" xml:space="preserve"><value>最小化時にシステムトレイへ</value></data>
+  <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>ウィンドウはタスクバーから消え、アイコンから戻せます。</value></data>
+  <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>閉じるときにシステムトレイへ</value></data>
+  <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>閉じてもウィンドウが隠れるだけで、再生は続きます。終了はアイコンのメニューから行います。</value></data>
 </root>

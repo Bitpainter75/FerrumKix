@@ -688,4 +688,15 @@
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>ค่าเริ่มต้นของระบบ</value></data>
   <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>นำแผ่นซีดีออก</value></data>
   <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>ไม่สามารถนำแผ่นซีดีเพลงออกได้</value></data>
+  <data name="Fenster_zeigen_eb670e20" xml:space="preserve"><value>แสดงหน้าต่าง</value></data>
+  <data name="Fenster_verbergen_dbe607c1" xml:space="preserve"><value>ซ่อนหน้าต่าง</value></data>
+  <data name="Pause_781961bc" xml:space="preserve"><value>หยุดชั่วคราว</value></data>
+  <data name="Beenden_ce9e650e" xml:space="preserve"><value>ออก</value></data>
+  <data name="Symbol_im_Infobereich_d100eb4e" xml:space="preserve"><value>ไอคอนในถาดระบบ</value></data>
+  <data name="Zeigt_FerrumKix_im_Infobereich_der_Kontrollleist_d204df77" xml:space="preserve"><value>แสดง FerrumKix ในถาดระบบของแผง คลิกหนึ่งครั้งเพื่อนำหน้าต่างขึ้นมาด้านหน้าหรือซ่อน เมนูใช้ควบคุมการเล่นและปิดแอปพลิเคชัน</value></data>
+  <data name="Unter_Linux_braucht_es_eine_Leiste_die_StatusNot_55540ced" xml:space="preserve"><value>บน Linux ต้องใช้แผงที่รองรับ StatusNotifierItem GNOME จะแสดงไอคอนเมื่อมีส่วนขยาย AppIndicator เท่านั้น</value></data>
+  <data name="Beim_Minimieren_in_den_Infobereich_379e7446" xml:space="preserve"><value>ย่อลงถาดระบบ</value></data>
+  <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>หน้าต่างจะหายไปจากแถบงานและกลับมาได้ผ่านไอคอน</value></data>
+  <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>ปิดลงถาดระบบ</value></data>
+  <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>การปิดจะซ่อนหน้าต่างเท่านั้น การเล่นยังคงดำเนินต่อ ออกจากโปรแกรมได้จากเมนูของไอคอน</value></data>
 </root>

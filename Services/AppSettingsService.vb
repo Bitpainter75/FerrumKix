@@ -78,6 +78,19 @@ Namespace Services
         ''' oder "Right". Siehe <see cref="WindowButtonSideService"/>.</summary>
         Public Property WindowButtonsSide As String = WindowButtonSideService.SideSystem
 
+        ''' <summary>Ein Symbol im Infobereich der Kontrollleiste (Systray), mit einem Menue fuer
+        ''' Wiedergabe, Fenster und Beenden. Ab Werk aus: nach dem Aktualisieren soll nicht
+        ''' ploetzlich ein Symbol mehr in der Leiste stehen. Siehe <see cref="TrayIconService"/>.</summary>
+        Public Property ShowTrayIcon As Boolean = False
+
+        ''' <summary>Minimieren verbirgt das Fenster, statt es in der Taskleiste abzulegen. Wirkt
+        ''' nur mit <see cref="ShowTrayIcon"/>: ohne Symbol kaeme man sonst nicht mehr heran.</summary>
+        Public Property MinimizeToTray As Boolean = False
+
+        ''' <summary>Schliessen verbirgt das Fenster, und die Wiedergabe laeuft weiter. Beendet wird
+        ''' dann ueber das Menue des Symbols. Wirkt ebenfalls nur mit <see cref="ShowTrayIcon"/>.</summary>
+        Public Property CloseToTray As Boolean = False
+
         ''' <summary>Die Akzentfarbe als #RRGGBB. Aus ihr leiten sich die Farben der Fussleiste und
         ''' der laufenden Zeile ab, siehe <see cref="AccentColorService"/>.</summary>
         Public Property AccentColor As String = "#F08A1A"

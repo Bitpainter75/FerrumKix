@@ -688,4 +688,15 @@
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Как в системе</value></data>
   <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>Извлечь CD</value></data>
   <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>Не удалось извлечь аудио-CD.</value></data>
+  <data name="Fenster_zeigen_eb670e20" xml:space="preserve"><value>Показать окно</value></data>
+  <data name="Fenster_verbergen_dbe607c1" xml:space="preserve"><value>Скрыть окно</value></data>
+  <data name="Pause_781961bc" xml:space="preserve"><value>Пауза</value></data>
+  <data name="Beenden_ce9e650e" xml:space="preserve"><value>Выход</value></data>
+  <data name="Symbol_im_Infobereich_d100eb4e" xml:space="preserve"><value>Значок в системном трее</value></data>
+  <data name="Zeigt_FerrumKix_im_Infobereich_der_Kontrollleist_d204df77" xml:space="preserve"><value>Показывает FerrumKix в системном трее панели. Щелчок выводит окно на передний план или скрывает его; меню управляет воспроизведением и завершает приложение.</value></data>
+  <data name="Unter_Linux_braucht_es_eine_Leiste_die_StatusNot_55540ced" xml:space="preserve"><value>В Linux нужна панель с поддержкой StatusNotifierItem. GNOME показывает значок только с расширением AppIndicator.</value></data>
+  <data name="Beim_Minimieren_in_den_Infobereich_379e7446" xml:space="preserve"><value>Сворачивать в системный трей</value></data>
+  <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>Окно исчезает с панели задач и возвращается через значок.</value></data>
+  <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>Закрывать в системный трей</value></data>
+  <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>Закрытие только скрывает окно, воспроизведение продолжается. Выход — через меню значка.</value></data>
 </root>

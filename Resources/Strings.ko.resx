@@ -688,4 +688,15 @@
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>시스템 기본값</value></data>
   <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>CD 꺼내기</value></data>
   <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>오디오 CD를 꺼낼 수 없습니다.</value></data>
+  <data name="Fenster_zeigen_eb670e20" xml:space="preserve"><value>창 표시</value></data>
+  <data name="Fenster_verbergen_dbe607c1" xml:space="preserve"><value>창 숨기기</value></data>
+  <data name="Pause_781961bc" xml:space="preserve"><value>일시 정지</value></data>
+  <data name="Beenden_ce9e650e" xml:space="preserve"><value>종료</value></data>
+  <data name="Symbol_im_Infobereich_d100eb4e" xml:space="preserve"><value>시스템 트레이 아이콘</value></data>
+  <data name="Zeigt_FerrumKix_im_Infobereich_der_Kontrollleist_d204df77" xml:space="preserve"><value>패널의 시스템 트레이에 FerrumKix를 표시합니다. 클릭하면 창을 앞으로 가져오거나 숨기고, 메뉴에서 재생을 제어하고 애플리케이션을 종료합니다.</value></data>
+  <data name="Unter_Linux_braucht_es_eine_Leiste_die_StatusNot_55540ced" xml:space="preserve"><value>Linux에서는 StatusNotifierItem을 지원하는 패널이 필요합니다. GNOME은 AppIndicator 확장이 있어야 아이콘을 표시합니다.</value></data>
+  <data name="Beim_Minimieren_in_den_Infobereich_379e7446" xml:space="preserve"><value>최소화 시 시스템 트레이로</value></data>
+  <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>창이 작업 표시줄에서 사라지고 아이콘을 통해 다시 나타납니다.</value></data>
+  <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>닫을 때 시스템 트레이로</value></data>
+  <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>닫으면 창만 숨겨지고 재생은 계속됩니다. 종료는 아이콘 메뉴에서 합니다.</value></data>
 </root>

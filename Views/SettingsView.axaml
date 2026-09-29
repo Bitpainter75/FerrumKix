@@ -236,6 +236,45 @@
                             </StackPanel>
                         </StackPanel>
 
+                        <!-- INFOBEREICH (Issue #1). Minimieren und Schließen wirken nur mit
+                             eingeschaltetem Symbol: ohne es käme man an ein verborgenes Fenster
+                             nicht mehr heran. Läuft kein Infobereich, verbirgt sich das Fenster
+                             auch mit den Schaltern nicht - siehe TrayIconService. -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Symbol im Infobereich" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Zeigt FerrumKix im Infobereich der Kontrollleiste. Ein Klick holt das Fenster nach vorn oder verbirgt es; das Menü steuert die Wiedergabe und beendet die Anwendung."/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Unter Linux braucht es eine Leiste, die StatusNotifierItem kennt. GNOME zeigt das Symbol erst mit der Erweiterung AppIndicator."/>
+                            </StackPanel>
+                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
+                                          OnContent="" OffContent=""
+                                          IsChecked="{Binding ShowTrayIcon, Mode=TwoWay}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto" IsEnabled="{Binding ShowTrayIcon}">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Beim Minimieren in den Infobereich" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Das Fenster verschwindet aus der Taskleiste und kommt über das Symbol zurück."/>
+                            </StackPanel>
+                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
+                                          OnContent="" OffContent=""
+                                          IsChecked="{Binding MinimizeToTray, Mode=TwoWay}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto" IsEnabled="{Binding ShowTrayIcon}">
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Beim Schließen in den Infobereich" Classes="setting-title"/>
+                                <TextBlock Classes="setting-note"
+                                           Text="Schließen verbirgt nur das Fenster, die Wiedergabe läuft weiter. Beendet wird über das Menü des Symbols."/>
+                            </StackPanel>
+                            <ToggleSwitch Grid.Column="1" VerticalAlignment="Center"
+                                          OnContent="" OffContent=""
+                                          IsChecked="{Binding CloseToTray, Mode=TwoWay}"/>
+                        </Grid>
+
                         <StackPanel Spacing="8">
                             <TextBlock Text="Akzentfarbe" Classes="setting-title"/>
                             <TextBlock Classes="setting-note"

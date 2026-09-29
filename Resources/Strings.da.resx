@@ -688,4 +688,15 @@
   <data name="Systemvorgabe_eaaef9d9" xml:space="preserve"><value>Systemstandard</value></data>
   <data name="CD_auswerfen_72c79353" xml:space="preserve"><value>Skub cd ud</value></data>
   <data name="Die_Audio_CD_konnte_nicht_ausgeworfen_werden_f91c7a6d" xml:space="preserve"><value>Audio-cd'en kunne ikke skubbes ud.</value></data>
+  <data name="Fenster_zeigen_eb670e20" xml:space="preserve"><value>Vis vindue</value></data>
+  <data name="Fenster_verbergen_dbe607c1" xml:space="preserve"><value>Skjul vindue</value></data>
+  <data name="Pause_781961bc" xml:space="preserve"><value>Pause</value></data>
+  <data name="Beenden_ce9e650e" xml:space="preserve"><value>Afslut</value></data>
+  <data name="Symbol_im_Infobereich_d100eb4e" xml:space="preserve"><value>Ikon i systembakken</value></data>
+  <data name="Zeigt_FerrumKix_im_Infobereich_der_Kontrollleist_d204df77" xml:space="preserve"><value>Viser FerrumKix i panelets systembakke. Et klik henter vinduet frem eller skjuler det; menuen styrer afspilningen og afslutter programmet.</value></data>
+  <data name="Unter_Linux_braucht_es_eine_Leiste_die_StatusNot_55540ced" xml:space="preserve"><value>På Linux kræves et panel, der understøtter StatusNotifierItem. GNOME viser først ikonet med udvidelsen AppIndicator.</value></data>
+  <data name="Beim_Minimieren_in_den_Infobereich_379e7446" xml:space="preserve"><value>Minimer til systembakken</value></data>
+  <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>Vinduet forsvinder fra proceslinjen og kommer tilbage via ikonet.</value></data>
+  <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>Luk til systembakken</value></data>
+  <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>Lukning skjuler kun vinduet, afspilningen fortsætter. Afslut via ikonets menu.</value></data>
 </root>

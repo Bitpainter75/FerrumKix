@@ -599,6 +599,15 @@ Namespace Services
             Return result = RequestNamePrimaryOwner OrElse result = RequestNameAlreadyOwner
         End Function
 
+        ''' <summary>Ob ein Name auf dem Bus gerade einen Besitzer hat - etwa, ob ueberhaupt ein
+        ''' Infobereich laeuft, der Symbole annimmt.</summary>
+        Public Function NameHasOwner(name As String) As Boolean
+            Dim body As New DBusWriter()
+            body.WriteString(name)
+            Dim reply = CallMethod(BusService, BusObjectPath, BusService, "NameHasOwner", "s", body.ToArray())
+            Return reply.CreateBodyReader().ReadBoolean()
+        End Function
+
         ''' <summary>Verbindet, meldet sich an und stellt sich dem Bus vor. Blockiert und gehoert
         ''' deshalb nicht auf den Anzeigefaden. Nothing, wenn kein Sitzungsbus zu finden ist;
         ''' eine Ausnahme, wenn er da ist, aber nicht mitspielt.</summary>

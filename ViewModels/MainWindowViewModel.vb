@@ -769,6 +769,43 @@ Namespace ViewModels
             End Set
         End Property
 
+        ' Das Symbol im Infobereich. Das Symbol selbst haengt an der Anwendung (siehe
+        ' TrayIconService) und hoert auf die Meldung von ShowTrayIcon; Minimieren und Schliessen
+        ' liest das Fenster jedes Mal frisch aus den Einstellungen.
+
+        Public Property ShowTrayIcon As Boolean
+            Get
+                Return AppSettingsService.Current.ShowTrayIcon
+            End Get
+            Set(value As Boolean)
+                If AppSettingsService.Current.ShowTrayIcon = value Then Return
+                AppSettingsService.Current.ShowTrayIcon = value
+                RaisePropertyChanged()
+            End Set
+        End Property
+
+        Public Property MinimizeToTray As Boolean
+            Get
+                Return AppSettingsService.Current.MinimizeToTray
+            End Get
+            Set(value As Boolean)
+                If AppSettingsService.Current.MinimizeToTray = value Then Return
+                AppSettingsService.Current.MinimizeToTray = value
+                RaisePropertyChanged()
+            End Set
+        End Property
+
+        Public Property CloseToTray As Boolean
+            Get
+                Return AppSettingsService.Current.CloseToTray
+            End Get
+            Set(value As Boolean)
+                If AppSettingsService.Current.CloseToTray = value Then Return
+                AppSettingsService.Current.CloseToTray = value
+                RaisePropertyChanged()
+            End Set
+        End Property
+
         ' Lautstaerkeangleichung (ReplayGain). In den Einstellungen steht die Stufe als Zahl:
         ' 0 = aus, 1 = nach Titel, 2 = nach Album, 3 = automatisch.
 
