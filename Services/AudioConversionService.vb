@@ -127,7 +127,7 @@ Namespace Services
                         ' darf er nicht: den Namen hat oben das Muster des KONVERTERS vergeben,
                         ' und der Schreiber wuerde ihn nach dem des Taggens wieder umbenennen.
                         If track.IsAudioCdTrack AndAlso request.Format = OutputFormat.Mp3 Then
-                            target = Mp3TagWriteService.Write(target, CdTagValues(track), rename:=False)
+                            target = TagWriteService.Write(target, CdTagValues(track), rename:=False)
                         End If
                         request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig"))
                     Finally
@@ -156,7 +156,7 @@ Namespace Services
                     client.Timeout = TimeSpan.FromSeconds(30)
                     Dim raw = Await client.GetByteArrayAsync(url, cancellationToken)
                     If raw Is Nothing OrElse raw.Length = 0 Then Return Nothing
-                    Dim scaled = Mp3TagWriteService.ScaleCoverToSetting(raw)
+                    Dim scaled = TagWriteService.ScaleCoverToSetting(raw)
                     ' Die Ablage heisst NICHT "file": VB unterscheidet keine Gross- und
                     ' Kleinschreibung, und ein so benannter Wert verdeckt die Klasse IO.File im
                     ' ganzen Rumpf. Dieselbe Falle wie bei "path" in CoverArtService.
@@ -199,7 +199,7 @@ Namespace Services
                 ' Auffuellen dem CD-Rip vorbehalten, und eine umgewandelte Datei kam mit "7"
                 ' heraus, obwohl in der Quelle "07" stand - die Einstellung galt also nur
                 ' manchmal. Die CD kennt ihre Titelzahl aus der TOC, sonst zaehlt das Album.
-                Dim number = Mp3TagWriteService.FormatTrackNumber(track.TrackNumber, If(cdValues Is Nothing, totalTracks, cdValues.TotalTracks))
+                Dim number = TagWriteService.FormatTrackNumber(track.TrackNumber, If(cdValues Is Nothing, totalTracks, cdValues.TotalTracks))
                 psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("track=" & number)
             End If
             If track.Year > 0 Then
@@ -301,7 +301,7 @@ Namespace Services
             values.Title = If(entry.Title, String.Empty).Trim()
             values.TrackNumber = Math.Max(0, entry.Number)
             Dim name = BuildName(values)
-            If String.IsNullOrWhiteSpace(name) Then name = $"{Mp3TagWriteService.FormatTrackNumber(entry.Number, total, PadTrackNumber)} - {entry.Title}"
+            If String.IsNullOrWhiteSpace(name) Then name = $"{TagWriteService.FormatTrackNumber(entry.Number, total, PadTrackNumber)} - {entry.Title}"
             Return SafeFileName(name) & ExtensionFor(format)
         End Function
 
@@ -442,7 +442,7 @@ Namespace Services
         ''' trotz eingeschalteter Einstellung zweistellig.</summary>
         Private Shared Function TrackPrefix(track As Track, totalTracks As Integer) As String
             If track.TrackNumber <= 0 Then Return String.Empty
-            Return Mp3TagWriteService.FormatTrackNumber(track.TrackNumber, totalTracks, PadTrackNumber) & " - "
+            Return TagWriteService.FormatTrackNumber(track.TrackNumber, totalTracks, PadTrackNumber) & " - "
         End Function
 
         ''' <summary>Ob die Nummer im erzeugten Dateinamen aufgefuellt wird. Der Konverter hat
@@ -466,8 +466,8 @@ Namespace Services
 
         ''' <summary>Das eingestellte Muster, gefuellt und von den Resten leerer Platzhalter
         ''' befreit. Fehlt einem Titel der Interpret, stuende sonst " - - " mitten im Namen.</summary>
-        Private Shared Function BuildName(values As Mp3TagWriteService.Values) As String
-            Dim name = Mp3TagWriteService.BuildFileName(
+        Private Shared Function BuildName(values As TagWriteService.Values) As String
+            Dim name = TagWriteService.BuildFileName(
                 AppSettingsService.NormalizeConverterFileNamePattern(AppSettingsService.Current.ConverterFileNamePattern), values, PadTrackNumber)
             While name.Contains("- -") : name = name.Replace("- -", "-") : End While
             Return name.Trim().Trim("-"c, "_"c, "."c).Trim()
@@ -476,8 +476,8 @@ Namespace Services
         ''' <summary>Die Kennzeichen einer Datei aus der Liste, in der Form, die das
         ''' Benennungsmuster liest. Die Titelzahl kommt vom Ordner, so wie sie auch die
         ''' aufgefuellte Nummer bestimmt.</summary>
-        Private Shared Function FileTagValues(track As Track, totalTracks As Integer) As Mp3TagWriteService.Values
-            Return New Mp3TagWriteService.Values With {
+        Private Shared Function FileTagValues(track As Track, totalTracks As Integer) As TagWriteService.Values
+            Return New TagWriteService.Values With {
                 .Artist = If(track.Artist, String.Empty).Trim(),
                 .AlbumArtist = If(track.AlbumArtist, String.Empty).Trim(),
                 .Album = If(track.Album, String.Empty).Trim(),
@@ -513,17 +513,17 @@ Namespace Services
             Dim values = CdTagValues(track)
             Dim parts = pattern.Split({"/"c, "\"c}, StringSplitOptions.RemoveEmptyEntries).
                 Where(Function(part) Not String.IsNullOrWhiteSpace(part)).
-                Select(Function(part) SafeFileName(Mp3TagWriteService.BuildFileName(part, values, PadTrackNumber))).
+                Select(Function(part) SafeFileName(TagWriteService.BuildFileName(part, values, PadTrackNumber))).
                 Where(Function(part) Not String.IsNullOrWhiteSpace(part))
             Return parts.Aggregate(root, Function(folder, part) Path.Combine(folder, part))
         End Function
 
-        Private Shared Function CdTagValues(track As Track) As Mp3TagWriteService.Values
+        Private Shared Function CdTagValues(track As Track) As TagWriteService.Values
             Dim device As String = Nothing, number As Integer, lastTrack As Integer
             Track.TryGetAudioCdSource(track.FilePath, device, number, lastTrack)
             Dim artist = If(track.Artist, String.Empty).Trim()
             Dim year = Math.Max(0, track.Year)
-            Return New Mp3TagWriteService.Values With {
+            Return New TagWriteService.Values With {
                 .Artist = artist,
                 .AlbumArtist = If(AppSettingsService.Current.TagAlbumArtistFollowsArtist, artist, If(track.AlbumArtist, String.Empty).Trim()),
                 .Album = If(IsCdPlaceholder(track.Album), String.Empty, If(track.Album, String.Empty).Trim()),

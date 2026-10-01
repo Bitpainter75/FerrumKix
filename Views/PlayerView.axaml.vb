@@ -345,8 +345,13 @@ Namespace Views
 
         Private Sub ShowTagEditor(tracks As IEnumerable(Of Track))
             ClearStatus()
-            Dim selected = tracks?.Where(Function(track) track IsNot Nothing AndAlso String.Equals(IO.Path.GetExtension(track.FilePath), ".mp3", StringComparison.OrdinalIgnoreCase)).ToList()
-            If selected Is Nothing OrElse selected.Count = 0 Then Return
+            Dim selected = tracks?.Where(Function(track) track IsNot Nothing AndAlso track.CanEditTags).ToList()
+            If selected Is Nothing OrElse selected.Count = 0 Then
+                ' Ein Album aus lauter WAV-Dateien: der Eintrag steht im Menue der Gruppe, und
+                ' wortlos nichts zu tun sah aus wie ein Fehler der Anwendung.
+                If ViewModel IsNot Nothing Then ViewModel.StatusText = LocalizationService.T("Diese Dateien lassen sich nicht taggen. Unterstützt werden MP3, FLAC, Ogg Vorbis, Opus und M4A.")
+                Return
+            End If
             _tagEditorPanel = New TagEditorPanel(selected) : AddHandler _tagEditorPanel.CloseRequested, AddressOf OnTagEditorCloseRequested
             AddHandler _tagEditorPanel.Saved, AddressOf OnTagEditorSaved
             ' Die Coverspalte gehoert jetzt den Dateien, die getaggt werden, und nicht mehr dem,
@@ -356,6 +361,8 @@ Namespace Views
             ' VOR dem Fuellen der Spalte: das Mass des eingebetteten Bildes meldet sie schon
             ' beim Anzeigen, und ein spaeter angehaengter Empfaenger bekaeme es nicht mehr.
             AddHandler tagCover.CoverMeasured, AddressOf OnTagCoverMeasured
+            AddHandler tagCover.CoverSearchRequested, AddressOf OnTagCoverSearchRequested
+            tagCover.SetSearchBusy(False)
             tagCover.Show(selected)
             tagCover.IsVisible = True
             Me.FindControl(Of Border)("NowPlayingPanel").IsVisible = False
@@ -413,6 +420,30 @@ Namespace Views
         ''' dieses Mass in seiner Hinweiszeile.</summary>
         Private Sub OnTagCoverMeasured(text As String)
             _tagEditorPanel?.ShowCoverSize(text)
+        End Sub
+
+        ''' <summary>In der Coverspalte wurde die Online-Suche gewaehlt. Suchen kann nur der
+        ''' Tag-Bereich, denn nur er kennt Artist und Album im Formular; die Spalte zeigt danach
+        ''' das gefundene Bild wie ein abgelegtes, und geschrieben wird es erst beim Speichern.</summary>
+        Private Async Sub OnTagCoverSearchRequested(sender As Object, e As EventArgs)
+            Dim editor = _tagEditorPanel
+            Dim tagCover = TryCast(sender, TagCoverPanel)
+            If editor Is Nothing OrElse tagCover Is Nothing Then Return
+            tagCover.SetSearchBusy(True)
+            Try
+                Dim bytes = Await editor.FindOnlineCoverAsync()
+                ' Wer waehrenddessen den Tag-Bereich verlassen hat, will das Bild nicht mehr -
+                ' und ein neu geoeffneter gehoert zu anderen Dateien.
+                If bytes Is Nothing OrElse Not Object.ReferenceEquals(editor, _tagEditorPanel) Then Return
+                Try
+                    tagCover.ApplyCoverBytes(bytes, "MusicBrainz")
+                Catch ex As Exception
+                    DiagnosticLogService.LogException("TagEditor.CoverSearch", ex)
+                    editor.ReportCoverDownloadFailed()
+                End Try
+            Finally
+                tagCover.SetSearchBusy(False)
+            End Try
         End Sub
 
         ''' <summary>Die Tag-Coverspalte, wenn sie sichtbar ist UND der Zeiger ueber ihr steht -
@@ -702,6 +733,7 @@ Namespace Views
             If tagCover Is Nothing OrElse Not tagCover.IsVisible Then Return
             RemoveHandler tagCover.CoverChosen, AddressOf OnTagCoverChosen
             RemoveHandler tagCover.CoverMeasured, AddressOf OnTagCoverMeasured
+            RemoveHandler tagCover.CoverSearchRequested, AddressOf OnTagCoverSearchRequested
             tagCover.IsVisible = False
             Me.FindControl(Of Border)("NowPlayingPanel").IsVisible = True
         End Sub

@@ -15,7 +15,7 @@ Imports FerrumKix.Services
 
 Namespace Views
 
-    ''' <summary>Die Coverspalte waehrend des MP3-Taggens.
+    ''' <summary>Die Coverspalte waehrend des Taggens.
     '''
     ''' <para>Sie tritt an die Stelle der laufenden Wiedergabe, statt sich dazuzustellen: waehrend
     ''' des Taggens gehoert die Spalte den Dateien, die bearbeitet werden. Lief gerade etwas
@@ -36,6 +36,11 @@ Namespace Views
         ''' Mass steht unter dem Rahmen, und es kommt aus derselben Stelle: zwei Wege dorthin
         ''' liefen frueher oder spaeter auseinander.</summary>
         Public Event CoverMeasured(text As String)
+
+        ''' <summary>Das Cover soll online gesucht werden. Gesucht wird nach den Werten im
+        ''' Formular, und die kennt nur der Tag-Bereich - die Spalte meldet deshalb nur den
+        ''' Wunsch. Das Ergebnis kommt ueber <see cref="ApplyCoverBytes"/> zurueck.</summary>
+        Public Event CoverSearchRequested As EventHandler
 
         Public Sub New()
             AvaloniaXamlLoader.Load(Me)
@@ -91,6 +96,18 @@ Namespace Views
             End Try
         End Sub
 
+        Private Sub OnSearchCoverClick(sender As Object, e As RoutedEventArgs)
+            RaiseEvent CoverSearchRequested(Me, EventArgs.Empty)
+        End Sub
+
+        ''' <summary>Sperrt die Suche, solange eine laeuft. Ein zweiter Klick waehrenddessen
+        ''' stellte eine zweite Abfrage hinten an, und MusicBrainz drosselt ohnehin auf eine je
+        ''' Sekunde.</summary>
+        Public Sub SetSearchBusy(busy As Boolean)
+            FindControl(Of Button)("SearchCoverButton").IsEnabled = Not busy
+            FindControl(Of MenuItem)("SearchCoverMenuItem").IsEnabled = Not busy
+        End Sub
+
         ''' <summary>Hebt die Spalte hervor, solange ein Bild ueber ihr haengt. Die Klasse sitzt
         ''' am Steuerelement selbst und nicht am Bildrahmen: an ihr haengen mehrere Teile der
         ''' Einladung - Rahmen, aufgelegte Schicht und der Hinweis darunter -, und die stehen im
@@ -105,6 +122,13 @@ Namespace Views
         ''' Spalte davon abhinge, welches Element unter dem Zeiger gerade getroffen wird.</summary>
         Public Async Function ApplyCoverAsync(filePath As String) As Task
             Dim bytes = Await File.ReadAllBytesAsync(filePath)
+            ApplyCoverBytes(bytes, Path.GetFileName(filePath))
+        End Function
+
+        ''' <summary>Uebernimmt Bilddaten, die nicht aus einer Datei kommen - das online gefundene
+        ''' Cover. <paramref name="sourceName"/> steht in der Hinweiszeile an der Stelle des
+        ''' Dateinamens.</summary>
+        Public Sub ApplyCoverBytes(bytes As Byte(), sourceName As String)
             ' Einmal entpacken: eine unbrauchbare Datei faellt damit hier auf und nicht erst beim
             ' Schreiben der Tags. Das Bild wird zugleich angezeigt.
             Dim preview As Bitmap
@@ -112,8 +136,8 @@ Namespace Views
                 preview = New Bitmap(stream)
             End Using
             ShowBitmap(preview, ownsIt:=True, fileSize:=bytes.LongLength)
-            RaiseEvent CoverChosen(bytes, Path.GetFileName(filePath))
-        End Function
+            RaiseEvent CoverChosen(bytes, sourceName)
+        End Sub
 
         ''' <summary>Zeigt ein Bild und darunter sein Mass. Die Punktzahl ist beim Taggen die
         ''' wichtigste Angabe: aus ihr ergibt sich, ob das Bild ueberhaupt genug hergibt fuer
@@ -127,6 +151,13 @@ Namespace Views
             Dim parts As New List(Of String)()
             If bitmap IsNot Nothing Then parts.Add($"{bitmap.PixelSize.Width} × {bitmap.PixelSize.Height}")
             If fileSize > 0 Then parts.Add(Track.FormatFileSize(fileSize))
+            ' Ein Bild unter der eingestellten Kantenlaenge wird beim Speichern nicht vergroessert
+            ' und bleibt so klein, wie es ist. Das gehoert gesagt, bevor geschrieben wird - gerade
+            ' bei einem gefundenen Cover, dessen Groesse man vorher nicht sieht.
+            Dim wanted = AppSettingsService.Current.TagCoverSize
+            If bitmap IsNot Nothing AndAlso Math.Max(bitmap.PixelSize.Width, bitmap.PixelSize.Height) < wanted Then
+                parts.Add(LocalizationService.Format("kleiner als {0} px", wanted))
+            End If
             Dim measured = String.Join(" · ", parts)
             FindControl(Of TextBlock)("SizeText").Text = measured
             RaiseEvent CoverMeasured(measured)

@@ -457,7 +457,7 @@ Namespace ViewModels
         End Property
 
         ''' <summary>Das Benennungsmuster fuer getaggte Dateien, in der Schreibweise von
-        ''' Puddletag. Siehe <see cref="Mp3TagWriteService.BuildFileName"/>.</summary>
+        ''' Puddletag. Siehe <see cref="TagWriteService.BuildFileName"/>.</summary>
         Public Property TagFileNamePattern As String
             Get
                 Return AppSettingsService.Current.TagFileNamePattern
@@ -475,16 +475,16 @@ Namespace ViewModels
         Public ReadOnly Property TagFileNamePatternPreview As String
             Get
                 Try
-                    Return Mp3TagWriteService.BuildFileName(TagFileNamePattern, SampleTagValues) & ".mp3"
+                    Return TagWriteService.BuildFileName(TagFileNamePattern, SampleTagValues) & ".mp3"
                 Catch ex As Exception
                     Return String.Empty
                 End Try
             End Get
         End Property
 
-        Private Shared ReadOnly Property SampleTagValues As Mp3TagWriteService.Values
+        Private Shared ReadOnly Property SampleTagValues As TagWriteService.Values
             Get
-                Return New Mp3TagWriteService.Values With {
+                Return New TagWriteService.Values With {
                     .Artist = "Pink Floyd", .AlbumArtist = "Pink Floyd", .Album = "The Dark Side of the Moon",
                     .Title = "Money", .Genre = "Rock", .Year = 1973,
                     .TrackNumber = 6, .TotalTracks = 10, .DiscNumber = 1}
@@ -542,7 +542,7 @@ Namespace ViewModels
         Public ReadOnly Property ConverterFileNamePatternPreview As String
             Get
                 Try
-                    Return Mp3TagWriteService.BuildFileName(ConverterFileNamePattern, SampleTagValues,
+                    Return TagWriteService.BuildFileName(ConverterFileNamePattern, SampleTagValues,
                                                             AppSettingsService.Current.ConverterPadTrackNumberToAlbumLength) & ConverterPreviewExtension
                 Catch ex As Exception
                     Return String.Empty

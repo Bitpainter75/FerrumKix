@@ -130,29 +130,34 @@ Namespace Services
             Dim url = "https://musicbrainz.org/ws/2/discid/" & Uri.EscapeDataString(discId) &
                       "?fmt=json&inc=artist-credits+recordings"
 
-            ' MusicBrainz laesst eine Abfrage je Sekunde zu und antwortet sonst mit 503 - das
-            ' heisst "gleich nochmal" und nicht "geht nicht". Ohne diese Wiederholung scheiterte
-            ' eine Erkennung an einer Drosselung, die nach zwei Sekunden vorbei ist.
+            Using response = Await GetAsync(url, cancellationToken)
+                ' 404 heisst schlicht "nicht verzeichnet", 400 "so eine Kennung gibt es nicht".
+                ' Beides ist kein Fehler, ueber den jemand unterrichtet werden muesste - bei
+                ' einer seltenen Pressung ist das erste der Normalfall.
+                If response.StatusCode = Net.HttpStatusCode.NotFound OrElse
+                   response.StatusCode = Net.HttpStatusCode.BadRequest Then Return releases
+
+                response.EnsureSuccessStatusCode()
+                Return ReadReleases(Await response.Content.ReadAsStringAsync(cancellationToken), discId)
+            End Using
+        End Function
+
+        ''' <summary>Eine Abfrage bei MusicBrainz oder der Cover Art Archive, mit dem Namen der
+        ''' Anwendung als Absender. Die Antwort gehoert dem Aufrufer und wird von ihm freigegeben.
+        '''
+        ''' <para>MusicBrainz laesst eine Abfrage je Sekunde zu und antwortet sonst mit 503 - das
+        ''' heisst "gleich nochmal" und nicht "geht nicht". Ohne diese Wiederholung scheiterte
+        ''' eine Erkennung an einer Drosselung, die nach zwei Sekunden vorbei ist.</para></summary>
+        Friend Shared Async Function GetAsync(url As String, cancellationToken As CancellationToken) As Task(Of HttpResponseMessage)
             Const attempts As Integer = 3
-            For attempt = 1 To attempts
-                Using response = Await Client.GetAsync(url, cancellationToken)
-                    ' 404 heisst schlicht "nicht verzeichnet", 400 "so eine Kennung gibt es nicht".
-                    ' Beides ist kein Fehler, ueber den jemand unterrichtet werden muesste - bei
-                    ' einer seltenen Pressung ist das erste der Normalfall.
-                    If response.StatusCode = Net.HttpStatusCode.NotFound OrElse
-                       response.StatusCode = Net.HttpStatusCode.BadRequest Then Return releases
-
-                    If (response.StatusCode = Net.HttpStatusCode.ServiceUnavailable OrElse
-                        response.StatusCode = Net.HttpStatusCode.TooManyRequests) AndAlso attempt < attempts Then
-                        Await Task.Delay(TimeSpan.FromSeconds(1.5 * attempt), cancellationToken)
-                        Continue For
-                    End If
-
-                    response.EnsureSuccessStatusCode()
-                    Return ReadReleases(Await response.Content.ReadAsStringAsync(cancellationToken), discId)
-                End Using
+            For attempt = 1 To attempts - 1
+                Dim response = Await Client.GetAsync(url, cancellationToken)
+                If response.StatusCode <> Net.HttpStatusCode.ServiceUnavailable AndAlso
+                   response.StatusCode <> Net.HttpStatusCode.TooManyRequests Then Return response
+                response.Dispose()
+                Await Task.Delay(TimeSpan.FromSeconds(1.5 * attempt), cancellationToken)
             Next
-            Return releases
+            Return Await Client.GetAsync(url, cancellationToken)
         End Function
 
         Private Shared Function ReadReleases(json As String, discId As String) As List(Of DiscRelease)
@@ -226,7 +231,7 @@ Namespace Services
         ''' <summary>Der Interpret aus "artist-credit". Die Liste kann mehrere Eintraege haben, die
         ''' mit "joinphrase" verbunden werden - "Simon &amp; Garfunkel" ist EIN Name aus zwei
         ''' Eintraegen.</summary>
-        Private Shared Function ArtistCredit(row As JsonElement) As String
+        Friend Shared Function ArtistCredit(row As JsonElement) As String
             Dim credits As JsonElement
             If Not row.TryGetProperty("artist-credit", credits) OrElse credits.ValueKind <> JsonValueKind.Array Then Return String.Empty
             Dim builder As New StringBuilder()
@@ -251,14 +256,20 @@ Namespace Services
         ''' <para>Gibt es kein Bild, antwortet der Dienst mit 404. Das ist kein Fehler; die
         ''' Coverspalte bleibt dann eben leer.</para></summary>
         Public Shared Function CoverUrlFor(releaseId As String, wantedSize As Integer) As String
-            If String.IsNullOrWhiteSpace(releaseId) Then Return String.Empty
+            Return CoverUrlFor("release", releaseId, wantedSize)
+        End Function
+
+        ''' <summary>Dasselbe fuer jede Art Eintrag, die die Cover Art Archive kennt: "release"
+        ''' fuer eine Ausgabe, "release-group" fuer ein Album ueber alle seine Ausgaben.</summary>
+        Friend Shared Function CoverUrlFor(entity As String, id As String, wantedSize As Integer) As String
+            If String.IsNullOrWhiteSpace(id) Then Return String.Empty
             Dim suffix = If(wantedSize <= 250, "front-250",
                          If(wantedSize <= 500, "front-500",
                          If(wantedSize <= 1200, "front-1200", "front")))
-            Return "https://coverartarchive.org/release/" & Uri.EscapeDataString(releaseId) & "/" & suffix
+            Return "https://coverartarchive.org/" & entity & "/" & Uri.EscapeDataString(id) & "/" & suffix
         End Function
 
-        Private Shared Function Text(element As JsonElement, name As String) As String
+        Friend Shared Function Text(element As JsonElement, name As String) As String
             Dim value As JsonElement
             If Not element.TryGetProperty(name, value) OrElse value.ValueKind = JsonValueKind.Null Then Return String.Empty
             Return If(value.ValueKind = JsonValueKind.String, value.GetString(), value.ToString())

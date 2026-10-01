@@ -7,6 +7,12 @@
   <data name="0_Alben_27cd7852" xml:space="preserve">
     <value>{0} álbumes</value>
   </data>
+  <data name="0_Datei_en_ausgew_hlt_Cover_1_a409c08e" xml:space="preserve">
+    <value>{0} archivo(s) seleccionado(s). Carátula: {1}</value>
+  </data>
+  <data name="0_Datei_en_ausgew_hlt_Kein_Cover_vorhanden_ff16ac19" xml:space="preserve">
+    <value>{0} archivo(s) seleccionado(s). Sin carátula.</value>
+  </data>
   <data name="0_Favoriten_ohne_passendes_Album_bersprungen_29105465" xml:space="preserve">
     <value>{0} favoritos omitidos, sin álbum correspondiente.</value>
   </data>
@@ -16,12 +22,6 @@
   </data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} canales</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} por {1}, factor del sistema {2:0.##}</value></data>
-  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_a07793fc" xml:space="preserve">
-    <value>{0} archivo(s) MP3 seleccionado(s). Carátula: {1}</value>
-  </data>
-  <data name="0_MP3_Datei_en_ausgew_hlt_Kein_Cover_vorhanden_6730169f" xml:space="preserve">
-    <value>{0} archivo(s) MP3 seleccionado(s). Sin carátula.</value>
-  </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0} por ciento</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} pistas leídas.</value></data>
   <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} pistas no encontradas.</value></data>
@@ -109,6 +109,12 @@
     <value>Las excepciones siempre van a errors.log, incluso con el registro desactivado. El parámetro de inicio --debug activa el registro para una sola ejecución.</value>
   </data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>Automático</value></data>
+  <data name="Bei_MusicBrainz_passen_0_Alben_zu_dieser_Suche_27dfbe6b" xml:space="preserve">
+    <value>{0} álbumes de MusicBrainz coinciden con esta búsqueda.</value>
+  </data>
+  <data name="Bei_MusicBrainz_wurde_kein_passendes_Album_gefun_353f92ea" xml:space="preserve">
+    <value>No se encontró ningún álbum coincidente en MusicBrainz.</value>
+  </data>
   <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
     <value>Al guardar, el artista del álbum toma automáticamente el valor del artista.</value>
   </data>
@@ -118,6 +124,48 @@
   <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>Reanudar al inicio</value></data>
   <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
     <value>Conserva solo los campos ID3v2 previstos y elimina ID3v1, APEv2 y otros marcadores.</value>
+  </data>
+  <data name="Cover_online_suchen_9f255671" xml:space="preserve">
+    <value>Buscar carátula en línea …</value>
+  </data>
+  <data name="Cover_wird_bei_MusicBrainz_gesucht_ba5c246f" xml:space="preserve">
+    <value>Buscando la carátula en MusicBrainz …</value>
+  </data>
+  <data name="Cover_wird_geladen_cfdcba3b" xml:space="preserve">
+    <value>Cargando carátula …</value>
+  </data>
+  <data name="Das_gefundene_Cover_konnte_nicht_gelesen_werden_add0bb23" xml:space="preserve">
+    <value>No se pudo leer la carátula encontrada.</value>
+  </data>
+  <data name="Die_Suche_bei_MusicBrainz_ist_fehlgeschlagen_13d4caf9" xml:space="preserve">
+    <value>La búsqueda en MusicBrainz ha fallado.</value>
+  </data>
+  <data name="Diese_Dateien_lassen_sich_nicht_taggen_Unterst_t_be8a5973" xml:space="preserve">
+    <value>Estos archivos no se pueden etiquetar. Se admiten MP3, FLAC, Ogg Vorbis, Opus y M4A.</value>
+  </data>
+  <data name="Dieses_Dateiformat_kann_nicht_getaggt_werden_1fd189e1" xml:space="preserve">
+    <value>Este formato de archivo no se puede etiquetar.</value>
+  </data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_cbc69c83" xml:space="preserve">
+    <value>Un género por línea. Esta lista aparece como selección al etiquetar; allí sigue siendo posible un valor propio.</value>
+  </data>
+  <data name="F_r_die_Suche_fehlt_der_Albumname_f855ef1b" xml:space="preserve">
+    <value>Falta el nombre del álbum para la búsqueda.</value>
+  </data>
+  <data name="F_r_dieses_Album_gibt_es_bei_MusicBrainz_kein_Co_9fbae2b7" xml:space="preserve">
+    <value>MusicBrainz no tiene carátula para este álbum.</value>
+  </data>
+  <data name="Tags_848eed0f" xml:space="preserve">
+    <value>Etiquetas</value>
+  </data>
+  <data name="Tags_bearbeiten_4b5658f0" xml:space="preserve">
+    <value>Editar etiquetas…</value>
+  </data>
+  <data name="Tags_bearbeiten_df067ba9" xml:space="preserve">
+    <value>Editar etiquetas</value>
+  </data>
+  <data name="Welches_Album_ist_es_ec5749e0" xml:space="preserve">
+    <value>¿Qué álbum es?</value>
   </data>
   <data name="ber_FerrumKix_0d1d2b12" xml:space="preserve"><value>Acerca de FerrumKix</value></data>
   <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
@@ -216,9 +264,6 @@
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve">
     <value>Un factor de escala propio por pantalla, por si la aplicación se ve demasiado pequeña. Solo se aplica al reiniciar: el sistema de ventanas lee el valor únicamente durante el arranque.</value>
   </data>
-  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
-    <value>Un género por línea. Esta lista aparece como selección al etiquetar MP3; allí sigue siendo posible un valor propio.</value>
-  </data>
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Configuración</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>Aún no se ha seleccionado ninguna pista.</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Los archivos todavía se están leyendo.</value></data>
@@ -283,6 +328,9 @@
   </data>
   <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>Nivelación de volumen (ReplayGain)</value></data>
   <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>Volumen: arrastrar, rueda del ratón o teclas de flecha</value></data>
+  <data name="kleiner_als_0_px_55439b5d" xml:space="preserve">
+    <value>menor que {0} px</value>
+  </data>
   <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>falta libmpv</value></data>
   <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>libmpv encontrado</value></data>
   <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>FFmpeg encontrado</value></data>
@@ -298,15 +346,6 @@
   <data name="Minimieren_209bcbdc" xml:space="preserve"><value>minimizar</value></data>
   <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
     <value>Tasa de bits MP3</value>
-  </data>
-  <data name="MP3_Tags_996faa78" xml:space="preserve">
-    <value>Etiquetas MP3</value>
-  </data>
-  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
-    <value>Editar etiquetas MP3…</value>
-  </data>
-  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
-    <value>Editar etiquetas MP3</value>
   </data>
   <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
     <value>Patrón para los archivos creados, también al extraer un CD de audio: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. La extensión procede del formato elegido; un campo vacío restablece el valor predeterminado.</value>
@@ -337,9 +376,6 @@
   </data>
   <data name="Nur_Favoriten_zeigen_19a6f639" xml:space="preserve">
     <value>Mostrar solo favoritos</value>
-  </data>
-  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
-    <value>Solo se pueden etiquetar archivos MP3.</value>
   </data>
   <data name="Oberfl_che_ae0be527" xml:space="preserve">
     <value>Interfaz</value>

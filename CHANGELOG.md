@@ -2,6 +2,20 @@
 
 ## 0.9.8
 
+- The tag editor now writes FLAC, Ogg Vorbis, Opus and M4A as well as MP3 (#3). Each format gets
+  the tag its players read: ID3v2 in MP3, Vorbis comments in FLAC, Ogg and Opus, the iTunes atoms
+  in M4A. Fields, cleanup, cover scaling and renaming behave the same in every format, and a file
+  keeps its extension when it is renamed. The menu entry is now called Tags bearbeiten and only
+  appears on tracks it can actually handle; an album made up entirely of other formats, such as
+  WAV, says so in the status line instead of silently doing nothing.
+- The cover column of the tag editor can search MusicBrainz for the cover (#4), with a button
+  and from the context menu of the cover. It searches for the album by the album artist (or
+  artist) and album name as they currently stand in the form; several matching albums are offered
+  for choice, and exact title matches push out titles that merely contain the name. The image
+  comes from the Cover Art Archive in the size closest to the configured edge length without
+  falling below it. It is only shown until "Apply changes", like a dropped one, and the column
+  now notes when an image is smaller than the configured edge length - covers from there are
+  often smaller than a hand-picked one.
 - Missing translations have been filled in (#2). The load and save buttons above the playlist,
   the M3U file dialogs and their status messages, the audio-CD subfolder setting, the Lyrion
   server fields and several Lyrion and converter messages stayed German in every other

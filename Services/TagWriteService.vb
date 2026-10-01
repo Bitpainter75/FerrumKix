@@ -7,12 +7,34 @@ Imports SkiaSharp
 
 Namespace Services
 
-    ''' <summary>Schreibt den bewusst kleinen, albumorientierten ID3v2-Bestand von FerrumKix.
-    ''' Diese Klasse fasst ausschliesslich MP3 an; andere Dateiformate werden nie implizit
-    ''' konvertiert oder umgetaggt.</summary>
-    Public NotInheritable Class Mp3TagWriteService
+    ''' <summary>Schreibt den bewusst kleinen, albumorientierten Tag-Bestand von FerrumKix.
+    '''
+    ''' <para>Je Format genau EIN Tag, und zwar der, den die Player dieses Formats lesen: ID3v2 in
+    ''' MP3, Vorbis Comments in FLAC, Ogg Vorbis und Opus, die iTunes-Atome in M4A. Die Felder
+    ''' sind ueberall dieselben; nur wo sie liegen, unterscheidet sich.</para>
+    '''
+    ''' <para>Was nicht in <see cref="WritableExtensions"/> steht, fasst diese Klasse nicht an.
+    ''' WAV und rohes AAC haben keinen Tag, den Player verlaesslich lesen - dort ein Kennzeichen
+    ''' hineinzuschreiben saehe nach Erfolg aus und kaeme nirgends an.</para></summary>
+    Public NotInheritable Class TagWriteService
         Private Sub New()
         End Sub
+
+        ''' <summary>Die Endungen, deren Tags der Tag-Editor schreiben kann.</summary>
+        Public Shared ReadOnly WritableExtensions As String() = {".mp3", ".flac", ".ogg", ".oga", ".opus", ".m4a", ".m4b"}
+
+        ''' <summary>Ob sich die Tags dieser Datei schreiben lassen. Entschieden wird allein an der
+        ''' Endung: dieselbe Antwort braucht das Kontextmenue, bevor irgendetwas gelesen ist.</summary>
+        Public Shared Function CanWrite(filePath As String) As Boolean
+            If String.IsNullOrWhiteSpace(filePath) Then Return False
+            Dim extension As String
+            Try
+                extension = Path.GetExtension(filePath)
+            Catch
+                Return False
+            End Try
+            Return WritableExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase)
+        End Function
 
         Public NotInheritable Class Values
             Public Property Artist As String = String.Empty
@@ -33,19 +55,25 @@ Namespace Services
         ''' Namen aus seinem EIGENEN Muster schon vergeben, und das Muster des Taggens duerfte
         ''' ihn sonst gleich wieder ueberschreiben.</summary>
         Public Shared Function Write(filePath As String, values As Values, Optional rename As Boolean = True) As String
-            If String.IsNullOrWhiteSpace(filePath) OrElse Not String.Equals(Path.GetExtension(filePath), ".mp3", StringComparison.OrdinalIgnoreCase) Then Throw New ArgumentException(LocalizationService.T("Nur MP3-Dateien können getaggt werden."))
+            If Not CanWrite(filePath) Then Throw New ArgumentException(LocalizationService.T("Dieses Dateiformat kann nicht getaggt werden."))
             If values Is Nothing Then Throw New ArgumentNullException(NameOf(values))
             Dim genre = SingleGenre(values.Genre)
+            Dim isMp3 = String.Equals(Path.GetExtension(filePath), ".mp3", StringComparison.OrdinalIgnoreCase)
             Using file = TagLib.File.Create(filePath)
-                ' Die konkrete ID3v2-Instanz wird vollstaendig geleert, damit keine Spezialrahmen
-                ' (Kommentar, Bewertung, Lyrics, MusicBrainz usw.) still stehen bleiben.
-                Dim tag = DirectCast(file.GetTag(TagLib.TagTypes.Id3v2, True), TagLib.Id3v2.Tag)
+                ' Die konkrete Instanz des Format-Tags wird vollstaendig geleert, damit keine
+                ' Spezialfelder (Kommentar, Bewertung, Lyrics, MusicBrainz usw.) still stehen bleiben.
+                Dim tag = PrimaryTag(file)
+                ' FLAC fuehrt Bilder in eigenen Bloecken neben den Vorbis Comments; nur die
+                ' Sicht der ganzen Datei kommt an sie heran. Ogg und M4A tragen sie im Tag selbst.
+                Dim pictureTag = If(TypeOf file Is TagLib.Flac.File, file.Tag, tag)
                 ' Ohne neu gezogenes Bild bleibt das vorhandene Frontcover erhalten. Erst ein
                 ' neues Bild ersetzt bewusst ALLE bisherigen Bilder durch genau dieses eine.
-                Dim retainedCover = tag.Pictures?.FirstOrDefault(Function(picture) picture IsNot Nothing AndAlso picture.Type = TagLib.PictureType.FrontCover)
-                If retainedCover Is Nothing Then retainedCover = tag.Pictures?.FirstOrDefault(Function(picture) picture IsNot Nothing)
+                Dim retainedCover = pictureTag.Pictures?.FirstOrDefault(Function(picture) picture IsNot Nothing AndAlso picture.Type = TagLib.PictureType.FrontCover)
+                If retainedCover Is Nothing Then retainedCover = pictureTag.Pictures?.FirstOrDefault(Function(picture) picture IsNot Nothing)
                 If AppSettingsService.Current.TagRemoveOtherFields Then
-                    file.RemoveTags(TagLib.TagTypes.Id3v1 Or TagLib.TagTypes.Ape)
+                    ' ID3 in einer FLAC-Datei ist nicht vorgesehen und wird dort nur von wenigen
+                    ' Programmen gelesen - es bleibt nur der eine Tag des Formats stehen.
+                    file.RemoveTags(TagLib.TagTypes.Id3v1 Or TagLib.TagTypes.Ape Or If(isMp3, TagLib.TagTypes.None, TagLib.TagTypes.Id3v2))
                     tag.Clear()
                 End If
                 tag.Title = Clean(values.Title)
@@ -56,18 +84,23 @@ Namespace Services
                 tag.Genres = One(genre)
                 tag.Track = CUInt(Math.Max(0, values.TrackNumber))
                 ' Die abstrakte Track-Eigenschaft ist eine Zahl und verwirft führende Nullen.
-                ' Der ID3v2-Rahmen TRCK ist Text; dort bewahren wir die gewünschte Darstellung.
+                ' Der ID3v2-Rahmen TRCK und das Vorbis-Feld TRACKNUMBER sind Text; dort bewahren
+                ' wir die gewünschte Darstellung. Das M4A-Atom kennt nur die Zahl.
                 If AppSettingsService.Current.TagPadTrackNumberToAlbumLength AndAlso values.TrackNumber > 0 Then
-                    TagLib.Id3v2.TextInformationFrame.Get(tag, "TRCK", True).Text = {FormatTrackNumber(values.TrackNumber, values.TotalTracks)}
+                    Dim padded = FormatTrackNumber(values.TrackNumber, values.TotalTracks)
+                    Dim id3 = TryCast(tag, TagLib.Id3v2.Tag)
+                    If id3 IsNot Nothing Then TagLib.Id3v2.TextInformationFrame.Get(id3, "TRCK", True).Text = {padded}
+                    TryCast(tag, TagLib.Ogg.XiphComment)?.SetField("TRACKNUMBER", padded)
                 End If
                 tag.Disc = CUInt(Math.Max(0, values.DiscNumber))
                 tag.AlbumSort = Clean(values.AlbumSortOrder)
                 If values.CoverSource IsNot Nothing AndAlso values.CoverSource.Length > 0 Then
-                    tag.Pictures = {New TagLib.Picture(New TagLib.ByteVector(ResizeCover(values.CoverSource)))}
-                    tag.Pictures(0).Type = TagLib.PictureType.FrontCover
-                    tag.Pictures(0).MimeType = "image/jpeg"
+                    Dim cover As New TagLib.Picture(New TagLib.ByteVector(ResizeCover(values.CoverSource))) With {
+                        .Type = TagLib.PictureType.FrontCover,
+                        .MimeType = "image/jpeg"}
+                    pictureTag.Pictures = {cover}
                 ElseIf retainedCover IsNot Nothing AndAlso AppSettingsService.Current.TagRemoveOtherFields Then
-                    tag.Pictures = {retainedCover}
+                    pictureTag.Pictures = {retainedCover}
                 End If
                 file.Save()
             End Using
@@ -77,6 +110,15 @@ Namespace Services
             ' Cover samt seinem alten Mass.
             CoverArtService.Invalidate(filePath, target)
             Return target
+        End Function
+
+        ''' <summary>Der eine Tag, den dieses Format traegt - angelegt, falls er noch fehlt.</summary>
+        Private Shared Function PrimaryTag(file As TagLib.File) As TagLib.Tag
+            Dim type = If(TypeOf file Is TagLib.Mpeg.AudioFile, TagLib.TagTypes.Id3v2,
+                       If(TypeOf file Is TagLib.Mpeg4.File, TagLib.TagTypes.Apple, TagLib.TagTypes.Xiph))
+            Dim tag = file.GetTag(type, True)
+            If tag Is Nothing Then Throw New InvalidDataException(LocalizationService.T("Dieses Dateiformat kann nicht getaggt werden."))
+            Return tag
         End Function
 
         ''' <summary>Bringt ein Coverbild auf die eingestellte Kantenlaenge. Das Seitenverhaeltnis
@@ -115,7 +157,7 @@ Namespace Services
             ' Ein Muster, das nur aus leeren Platzhaltern besteht, darf keine Datei namens ".mp3"
             ' erzeugen. Dann bleibt der bisherige Name stehen.
             If name.Length = 0 Then Return filePath
-            Dim target = Path.Combine(Path.GetDirectoryName(filePath), name & ".mp3")
+            Dim target = Path.Combine(Path.GetDirectoryName(filePath), name & Path.GetExtension(filePath))
             If String.Equals(target, filePath, StringComparison.Ordinal) Then Return filePath
             If File.Exists(target) Then Throw New IOException(LocalizationService.Format("Zieldatei existiert bereits: {0}", Path.GetFileName(target)))
             File.Move(filePath, target)

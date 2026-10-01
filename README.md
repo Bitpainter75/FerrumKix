@@ -48,8 +48,11 @@ FerrumKix does not import or rearrange your collection. It reads what is in the 
   your choosing: only what is missing or has changed is transferred, and anything in the folder
   that is no longer a favorite is removed. The files come from the server, so your library stays
   untouched and no network mount is needed.
-- **Edits MP3 albums.** Update shared album metadata and per-track titles or numbers, replace the
-  embedded cover, clean up tags, and keep useful defaults for recurring album work. Empty fields
+- **Edits album tags.** MP3, FLAC, Ogg Vorbis, Opus and M4A: update shared album metadata and
+  per-track titles or numbers, replace the embedded cover, clean up tags, and keep useful defaults
+  for recurring album work. Each format gets the tag its players read - ID3v2, Vorbis comments or
+  the iTunes atoms. A cover can be dropped onto the cover column, picked from a file or searched
+  on MusicBrainz by artist and album; its pixel size is shown before anything is written. Empty fields
   get a proposal one by one: the file name as the title, the parent folder as artist and album,
   and missing track numbers from the order of the file names. Nothing is written before "Apply
   changes". The genre box completes what you type from your genre defaults.
@@ -81,9 +84,9 @@ The transport sits on a dark deck at the bottom: the progress bar across the ful
 Appearance (dark, gray dark or gray light), accent colour, font size, language, the side of the
 window buttons (following the desktop by default), the blurred cover background, the width of the
 cover column, gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start are all
-configurable. The MP3 editor and Lyrion browser also keep their own defaults; entering a Lyrion
+configurable. The tag editor and Lyrion browser also keep their own defaults; entering a Lyrion
 server profile makes its own player tab available, and a separate target folder per server enables
-the favorites sync. The MP3 section also sets the edge length cover art is brought to, which governs the image
+the favorites sync. The tags section also sets the edge length cover art is brought to, which governs the image
 fetched for an identified CD as well, and the audio converter section holds the target folder for
 ripping audio CDs, which defaults to your music folder. The version is shown there too, with a
 link to the release page whenever a newer one is published. On Linux, the whole interface can also
@@ -182,6 +185,7 @@ come from [MusicBrainz](https://musicbrainz.org) and are core data under
 [CC0](https://musicbrainz.org/doc/About/Data_License), that is public domain. The cover art comes from the
 [Cover Art Archive](https://coverartarchive.org), and those images are **not**: they remain with
 their respective copyright owners. Only the disc id, computed from the track lengths, is sent; the
-disc itself is never read for the lookup.
+disc itself is never read for the lookup. The cover search in the tag editor sends the artist and
+album name from the form, and nothing else.
 
 FerrumKix is in active development.

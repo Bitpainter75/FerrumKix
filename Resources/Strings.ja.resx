@@ -7,6 +7,12 @@
   <data name="0_Alben_27cd7852" xml:space="preserve">
     <value>{0} 枚のアルバム</value>
   </data>
+  <data name="0_Datei_en_ausgew_hlt_Cover_1_a409c08e" xml:space="preserve">
+    <value>ファイル {0} 件を選択。カバー: {1}</value>
+  </data>
+  <data name="0_Datei_en_ausgew_hlt_Kein_Cover_vorhanden_ff16ac19" xml:space="preserve">
+    <value>ファイル {0} 件を選択。カバーがありません。</value>
+  </data>
   <data name="0_Favoriten_ohne_passendes_Album_bersprungen_29105465" xml:space="preserve">
     <value>{0} 件のお気に入りは該当アルバムがなく省略しました。</value>
   </data>
@@ -16,12 +22,6 @@
   </data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} チャンネル</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} by {1}、システム係数 {2:0.##}</value></data>
-  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_a07793fc" xml:space="preserve">
-    <value>MP3 ファイル {0} 件を選択。カバー: {1}</value>
-  </data>
-  <data name="0_MP3_Datei_en_ausgew_hlt_Kein_Cover_vorhanden_6730169f" xml:space="preserve">
-    <value>MP3 ファイル {0} 件を選択。カバーがありません。</value>
-  </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>{0}パーセント</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} トラックが読み取られました。</value></data>
   <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} トラックが見つかりません。</value></data>
@@ -109,6 +109,12 @@
     <value>例外はログを切っていても必ず errors.log に残ります。起動パラメーター --debug は、その実行のあいだだけログを有効にします。</value>
   </data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>自動</value></data>
+  <data name="Bei_MusicBrainz_passen_0_Alben_zu_dieser_Suche_27dfbe6b" xml:space="preserve">
+    <value>MusicBrainz でこの検索に一致するアルバムが {0} 件あります。</value>
+  </data>
+  <data name="Bei_MusicBrainz_wurde_kein_passendes_Album_gefun_353f92ea" xml:space="preserve">
+    <value>MusicBrainz で一致するアルバムが見つかりませんでした。</value>
+  </data>
   <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
     <value>保存時にアルバムアーティストがアーティストの値を自動で引き継ぎます。</value>
   </data>
@@ -118,6 +124,48 @@
   <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>開始時に再開</value></data>
   <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
     <value>想定した ID3v2 フィールドだけを残し、ID3v1、APEv2 その他の印を削除します。</value>
+  </data>
+  <data name="Cover_online_suchen_9f255671" xml:space="preserve">
+    <value>カバーをオンラインで検索 …</value>
+  </data>
+  <data name="Cover_wird_bei_MusicBrainz_gesucht_ba5c246f" xml:space="preserve">
+    <value>MusicBrainz でカバーを検索しています …</value>
+  </data>
+  <data name="Cover_wird_geladen_cfdcba3b" xml:space="preserve">
+    <value>カバーを読み込んでいます …</value>
+  </data>
+  <data name="Das_gefundene_Cover_konnte_nicht_gelesen_werden_add0bb23" xml:space="preserve">
+    <value>見つかったカバーを読み込めませんでした。</value>
+  </data>
+  <data name="Die_Suche_bei_MusicBrainz_ist_fehlgeschlagen_13d4caf9" xml:space="preserve">
+    <value>MusicBrainz での検索に失敗しました。</value>
+  </data>
+  <data name="Diese_Dateien_lassen_sich_nicht_taggen_Unterst_t_be8a5973" xml:space="preserve">
+    <value>これらのファイルにはタグを書き込めません。対応形式は MP3、FLAC、Ogg Vorbis、Opus、M4A です。</value>
+  </data>
+  <data name="Dieses_Dateiformat_kann_nicht_getaggt_werden_1fd189e1" xml:space="preserve">
+    <value>このファイル形式にはタグを書き込めません。</value>
+  </data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_cbc69c83" xml:space="preserve">
+    <value>1 行に 1 つのジャンル。この一覧はタグ付け時の選択肢として表示され、独自の値もそのまま入力できます。</value>
+  </data>
+  <data name="F_r_die_Suche_fehlt_der_Albumname_f855ef1b" xml:space="preserve">
+    <value>検索に必要なアルバム名がありません。</value>
+  </data>
+  <data name="F_r_dieses_Album_gibt_es_bei_MusicBrainz_kein_Co_9fbae2b7" xml:space="preserve">
+    <value>MusicBrainz にはこのアルバムのカバーがありません。</value>
+  </data>
+  <data name="Tags_848eed0f" xml:space="preserve">
+    <value>タグ</value>
+  </data>
+  <data name="Tags_bearbeiten_4b5658f0" xml:space="preserve">
+    <value>タグを編集…</value>
+  </data>
+  <data name="Tags_bearbeiten_df067ba9" xml:space="preserve">
+    <value>タグを編集</value>
+  </data>
+  <data name="Welches_Album_ist_es_ec5749e0" xml:space="preserve">
+    <value>どのアルバムですか？</value>
   </data>
   <data name="ber_FerrumKix_0d1d2b12" xml:space="preserve"><value>FerrumKix について</value></data>
   <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
@@ -216,9 +264,6 @@
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve">
     <value>画面ごとの拡大率。そこでアプリが小さすぎる場合に使います。次回の起動時にのみ反映されます。ウィンドウシステムは起動時にしかこの値を読み込みません。</value>
   </data>
-  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
-    <value>1 行に 1 つのジャンル。この一覧は MP3 タグ付け時の選択肢として表示され、独自の値もそのまま入力できます。</value>
-  </data>
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>設定</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>まだトラックが選択されていません。</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>ファイルはまだ読み取られています。</value></data>
@@ -283,6 +328,9 @@
   </data>
   <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>音量平準化（リプレイゲイン）</value></data>
   <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>音量: ドラッグ、マウスホイール、または矢印キー</value></data>
+  <data name="kleiner_als_0_px_55439b5d" xml:space="preserve">
+    <value>{0} px 未満</value>
+  </data>
   <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpvが見つかりません</value></data>
   <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>libmpvが見つかりました</value></data>
   <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>FFmpegが見つかりました</value></data>
@@ -298,15 +346,6 @@
   <data name="Minimieren_209bcbdc" xml:space="preserve"><value>最小化する</value></data>
   <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
     <value>MP3 ビットレート</value>
-  </data>
-  <data name="MP3_Tags_996faa78" xml:space="preserve">
-    <value>MP3 タグ</value>
-  </data>
-  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
-    <value>MP3 タグを編集…</value>
-  </data>
-  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
-    <value>MP3 タグを編集</value>
   </data>
   <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
     <value>作成されるファイルの書式で、オーディオ CD の取り込みにも使われます: %artist%、%albumartist%、%album%、%title%、%track%、%totaltracks%、%disc%、%year%、%genre%。拡張子は選んだ形式から決まります。空欄にすると既定値に戻ります。</value>
@@ -337,9 +376,6 @@
   </data>
   <data name="Nur_Favoriten_zeigen_19a6f639" xml:space="preserve">
     <value>お気に入りのみ表示</value>
-  </data>
-  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
-    <value>タグを書き込めるのは MP3 ファイルだけです。</value>
   </data>
   <data name="Oberfl_che_ae0be527" xml:space="preserve">
     <value>ユーザーインターフェイス</value>

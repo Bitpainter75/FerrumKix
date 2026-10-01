@@ -27,14 +27,18 @@ Namespace Views
    Me.New(Array.Empty(Of Track)())
   End Sub
   Public Sub New(tracks As IEnumerable(Of Track))
-   _tracks = tracks.Where(Function(t) t IsNot Nothing AndAlso String.Equals(Path.GetExtension(t.FilePath), ".mp3", StringComparison.OrdinalIgnoreCase)).ToList()
+   _tracks = tracks.Where(Function(t) t IsNot Nothing AndAlso TagWriteService.CanWrite(t.FilePath)).ToList()
    AvaloniaXamlLoader.Load(Me)
    ' Dieses Panel entsteht ERST nach dem Uebersetzungsdurchlauf des Fensters und bliebe sonst in
    ' jeder Sprache deutsch. Der Durchlauf laeuft deshalb hier noch einmal - und bei jedem
    ' Sprachwechsel erneut, solange das Panel im Baum haengt.
    LocalizationService.ApplyTo(Me)
    AddHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
-   AddHandler DetachedFromVisualTree, Sub(sender, e) RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
+   AddHandler DetachedFromVisualTree, Sub(sender, e)
+                                       RemoveHandler LocalizationService.LanguageChanged, AddressOf OnLanguageChanged
+                                       ' Eine laufende Coversuche hat mit dem Schliessen ihren Zweck verloren.
+                                       _closing.Cancel()
+                                      End Sub
    Fill()
   End Sub
   Private Sub OnLanguageChanged(sender As Object, e As EventArgs)
@@ -98,8 +102,8 @@ Namespace Views
   Private Sub ShowSummaryHint()
    _hintShowsSummary = True
    FindControl(Of TextBlock)("Hint").Text = If(_coverSize.Length = 0,
-                                               LocalizationService.Format("{0} MP3-Datei(en) ausgewählt. Kein Cover vorhanden.", _tracks.Count),
-                                               LocalizationService.Format("{0} MP3-Datei(en) ausgewählt. Cover: {1}", _tracks.Count, _coverSize))
+                                               LocalizationService.Format("{0} Datei(en) ausgewählt. Kein Cover vorhanden.", _tracks.Count),
+                                               LocalizationService.Format("{0} Datei(en) ausgewählt. Cover: {1}", _tracks.Count, _coverSize))
   End Sub
 
   ''' <summary>Was in der Hinweiszeile steht, wenn sie die Auswahl beschreibt, und ob sie das
@@ -179,7 +183,7 @@ Namespace Views
   ''' <summary>Die Tracknummer so, wie sie spaeter im Tag steht - mit den fuehrenden Nullen aus
   ''' den Einstellungen. Was im Feld steht, ist damit genau das, was geschrieben wird.</summary>
   Private Function NumberText(number As Integer) As String
-   Return If(number = 0, String.Empty, Mp3TagWriteService.FormatTrackNumber(number, _tracks.Count))
+   Return If(number = 0, String.Empty, TagWriteService.FormatTrackNumber(number, _tracks.Count))
   End Function
 
   ''' <summary>Eine von Hand eingetippte Nummer bekommt ihre fuehrenden Nullen, sobald das Feld
@@ -197,6 +201,71 @@ Namespace Views
    _hintShowsSummary = False
    FindControl(Of TextBlock)("Hint").Text = LocalizationService.T("Das abgelegte Element konnte nicht als Bild gelesen werden.")
   End Sub
+
+  ''' <summary>Sucht das Cover bei MusicBrainz, nach Artist und Album so, wie sie gerade im
+  ''' Formular stehen - eine eben korrigierte Schreibweise gilt also schon. Gibt die Bilddaten
+  ''' zurueck, oder Nothing, wenn nichts zu uebernehmen ist; warum nicht, steht dann in der
+  ''' Hinweiszeile. Mehrere passende Alben stehen zur Wahl, wie bei der CD-Erkennung.</summary>
+  Public Async Function FindOnlineCoverAsync() As Task(Of Byte())
+   Dim albumArtist = FindControl(Of TextBox)("AlbumArtistBox").Text
+   ' Der Album Artist ist der, unter dem MusicBrainz ein Album fuehrt. Bei einem Sampler
+   ' stuende im Artist-Feld nur einer der vielen Beteiligten.
+   Dim artist = If(String.IsNullOrWhiteSpace(albumArtist), FindControl(Of TextBox)("ArtistBox").Text, albumArtist)
+   Dim album = FindControl(Of TextBox)("AlbumBox").Text
+   If String.IsNullOrWhiteSpace(album) Then
+    ShowHint(LocalizationService.T("Für die Suche fehlt der Albumname."))
+    Return Nothing
+   End If
+   Try
+    ShowHint(LocalizationService.T("Cover wird bei MusicBrainz gesucht …"))
+    Dim matches = Await MusicBrainzCoverService.SearchAlbumsAsync(artist, album, _closing.Token)
+    If matches.Count = 0 Then
+     ShowHint(LocalizationService.T("Bei MusicBrainz wurde kein passendes Album gefunden."))
+     Return Nothing
+    End If
+    Dim chosen = 0
+    If matches.Count > 1 Then
+     Dim viewModel = TryCast(DataContext, MainWindowViewModel)
+     If viewModel Is Nothing Then Return Nothing
+     chosen = Await viewModel.ShowChoiceAsync(
+      LocalizationService.T("Welches Album ist es?"),
+      LocalizationService.Format("Bei MusicBrainz passen {0} Alben zu dieser Suche.", matches.Count),
+      matches.Select(Function(match) match.Label),
+      LocalizationService.T("Übernehmen"),
+      LocalizationService.T("Abbrechen"))
+     If chosen < 0 OrElse chosen >= matches.Count Then
+      ShowSummaryHint()
+      Return Nothing
+     End If
+    End If
+    ShowHint(LocalizationService.T("Cover wird geladen …"))
+    Dim bytes = Await MusicBrainzCoverService.DownloadCoverAsync(matches(chosen).Id, AppSettingsService.Current.TagCoverSize, _closing.Token)
+    If bytes Is Nothing OrElse bytes.Length = 0 Then
+     ShowHint(LocalizationService.T("Für dieses Album gibt es bei MusicBrainz kein Cover."))
+     Return Nothing
+    End If
+    Return bytes
+   Catch ex As OperationCanceledException When _closing.IsCancellationRequested
+    Return Nothing
+   Catch ex As Exception
+    DiagnosticLogService.LogException("TagEditor.CoverSearch", ex)
+    ShowHint(LocalizationService.T("Die Suche bei MusicBrainz ist fehlgeschlagen."))
+    Return Nothing
+   End Try
+  End Function
+
+  ''' <summary>Das online gefundene Bild liess sich nicht lesen.</summary>
+  Public Sub ReportCoverDownloadFailed()
+   ShowHint(LocalizationService.T("Das gefundene Cover konnte nicht gelesen werden."))
+  End Sub
+
+  ''' <summary>Eine Meldung in der Hinweiszeile, die die Beschreibung der Auswahl verdraengt.</summary>
+  Private Sub ShowHint(text As String)
+   _hintShowsSummary = False
+   FindControl(Of TextBlock)("Hint").Text = text
+  End Sub
+
+  Private ReadOnly _closing As New System.Threading.CancellationTokenSource()
 
   ''' <summary>Uebernimmt ein Cover, das die Tag-Coverspalte entgegengenommen und bereits als Bild
   ''' geprueft hat. Geschrieben wird es erst beim Speichern.</summary>
@@ -229,7 +298,7 @@ Namespace Views
    Await Task.Run(Sub()
    For Each edit In edits
     Try
-     Dim target = Mp3TagWriteService.Write(edit.Track.FilePath, New Mp3TagWriteService.Values With {.Artist = artist, .AlbumArtist = albumArtist, .Album = album, .Year = year, .Genre = genre, .AlbumSortOrder = sort, .DiscNumber = disc, .Title = edit.Title, .TrackNumber = edit.Number, .TotalTracks = edits.Count, .CoverSource = _cover})
+     Dim target = TagWriteService.Write(edit.Track.FilePath, New TagWriteService.Values With {.Artist = artist, .AlbumArtist = albumArtist, .Album = album, .Year = year, .Genre = genre, .AlbumSortOrder = sort, .DiscNumber = disc, .Title = edit.Title, .TrackNumber = edit.Number, .TotalTracks = edits.Count, .CoverSource = _cover})
      edit.Track.FilePath = target : edit.Track.Artist = artist : edit.Track.AlbumArtist = albumArtist : edit.Track.Album = album : edit.Track.Year = year : edit.Track.Genre = genre : edit.Track.AlbumSortOrder = sort : edit.Track.DiscNumber = disc : edit.Track.Title = edit.Title : edit.Track.TrackNumber = edit.Number
     Catch ex As Exception : errors.Add(Path.GetFileName(edit.Track.FilePath) & ": " & ex.Message) : End Try
    Next

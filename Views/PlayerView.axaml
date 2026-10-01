@@ -163,7 +163,7 @@
                                             <MenuItem Header="Album abspielen" Tag="{Binding}" Click="OnGroupPlayClick"/>
                                             <MenuItem Header="Album konvertieren…" Tag="{Binding}" Click="OnGroupConvertClick"/>
                                             <MenuItem Header="CD auswerfen" Tag="{Binding}" Click="OnGroupEjectCdClick" IsVisible="{Binding IsAudioCdGroup}"/>
-                                            <MenuItem Header="MP3-Tags bearbeiten…" Tag="{Binding}" Click="OnGroupTagClick" IsVisible="{Binding !IsAudioCdGroup}"/>
+                                            <MenuItem Header="Tags bearbeiten…" Tag="{Binding}" Click="OnGroupTagClick" IsVisible="{Binding !IsAudioCdGroup}"/>
                                             <MenuItem Header="Auf- oder zuklappen" Tag="{Binding}" Click="OnGroupToggleMenuClick"/>
                                             <Separator/>
                                             <MenuItem Header="Album aus Liste entfernen" Tag="{Binding}" Click="OnGroupRemoveClick"/>
@@ -202,7 +202,7 @@
                                         <ContextMenu>
                                             <MenuItem Header="Abspielen" Tag="{Binding}" Click="OnTrackPlayClick"/>
                                             <MenuItem Header="Konvertieren…" Tag="{Binding}" Click="OnTrackConvertClick"/>
-                                            <MenuItem Header="MP3-Tags bearbeiten…" Tag="{Binding}" Click="OnTrackTagClick" IsVisible="{Binding !Track.IsAudioCdTrack}"/>
+                                            <MenuItem Header="Tags bearbeiten…" Tag="{Binding}" Click="OnTrackTagClick" IsVisible="{Binding Track.CanEditTags}"/>
                                             <Separator/>
                                             <MenuItem Header="Aus Liste entfernen" Tag="{Binding}" Click="OnTrackRemoveClick"/>
                                         </ContextMenu>

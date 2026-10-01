@@ -54,6 +54,14 @@
                 Width="{Binding CoverSize}"
                 Height="{Binding CoverSize}"
                 Background="#22FFFFFF">
+            <!-- Dieselben zwei Wege wie die Knoepfe darunter, direkt am Bild: wer ein Cover
+                 ersetzen will, klickt zuerst auf das Cover. -->
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Cover wählen …" Click="OnChooseCoverClick"/>
+                    <MenuItem x:Name="SearchCoverMenuItem" Header="Cover online suchen …" Click="OnSearchCoverClick"/>
+                </ContextMenu>
+            </Border.ContextMenu>
             <Panel>
                 <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/music.svg"
                                Width="56" Height="56"
@@ -94,7 +102,8 @@
                        Classes="secondary"
                        TextAlignment="Center"/>
             <!-- Das Mass des Bildes, das gerade im Rahmen steht: "1400 × 1400" und bei einem
-                 abgelegten zusaetzlich seine Dateigroesse. Reine Zahlen, deshalb ohne Ubersetzung. -->
+                 abgelegten zusaetzlich seine Dateigroesse, bei einem zu kleinen der Hinweis darauf.
+                 Gesetzt wird der Text im Code, der Hinweis kommt dort schon uebersetzt. -->
             <TextBlock x:Name="SizeText"
                        Classes="muted"
                        TextAlignment="Center"/>
@@ -115,6 +124,16 @@
                        Classes="muted"
                        TextWrapping="Wrap"
                        TextAlignment="Center"/>
+            <!-- Die Suche bei MusicBrainz nach Artist und Album aus dem Formular. Ein Angebot
+                 neben dem Ablegen: die Bilder dort sind oft kleiner als ein selbst gesuchtes,
+                 und ihr Mass steht darueber, bevor irgendetwas geschrieben wird. -->
+            <Button x:Name="SearchCoverButton"
+                    Classes="ghost"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Margin="0,8,0,0"
+                    Click="OnSearchCoverClick"
+                    Content="Cover online suchen …"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

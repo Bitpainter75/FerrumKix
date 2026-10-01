@@ -7,6 +7,12 @@
   <data name="0_Alben_27cd7852" xml:space="preserve">
     <value>{0} albüm</value>
   </data>
+  <data name="0_Datei_en_ausgew_hlt_Cover_1_a409c08e" xml:space="preserve">
+    <value>{0} dosya seçildi. Kapak: {1}</value>
+  </data>
+  <data name="0_Datei_en_ausgew_hlt_Kein_Cover_vorhanden_ff16ac19" xml:space="preserve">
+    <value>{0} dosya seçildi. Kapak yok.</value>
+  </data>
   <data name="0_Favoriten_ohne_passendes_Album_bersprungen_29105465" xml:space="preserve">
     <value>Eşleşen albümü olmayan {0} favori atlandı.</value>
   </data>
@@ -16,12 +22,6 @@
   </data>
   <data name="0_Kan_le_464334f1" xml:space="preserve"><value>{0} kanal</value></data>
   <data name="0_mal_1_Systemfaktor_2_0_6f78970a" xml:space="preserve"><value>{0} x {1}, sistem faktörü {2:0.##}</value></data>
-  <data name="0_MP3_Datei_en_ausgew_hlt_Cover_1_a07793fc" xml:space="preserve">
-    <value>{0} MP3 dosyası seçildi. Kapak: {1}</value>
-  </data>
-  <data name="0_MP3_Datei_en_ausgew_hlt_Kein_Cover_vorhanden_6730169f" xml:space="preserve">
-    <value>{0} MP3 dosyası seçildi. Kapak yok.</value>
-  </data>
   <data name="0_Prozent_4a665fc5" xml:space="preserve"><value>yüzde {0}</value></data>
   <data name="0_Titel_eingelesen_e2ed7cf6" xml:space="preserve"><value>{0} parça okundu.</value></data>
   <data name="0_Titel_nicht_gefunden_4c984d3d" xml:space="preserve"><value>{0} parça bulunamadı.</value></data>
@@ -109,6 +109,12 @@
     <value>Özel durumlar günlük kapalıyken de her zaman errors.log dosyasına yazılır. --debug başlangıç parametresi günlüğü tek bir çalıştırma için açar.</value>
   </data>
   <data name="Automatisch_95b51063" xml:space="preserve"><value>Otomatik</value></data>
+  <data name="Bei_MusicBrainz_passen_0_Alben_zu_dieser_Suche_27dfbe6b" xml:space="preserve">
+    <value>MusicBrainz'de bu aramaya uyan {0} albüm var.</value>
+  </data>
+  <data name="Bei_MusicBrainz_wurde_kein_passendes_Album_gefun_353f92ea" xml:space="preserve">
+    <value>MusicBrainz'de uygun bir albüm bulunamadı.</value>
+  </data>
   <data name="Beim_Speichern_bernimmt_Album_Artist_automatisch_ba713a02" xml:space="preserve">
     <value>Kaydederken albüm sanatçısı otomatik olarak sanatçı değerini alır.</value>
   </data>
@@ -118,6 +124,48 @@
   <data name="Beim_Start_fortsetzen_b5dbd659" xml:space="preserve"><value>Başlangıçta devam ettir</value></data>
   <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
     <value>Yalnızca öngörülen ID3v2 alanlarını bırakır; ID3v1, APEv2 ve diğer işaretleri kaldırır.</value>
+  </data>
+  <data name="Cover_online_suchen_9f255671" xml:space="preserve">
+    <value>Kapağı çevrim içi ara …</value>
+  </data>
+  <data name="Cover_wird_bei_MusicBrainz_gesucht_ba5c246f" xml:space="preserve">
+    <value>Kapak MusicBrainz'de aranıyor …</value>
+  </data>
+  <data name="Cover_wird_geladen_cfdcba3b" xml:space="preserve">
+    <value>Kapak yükleniyor …</value>
+  </data>
+  <data name="Das_gefundene_Cover_konnte_nicht_gelesen_werden_add0bb23" xml:space="preserve">
+    <value>Bulunan kapak okunamadı.</value>
+  </data>
+  <data name="Die_Suche_bei_MusicBrainz_ist_fehlgeschlagen_13d4caf9" xml:space="preserve">
+    <value>MusicBrainz'de arama başarısız oldu.</value>
+  </data>
+  <data name="Diese_Dateien_lassen_sich_nicht_taggen_Unterst_t_be8a5973" xml:space="preserve">
+    <value>Bu dosyalar etiketlenemez. Desteklenenler: MP3, FLAC, Ogg Vorbis, Opus ve M4A.</value>
+  </data>
+  <data name="Dieses_Dateiformat_kann_nicht_getaggt_werden_1fd189e1" xml:space="preserve">
+    <value>Bu dosya biçimi etiketlenemez.</value>
+  </data>
+  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_cbc69c83" xml:space="preserve">
+    <value>Satır başına bir tür. Bu liste etiketlemede seçenek olarak görünür; orada kendi değerinizi de yazabilirsiniz.</value>
+  </data>
+  <data name="F_r_die_Suche_fehlt_der_Albumname_f855ef1b" xml:space="preserve">
+    <value>Arama için albüm adı eksik.</value>
+  </data>
+  <data name="F_r_dieses_Album_gibt_es_bei_MusicBrainz_kein_Co_9fbae2b7" xml:space="preserve">
+    <value>MusicBrainz'de bu albüm için kapak yok.</value>
+  </data>
+  <data name="Tags_848eed0f" xml:space="preserve">
+    <value>Etiketler</value>
+  </data>
+  <data name="Tags_bearbeiten_4b5658f0" xml:space="preserve">
+    <value>Etiketleri düzenle…</value>
+  </data>
+  <data name="Tags_bearbeiten_df067ba9" xml:space="preserve">
+    <value>Etiketleri düzenle</value>
+  </data>
+  <data name="Welches_Album_ist_es_ec5749e0" xml:space="preserve">
+    <value>Hangi albüm?</value>
   </data>
   <data name="ber_FerrumKix_0d1d2b12" xml:space="preserve"><value>FerrumKix Hakkında</value></data>
   <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
@@ -216,9 +264,6 @@
   <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve">
     <value>Uygulama orada çok küçük görünüyorsa, her ekran için ayrı bir ölçeklendirme katsayısı. Yalnızca sonraki başlangıçta geçerli olur: pencere sistemi değeri yalnızca başlangıçta okur.</value>
   </data>
-  <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
-    <value>Satır başına bir tür. Bu liste MP3 etiketlemede seçenek olarak görünür; orada kendi değerinizi de yazabilirsiniz.</value>
-  </data>
   <data name="Einstellungen_3e5af3d1" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Es_ist_noch_kein_Titel_gew_hlt_fb331fb0" xml:space="preserve"><value>Henüz parça seçilmedi.</value></data>
   <data name="Es_wird_noch_eingelesen_32bcd251" xml:space="preserve"><value>Dosyalar hâlâ okunuyor.</value></data>
@@ -283,6 +328,9 @@
   </data>
   <data name="Lautst_rke_angleichen_ReplayGain_ac383d0d" xml:space="preserve"><value>Ses seviyesi dengeleme (ReplayGain)</value></data>
   <data name="Lautst_rke_ziehen_Mausrad_oder_Pfeiltasten_0b8994c6" xml:space="preserve"><value>Ses düzeyi: sürükleme, fare tekerleği veya ok tuşları</value></data>
+  <data name="kleiner_als_0_px_55439b5d" xml:space="preserve">
+    <value>{0} px'ten küçük</value>
+  </data>
   <data name="libmpv_fehlt_4b406434" xml:space="preserve"><value>libmpv eksik</value></data>
   <data name="libmpv_gefunden_1b6e03c4" xml:space="preserve"><value>libmpv bulundu</value></data>
   <data name="FFmpeg_gefunden_586b6929" xml:space="preserve"><value>FFmpeg bulundu</value></data>
@@ -298,15 +346,6 @@
   <data name="Minimieren_209bcbdc" xml:space="preserve"><value>Küçült</value></data>
   <data name="MP3_Bitrate_dbfe2706" xml:space="preserve">
     <value>MP3 bit hızı</value>
-  </data>
-  <data name="MP3_Tags_996faa78" xml:space="preserve">
-    <value>MP3 etiketleri</value>
-  </data>
-  <data name="MP3_Tags_bearbeiten_5d7b682f" xml:space="preserve">
-    <value>MP3 etiketlerini düzenle…</value>
-  </data>
-  <data name="MP3_Tags_bearbeiten_b838c083" xml:space="preserve">
-    <value>MP3 etiketlerini düzenle</value>
   </data>
   <data name="Muster_f_r_die_erzeugten_Dateien_auch_beim_Rippe_71e4e0b5" xml:space="preserve">
     <value>Oluşturulan dosyaların kalıbı, ses CD'si kopyalanırken de geçerlidir: %artist%, %albumartist%, %album%, %title%, %track%, %totaltracks%, %disc%, %year%, %genre%. Uzantı seçilen biçimden gelir; boş alan varsayılanı geri getirir.</value>
@@ -337,9 +376,6 @@
   </data>
   <data name="Nur_Favoriten_zeigen_19a6f639" xml:space="preserve">
     <value>Yalnızca favorileri göster</value>
-  </data>
-  <data name="Nur_MP3_Dateien_k_nnen_getaggt_werden_44cf18c7" xml:space="preserve">
-    <value>Yalnızca MP3 dosyaları etiketlenebilir.</value>
   </data>
   <data name="Oberfl_che_ae0be527" xml:space="preserve">
     <value>Arayüz</value>

@@ -56,6 +56,15 @@ Namespace Models
             End Get
         End Property
 
+        ''' <summary>Ob der Tag-Editor diesen Titel bearbeiten kann. Steuert den Eintrag im
+        ''' Kontextmenue: ein Eintrag, der beim Anklicken nichts tut, sah aus wie ein Fehler.</summary>
+        <JsonIgnore>
+        Public ReadOnly Property CanEditTags As Boolean
+            Get
+                Return Not IsAudioCdTrack AndAlso Services.TagWriteService.CanWrite(FilePath)
+            End Get
+        End Property
+
         Public Shared Function CreateAudioCdPath(devicePath As String, trackNumber As Integer, lastTrack As Integer) As String
             Dim escaped = Uri.EscapeDataString(If(devicePath, String.Empty).TrimStart("/"c))
             Return $"cdda-track:///{escaped}?track={trackNumber}&last={lastTrack}"
