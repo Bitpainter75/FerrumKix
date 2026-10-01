@@ -119,7 +119,7 @@
   <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
     <value>의도한 ID3v2 필드만 남기고 ID3v1, APEv2 및 그 밖의 표시를 제거합니다.</value>
   </data>
-  <data name="ber_FerrumKix_b435431b" xml:space="preserve"><value>FerrumKix 소개</value></data>
+  <data name="ber_FerrumKix_0d1d2b12" xml:space="preserve"><value>FerrumKix 소개</value></data>
   <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
     <value>파일, 오디오 CD, Lyrion 스트림의 소리 출력을 맡습니다.</value>
   </data>
@@ -213,7 +213,7 @@
   <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
     <value>Lyrion 라이브러리를 둘러보고 앨범을 FerrumKix에서 바로 재생하세요.</value>
   </data>
-  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve">
     <value>화면별 배율입니다. 해당 화면에서 앱이 너무 작게 보일 때 사용합니다. 다음 시작 시에만 적용됩니다. 창 시스템은 시작할 때만 이 값을 읽습니다.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
@@ -235,10 +235,10 @@
   <data name="Fehlersuche_5ab03ccc" xml:space="preserve">
     <value>문제 해결</value>
   </data>
-  <data name="FerrumKix_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+  <data name="FerrumKix_baut_auf_diesen_Projekten_auf_Die_Scha_660000c8" xml:space="preserve">
     <value>FerrumKix는 이 프로젝트들 위에 만들어졌습니다. 단추를 누르면 프로젝트 페이지와 라이선스 본문이 브라우저에서 열립니다.</value>
   </data>
-  <data name="FerrumKix_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumKix는 중단된 마지막 재생 트랙을 선택합니다. 꺼져 있으면 트랙이 선택되기만 하고 시작되지는 않습니다.</value></data>
+  <data name="FerrumKix_nimmt_den_zuletzt_gespielten_Titel_an__52936d66" xml:space="preserve"><value>FerrumKix는 중단된 마지막 재생 트랙을 선택합니다. 꺼져 있으면 트랙이 선택되기만 하고 시작되지는 않습니다.</value></data>
   <data name="FerrumKix_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
     <value>FerrumKix는 선택한 곡을 서버를 통해 직접 재생합니다. 별도의 Lyrion 클라이언트는 필요하지 않습니다.</value>
   </data>
@@ -289,7 +289,7 @@
   <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>FFmpeg 누락</value></data>
   <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>CD 편집증 발견</value></data>
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>CD 편집증 실종</value></data>
-  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv를 로드할 수 없습니다. 그것이 없으면 FerrumKix는 아무것도 재생할 수 없습니다.</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_056e2634" xml:space="preserve"><value>libmpv를 로드할 수 없습니다. 그것이 없으면 FerrumKix는 아무것도 재생할 수 없습니다.</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>목록 지우기</value></data>
   <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
     <value>Lyrion Media Server를 불러오는 중 …</value>
@@ -356,7 +356,7 @@
   </data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>닫기</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>빠른 검색</value></data>
-  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_1f9b34d7" xml:space="preserve">
+  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_0684f921" xml:space="preserve">
     <value>진행 상황을 ferrumkix.log에 자세히 기록합니다. 문제를 찾을 때만 켜세요: 평소 사용에서는 단계마다 파일이 계속 커집니다.</value>
   </data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>글꼴 크기</value></data>
@@ -405,7 +405,7 @@
     <value>선택 …</value>
   </data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>재생</value></data>
-  <data name="Wiedergabe_in_FerrumKix_0_f5c2c332" xml:space="preserve">
+  <data name="Wiedergabe_in_FerrumKix_0_5cfe3dd2" xml:space="preserve">
     <value>FerrumKix에서 재생 중: {0}</value>
   </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>재생 및 일시중지</value></data>
@@ -653,7 +653,7 @@
   <data name="Ver_ffentlichte_Fassung_herunterladen_08d01ad8" xml:space="preserve">
     <value>게시된 버전 내려받기</value>
   </data>
-  <data name="Titel_beim_Abspielen_in_FerrumKix_ber_cksichtig_5a5e3054" xml:space="preserve">
+  <data name="Titel_beim_Abspielen_in_FerrumKix_ber_cksichtige_7d317675" xml:space="preserve">
     <value>FerrumKix에서 재생할 때 이 곡 포함</value>
   </data>
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
@@ -699,4 +699,40 @@
   <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>창이 작업 표시줄에서 사라지고 아이콘을 통해 다시 나타납니다.</value></data>
   <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>닫을 때 시스템 트레이로</value></data>
   <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>닫으면 창만 숨겨지고 재생은 계속됩니다. 종료는 아이콘 메뉴에서 합니다.</value></data>
+  <data name="Audio_CD_wird_gelesen_a763cf91" xml:space="preserve"><value>오디오 CD를 읽는 중입니다.</value></data>
+  <data name="Die_Audio_CD_konnte_nicht_gelesen_werden_d723e870" xml:space="preserve"><value>오디오 CD를 읽을 수 없습니다.</value></data>
+  <data name="Alle_Album_Favoriten_l_schen_6937c7c6" xml:space="preserve"><value>즐겨찾기 앨범 모두 삭제</value></data>
+  <data name="Wiedergabeliste_laden_5dbe51d4" xml:space="preserve"><value>재생목록 불러오기</value></data>
+  <data name="Wiedergabeliste_als_M3U_speichern_78382b77" xml:space="preserve"><value>재생목록을 M3U로 저장</value></data>
+  <data name="M3U_Wiedergabeliste_7b7bd48a" xml:space="preserve"><value>M3U 재생목록</value></data>
+  <data name="Wiedergabeliste_konnte_nicht_geladen_werden_36efd642" xml:space="preserve"><value>재생목록을 불러올 수 없습니다.</value></data>
+  <data name="Wiedergabeliste_speichern_4264a338" xml:space="preserve"><value>재생목록 저장</value></data>
+  <data name="Wiedergabeliste_gespeichert_1c111f0f" xml:space="preserve"><value>재생목록을 저장했습니다.</value></data>
+  <data name="Wiedergabeliste_konnte_nicht_gespeichert_werden_e4c8cbe7" xml:space="preserve"><value>재생목록을 저장할 수 없습니다.</value></data>
+  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumKix_das_n_062d26d5" xml:space="preserve"><value>새 배율은 다음에 FerrumKix를 시작할 때 적용됩니다.</value></data>
+  <data name="Audio_CD_Unterordner_9ca7fc1c" xml:space="preserve"><value>오디오 CD: 하위 폴더</value></data>
+  <data name="Optionaler_Unterordner_je_Album_Unterst_tzt_dies_91df2d26" xml:space="preserve"><value>앨범별 선택적 하위 폴더입니다. 태그 파일 이름과 같은 자리 표시자를 지원합니다(예: %albumartist%/%year% - %album%). 비워 두면 대상 폴더에 바로 저장합니다.</value></data>
+  <data name="Bis_zu_drei_Server_k_nnen_getrennt_verwendet_wer_5d851cc2" xml:space="preserve"><value>최대 세 개의 서버를 따로 사용할 수 있습니다. 이름은 탭으로 표시되며, URL과 즐겨찾기 동기화는 항상 같은 서버에 속합니다.</value></data>
+  <data name="Name_im_Tab_d3c6ffbc" xml:space="preserve"><value>탭 이름</value></data>
+  <data name="Zielordner_f_r_Favoriten_Abgleich_86832938" xml:space="preserve"><value>즐겨찾기 동기화 대상 폴더</value></data>
+  <data name="0_von_1_Alben_2_Favoriten_0c0d0094" xml:space="preserve"><value>{1}개 중 {0}개 앨범 · 즐겨찾기 {2}개</value></data>
+  <data name="0_Treffer_1_Favoriten_zuletzt_hinzugef_gt_gilt_f_ca008ced" xml:space="preserve"><value>{0}개 결과 · 즐겨찾기 {1}개 · 검색에는 ‘최근 추가됨’이 적용되지 않습니다</value></data>
+  <data name="0_Treffer_1_Favoriten_204faf61" xml:space="preserve"><value>{0}개 결과 · 즐겨찾기 {1}개</value></data>
+  <data name="0_zuletzt_hinzugef_gte_Alben_1_Favoriten_67b46932" xml:space="preserve"><value>최근 추가된 앨범 {0}개 · 즐겨찾기 {1}개</value></data>
+  <data name="0_Alben_1_Favoriten_f158dde0" xml:space="preserve"><value>앨범 {0}개 · 즐겨찾기 {1}개</value></data>
+  <data name="0_Album_Favoriten_werden_entfernt_51d9b2d3" xml:space="preserve"><value>즐겨찾기 앨범 {0}개를 제거하는 중 …</value></data>
+  <data name="0_Titel_0_MB_f_r_Sync_f88865ad" xml:space="preserve"><value>트랙 0개 · 동기화 0 MB</value></data>
+  <data name="0_Titel_1_f_r_Sync_85bf758a" xml:space="preserve"><value>트랙 {0}개 · 동기화 {1}</value></data>
+  <data name="0_Zieldatei_en_existieren_bereits_a1538e51" xml:space="preserve"><value>대상 파일 {0}개가 이미 있습니다.</value></data>
+  <data name="Album_Favoriten_werden_geladen_cf7057d3" xml:space="preserve"><value>즐겨찾기 앨범을 불러오는 중 …</value></data>
+  <data name="Alle_Album_Favoriten_l_schen_0caa2b6f" xml:space="preserve"><value>즐겨찾기 앨범을 모두 삭제할까요?</value></data>
+  <data name="Alle_berschreiben_eaf7926d" xml:space="preserve"><value>모두 덮어쓰기</value></data>
+  <data name="Alle_l_schen_a85903c2" xml:space="preserve"><value>모두 삭제</value></data>
+  <data name="Das_Zielformat_entspricht_bereits_der_Quelldatei_66fc4071" xml:space="preserve"><value>대상 형식이 같은 폴더에 있는 원본 파일과 같습니다. 다른 대상 폴더나 다른 형식을 선택하세요.</value></data>
+  <data name="Dieser_Vorgang_kann_nicht_r_ckg_ngig_gemacht_wer_77fa6480" xml:space="preserve"><value>이 작업은 되돌릴 수 없습니다.</value></data>
+  <data name="Favoriten_konnten_nicht_gel_scht_werden_1f5ad076" xml:space="preserve"><value>즐겨찾기를 삭제할 수 없습니다.</value></data>
+  <data name="Keine_Album_Favoriten_vorhanden_37194479" xml:space="preserve"><value>즐겨찾기 앨범이 없습니다.</value></data>
+  <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>동기화 크기를 계산할 수 없습니다.</value></data>
+  <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>동기화 크기를 계산하는 중 …</value></data>
+  <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>기존 파일을 덮어쓸까요?</value></data>
 </root>

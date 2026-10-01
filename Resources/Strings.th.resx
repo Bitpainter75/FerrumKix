@@ -119,7 +119,7 @@
   <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
     <value>คงไว้เฉพาะฟิลด์ ID3v2 ที่กำหนด และลบ ID3v1, APEv2 รวมถึงเครื่องหมายอื่น ๆ</value>
   </data>
-  <data name="ber_FerrumKix_b435431b" xml:space="preserve"><value>เกี่ยวกับ FerrumKix</value></data>
+  <data name="ber_FerrumKix_0d1d2b12" xml:space="preserve"><value>เกี่ยวกับ FerrumKix</value></data>
   <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
     <value>ดูแลการส่งออกเสียงสำหรับไฟล์ ซีดีเสียง และสตรีม Lyrion</value>
   </data>
@@ -213,7 +213,7 @@
   <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
     <value>เรียกดูคลัง Lyrion ของคุณและเล่นอัลบั้มใน FerrumKix ได้โดยตรง</value>
   </data>
-  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve">
     <value>ตัวคูณการปรับขนาดแยกตามจอ สำหรับกรณีที่แอปดูเล็กเกินไปบนจอนั้น จะมีผลเมื่อเริ่มครั้งถัดไปเท่านั้น: ระบบหน้าต่างจะอ่านค่านี้เฉพาะตอนเริ่มทำงาน</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
@@ -235,10 +235,10 @@
   <data name="Fehlersuche_5ab03ccc" xml:space="preserve">
     <value>การแก้ปัญหา</value>
   </data>
-  <data name="FerrumKix_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+  <data name="FerrumKix_baut_auf_diesen_Projekten_auf_Die_Scha_660000c8" xml:space="preserve">
     <value>FerrumKix สร้างขึ้นบนโครงการเหล่านี้ ปุ่มจะเปิดหน้าโครงการและข้อความสัญญาอนุญาตในเบราว์เซอร์</value>
   </data>
-  <data name="FerrumKix_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumKix จะหยิบแทร็กที่เล่นล่าสุดซึ่งถูกขัดจังหวะ เมื่อปิด แทร็กจะถูกเลือกเท่านั้น ไม่ใช่เริ่ม</value></data>
+  <data name="FerrumKix_nimmt_den_zuletzt_gespielten_Titel_an__52936d66" xml:space="preserve"><value>FerrumKix จะหยิบแทร็กที่เล่นล่าสุดซึ่งถูกขัดจังหวะ เมื่อปิด แทร็กจะถูกเลือกเท่านั้น ไม่ใช่เริ่ม</value></data>
   <data name="FerrumKix_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
     <value>FerrumKix เล่นเพลงที่เลือกผ่านเซิร์ฟเวอร์โดยตรง ไม่จำเป็นต้องมีไคลเอนต์ Lyrion เพิ่ม</value>
   </data>
@@ -289,7 +289,7 @@
   <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>FFmpeg หายไป</value></data>
   <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>พบความหวาดระแวง</value></data>
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>ไม่มีความหวาดระแวง</value></data>
-  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>โหลด libmpv ไม่ได้ หากไม่มีมัน FerrumKix ก็ไม่สามารถเล่นอะไรได้เลย</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_056e2634" xml:space="preserve"><value>โหลด libmpv ไม่ได้ หากไม่มีมัน FerrumKix ก็ไม่สามารถเล่นอะไรได้เลย</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>ล้างรายการ</value></data>
   <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
     <value>กำลังโหลด Lyrion Media Server …</value>
@@ -356,7 +356,7 @@
   </data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>ปิด</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>ค้นหาอย่างรวดเร็ว</value></data>
-  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_1f9b34d7" xml:space="preserve">
+  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_0684f921" xml:space="preserve">
     <value>เขียนรายละเอียดการทำงานลงใน ferrumkix.log เปิดเฉพาะตอนหาสาเหตุเท่านั้น เพราะการใช้งานปกติไฟล์จะโตขึ้นทุกขั้นตอน</value>
   </data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>ขนาดตัวอักษร</value></data>
@@ -405,7 +405,7 @@
     <value>เลือก …</value>
   </data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>การเล่น</value></data>
-  <data name="Wiedergabe_in_FerrumKix_0_f5c2c332" xml:space="preserve">
+  <data name="Wiedergabe_in_FerrumKix_0_5cfe3dd2" xml:space="preserve">
     <value>กำลังเล่นใน FerrumKix: {0}</value>
   </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>เล่นและหยุดชั่วคราว</value></data>
@@ -653,7 +653,7 @@
   <data name="Ver_ffentlichte_Fassung_herunterladen_08d01ad8" xml:space="preserve">
     <value>ดาวน์โหลดเวอร์ชันที่เผยแพร่</value>
   </data>
-  <data name="Titel_beim_Abspielen_in_FerrumKix_ber_cksichtig_5a5e3054" xml:space="preserve">
+  <data name="Titel_beim_Abspielen_in_FerrumKix_ber_cksichtige_7d317675" xml:space="preserve">
     <value>รวมเพลงนี้เมื่อเล่นใน FerrumKix</value>
   </data>
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
@@ -699,4 +699,40 @@
   <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>หน้าต่างจะหายไปจากแถบงานและกลับมาได้ผ่านไอคอน</value></data>
   <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>ปิดลงถาดระบบ</value></data>
   <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>การปิดจะซ่อนหน้าต่างเท่านั้น การเล่นยังคงดำเนินต่อ ออกจากโปรแกรมได้จากเมนูของไอคอน</value></data>
+  <data name="Audio_CD_wird_gelesen_a763cf91" xml:space="preserve"><value>กำลังอ่านซีดีเสียง</value></data>
+  <data name="Die_Audio_CD_konnte_nicht_gelesen_werden_d723e870" xml:space="preserve"><value>ไม่สามารถอ่านซีดีเสียงได้</value></data>
+  <data name="Alle_Album_Favoriten_l_schen_6937c7c6" xml:space="preserve"><value>ลบอัลบั้มโปรดทั้งหมด</value></data>
+  <data name="Wiedergabeliste_laden_5dbe51d4" xml:space="preserve"><value>โหลดเพลย์ลิสต์</value></data>
+  <data name="Wiedergabeliste_als_M3U_speichern_78382b77" xml:space="preserve"><value>บันทึกเพลย์ลิสต์เป็น M3U</value></data>
+  <data name="M3U_Wiedergabeliste_7b7bd48a" xml:space="preserve"><value>เพลย์ลิสต์ M3U</value></data>
+  <data name="Wiedergabeliste_konnte_nicht_geladen_werden_36efd642" xml:space="preserve"><value>ไม่สามารถโหลดเพลย์ลิสต์ได้</value></data>
+  <data name="Wiedergabeliste_speichern_4264a338" xml:space="preserve"><value>บันทึกเพลย์ลิสต์</value></data>
+  <data name="Wiedergabeliste_gespeichert_1c111f0f" xml:space="preserve"><value>บันทึกเพลย์ลิสต์แล้ว</value></data>
+  <data name="Wiedergabeliste_konnte_nicht_gespeichert_werden_e4c8cbe7" xml:space="preserve"><value>ไม่สามารถบันทึกเพลย์ลิสต์ได้</value></data>
+  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumKix_das_n_062d26d5" xml:space="preserve"><value>การปรับขนาดใหม่จะมีผลเมื่อเริ่ม FerrumKix ครั้งถัดไป</value></data>
+  <data name="Audio_CD_Unterordner_9ca7fc1c" xml:space="preserve"><value>ซีดีเสียง: โฟลเดอร์ย่อย</value></data>
+  <data name="Optionaler_Unterordner_je_Album_Unterst_tzt_dies_91df2d26" xml:space="preserve"><value>โฟลเดอร์ย่อยแยกตามอัลบั้ม (ไม่บังคับ) รองรับตัวแทนเดียวกับชื่อไฟล์จากแท็ก เช่น %albumartist%/%year% - %album% หากเว้นว่างจะบันทึกลงในโฟลเดอร์ปลายทางโดยตรง</value></data>
+  <data name="Bis_zu_drei_Server_k_nnen_getrennt_verwendet_wer_5d851cc2" xml:space="preserve"><value>ใช้เซิร์ฟเวอร์แยกกันได้สูงสุดสามเครื่อง ชื่อจะแสดงเป็นแท็บ ส่วน URL และการซิงก์รายการโปรดจะเป็นของเซิร์ฟเวอร์เดียวกันเสมอ</value></data>
+  <data name="Name_im_Tab_d3c6ffbc" xml:space="preserve"><value>ชื่อบนแท็บ</value></data>
+  <data name="Zielordner_f_r_Favoriten_Abgleich_86832938" xml:space="preserve"><value>โฟลเดอร์ปลายทางสำหรับซิงก์รายการโปรด</value></data>
+  <data name="0_von_1_Alben_2_Favoriten_0c0d0094" xml:space="preserve"><value>{0} จาก {1} อัลบั้ม · รายการโปรด {2} รายการ</value></data>
+  <data name="0_Treffer_1_Favoriten_zuletzt_hinzugef_gt_gilt_f_ca008ced" xml:space="preserve"><value>{0} รายการที่ตรงกัน · รายการโปรด {1} รายการ · “เพิ่มล่าสุด” ใช้กับการค้นหาไม่ได้</value></data>
+  <data name="0_Treffer_1_Favoriten_204faf61" xml:space="preserve"><value>{0} รายการที่ตรงกัน · รายการโปรด {1} รายการ</value></data>
+  <data name="0_zuletzt_hinzugef_gte_Alben_1_Favoriten_67b46932" xml:space="preserve"><value>{0} อัลบั้มที่เพิ่มล่าสุด · รายการโปรด {1} รายการ</value></data>
+  <data name="0_Alben_1_Favoriten_f158dde0" xml:space="preserve"><value>{0} อัลบั้ม · รายการโปรด {1} รายการ</value></data>
+  <data name="0_Album_Favoriten_werden_entfernt_51d9b2d3" xml:space="preserve"><value>กำลังลบอัลบั้มโปรด {0} อัลบั้ม …</value></data>
+  <data name="0_Titel_0_MB_f_r_Sync_f88865ad" xml:space="preserve"><value>0 แทร็ก · 0 MB สำหรับซิงก์</value></data>
+  <data name="0_Titel_1_f_r_Sync_85bf758a" xml:space="preserve"><value>{0} แทร็ก · {1} สำหรับซิงก์</value></data>
+  <data name="0_Zieldatei_en_existieren_bereits_a1538e51" xml:space="preserve"><value>มีไฟล์ปลายทางอยู่แล้ว {0} ไฟล์</value></data>
+  <data name="Album_Favoriten_werden_geladen_cf7057d3" xml:space="preserve"><value>กำลังโหลดอัลบั้มโปรด …</value></data>
+  <data name="Alle_Album_Favoriten_l_schen_0caa2b6f" xml:space="preserve"><value>ลบอัลบั้มโปรดทั้งหมดหรือไม่</value></data>
+  <data name="Alle_berschreiben_eaf7926d" xml:space="preserve"><value>เขียนทับทั้งหมด</value></data>
+  <data name="Alle_l_schen_a85903c2" xml:space="preserve"><value>ลบทั้งหมด</value></data>
+  <data name="Das_Zielformat_entspricht_bereits_der_Quelldatei_66fc4071" xml:space="preserve"><value>รูปแบบปลายทางตรงกับไฟล์ต้นฉบับในโฟลเดอร์เดียวกันอยู่แล้ว โปรดเลือกโฟลเดอร์ปลายทางหรือรูปแบบอื่น</value></data>
+  <data name="Dieser_Vorgang_kann_nicht_r_ckg_ngig_gemacht_wer_77fa6480" xml:space="preserve"><value>การดำเนินการนี้ไม่สามารถย้อนกลับได้</value></data>
+  <data name="Favoriten_konnten_nicht_gel_scht_werden_1f5ad076" xml:space="preserve"><value>ไม่สามารถลบรายการโปรดได้</value></data>
+  <data name="Keine_Album_Favoriten_vorhanden_37194479" xml:space="preserve"><value>ไม่มีอัลบั้มโปรด</value></data>
+  <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>ไม่สามารถคำนวณขนาดการซิงก์ได้</value></data>
+  <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>กำลังคำนวณขนาดการซิงก์ …</value></data>
+  <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>เขียนทับไฟล์ที่มีอยู่หรือไม่</value></data>
 </root>

@@ -230,15 +230,15 @@ Namespace Views
             Dim storage = TopLevel.GetTopLevel(Me)?.StorageProvider
             If storage Is Nothing Then Return
             Dim files = Await storage.OpenFilePickerAsync(New FilePickerOpenOptions With {
-                .Title = "Wiedergabeliste laden", .AllowMultiple = False,
-                .FileTypeFilter = {New FilePickerFileType("M3U-Wiedergabeliste") With {.Patterns = {"*.m3u", "*.m3u8"}}}})
+                .Title = LocalizationService.T("Wiedergabeliste laden"), .AllowMultiple = False,
+                .FileTypeFilter = {New FilePickerFileType(LocalizationService.T("M3U-Wiedergabeliste")) With {.Patterns = {"*.m3u", "*.m3u8"}}}})
             Dim path = files.FirstOrDefault()?.TryGetLocalPath()
             If String.IsNullOrWhiteSpace(path) Then Return
             Try
                 Await ViewModel.LoadM3uAsync(path)
             Catch ex As Exception
                 DiagnosticLogService.LogException("Playlist.M3uLoad", ex)
-                ViewModel.StatusText = "Wiedergabeliste konnte nicht geladen werden."
+                ViewModel.StatusText = LocalizationService.T("Wiedergabeliste konnte nicht geladen werden.")
             End Try
         End Sub
 
@@ -246,16 +246,16 @@ Namespace Views
             Dim storage = TopLevel.GetTopLevel(Me)?.StorageProvider
             If storage Is Nothing OrElse ViewModel Is Nothing Then Return
             Dim file = Await storage.SaveFilePickerAsync(New FilePickerSaveOptions With {
-                .Title = "Wiedergabeliste speichern", .SuggestedFileName = "Wiedergabeliste.m3u",
-                .FileTypeChoices = {New FilePickerFileType("M3U-Wiedergabeliste") With {.Patterns = {"*.m3u"}}}})
+                .Title = LocalizationService.T("Wiedergabeliste speichern"), .SuggestedFileName = LocalizationService.T("Wiedergabeliste") & ".m3u",
+                .FileTypeChoices = {New FilePickerFileType(LocalizationService.T("M3U-Wiedergabeliste")) With {.Patterns = {"*.m3u"}}}})
             Dim path = file?.TryGetLocalPath()
             If String.IsNullOrWhiteSpace(path) Then Return
             Try
                 ViewModel.SaveM3u(path)
-                ViewModel.StatusText = "Wiedergabeliste gespeichert."
+                ViewModel.StatusText = LocalizationService.T("Wiedergabeliste gespeichert.")
             Catch ex As Exception
                 DiagnosticLogService.LogException("Playlist.M3uSave", ex)
-                ViewModel.StatusText = "Wiedergabeliste konnte nicht gespeichert werden."
+                ViewModel.StatusText = LocalizationService.T("Wiedergabeliste konnte nicht gespeichert werden.")
             End Try
         End Sub
 

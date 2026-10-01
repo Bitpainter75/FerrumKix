@@ -119,7 +119,7 @@
   <data name="Bel_sst_nur_die_vorgesehenen_ID3v2_Felder_und_en_466ade2c" xml:space="preserve">
     <value>Säilyttää vain tarkoitetut ID3v2-kentät ja poistaa ID3v1:n, APEv2:n sekä muut merkinnät.</value>
   </data>
-  <data name="ber_FerrumKix_b435431b" xml:space="preserve"><value>Tietoja FerrumKixsta</value></data>
+  <data name="ber_FerrumKix_0d1d2b12" xml:space="preserve"><value>Tietoja FerrumKixsta</value></data>
   <data name="bernimmt_die_Tonausgabe_f_r_Dateien_Audio_CDs_un_3ff96bca" xml:space="preserve">
     <value>Huolehtii äänentoistosta tiedostoille, ääni-CD-levyille ja Lyrion-virroille.</value>
   </data>
@@ -213,7 +213,7 @@
   <data name="Durchsuche_deine_Lyrion_Bibliothek_und_spiele_Al_4dd10c58" xml:space="preserve">
     <value>Selaa Lyrion-kirjastoasi ja toista albumeita suoraan FerrumKixssa.</value>
   </data>
-  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_b72b808e" xml:space="preserve">
+  <data name="Ein_eigener_Faktor_je_Bildschirm_f_r_den_Fall_da_0b5b6414" xml:space="preserve">
     <value>Oma skaalauskerroin kullekin näytölle, jos sovellus näyttää siellä liian pieneltä. Tulee voimaan vasta seuraavalla käynnistyskerralla: ikkunajärjestelmä lukee arvon vain käynnistyksen yhteydessä.</value>
   </data>
   <data name="Ein_Genre_je_Zeile_Diese_Liste_erscheint_als_Aus_35e42372" xml:space="preserve">
@@ -235,10 +235,10 @@
   <data name="Fehlersuche_5ab03ccc" xml:space="preserve">
     <value>Vianetsintä</value>
   </data>
-  <data name="FerrumKix_baut_auf_diesen_Projekten_auf_Die_Sch_c4fa1be3" xml:space="preserve">
+  <data name="FerrumKix_baut_auf_diesen_Projekten_auf_Die_Scha_660000c8" xml:space="preserve">
     <value>FerrumKix rakentuu näiden hankkeiden varaan. Painikkeet avaavat hankkeen sivun ja lisenssitekstin selaimeen.</value>
   </data>
-  <data name="FerrumKix_nimmt_den_zuletzt_gespielten_Titel_an_8f4788f0" xml:space="preserve"><value>FerrumKix poimii viimeksi soitetun kappaleen, jossa se keskeytettiin. Kun raita on pois päältä, se vain valitaan, ei aloiteta.</value></data>
+  <data name="FerrumKix_nimmt_den_zuletzt_gespielten_Titel_an__52936d66" xml:space="preserve"><value>FerrumKix poimii viimeksi soitetun kappaleen, jossa se keskeytettiin. Kun raita on pois päältä, se vain valitaan, ei aloiteta.</value></data>
   <data name="FerrumKix_spielt_die_gew_hlten_Titel_direkt_ber_87e893c3" xml:space="preserve">
     <value>FerrumKix toistaa valitut kappaleet suoraan palvelimen kautta; erillistä Lyrion-asiakasta ei tarvita.</value>
   </data>
@@ -289,7 +289,7 @@
   <data name="FFmpeg_fehlt_091228ca" xml:space="preserve"><value>FFmpeg puuttuu</value></data>
   <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>cdparanoia löytyi</value></data>
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>cdparanoia puuttuu</value></data>
-  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_b99eacfa" xml:space="preserve"><value>libmpv:tä ei voi ladata. Ilman sitä FerrumKix ei voi pelata mitään.</value></data>
+  <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_056e2634" xml:space="preserve"><value>libmpv:tä ei voi ladata. Ilman sitä FerrumKix ei voi pelata mitään.</value></data>
   <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>Tyhjennä lista</value></data>
   <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
     <value>Lyrion Media Serveriä ladataan …</value>
@@ -356,7 +356,7 @@
   </data>
   <data name="Schlie_en_44424b18" xml:space="preserve"><value>Sulje</value></data>
   <data name="Schnellsuche_e90360bf" xml:space="preserve"><value>Pikahaku</value></data>
-  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_1f9b34d7" xml:space="preserve">
+  <data name="Schreibt_ausf_hrliche_Zeilen_zum_Ablauf_nach_fer_0684f921" xml:space="preserve">
     <value>Kirjoittaa yksityiskohtaiset rivit kulusta tiedostoon ferrumkix.log. Kytke päälle vain vianetsintään: normaalikäytössä tiedosto kasvaa joka askeleella.</value>
   </data>
   <data name="Schriftgr_e_ffea6b9d" xml:space="preserve"><value>Fontin koko</value></data>
@@ -405,7 +405,7 @@
     <value>Valitse …</value>
   </data>
   <data name="Wiedergabe_f50f85c1" xml:space="preserve"><value>Toisto</value></data>
-  <data name="Wiedergabe_in_FerrumKix_0_f5c2c332" xml:space="preserve">
+  <data name="Wiedergabe_in_FerrumKix_0_5cfe3dd2" xml:space="preserve">
     <value>Toistetaan FerrumKixssa: {0}</value>
   </data>
   <data name="Wiedergabe_und_Pause_98c6c7b8" xml:space="preserve"><value>Toista ja tauko</value></data>
@@ -653,7 +653,7 @@
   <data name="Ver_ffentlichte_Fassung_herunterladen_08d01ad8" xml:space="preserve">
     <value>Lataa julkaistu versio</value>
   </data>
-  <data name="Titel_beim_Abspielen_in_FerrumKix_ber_cksichtig_5a5e3054" xml:space="preserve">
+  <data name="Titel_beim_Abspielen_in_FerrumKix_ber_cksichtige_7d317675" xml:space="preserve">
     <value>Sisällytä kappale toistettaessa FerrumKixssa</value>
   </data>
   <data name="Auf_einem_Ger_t_spielt_der_Server_das_ganze_Albu_9502fd53" xml:space="preserve">
@@ -699,4 +699,40 @@
   <data name="Das_Fenster_verschwindet_aus_der_Taskleiste_und__70e7837a" xml:space="preserve"><value>Ikkuna katoaa tehtäväpalkista ja palaa kuvakkeen kautta.</value></data>
   <data name="Beim_Schlie_en_in_den_Infobereich_efc87eac" xml:space="preserve"><value>Sulje ilmoitusalueelle</value></data>
   <data name="Schlie_en_verbirgt_nur_das_Fenster_die_Wiedergab_423ef3fd" xml:space="preserve"><value>Sulkeminen vain piilottaa ikkunan, toisto jatkuu. Lopetus tapahtuu kuvakkeen valikosta.</value></data>
+  <data name="Audio_CD_wird_gelesen_a763cf91" xml:space="preserve"><value>Ääni-CD:tä luetaan.</value></data>
+  <data name="Die_Audio_CD_konnte_nicht_gelesen_werden_d723e870" xml:space="preserve"><value>Ääni-CD:tä ei voitu lukea.</value></data>
+  <data name="Alle_Album_Favoriten_l_schen_6937c7c6" xml:space="preserve"><value>Poista kaikki albumisuosikit</value></data>
+  <data name="Wiedergabeliste_laden_5dbe51d4" xml:space="preserve"><value>Lataa soittolista</value></data>
+  <data name="Wiedergabeliste_als_M3U_speichern_78382b77" xml:space="preserve"><value>Tallenna soittolista M3U-muodossa</value></data>
+  <data name="M3U_Wiedergabeliste_7b7bd48a" xml:space="preserve"><value>M3U-soittolista</value></data>
+  <data name="Wiedergabeliste_konnte_nicht_geladen_werden_36efd642" xml:space="preserve"><value>Soittolistaa ei voitu ladata.</value></data>
+  <data name="Wiedergabeliste_speichern_4264a338" xml:space="preserve"><value>Tallenna soittolista</value></data>
+  <data name="Wiedergabeliste_gespeichert_1c111f0f" xml:space="preserve"><value>Soittolista tallennettu.</value></data>
+  <data name="Wiedergabeliste_konnte_nicht_gespeichert_werden_e4c8cbe7" xml:space="preserve"><value>Soittolistaa ei voitu tallentaa.</value></data>
+  <data name="Die_neue_Vergr_erung_gilt_sobald_FerrumKix_das_n_062d26d5" xml:space="preserve"><value>Uusi skaalaus tulee voimaan, kun FerrumKix käynnistetään seuraavan kerran.</value></data>
+  <data name="Audio_CD_Unterordner_9ca7fc1c" xml:space="preserve"><value>Ääni-CD: alikansio</value></data>
+  <data name="Optionaler_Unterordner_je_Album_Unterst_tzt_dies_91df2d26" xml:space="preserve"><value>Valinnainen alikansio albumia kohden. Tukee samoja paikkamerkkejä kuin tunnisteiden tiedostonimi, esimerkiksi %albumartist%/%year% - %album%. Tyhjänä tallennetaan suoraan kohdekansioon.</value></data>
+  <data name="Bis_zu_drei_Server_k_nnen_getrennt_verwendet_wer_5d851cc2" xml:space="preserve"><value>Enintään kolmea palvelinta voi käyttää erikseen. Nimi näkyy välilehtenä; URL ja suosikkien synkronointi kuuluvat aina samaan palvelimeen.</value></data>
+  <data name="Name_im_Tab_d3c6ffbc" xml:space="preserve"><value>Välilehden nimi</value></data>
+  <data name="Zielordner_f_r_Favoriten_Abgleich_86832938" xml:space="preserve"><value>Suosikkien synkronoinnin kohdekansio</value></data>
+  <data name="0_von_1_Alben_2_Favoriten_0c0d0094" xml:space="preserve"><value>{0}/{1} albumia · {2} suosikkia</value></data>
+  <data name="0_Treffer_1_Favoriten_zuletzt_hinzugef_gt_gilt_f_ca008ced" xml:space="preserve"><value>{0} osumaa · {1} suosikkia · ”Viimeksi lisätyt” ei koske hakua</value></data>
+  <data name="0_Treffer_1_Favoriten_204faf61" xml:space="preserve"><value>{0} osumaa · {1} suosikkia</value></data>
+  <data name="0_zuletzt_hinzugef_gte_Alben_1_Favoriten_67b46932" xml:space="preserve"><value>{0} viimeksi lisättyä albumia · {1} suosikkia</value></data>
+  <data name="0_Alben_1_Favoriten_f158dde0" xml:space="preserve"><value>{0} albumia · {1} suosikkia</value></data>
+  <data name="0_Album_Favoriten_werden_entfernt_51d9b2d3" xml:space="preserve"><value>Poistetaan {0} albumisuosikkia …</value></data>
+  <data name="0_Titel_0_MB_f_r_Sync_f88865ad" xml:space="preserve"><value>0 kappaletta · 0 Mt synkronointiin</value></data>
+  <data name="0_Titel_1_f_r_Sync_85bf758a" xml:space="preserve"><value>{0} kappaletta · {1} synkronointiin</value></data>
+  <data name="0_Zieldatei_en_existieren_bereits_a1538e51" xml:space="preserve"><value>{0} kohdetiedosto(a) on jo olemassa.</value></data>
+  <data name="Album_Favoriten_werden_geladen_cf7057d3" xml:space="preserve"><value>Ladataan albumisuosikkeja …</value></data>
+  <data name="Alle_Album_Favoriten_l_schen_0caa2b6f" xml:space="preserve"><value>Poistetaanko kaikki albumisuosikit?</value></data>
+  <data name="Alle_berschreiben_eaf7926d" xml:space="preserve"><value>Korvaa kaikki</value></data>
+  <data name="Alle_l_schen_a85903c2" xml:space="preserve"><value>Poista kaikki</value></data>
+  <data name="Das_Zielformat_entspricht_bereits_der_Quelldatei_66fc4071" xml:space="preserve"><value>Kohdemuoto vastaa jo samassa kansiossa olevaa lähdetiedostoa. Valitse toinen kohdekansio tai muoto.</value></data>
+  <data name="Dieser_Vorgang_kann_nicht_r_ckg_ngig_gemacht_wer_77fa6480" xml:space="preserve"><value>Toimintoa ei voi kumota.</value></data>
+  <data name="Favoriten_konnten_nicht_gel_scht_werden_1f5ad076" xml:space="preserve"><value>Suosikkeja ei voitu poistaa.</value></data>
+  <data name="Keine_Album_Favoriten_vorhanden_37194479" xml:space="preserve"><value>Albumisuosikkeja ei löytynyt.</value></data>
+  <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>Synkronoinnin kokoa ei voitu laskea.</value></data>
+  <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>Lasketaan synkronoinnin kokoa …</value></data>
+  <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>Korvataanko olemassa olevat tiedostot?</value></data>
 </root>
