@@ -2,7 +2,7 @@
 
 # FerrumKix
 
-FerrumKix is a music player for the Linux desktop. Dark, tidy and without detours: the cover art and the details of the current track on the left, the playlist grouped by album on the right, the transport controls at the bottom. You point it at your music folders, and it plays.
+FerrumKix is a music player for the Linux desktop. Tidy and without detours: the cover art and the details of the current track on the left, the playlist grouped by album on the right, the transport controls at the bottom. You point it at your music folders, and it plays.
 
 It is built with [Avalonia UI](https://avaloniaui.net/) and .NET 10, in VB.NET, and plays through [libmpv](https://mpv.io/). Like its sibling [FerrumPix](https://github.com/Bitpainter75/FerrumPix), it started as a private project - an application built exactly the way I wanted one to look and work - and it is free and open source for anyone who finds it useful.
 
@@ -27,10 +27,11 @@ FerrumKix does not import or rearrange your collection. It reads what is in the 
 - **Gapless.** A continuously mixed album plays from track to track without a break.
 - **Plays and identifies Audio CDs.** On Linux, an inserted Audio CD is detected automatically and
   appears as a separate temporary playlist. Its tracks can be selected, searched and played just
-  like files; ejecting the disc removes the playlist again. The disc is looked up at MusicBrainz
-  from its track lengths alone, so titles, artist, album and year are filled in instead of
-  "Track 01" — and they go into the tags, along with the cover art, when the CD is converted. A
-  configurable placeholder pattern can place each rip in its own album subfolder.
+  like files, and its playlist opens by itself. Eject CD in the album's context menu opens the
+  tray and removes the playlist again. The disc is looked up at MusicBrainz from its track lengths
+  alone, so titles, artist, album and year are filled in instead of "Track 01", and they go into
+  the tags, along with the cover art, when the CD is converted. A configurable placeholder pattern
+  can place each rip in its own album subfolder.
 - **Browses Lyrion.** Connect up to three Lyrion Media Servers, each in its own named tab, to search its albums as you type, view server
   artwork, and play an album locally through FerrumKix. The album becomes a temporary playlist,
   including next/previous, shuffle, repeat, and jump-to-current-track. Unchecking a track leaves it
@@ -39,8 +40,8 @@ FerrumKix does not import or rearrange your collection. It reads what is in the 
   your favorites. The favorites filter also reports the space needed for syncing. "Refresh library" asks the server to look for new and changed music first,
   rather than showing the same state again.
 - **Works as a remote control.** A picker chooses where playback runs: locally, or on any player
-  registered with the Lyrion server. With a device chosen, the whole transport bar controls it —
-  play, pause, next, previous, seek, volume, mute, shuffle and repeat — and the desktop's media
+  registered with the Lyrion server. With a device chosen, the whole transport bar controls it
+  (play, pause, next, previous, seek, volume, mute, shuffle and repeat), and the desktop's media
   keys and status display follow it too.
 - **Keeps your favorites.** A star on every album tile marks it as a favorite on the server, where
   every other Lyrion client sees it too. One button then mirrors those albums into a folder of
@@ -48,13 +49,21 @@ FerrumKix does not import or rearrange your collection. It reads what is in the 
   that is no longer a favorite is removed. The files come from the server, so your library stays
   untouched and no network mount is needed.
 - **Edits MP3 albums.** Update shared album metadata and per-track titles or numbers, replace the
-  embedded cover, clean up tags, and keep useful defaults for recurring album work.
+  embedded cover, clean up tags, and keep useful defaults for recurring album work. Empty fields
+  get a proposal one by one: the file name as the title, the parent folder as artist and album,
+  and missing track numbers from the order of the file names. Nothing is written before "Apply
+  changes". The genre box completes what you type from your genre defaults.
 - **Converts without another app.** Convert a title or album to MP3 (CBR or VBR), FLAC or Ogg
-  Vorbis. Whole selections or individual source folders can become one ordered file, with a live
-  queue that follows the title currently being converted.
+  Vorbis. Whole selections or individual source folders can become one ordered file, with a CUE
+  sheet beside it if you like, and a single file with a CUE sheet of its own can be split back
+  into its tracks. The file names follow a pattern of your own, with a sample name below the field,
+  and existing files are only overwritten after asking. A live queue follows the title currently
+  being converted, and a run can be cancelled.
 - **Evens out loudness.** ReplayGain by track, by album, or automatically: by album while an album plays through, by track when shuffling.
 - **Notices missing files.** Tracks whose file is gone are greyed out and skipped instead of stopping playback. Plug the drive back in and they return; one click removes them all.
 - **Fits into the desktop.** FerrumKix speaks MPRIS, so Waybar, playerctl, notifications and the media keys reach it even while its window is in the background - with title, artist, album and cover.
+- **Stays with the music.** While something plays and nothing has been touched for a minute, the
+  list returns to the playing track and follows it from then on.
 - **Runs once.** Open a file or folder from the file manager while FerrumKix is running, and the running window takes it over, plays it, expands its album group and scrolls directly to the requested track.
 - **Remembers everything.** Playlist, volume, window position and the last track are back at the next start - and if you like, playback resumes right where it stopped.
 - **Speaks your language.** Twenty-one languages, following your system by default.
@@ -69,8 +78,9 @@ The transport sits on a dark deck at the bottom: the progress bar across the ful
 
 ## Settings
 
-Accent colour, font size, language, the blurred cover background, the width of the cover column,
-gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start are all
+Appearance (dark, gray dark or gray light), accent colour, font size, language, the side of the
+window buttons (following the desktop by default), the blurred cover background, the width of the
+cover column, gapless playback, volume leveling (ReplayGain) with a preamp, and resuming on start are all
 configurable. The MP3 editor and Lyrion browser also keep their own defaults; entering a Lyrion
 server profile makes its own player tab available, and a separate target folder per server enables
 the favorites sync. The MP3 section also sets the edge length cover art is brought to, which governs the image
@@ -86,7 +96,7 @@ be scaled per screen, for displays where it would otherwise come out too small.
 ### Linux
 
 All packages are in the [latest release](https://github.com/Bitpainter75/FerrumKix/releases/tag/latest).
-Every file name carries the build number, for example FerrumKix-0.9.8-1-x86_64.AppImage; the table
+Every file name carries the build number, for example FerrumKix-0.9.7-7-x86_64.AppImage; the table
 says which ending belongs to which package.
 
 | Package | For | Get it |
@@ -144,6 +154,7 @@ window. Called without paths, it brings the running window to the front.
 | Key | Action |
 |---|---|
 | SPACE | Play and pause |
+| PAGE UP, PAGE DOWN, HOME, END | Scroll the playlist, wherever the focus is |
 | ESC | Back from the settings |
 | Media keys | Play, pause, next, previous, stop - system-wide through MPRIS |
 
@@ -168,9 +179,9 @@ FerrumKix is [GPL-3.0-only](LICENSE). Every package carries that licence text an
 
 Two services are queried at runtime rather than shipped, and their footing differs. The CD details
 come from [MusicBrainz](https://musicbrainz.org) and are core data under
-[CC0](https://musicbrainz.org/doc/About/Data_License) — public domain. The cover art comes from the
+[CC0](https://musicbrainz.org/doc/About/Data_License), that is public domain. The cover art comes from the
 [Cover Art Archive](https://coverartarchive.org), and those images are **not**: they remain with
 their respective copyright owners. Only the disc id, computed from the track lengths, is sent; the
 disc itself is never read for the lookup.
 
-FerrumKix is at version 0.9.6 and in active development.
+FerrumKix is in active development.
