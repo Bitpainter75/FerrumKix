@@ -31,6 +31,12 @@ Public Class App
         ToolTip.ToolTipOpeningEvent.AddClassHandler(Of Control)(
             Sub(control, e) LocalizationService.ApplyToTip(control))
 
+        ' KONTEXTMENUES IN LISTENZEILEN ebenso: sie haengen nicht im Baum des Fensters, und die
+        ' Zeile entsteht ohnehin erst spaeter. Der Klassen-Handler laeuft vor dem Handler, mit dem
+        ' das Steuerelement sein Menue oeffnet - die Eintraege stehen also schon richtig da.
+        Control.ContextRequestedEvent.AddClassHandler(Of Control)(
+            Sub(control, e) LocalizationService.ApplyTo(control.ContextMenu))
+
         Dim desktop = TryCast(ApplicationLifetime, IClassicDesktopStyleApplicationLifetime)
         If desktop IsNot Nothing Then
             Dim viewModel As New MainWindowViewModel(Program.StartupPaths)

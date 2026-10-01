@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.8
+
+- Missing translations have been filled in (#2). The load and save buttons above the playlist,
+  the M3U file dialogs and their status messages, the audio-CD subfolder setting, the Lyrion
+  server fields and several Lyrion and converter messages stayed German in every other
+  language. Texts mentioning FerrumKix had lost their translations with the rename from
+  FerrumPlay and now find them again. The context menus of tracks and albums in the playlist
+  were never translated at all and now follow the application language too.
+
+
 ## 0.9.7
 
 - FerrumKix can now live in the system tray (#1). A click on the icon shows or hides the window,
@@ -27,12 +37,6 @@
 - The context menu of an audio-CD album now offers Eject CD. It opens the drive tray and immediately
   removes the temporary CD playlist, including a running playback or rip. The new labels and the
   error message are available in every application language.
-- Missing translations have been filled in (#2). The load and save buttons above the playlist,
-  the M3U file dialogs and their status messages, the audio-CD subfolder setting, the Lyrion
-  server fields and several Lyrion and converter messages stayed German in every other
-  language. Texts mentioning FerrumKix had lost their translations with the rename from
-  FerrumPlay and now find them again.
-
 
 ## 0.9.6
 

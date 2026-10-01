@@ -171,6 +171,14 @@ Namespace Services
                 Assign(current, TranslateRemembered(current, merker.Inhalt), Sub(v) content.Content = v)
             End If
 
+            ' Menueeintraege tragen ihren Text im Kopf, nicht im Inhalt.
+            Dim menuItem = TryCast(node, MenuItem)
+            If menuItem IsNot Nothing AndAlso Not suppressed AndAlso TypeOf menuItem.Header Is String AndAlso
+               Not IsBound(menuItem, MenuItem.HeaderProperty) Then
+                Dim current = CStr(menuItem.Header)
+                Assign(current, TranslateRemembered(current, merker.Kopf), Sub(v) menuItem.Header = v)
+            End If
+
             Dim textBox = TryCast(node, TextBox)
             If textBox IsNot Nothing AndAlso Not String.IsNullOrEmpty(textBox.PlaceholderText) AndAlso
                Not IsBound(textBox, TextBox.PlaceholderTextProperty) Then
@@ -304,6 +312,7 @@ Namespace Services
             Public ReadOnly Inhalt As New TextMerker()
             Public ReadOnly Platzhalter As New TextMerker()
             Public ReadOnly Tipp As New TextMerker()
+            Public ReadOnly Kopf As New TextMerker()
         End Class
 
         Private NotInheritable Class TextMerker
