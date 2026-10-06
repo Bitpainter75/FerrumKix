@@ -53,6 +53,24 @@ Namespace Services
             SetBrush(app, "FP.Accent.Dark", Mix(base, Colors.Black, 0.24))
             SetBrush(app, "FP.Accent.Dim", Mix(base, Color.Parse("#0B0E11"), 0.78))
             SetBrush(app, "FP.Text.Accent", base)
+            app.Resources("FP.Logo") = AccentLogoService.GetTintedLogo(hex)
+
+            ' Die Fluent-Vorlagen lesen diese Schluessel unmittelbar. SystemControlHighlightAccentBrush
+            ' allein reicht nicht: die Checkbox und der Optionsbutton haben ihre Akzentpinsel beim
+            ' Aufbau des Fluent-Themas bereits daraus abgeleitet und behalten sonst Orange.
+            SetBrush(app, "CheckBoxCheckBackgroundFillChecked", base)
+            SetBrush(app, "CheckBoxCheckBackgroundStrokeChecked", base)
+            SetBrush(app, "CheckBoxCheckBackgroundFillCheckedPointerOver", Mix(base, Colors.White, 0.18))
+            SetBrush(app, "CheckBoxCheckBackgroundStrokeCheckedPointerOver", Mix(base, Colors.White, 0.18))
+            SetBrush(app, "CheckBoxCheckBackgroundFillCheckedPressed", Mix(base, Colors.Black, 0.24))
+            SetBrush(app, "CheckBoxCheckBackgroundStrokeCheckedPressed", Mix(base, Colors.Black, 0.24))
+
+            SetBrush(app, "RadioButtonOuterEllipseCheckedStroke", base)
+            SetBrush(app, "RadioButtonCheckGlyphFill", base)
+            SetBrush(app, "RadioButtonOuterEllipseCheckedStrokePointerOver", Mix(base, Colors.White, 0.18))
+            SetBrush(app, "RadioButtonCheckGlyphFillPointerOver", Mix(base, Colors.White, 0.18))
+            SetBrush(app, "RadioButtonOuterEllipseCheckedStrokePressed", Mix(base, Colors.Black, 0.24))
+            SetBrush(app, "RadioButtonCheckGlyphFillPressed", Mix(base, Colors.Black, 0.24))
 
             ' Das Symbol im gefuellten Wiedergabeknopf und die Schrift auf den Akzentknoepfen. Sie
             ' bleibt in JEDEM Bild ein sehr dunkler Ton derselben Farbe: der Knopf traegt die

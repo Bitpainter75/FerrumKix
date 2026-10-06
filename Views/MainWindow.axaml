@@ -42,7 +42,7 @@
                                         HorizontalAlignment="Left"
                                         Margin="16,0,0,0"
                                         IsHitTestVisible="False">
-                                <Image Source="avares://FerrumKix/Assets/FerrumKix_TopBar.png"
+                                <Image Source="{DynamicResource FP.Logo}"
                                        Height="22"
                                        Stretch="Uniform"
                                        VerticalAlignment="Center"/>
