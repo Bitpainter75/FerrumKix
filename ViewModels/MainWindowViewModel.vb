@@ -1522,19 +1522,24 @@ Namespace ViewModels
             PositionSeconds = 0
             DurationSeconds = track.DurationSeconds
             _audioCdTimeOffset = Nothing
-            _audioCdPlaybackLoaded = Not track.IsAudioCdTrack
+            _audioCdPlaybackLoaded = Not track.IsAudioCdTrack AndAlso Not track.IsCueTrack
 
-            _player.Load(track.FilePath, force:=True)
+            LoadIntoPlayer(track)
             _player.Play()
             IsPlaying = True
 
             ' Die Adresse eines Lyrion-Streams steht in keiner gespeicherten Liste und liesse
             ' sich beim naechsten Start zu keiner Zeile machen. Dann bleibt der zuletzt gespielte
             ' oertliche Titel stehen, und das Fortsetzen landet wieder dort.
-            If Not _lyrionTracks.Contains(track) Then AppSettingsService.Current.LastTrackPath = track.FilePath
+            If Not _lyrionTracks.Contains(track) Then AppSettingsService.Current.LastTrackPath = track.Identity
             LoadCoverAsync(track)
             If restarting Then _mpris?.NotifySeeked(0)
             PublishMpris()
+        End Sub
+
+        ''' <summary>Gibt mpv den Titel. Ein CUE-Titel geht mit seinem Bereich in der Datei.</summary>
+        Private Sub LoadIntoPlayer(track As Track)
+            _player.Load(track.FilePath, force:=True, startSeconds:=track.StartSeconds, endSeconds:=track.EndSeconds)
         End Sub
 
         Private Sub TogglePlayPause()
@@ -1657,6 +1662,11 @@ Namespace ViewModels
                 Dim titleDuration = Math.Max(0, _currentTrack.DurationSeconds)
                 If titleDuration > 0 Then target = Math.Clamp(target, 0, titleDuration)
                 target += If(_audioCdTimeOffset.HasValue, _audioCdTimeOffset.Value, 0)
+            ElseIf _currentTrack.IsCueTrack Then
+                ' Dasselbe beim CUE-Titel: mpv zaehlt in der ganzen Datei, die Anzeige im Titel.
+                Dim titleDuration = Math.Max(0, _currentTrack.DurationSeconds)
+                If titleDuration > 0 Then target = Math.Clamp(target, 0, titleDuration)
+                target += _currentTrack.StartSeconds
             End If
 
             _player.Seek(target)
@@ -1952,7 +1962,7 @@ Namespace ViewModels
                     Dim first = batch.FirstOrDefault()
                     If playFirst AndAlso first IsNot Nothing Then
                         playFirst = False
-                        Play(_tracks.FirstOrDefault(Function(t) String.Equals(t.FilePath, first.FilePath, StringComparison.Ordinal)))
+                        Play(_tracks.FirstOrDefault(Function(t) String.Equals(t.Identity, first.Identity, StringComparison.Ordinal)))
                     End If
                     StatusText = LocalizationService.Format("{0} Titel eingelesen.", added)
                 Next
@@ -2090,6 +2100,11 @@ Namespace ViewModels
                         CollectFolder(path, files, cancellation)
                     ElseIf File.Exists(path) AndAlso TagReadService.IsSupportedFile(path) Then
                         files.Add(path)
+                    ElseIf File.Exists(path) AndAlso CueSheetService.IsCueFile(path) Then
+                        ' Eine CUE steht fuer die Albumdatei, die sie beschreibt. Zerlegt wird
+                        ' beim Einlesen, das findet die CUE neben der Datei von selbst wieder.
+                        Dim audio = CueSheetService.ResolveAudioFile(path)
+                        If audio IsNot Nothing AndAlso Not files.Contains(audio, StringComparer.Ordinal) Then files.Add(audio)
                     End If
                 Catch ex As Exception
                     DiagnosticLogService.LogException("Playlist.Collect", ex)
@@ -2131,8 +2146,8 @@ Namespace ViewModels
             Dim tracks As New List(Of Track)()
             For Each path In paths
                 If cancellation.IsCancellationRequested Then Exit For
-                Dim track = TagReadService.Read(path)
-                If track IsNot Nothing Then tracks.Add(track)
+                ' Eine Albumdatei mit CUE-Sheet kommt als ihre einzelnen Titel an.
+                tracks.AddRange(TagReadService.ReadWithCue(path))
             Next
             Return tracks
         End Function
@@ -2150,21 +2165,40 @@ Namespace ViewModels
         Private Sub AppendTracks(tracks As IEnumerable(Of Track))
             Dim known As New Dictionary(Of String, Track)(StringComparer.Ordinal)
             For Each entry In _tracks
-                known.TryAdd(entry.FilePath, entry)
+                known.TryAdd(entry.Identity, entry)
             Next
             Dim changed = False
+            ' Wohin die Titel eines CUE-Sheets kommen, wenn ihre Datei schon als GANZES in der Liste
+            ' stand - etwa aus der Zeit, bevor FerrumKix CUE-Sheets las. Sie treten an deren Stelle,
+            ' statt den alten Eintrag stehen zu lassen und sich hinten anzuhaengen.
+            Dim insertAt As New Dictionary(Of String, Integer)(StringComparer.Ordinal)
 
             For Each track In tracks
                 ' Denselben Pfad zweimal in der Liste zu haben ist fast immer ein Versehen; wer ihn
                 ' wirklich zweimal will, kann ihn zweimal abspielen. Eingelesen wurde er trotzdem
                 ' gerade, die Datei ist also da - galt sie als fehlend, gilt sie es jetzt nicht mehr.
                 Dim existing As Track = Nothing
-                If known.TryGetValue(track.FilePath, existing) Then
+                If known.TryGetValue(track.Identity, existing) Then
                     SetMissing(existing, False)
                     Continue For
                 End If
-                known.Add(track.FilePath, track)
-                _tracks.Add(track)
+                Dim whole As Track = Nothing
+                ' Der laufende Titel bleibt stehen: ihn herauszunehmen risse die Wiedergabe ab.
+                If track.IsCueTrack AndAlso known.TryGetValue(track.FilePath, whole) AndAlso
+                   Not whole.IsCueTrack AndAlso Not Object.ReferenceEquals(whole, _currentTrack) Then
+                    insertAt(track.FilePath) = _tracks.IndexOf(whole)
+                    _tracks.Remove(whole)
+                    _rowsByTrack.Remove(whole)
+                    known.Remove(whole.Identity)
+                End If
+                known.Add(track.Identity, track)
+                Dim position As Integer
+                If insertAt.TryGetValue(track.FilePath, position) Then
+                    _tracks.Insert(position, track)
+                    insertAt(track.FilePath) = position + 1
+                Else
+                    _tracks.Add(track)
+                End If
                 _rowsByTrack(track) = New PlaylistTrackRow(track)
                 changed = True
             Next
@@ -2451,7 +2485,7 @@ Namespace ViewModels
                     Sub()
                         ' Erst nach diesem Ereignis gehört eine Zeitmeldung sicher zum gerade
                         ' gewählten CD-Titel und nicht mehr zum vorherigen mpv-Input.
-                        If _currentTrack IsNot Nothing AndAlso _currentTrack.IsAudioCdTrack AndAlso
+                        If _currentTrack IsNot Nothing AndAlso (_currentTrack.IsAudioCdTrack OrElse _currentTrack.IsCueTrack) AndAlso
                            String.Equals(_currentTrack.FilePath, path, StringComparison.Ordinal) Then
                             _audioCdTimeOffset = Nothing
                             _audioCdPlaybackLoaded = True
@@ -2463,7 +2497,8 @@ Namespace ViewModels
                     Sub()
                         ' Die TOC liefert die exakte Dauer des einzelnen CD-Titels. mpv meldet
                         ' hier dagegen je nach Laufwerk die Dauer der kompletten Disc.
-                        If _currentTrack Is Nothing OrElse Not _currentTrack.IsAudioCdTrack Then DurationSeconds = seconds
+                        ' Ebenso beim CUE-Titel: mpv kennt nur die Dauer der ganzen Datei.
+                        If _currentTrack Is Nothing OrElse Not (_currentTrack.IsAudioCdTrack OrElse _currentTrack.IsCueTrack) Then DurationSeconds = seconds
                     End Sub)
             AddHandler _player.PauseChanged, Sub(paused) Dispatcher.UIThread.Post(Sub() IsPlaying = Not paused)
             AddHandler _player.MuteChanged, Sub(muted) Dispatcher.UIThread.Post(Sub() SetField(_isMuted, muted, NameOf(IsMuted)))
@@ -2515,6 +2550,13 @@ Namespace ViewModels
                 End If
                 seconds -= _audioCdTimeOffset.Value
                 If titleDuration > 0 Then seconds = Math.Clamp(seconds, 0, titleDuration)
+            ElseIf _currentTrack IsNot Nothing AndAlso _currentTrack.IsCueTrack Then
+                ' Bis mpv den neuen Bereich geladen hat, gehoert eine Meldung noch zum vorigen
+                ' Titel - und laege, auf diesen umgerechnet, irgendwo.
+                If Not _audioCdPlaybackLoaded Then Return
+                Dim titleDuration = Math.Max(0, _currentTrack.DurationSeconds)
+                seconds -= _currentTrack.StartSeconds
+                seconds = If(titleDuration > 0, Math.Clamp(seconds, 0, titleDuration), Math.Max(0, seconds))
             End If
             PositionSeconds = seconds
             If seconds <= 0 Then Return
@@ -2559,7 +2601,7 @@ Namespace ViewModels
             Dim settings = AppSettingsService.Current
             Dim lastPath = settings.LastTrackPath
             If String.IsNullOrWhiteSpace(lastPath) Then Return
-            Dim last = _tracks.FirstOrDefault(Function(t) String.Equals(t.FilePath, lastPath, StringComparison.Ordinal))
+            Dim last = _tracks.FirstOrDefault(Function(t) String.Equals(t.Identity, lastPath, StringComparison.Ordinal))
             If last Is Nothing Then Return
 
             _currentTrack = last
@@ -2574,13 +2616,14 @@ Namespace ViewModels
             ' FORTSETZEN. Geladen wird sofort, gesprungen erst danach - beides geht ueber dieselbe
             ' Warteschlange und laeuft deshalb in dieser Reihenfolge ab. Ein Sprung vor dem Laden
             ' liefe ins Leere, weil mpv dann noch nichts offen hat.
-            _player.Load(last.FilePath, force:=True)
+            _audioCdPlaybackLoaded = Not last.IsCueTrack
+            LoadIntoPlayer(last)
             _player.Play()
             _isStopped = False
             IsPlaying = True
             Dim resumeAt = Math.Clamp(settings.LastPositionSeconds, 0, Math.Max(0, last.DurationSeconds - 1))
             If resumeAt > 0 Then
-                _player.Seek(resumeAt)
+                _player.Seek(resumeAt + last.StartSeconds)
                 PositionSeconds = resumeAt
             End If
         End Sub

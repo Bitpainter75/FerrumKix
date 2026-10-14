@@ -49,6 +49,9 @@ Namespace Services
         ''' auf die Frage, welcher Titel gerade laeuft. Geschrieben nur auf dem Befehlsfaden,
         ''' gelesen auch vom Anzeigefaden ueber <c>Volatile</c>.</summary>
         Private _loadedPath As String = Nothing
+        ''' <summary>Der Bereich, mit dem <see cref="_loadedPath"/> geladen wurde. Die Titel eines
+        ''' CUE-Sheets teilen sich die Datei; erst der Bereich unterscheidet sie.</summary>
+        Private _loadedRange As String = String.Empty
 
         ' Geteilter Zustand unter _syncRoot.
         Private _disposed As Boolean = False
@@ -128,14 +131,29 @@ Namespace Services
 
         ''' <summary><paramref name="force"/> laedt auch dann neu, wenn genau dieser Titel schon
         ''' laeuft. Gebraucht fuer das Wiederholen eines einzelnen Titels: dort ist das erneute
-        ''' Laden der ganze Zweck.</summary>
-        Public Sub Load(path As String, Optional force As Boolean = False)
+        ''' Laden der ganze Zweck.
+        '''
+        ''' <para><paramref name="startSeconds"/> und <paramref name="endSeconds"/> spielen nur
+        ''' einen Bereich der Datei - einen Titel aus einem CUE-Sheet. 0 heisst jeweils: vom Anfang
+        ''' bzw. bis zum Ende. mpv meldet die Stelle dabei weiter in DATEIZEIT; das Umrechnen auf
+        ''' die Titelzeit ist Sache der Oberflaeche.</para></summary>
+        Public Sub Load(path As String, Optional force As Boolean = False,
+                        Optional startSeconds As Double = 0, Optional endSeconds As Double = 0)
             If String.IsNullOrWhiteSpace(path) Then Return
             SyncLock _syncRoot
                 If _disposed Then Return
             End SyncLock
-            Enqueue(Sub() LoadCore(path, force))
+            Dim range = RangeOptions(startSeconds, endSeconds)
+            Enqueue(Sub() LoadCore(path, force, range))
         End Sub
+
+        ''' <summary>Die loadfile-Optionen fuer einen Bereich, leer fuer die ganze Datei.</summary>
+        Private Shared Function RangeOptions(startSeconds As Double, endSeconds As Double) As String
+            Dim parts As New List(Of String)()
+            If startSeconds > 0 Then parts.Add("start=" & startSeconds.ToString("0.000", CultureInfo.InvariantCulture))
+            If endSeconds > startSeconds Then parts.Add("end=" & endSeconds.ToString("0.000", CultureInfo.InvariantCulture))
+            Return String.Join(",", parts)
+        End Function
 
         Public Sub Play()
             SyncLock _syncRoot
@@ -376,16 +394,18 @@ Namespace Services
             RaiseEvent InitializationFailed(ex)
         End Sub
 
-        Private Sub LoadCore(path As String, force As Boolean)
+        Private Sub LoadCore(path As String, force As Boolean, range As String)
             ' Dasselbe zweimal zu laden setzt den Titel sichtbar auf den Anfang zurueck, und beim
             ' Video war es sogar ein Absturz. Der Riegel steht HIER, weil jeder Weg zu mpv durch
             ' diese Stelle geht und der Wert, an dem er haengt, derselbe ist, den mpv gerade
             ' wirklich spielt. Das Wiederholen eines Titels laedt mit Absicht neu: dafuer ist
             ' "force" da.
             If Not force AndAlso ReadyForPlayback() AndAlso
-               String.Equals(path, _loadedPath, StringComparison.Ordinal) Then Return
+               String.Equals(path, _loadedPath, StringComparison.Ordinal) AndAlso
+               String.Equals(range, _loadedRange, StringComparison.Ordinal) Then Return
 
             _loadedPath = Nothing
+            _loadedRange = String.Empty
             If Not ReadyForPlayback() Then Return
 
             ' Ein CD-Titel ist intern eine eindeutige, speicherbare Kennung. mpv kennt sie nicht;
@@ -421,8 +441,15 @@ Namespace Services
             End If
 
             SetPauseCore(True)
-            If CommandAsyncRaw(_handle, "loadfile", path, "replace") < 0 Then Return
+            ' Ein Bereich geht wie bei der CD als vierter loadfile-Parameter mit; davor steht der
+            ' Einfuegeindex.
+            If range.Length > 0 Then
+                If CommandAsyncRaw(_handle, "loadfile", path, "replace", "-1", range) < 0 Then Return
+            ElseIf CommandAsyncRaw(_handle, "loadfile", path, "replace") < 0 Then
+                Return
+            End If
             _loadedPath = path
+            _loadedRange = range
             ' VOR dem Abspielen melden: die Oberflaeche setzt daran ihre Anzeige zurueck, und ein
             ' Zuruecksetzen NACH dem ersten Zeitbericht loeschte genau den wieder.
             RaiseEvent FileLoaded(path)

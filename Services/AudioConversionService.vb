@@ -86,7 +86,7 @@ Namespace Services
                     Return
             End Select
 
-            If request.SplitExistingCue AndAlso tracks.Count = 1 AndAlso Not tracks(0).IsAudioCdTrack Then
+            If request.SplitExistingCue AndAlso tracks.Count = 1 AndAlso Not tracks(0).IsAudioCdTrack AndAlso Not tracks(0).IsCueTrack Then
                 Dim cue = Path.ChangeExtension(tracks(0).FilePath, ".cue")
                 If File.Exists(cue) Then
                     Await ConvertCueAsync(tracks(0), cue, request, progress, cancellationToken)
@@ -120,7 +120,11 @@ Namespace Services
                         Dim target = TargetPath(outputFolder, OutputFileName(track, request.Format, albumLength), request.OverwriteExisting)
                         ' Bei einer Audio-CD traegt die Zwischendatei keine Kennzeichen; sie kommen
                         ' aus dem Titel, den die Erkennung gefuellt hat - Titelbild inbegriffen.
-                        Await RunFfmpegAsync(input, target, request, Nothing, Nothing, cancellationToken, tags:=track, coverFile:=coverFile, totalTracks:=albumLength)
+                        ' Ein CUE-Titel ist ein Bereich der Albumdatei und wird als eigene Datei
+                        ' herausgeschnitten. Das Ende fehlt beim letzten: er laeuft bis zum Dateiende.
+                        Dim startSeconds As Double? = If(track.IsCueTrack, track.StartSeconds, CType(Nothing, Double?))
+                        Dim endSeconds As Double? = If(track.IsCueTrack AndAlso track.EndSeconds > track.StartSeconds, track.EndSeconds, CType(Nothing, Double?))
+                        Await RunFfmpegAsync(input, target, request, startSeconds, endSeconds, cancellationToken, tags:=track, coverFile:=coverFile, totalTracks:=albumLength)
                         ' Der MP3-Schreiber ist die einzige Stelle, die die ID3v2-Regeln vollstaendig
                         ' kennt (aufgefuellte TRCK-Nummer, Album-Sortierung, alte Tags entfernen).
                         ' Beim Rippen wird er daher nach FFmpeg nochmals angewandt - nur benennen
@@ -244,7 +248,7 @@ Namespace Services
             If tracks.Any(Function(track) track.IsAudioCdTrack) Then Throw New InvalidOperationException(LocalizationService.T("Audio-CD-Titel werden einzeln gerippt. Bitte den Modus 'Eine Quelle – ein Ergebnis' wählen."))
             Dim listPath = Path.Combine(Path.GetTempPath(), $"ferrumkix-concat-{Guid.NewGuid():N}.txt")
             Try
-                Dim lines = tracks.Select(Function(track) "file '" & track.FilePath.Replace("'", "'\\''") & "'")
+                Dim lines = tracks.SelectMany(AddressOf ConcatLines)
                 ' Der concat-Demuxer erwartet sein erstes Schlüsselwort bytegenau als "file".
                 ' Ein UTF-8-BOM würde davor unsichtbar U+FEFF schreiben und FFmpeg lehnt die
                 ' Liste dann mit "unknown keyword" ab.
@@ -259,6 +263,15 @@ Namespace Services
                 Catch
                 End Try
             End Try
+        End Function
+
+        ''' <summary>Die Zeilen eines Titels in der Liste fuer den concat-Demuxer. Ein CUE-Titel
+        ''' bekommt seinen Bereich mit; sonst kaeme die ganze Albumdatei je Titel einmal hinein.</summary>
+        Private Shared Iterator Function ConcatLines(track As Track) As IEnumerable(Of String)
+            Yield "file '" & track.FilePath.Replace("'", "'\\''") & "'"
+            If Not track.IsCueTrack Then Return
+            If track.StartSeconds > 0 Then Yield "inpoint " & track.StartSeconds.ToString("0.000", CultureInfo.InvariantCulture)
+            If track.EndSeconds > track.StartSeconds Then Yield "outpoint " & track.EndSeconds.ToString("0.000", CultureInfo.InvariantCulture)
         End Function
 
         Private Shared Sub WriteCue(audioPath As String, tracks As List(Of Track))
@@ -366,6 +379,12 @@ Namespace Services
                 psi.ArgumentList.Add("-metadata:s:v") : psi.ArgumentList.Add("comment=Cover (front)")
             End If
             AddMetadata(psi, tags, totalTracks)
+            If tags IsNot Nothing AndAlso tags.IsCueTrack Then
+                ' Aus der Albumdatei kaemen sonst ihr eingebettetes Sheet und ihre Kapitel mit. Ein
+                ' Abspieler, der beides liest, zerlegte den einzelnen Titel dann noch einmal.
+                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("CUESHEET=")
+                psi.ArgumentList.Add("-map_chapters") : psi.ArgumentList.Add("-1")
+            End If
             Select Case request.Format
                 Case OutputFormat.Mp3
                     psi.ArgumentList.Add("-c:a") : psi.ArgumentList.Add("libmp3lame")

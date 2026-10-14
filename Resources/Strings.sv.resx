@@ -771,4 +771,13 @@
   <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>Synkstorleken kunde inte beräknas.</value></data>
   <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>Synkstorleken beräknas …</value></data>
   <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>Skriva över befintliga filer?</value></data>
+  <data name="Alle_Alben_dieses_Interpreten_zeigen_185ff4c2" xml:space="preserve">
+    <value>Visa alla album av denna artist</value>
+  </data>
+  <data name="Interpretenfilter_aufheben_75597ece" xml:space="preserve">
+    <value>Ta bort artistfilter</value>
+  </data>
+  <data name="Interpret_0_c2c5c723" xml:space="preserve">
+    <value>Artist: {0}</value>
+  </data>
 </root>

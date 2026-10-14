@@ -771,4 +771,13 @@
   <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>동기화 크기를 계산할 수 없습니다.</value></data>
   <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>동기화 크기를 계산하는 중 …</value></data>
   <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>기존 파일을 덮어쓸까요?</value></data>
+  <data name="Alle_Alben_dieses_Interpreten_zeigen_185ff4c2" xml:space="preserve">
+    <value>이 아티스트의 모든 앨범 보기</value>
+  </data>
+  <data name="Interpretenfilter_aufheben_75597ece" xml:space="preserve">
+    <value>아티스트 필터 해제</value>
+  </data>
+  <data name="Interpret_0_c2c5c723" xml:space="preserve">
+    <value>아티스트: {0}</value>
+  </data>
 </root>

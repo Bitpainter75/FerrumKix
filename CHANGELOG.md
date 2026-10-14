@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.9.9
+
+- In the Lyrion album overview, the artist under a cover is now clickable and narrows the
+  overview to that artist's albums. The filter shows up in the filter bar next to the search
+  as "Interpret: …"; a click on it lifts it again, and so does the back button. It works on the
+  list already fetched, so it combines with the search, the favorites filter and the sort order
+  without asking the server again.
+- A single album file with a CUE sheet - FLAC, APE, MP3, WavPack or any other supported format -
+  now appears in the playlist as its individual tracks. The sheet is found next to the file
+  (Album.cue, Album.flac.cue, or another CUE in the folder that names the file) or embedded in
+  the CUESHEET tag as EAC and foobar2000 write it; older Windows-1252 sheets are read correctly.
+  A CUE file can also be added or dropped directly. Each track plays only its part of the file,
+  with its own position and length, and the audio converter cuts it into a file of its own,
+  tagged from the sheet and without the embedded sheet or chapters of the album file. The merge
+  modes take only each track's part. Tags of such tracks are not edited, since writing them
+  would change the whole album file. If the file is already in the playlist as a single entry,
+  for instance from before this version, adding it again puts its tracks in that entry's place
+  instead of appending them below it.
+
 ## 0.9.8
 
 - The tag editor now writes FLAC, Ogg Vorbis, Opus and M4A as well as MP3 (#3). Each format gets
@@ -22,7 +41,6 @@
   language. Texts mentioning FerrumKix had lost their translations with the rename from
   FerrumPlay and now find them again. The context menus of tracks and albums in the playlist
   were never translated at all and now follow the application language too.
-
 
 ## 0.9.7
 

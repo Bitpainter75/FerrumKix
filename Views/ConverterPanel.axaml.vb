@@ -282,7 +282,9 @@ Namespace Views
         Private Shared Function IsSameFormatInSourceFolder(tracks As List(Of Track), folder As String, format As AudioConversionService.OutputFormat) As Boolean
             Dim target = Path.GetFullPath(folder).TrimEnd(Path.DirectorySeparatorChar)
             Dim extension = If(format = AudioConversionService.OutputFormat.Mp3, ".mp3", If(format = AudioConversionService.OutputFormat.Flac, ".flac", ".ogg"))
-            Return tracks.Any(Function(track) Not track.IsAudioCdTrack AndAlso
+            ' Ein CUE-Titel wird zu einer NEUEN Datei geschnitten und ueberschreibt die Albumdatei
+            ' nicht, auch nicht im selben Ordner und Format.
+            Return tracks.Any(Function(track) Not track.IsAudioCdTrack AndAlso Not track.IsCueTrack AndAlso
                                String.Equals(Path.GetFullPath(Path.GetDirectoryName(track.FilePath)).TrimEnd(Path.DirectorySeparatorChar), target, StringComparison.OrdinalIgnoreCase) AndAlso
                                String.Equals(Path.GetExtension(track.FilePath), extension, StringComparison.OrdinalIgnoreCase))
         End Function

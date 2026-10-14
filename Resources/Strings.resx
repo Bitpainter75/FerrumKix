@@ -1008,4 +1008,13 @@
   <data name="0_Alben_1_Favoriten_f158dde0" xml:space="preserve">
     <value>{0} albums · {1} favorites</value>
   </data>
+  <data name="Alle_Alben_dieses_Interpreten_zeigen_185ff4c2" xml:space="preserve">
+    <value>Show all albums by this artist</value>
+  </data>
+  <data name="Interpretenfilter_aufheben_75597ece" xml:space="preserve">
+    <value>Clear artist filter</value>
+  </data>
+  <data name="Interpret_0_c2c5c723" xml:space="preserve">
+    <value>Artist: {0}</value>
+  </data>
 </root>

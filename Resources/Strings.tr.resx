@@ -771,4 +771,13 @@
   <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>Eşitleme boyutu hesaplanamadı.</value></data>
   <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>Eşitleme boyutu hesaplanıyor …</value></data>
   <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>Mevcut dosyaların üzerine yazılsın mı?</value></data>
+  <data name="Alle_Alben_dieses_Interpreten_zeigen_185ff4c2" xml:space="preserve">
+    <value>Bu sanatçının tüm albümlerini göster</value>
+  </data>
+  <data name="Interpretenfilter_aufheben_75597ece" xml:space="preserve">
+    <value>Sanatçı filtresini kaldır</value>
+  </data>
+  <data name="Interpret_0_c2c5c723" xml:space="preserve">
+    <value>Sanatçı: {0}</value>
+  </data>
 </root>

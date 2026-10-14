@@ -771,4 +771,13 @@
   <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>Ukuran sinkronisasi tidak dapat dihitung.</value></data>
   <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>Menghitung ukuran sinkronisasi …</value></data>
   <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>Timpa file yang sudah ada?</value></data>
+  <data name="Alle_Alben_dieses_Interpreten_zeigen_185ff4c2" xml:space="preserve">
+    <value>Tampilkan semua album artis ini</value>
+  </data>
+  <data name="Interpretenfilter_aufheben_75597ece" xml:space="preserve">
+    <value>Hapus filter artis</value>
+  </data>
+  <data name="Interpret_0_c2c5c723" xml:space="preserve">
+    <value>Artis: {0}</value>
+  </data>
 </root>

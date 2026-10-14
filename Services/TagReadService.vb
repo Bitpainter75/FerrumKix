@@ -1,5 +1,7 @@
 Imports System
+Imports System.Collections.Generic
 Imports System.IO
+Imports System.Linq
 Imports FerrumKix.Models
 
 Namespace Services
@@ -45,6 +47,24 @@ Namespace Services
         ''' und eine Datei wegzulassen, weil ihr Kennzeichen kaputt ist, waere die schlechtere
         ''' Antwort. Nothing kommt nur zurueck, wenn es die Datei nicht gibt.</summary>
         Public Shared Function Read(filePath As String) As Track
+            Return ReadCore(filePath, Nothing)
+        End Function
+
+        ''' <summary>Liest eine Datei ein und zerlegt sie, wenn ein CUE-Sheet sie als ganzes Album
+        ''' beschreibt, in dessen Titel - siehe <see cref="CueSheetService"/>. Sonst steht die Datei
+        ''' wie bei <see cref="Read"/> als ein einziger Titel in der Liste. Leer nur, wenn es die
+        ''' Datei nicht gibt.</summary>
+        Public Shared Function ReadWithCue(filePath As String) As List(Of Track)
+            Dim embeddedCue As String = Nothing
+            Dim whole = ReadCore(filePath, embeddedCue)
+            If whole Is Nothing Then Return New List(Of Track)()
+            Dim sheet = CueSheetService.Find(filePath, embeddedCue)
+            If sheet Is Nothing Then Return New List(Of Track) From {whole}
+            Return CueSheetService.Split(whole, sheet)
+        End Function
+
+        Private Shared Function ReadCore(filePath As String, ByRef embeddedCue As String) As Track
+            embeddedCue = Nothing
             If String.IsNullOrWhiteSpace(filePath) Then Return Nothing
 
             Dim info As FileInfo
@@ -85,6 +105,7 @@ Namespace Services
                         track.Channels = properties.AudioChannels
                         track.Codec = DescribeCodec(properties, filePath)
                     End If
+                    embeddedCue = EmbeddedCueSheet(file)
                 End Using
             Catch ex As Exception
                 ' Beschaedigte oder unbekannte Kennzeichen sind kein Grund, die Datei fallen zu
@@ -94,6 +115,28 @@ Namespace Services
 
             If String.IsNullOrEmpty(track.Codec) Then track.Codec = ExtensionLabel(filePath)
             Return track
+        End Function
+
+        ''' <summary>Das eingebettete CUE-Sheet, wie EAC und foobar2000 es schreiben: in FLAC und Ogg
+        ''' als Vorbis-Kommentar CUESHEET, in APE und WavPack als APE-Feld, in MP3 als TXXX-Rahmen.
+        ''' Den binaeren CUESHEET-Block von FLAC liest TagLib nicht; er traegt auch keine Titelnamen.</summary>
+        Private Shared Function EmbeddedCueSheet(file As TagLib.File) As String
+            Try
+                Dim xiph = TryCast(file.GetTag(TagLib.TagTypes.Xiph, False), TagLib.Ogg.XiphComment)
+                Dim value = xiph?.GetFirstField("CUESHEET")
+                If Not String.IsNullOrWhiteSpace(value) Then Return value
+                Dim ape = TryCast(file.GetTag(TagLib.TagTypes.Ape, False), TagLib.Ape.Tag)
+                value = ape?.GetItem("CUESHEET")?.ToString()
+                If Not String.IsNullOrWhiteSpace(value) Then Return value
+                Dim id3 = TryCast(file.GetTag(TagLib.TagTypes.Id3v2, False), TagLib.Id3v2.Tag)
+                If id3 IsNot Nothing Then
+                    Dim frame = TagLib.Id3v2.UserTextInformationFrame.Get(id3, "CUESHEET", TagLib.StringType.UTF8, False, True)
+                    value = If(frame?.Text?.FirstOrDefault(), String.Empty)
+                    If Not String.IsNullOrWhiteSpace(value) Then Return value
+                End If
+            Catch
+            End Try
+            Return Nothing
         End Function
 
         ''' <summary>Der Name des Formats, wie ihn die Liste zeigt. TagLib nennt die Beschreibung

@@ -33,6 +33,36 @@ Namespace Models
         Public Property Channels As Integer
         Public Property FileSize As Long
 
+        ''' <summary>Die Nummer des Titels im CUE-Sheet, wenn dieser Eintrag nur ein Stueck einer
+        ''' grossen Albumdatei ist. 0 heisst: der Eintrag ist die ganze Datei. Siehe
+        ''' <see cref="Services.CueSheetService"/>.</summary>
+        Public Property CueTrackNumber As Integer
+
+        ''' <summary>Wo der Titel in der Datei beginnt, in Sekunden. Nur bei einem CUE-Titel
+        ''' von 0 verschieden.</summary>
+        Public Property StartSeconds As Double
+
+        ''' <summary>Wo er endet. 0 heisst: am Dateiende - so beim letzten Titel eines Sheets.</summary>
+        Public Property EndSeconds As Double
+
+        <JsonIgnore>
+        Public ReadOnly Property IsCueTrack As Boolean
+            Get
+                Return CueTrackNumber > 0
+            End Get
+        End Property
+
+        ''' <summary>Was den Eintrag in der Liste eindeutig macht. Sonst ist das der Pfad; die Titel
+        ''' eines CUE-Sheets teilen sich aber eine Datei und unterscheiden sich erst in ihrer
+        ''' Nummer.</summary>
+        <JsonIgnore>
+        Public ReadOnly Property Identity As String
+            Get
+                If Not IsCueTrack Then Return FilePath
+                Return FilePath & "#" & CueTrackNumber.ToString(CultureInfo.InvariantCulture)
+            End Get
+        End Property
+
         ''' <summary>Optionales Cover eines gestreamten Titels. Gehört nicht in die gespeicherte
         ''' lokale Wiedergabeliste und wird nur für die aktuelle Anzeige verwendet.</summary>
         <JsonIgnore>
@@ -61,7 +91,9 @@ Namespace Models
         <JsonIgnore>
         Public ReadOnly Property CanEditTags As Boolean
             Get
-                Return Not IsAudioCdTrack AndAlso Services.TagWriteService.CanWrite(FilePath)
+                ' Ein CUE-Titel ist nur ein Stueck der Datei. Seine Kennzeichen zu schreiben hiesse,
+                ' die des ganzen Albums zu ueberschreiben.
+                Return Not IsAudioCdTrack AndAlso Not IsCueTrack AndAlso Services.TagWriteService.CanWrite(FilePath)
             End Get
         End Property
 

@@ -771,4 +771,13 @@
   <data name="Sync_Gr_e_konnte_nicht_ermittelt_werden_3c330c29" xml:space="preserve"><value>Synkstørrelsen kunne ikke beregnes.</value></data>
   <data name="Sync_Gr_e_wird_ermittelt_5584c471" xml:space="preserve"><value>Synkstørrelsen beregnes …</value></data>
   <data name="Vorhandene_Dateien_berschreiben_5ff1da7c" xml:space="preserve"><value>Overskriv eksisterende filer?</value></data>
+  <data name="Alle_Alben_dieses_Interpreten_zeigen_185ff4c2" xml:space="preserve">
+    <value>Vis alle album af denne kunstner</value>
+  </data>
+  <data name="Interpretenfilter_aufheben_75597ece" xml:space="preserve">
+    <value>Fjern kunstnerfilter</value>
+  </data>
+  <data name="Interpret_0_c2c5c723" xml:space="preserve">
+    <value>Kunstner: {0}</value>
+  </data>
 </root>

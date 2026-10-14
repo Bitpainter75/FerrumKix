@@ -33,6 +33,11 @@ Namespace Views
   Private _sort As LyrionMediaServerService.AlbumSort = LyrionMediaServerService.AlbumSort.ArtistYear
   Private _descending As Boolean
   Private _favoritesOnly As Boolean
+  ''' <summary>Der Interpret, auf den die Uebersicht gerade beschraenkt ist. Leer heisst: kein
+  ''' Filter. Die Kennung entscheidet, der Name steht nur in der Filterleiste und hilft aus,
+  ''' wenn der Server keine Kennung mitliefert.</summary>
+  Private _artistFilterId As String = String.Empty
+  Private _artistFilterName As String = String.Empty
   Private _favoriteSizeSummary As String = String.Empty
   Private _favoriteSizeRequest As Integer
   ''' <summary>Das Fuellen des Auswahlfeldes loest selbst eine Auswahlaenderung aus. Ohne
@@ -185,6 +190,45 @@ Namespace Views
    If request = Threading.Volatile.Read(_favoriteSizeRequest) AndAlso _favoritesOnly Then ApplyAlbumView()
   End Sub
 
+  ''' <summary>Der Interpret auf einer Kachel. Er steckt wie der Stern IN der Albumschaltflaeche;
+  ''' ohne dieses Handled oeffnete der Klick zugleich das Album.</summary>
+  Private Sub OnArtistClick(sender As Object, e As RoutedEventArgs)
+   e.Handled = True
+   Dim album = TryCast(TryCast(sender, Button)?.Tag, LyrionAlbumTile)?.Album
+   If album Is Nothing OrElse (String.IsNullOrWhiteSpace(album.ArtistId) AndAlso String.IsNullOrWhiteSpace(album.Artist)) Then Return
+   SetArtistFilter(If(album.ArtistId, String.Empty), If(album.Artist, String.Empty))
+  End Sub
+
+  Private Sub OnClearArtistFilterClick(sender As Object, e As RoutedEventArgs)
+   SetArtistFilter(String.Empty, String.Empty)
+  End Sub
+
+  ''' <summary>Setzt oder nimmt den Interpretenfilter. Wie der Favoritenfilter arbeitet er auf
+  ''' der schon geholten Liste, der Server wird nicht gefragt. Die Ansicht springt nach oben:
+  ''' eine kurze Liste, die mitten in der alten Rollstelle beginnt, saehe leer aus.</summary>
+  Private Sub SetArtistFilter(artistId As String, artistName As String)
+   _artistFilterId = artistId.Trim()
+   _artistFilterName = artistName.Trim()
+   Dim active = IsArtistFiltered()
+   Dim button = FindControl(Of Button)("ArtistFilterButton")
+   If button IsNot Nothing Then button.IsVisible = active
+   Dim label = FindControl(Of TextBlock)("ArtistFilterText")
+   If label IsNot Nothing Then label.Text = If(active, LocalizationService.Format("Interpret: {0}", _artistFilterName), String.Empty)
+   FindControl(Of ScrollViewer)("AlbumScroll").Offset = New Avalonia.Vector(0, 0)
+   ApplyAlbumView()
+  End Sub
+
+  Private Function IsArtistFiltered() As Boolean
+   Return _artistFilterId.Length > 0 OrElse _artistFilterName.Length > 0
+  End Function
+
+  ''' <summary>Ob ein Album zum gesetzten Interpreten gehoert. Ueber die Kennung, wenn beide eine
+  ''' haben; sonst ueber den Namen.</summary>
+  Private Function MatchesArtistFilter(album As LyrionMediaServerService.Album) As Boolean
+   If _artistFilterId.Length > 0 AndAlso Not String.IsNullOrWhiteSpace(album.ArtistId) Then Return String.Equals(album.ArtistId, _artistFilterId, StringComparison.Ordinal)
+   Return String.Equals(If(album.Artist, String.Empty).Trim(), _artistFilterName, StringComparison.CurrentCultureIgnoreCase)
+  End Function
+
   ''' <summary>Der Stern auf einer Kachel. Er steckt IN der Albumschaltflaeche, deren Klick das
   ''' Album oeffnet - ohne dieses Handled liefe beides auf einmal.</summary>
   Private Async Sub OnFavoriteBadgeClick(sender As Object, e As RoutedEventArgs)
@@ -233,11 +277,12 @@ Namespace Views
    Try : Return New Uri(server.Url).Host : Catch : Return "Lyrion Media Server" : End Try
   End Function
 
-  ''' <summary>Baut aus der geholten Liste die sichtbaren Kacheln: erst der Favoritenfilter, dann
-  ''' die Richtung. SORTIERT wird hier nicht - die Reihenfolge steht schon fest, sie wird
+  ''' <summary>Baut aus der geholten Liste die sichtbaren Kacheln: erst die Filter (Interpret,
+  ''' Favoriten), dann die Richtung. SORTIERT wird hier nicht - die Reihenfolge steht schon fest, sie wird
   ''' hoechstens umgedreht.</summary>
   Private Sub ApplyAlbumView()
    Dim shown As IEnumerable(Of LyrionMediaServerService.Album) = _albums
+   If IsArtistFiltered() Then shown = shown.Where(AddressOf MatchesArtistFilter)
    If _favoritesOnly Then shown = shown.Where(Function(album) _favoriteUrls.Contains(album.FavoritesUrl))
    Dim ordered = shown.ToList()
    If _descending Then ordered.Reverse()
@@ -262,8 +307,8 @@ Namespace Views
 
   Private Function StatusText(count As Integer) As String
    If count = 0 Then Return LocalizationService.T("Keine Alben gefunden.")
-   If _favoritesOnly Then
-    Dim suffix = If(String.IsNullOrWhiteSpace(_favoriteSizeSummary), String.Empty, " · " & _favoriteSizeSummary)
+   If _favoritesOnly OrElse IsArtistFiltered() Then
+    Dim suffix = If(Not _favoritesOnly OrElse String.IsNullOrWhiteSpace(_favoriteSizeSummary), String.Empty, " · " & _favoriteSizeSummary)
     Return LocalizationService.Format("{0} von {1} Alben · {2} Favoriten", count, _albums.Count, _favoriteUrls.Count) & suffix
    End If
    If IsSearching() Then
@@ -800,8 +845,11 @@ Namespace Views
    list.SelectedItem = item
    Avalonia.Threading.Dispatcher.UIThread.Post(Sub() list.ScrollIntoView(item))
   End Sub
+  ''' <summary>Zurueck geht Schritt fuer Schritt: aus dem Album ins Gitter, aus dem gefilterten
+  ''' Gitter in das ganze, und erst dann aus der Ansicht hinaus.</summary>
   Private Sub OnBackClick(sender As Object, e As RoutedEventArgs)
    If _shownAlbum IsNot Nothing Then _shownAlbum = Nothing : LoadAlbumsAsync() : Return
+   If IsArtistFiltered() Then SetArtistFilter(String.Empty, String.Empty) : Return
    RaiseEvent CloseRequested(Me, EventArgs.Empty)
   End Sub
   Private Shared Function TrackNumber(value As String) As Integer

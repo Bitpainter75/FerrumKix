@@ -19,6 +19,27 @@
         <Style Selector="Button.lyrion-album TextBlock.muted">
             <Setter Property="Foreground" Value="{DynamicResource FP.Text.Secondary}"/>
         </Style>
+        <!-- Der Interpret unter dem Cover ist ein eigener Klick: er filtert die Uebersicht auf
+             dessen Alben. Er sieht aus wie Text und verraet sich erst unter dem Zeiger. -->
+        <Style Selector="Button.artist-link">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+        <Style Selector="Button.artist-link:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <!-- Nur der DIREKTE Inhalt: der Kurzhinweis haengt logisch ebenfalls unter der
+             Schaltflaeche, und mit dem Nachfahren-Selektor stand sein Text sonst auch als
+             unterstrichener Akzent-Link da. -->
+        <Style Selector="Button.lyrion-album Button.artist-link:pointerover > TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource FP.Accent}"/>
+            <Setter Property="TextDecorations" Value="Underline"/>
+        </Style>
         <!-- Das Sternchen auf dem Cover: eine runde, dunkle Flaeche, damit es auch auf einem
              hellen Cover lesbar bleibt. -->
         <Style Selector="Button.fav-badge">
@@ -103,8 +124,14 @@
                     </Border>
                     <TextBlock Text="{Binding Title}" MinHeight="18" FontWeight="SemiBold"
                                TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="{Binding Artist}" MinHeight="17" Classes="muted"
-                               TextTrimming="CharacterEllipsis"/>
+                    <!-- Der Klick hierauf darf das Album nicht mit oeffnen; dafuer sorgt der
+                         Behandler, siehe OnArtistClick. -->
+                    <Button Classes="artist-link" MaxWidth="160"
+                            Tag="{Binding}" Click="OnArtistClick"
+                            ToolTip.Tip="Alle Alben dieses Interpreten zeigen">
+                        <TextBlock Text="{Binding Artist}" MinHeight="17" Classes="muted"
+                                   TextTrimming="CharacterEllipsis"/>
+                    </Button>
                 </StackPanel>
             </Button>
         </DataTemplate>
@@ -136,9 +163,10 @@
             </StackPanel>
         </Grid>
 
-        <!-- Suche, Reihenfolge und der Favoritenfilter in EINER Zeile. Nur die Suche geht an den
-             Server; Reihenfolge und Filter arbeiten auf der schon geholten Liste. -->
-        <Grid Grid.Row="1" Margin="0,14,0,10" ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="6">
+        <!-- Suche, Interpretenfilter, Reihenfolge und der Favoritenfilter in EINER Zeile. Nur die
+             Suche geht an den Server; Reihenfolge und Filter arbeiten auf der schon geholten
+             Liste. -->
+        <Grid Grid.Row="1" Margin="0,14,0,10" ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto" ColumnSpacing="6">
             <!-- Wo gespielt wird, ganz links: es ist keine Einrichtung, sondern eine Entscheidung,
                  die man beim Hoeren trifft - und sie gilt fuer alles, was rechts davon steht. -->
             <ComboBox x:Name="TargetBox" MinWidth="168" VerticalAlignment="Stretch"
@@ -160,14 +188,27 @@
                                    Width="12" Height="12" Opacity="0.75"/>
                 </Button>
             </Panel>
-            <ComboBox x:Name="SortBox" Grid.Column="2" MinWidth="184" VerticalAlignment="Stretch"
+            <!-- Der Interpretenfilter steht nur da, solange er gilt. Er ist zugleich sein eigener
+                 Ausschalter: ein Klick nimmt ihn weg. Gesetzt wird er ueber den Interpreten einer
+                 Kachel, siehe OnArtistClick. -->
+            <Button x:Name="ArtistFilterButton" Grid.Column="2" Classes="ghost active"
+                    IsVisible="False" Padding="10,0" VerticalAlignment="Stretch"
+                    Click="OnClearArtistFilterClick" ToolTip.Tip="Interpretenfilter aufheben">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock x:Name="ArtistFilterText" Classes="no-translate" MaxWidth="240"
+                               TextTrimming="CharacterEllipsis"/>
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/x.svg"
+                                   Width="12" Height="12" IconBrush="{DynamicResource FP.Accent}"/>
+                </StackPanel>
+            </Button>
+            <ComboBox x:Name="SortBox" Grid.Column="3" MinWidth="184" VerticalAlignment="Stretch"
                       SelectionChanged="OnSortChanged"/>
-            <Button x:Name="SortDirectionButton" Grid.Column="3" Classes="icon-btn"
+            <Button x:Name="SortDirectionButton" Grid.Column="4" Classes="icon-btn"
                     Click="OnSortDirectionClick" ToolTip.Tip="Reihenfolge umkehren">
                 <icons:SvgIcon x:Name="SortDirectionIcon" Width="16" Height="16"
                                Source="avares://FerrumKix/Assets/Icons/outline/sort-ascending.svg"/>
             </Button>
-            <Button x:Name="FavoriteFilterButton" Grid.Column="4" Classes="icon-btn"
+            <Button x:Name="FavoriteFilterButton" Grid.Column="5" Classes="icon-btn"
                     Click="OnFavoriteFilterClick" ToolTip.Tip="Nur Favoriten zeigen">
                 <icons:SvgIcon Width="16" Height="16"
                                Source="avares://FerrumKix/Assets/Icons/outline/star.svg"/>

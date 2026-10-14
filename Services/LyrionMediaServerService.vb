@@ -19,6 +19,10 @@ Namespace Services
             Public Property Id As String = String.Empty
             Public Property Title As String = String.Empty
             Public Property Artist As String = String.Empty
+            ''' <summary>Die Kennung des Album-Interpreten beim Server. Der Interpretenfilter der
+            ''' Uebersicht vergleicht ueber sie und nicht ueber den Namen: zwei Schreibweisen
+            ''' desselben Interpreten fuehrt der Server als einen.</summary>
+            Public Property ArtistId As String = String.Empty
             Public Property Year As String = String.Empty
             Public Property ArtworkTrackId As String = String.Empty
             ''' <summary>Unter dieser Adresse fuehrt der Server das Album in den Favoriten. Sie
@@ -91,6 +95,7 @@ Namespace Services
             If Not result.TryGetProperty("albums_loop", rows) OrElse rows.ValueKind <> JsonValueKind.Array Then Return albums
             For Each row In rows.EnumerateArray()
                 albums.Add(New Album With {.Id = Text(row, "id"), .Title = FirstText(row, "album", "title"), .Artist = FirstText(row, "artist", "albumartist"),
+                                           .ArtistId = Text(row, "artist_id"),
                                            .Year = Text(row, "year"), .ArtworkTrackId = Text(row, "artwork_track_id"), .FavoritesUrl = Text(row, "favorites_url")})
             Next
             If Not String.IsNullOrWhiteSpace(search) Then
@@ -145,10 +150,11 @@ Namespace Services
         End Function
 
         ''' <summary>"l" liefert den Albumnamen. Ohne dieses Tag kommen nur Cover und Metadaten an,
-        ''' die Beschriftung der Album-Kacheln bliebe leer. Mit <paramref name="count"/> = 0 zaehlt
+        ''' die Beschriftung der Album-Kacheln bliebe leer. "S" liefert die Kennung des
+        ''' Interpreten fuer den Interpretenfilter. Mit <paramref name="count"/> = 0 zaehlt
         ''' der Server nur.</summary>
         Private Shared Function AlbumCommand(count As Integer, sort As AlbumSort) As String()
-            Dim command As New List(Of String) From {"albums", "0", Math.Max(0, count).ToString(CultureInfo.InvariantCulture), "tags:aljy", "sort:" & ServerSort(sort)}
+            Dim command As New List(Of String) From {"albums", "0", Math.Max(0, count).ToString(CultureInfo.InvariantCulture), "tags:aljyS", "sort:" & ServerSort(sort)}
             Return command.ToArray()
         End Function
 

@@ -27,7 +27,7 @@ Namespace Views
    Me.New(Array.Empty(Of Track)())
   End Sub
   Public Sub New(tracks As IEnumerable(Of Track))
-   _tracks = tracks.Where(Function(t) t IsNot Nothing AndAlso TagWriteService.CanWrite(t.FilePath)).ToList()
+   _tracks = tracks.Where(Function(t) t IsNot Nothing AndAlso t.CanEditTags).ToList()
    AvaloniaXamlLoader.Load(Me)
    ' Dieses Panel entsteht ERST nach dem Uebersetzungsdurchlauf des Fensters und bliebe sonst in
    ' jeder Sprache deutsch. Der Durchlauf laeuft deshalb hier noch einmal - und bei jedem

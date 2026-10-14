@@ -22,7 +22,7 @@ FerrumKix does not import or rearrange your collection. It reads what is in the 
 - **Knows your tracks.** Artist, album, year, duration, sample rate and bitrate are read from the file's tags. The cover comes from the track itself or from an image in its folder.
 - **Groups by album.** Every folder becomes a group with a header, track count and total running time. Groups can be collapsed.
 - **Finds quickly.** The quick search filters by title, artist, album and file name.
-- **Takes what you give it.** Drag files and whole folders into the window, add them with the buttons below the list, or pass them on the command line. M3U/M3U8 playlists can be saved, loaded, and opened the same way.
+- **Takes what you give it.** Drag files and whole folders into the window, add them with the buttons below the list, or pass them on the command line. M3U/M3U8 playlists can be saved, loaded, and opened the same way. A single album file with a CUE sheet, beside it or embedded, shows up as its individual tracks.
 - **Shuffle and repeat.** Whole list or a single track. Don't want to hear a track right now? Untick it instead of removing it.
 - **Gapless.** A continuously mixed album plays from track to track without a break.
 - **Plays and identifies Audio CDs.** On Linux, an inserted Audio CD is detected automatically and
@@ -37,7 +37,7 @@ FerrumKix does not import or rearrange your collection. It reads what is in the 
   including next/previous, shuffle, repeat, and jump-to-current-track. Unchecking a track leaves it
   out of that playback, the same way it works in the playlist. Sort the overview by
   recently added, artist/year, album or year/album, in either direction, and filter it down to
-  your favorites. The favorites filter also reports the space needed for syncing. "Refresh library" asks the server to look for new and changed music first,
+  your favorites or, with a click on the artist under a cover, to one artist's albums. The favorites filter also reports the space needed for syncing. "Refresh library" asks the server to look for new and changed music first,
   rather than showing the same state again.
 - **Works as a remote control.** A picker chooses where playback runs: locally, or on any player
   registered with the Lyrion server. With a device chosen, the whole transport bar controls it
@@ -58,8 +58,8 @@ FerrumKix does not import or rearrange your collection. It reads what is in the 
   changes". The genre box completes what you type from your genre defaults.
 - **Converts without another app.** Convert a title or album to MP3 (CBR or VBR), FLAC or Ogg
   Vorbis. Whole selections or individual source folders can become one ordered file, with a CUE
-  sheet beside it if you like, and a single file with a CUE sheet of its own can be split back
-  into its tracks. The file names follow a pattern of your own, with a sample name below the field,
+  sheet beside it if you like, and the tracks of a single file with a CUE sheet of its own
+  become separate files. The file names follow a pattern of your own, with a sample name below the field,
   and existing files are only overwritten after asking. A live queue follows the title currently
   being converted, and a run can be cancelled.
 - **Evens out loudness.** ReplayGain by track, by album, or automatically: by album while an album plays through, by track when shuffling.

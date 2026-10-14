@@ -796,7 +796,7 @@ Namespace Views
                     .SuggestedStartLocation = Await StartLocation(storage),
                     .FileTypeFilter = New List(Of FilePickerFileType) From {
                         New FilePickerFileType(LocalizationService.T("Tondateien")) With {
-                            .Patterns = TagReadService.SupportedExtensions.Select(Function(x) "*" & x).ToList()
+                            .Patterns = TagReadService.SupportedExtensions.Select(Function(x) "*" & x).Append("*.cue").ToList()
                         },
                         FilePickerFileTypes.All
                     }

@@ -150,7 +150,7 @@ Namespace ViewModels
         ''' selbst taugt nicht, ein Objektpfad erlaubt nur Buchstaben, Ziffern und Unterstrich.</summary>
         Private Shared Function MprisTrackId(track As Track) As String
             Using sha = SHA1.Create()
-                Dim hash = Convert.ToHexString(sha.ComputeHash(Encoding.UTF8.GetBytes(track.FilePath))).Substring(0, 16)
+                Dim hash = Convert.ToHexString(sha.ComputeHash(Encoding.UTF8.GetBytes(track.Identity))).Substring(0, 16)
                 Return "/io/github/Bitpainter75/FerrumKix/Track/T" & hash
             End Using
         End Function
