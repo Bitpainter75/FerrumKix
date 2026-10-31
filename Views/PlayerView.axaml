@@ -125,18 +125,19 @@
                                     Content="Audio-CD"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
-                            <Button Classes="icon-btn" Click="OnLoadM3uClick" ToolTip.Tip="Wiedergabeliste laden">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/folder.svg" Width="16" Height="16"/>
-                            </Button>
-                            <Button Classes="icon-btn" Click="OnSaveM3uClick" ToolTip.Tip="Wiedergabeliste als M3U speichern">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/playlist.svg" Width="16" Height="16"/>
-                            </Button>
+                            <!-- Zum aktuellen Titel springen steht immer ganz links, wie in der Lyrion-Ansicht. -->
                             <Button Classes="icon-btn"
                                     IsEnabled="{Binding HasCurrentTrack}"
                                     Click="OnJumpToCurrentTrackClick"
                                     ToolTip.Tip="Zum aktuellen Titel springen">
                                 <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/target.svg"
                                                Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="icon-btn" Click="OnLoadM3uClick" ToolTip.Tip="Wiedergabeliste laden">
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/folder.svg" Width="16" Height="16"/>
+                            </Button>
+                            <Button Classes="icon-btn" Click="OnSaveM3uClick" ToolTip.Tip="Wiedergabeliste als M3U speichern">
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/playlist.svg" Width="16" Height="16"/>
                             </Button>
                             <Button Classes="icon-btn"
                                     Command="{Binding OpenSettingsCommand}"
