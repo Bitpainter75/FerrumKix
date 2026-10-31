@@ -2,6 +2,7 @@
 
 ## 0.9.9
 
+- New, more even symbols throughout the interface.
 - In the Lyrion album overview, the artist under a cover is now clickable and narrows the
   overview to that artist's albums. The filter shows up in the filter bar next to the search
   as "Interpret: …"; a click on it lifts it again, and so does the back button. It works on the

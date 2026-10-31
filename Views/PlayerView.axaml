@@ -50,7 +50,7 @@
                                 <Image Source="{Binding CurrentCover}"
                                        Stretch="UniformToFill"
                                        IsVisible="{Binding HasCover}"/>
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/music.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/music-note.svg"
                                                Width="56" Height="56"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                                IconBrush="{DynamicResource FP.Text.Muted}"
@@ -126,22 +126,22 @@
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
                             <Button Classes="icon-btn" Click="OnLoadM3uClick" ToolTip.Tip="Wiedergabeliste laden">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/folder.svg" Width="16" Height="16"/>
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/folder.svg" Width="16" Height="16"/>
                             </Button>
                             <Button Classes="icon-btn" Click="OnSaveM3uClick" ToolTip.Tip="Wiedergabeliste als M3U speichern">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/playlist.svg" Width="16" Height="16"/>
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/playlist.svg" Width="16" Height="16"/>
                             </Button>
                             <Button Classes="icon-btn"
                                     IsEnabled="{Binding HasCurrentTrack}"
                                     Click="OnJumpToCurrentTrackClick"
                                     ToolTip.Tip="Zum aktuellen Titel springen">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/target.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/target.svg"
                                                Width="16" Height="16"/>
                             </Button>
                             <Button Classes="icon-btn"
                                     Command="{Binding OpenSettingsCommand}"
                                     ToolTip.Tip="Einstellungen">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/settings.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/gear.svg"
                                                Width="16" Height="16"/>
                             </Button>
                         </StackPanel>
@@ -228,7 +228,7 @@
                                                     VerticalAlignment="Center"
                                                     IsVisible="{Binding IsMissing}"
                                                     ToolTip.Tip="Die Datei ist nicht mehr da. Der Titel wird übersprungen.">
-                                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/alert-triangle.svg"
+                                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/warning.svg"
                                                                Width="15" Height="15"
                                                                IconBrush="{DynamicResource FP.Text.Danger}"/>
                                             </Border>
@@ -256,7 +256,7 @@
                                 VerticalAlignment="Center"
                                 IsHitTestVisible="False"
                                 IsVisible="{Binding IsPlaylistEmpty}">
-                        <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/playlist.svg"
+                        <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/playlist.svg"
                                        Width="42" Height="42"
                                        HorizontalAlignment="Center"
                                        IconBrush="{DynamicResource FP.Text.Muted}"/>
@@ -274,7 +274,7 @@
                     <Border x:Name="PlaylistToolbar" Grid.Row="3" Classes="toolbar" BorderThickness="0,1,0,0" Padding="14,7">
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
                             <icons:SvgIcon Grid.Column="0"
-                                           Source="avares://FerrumKix/Assets/Icons/outline/search.svg"
+                                           Source="avares://FerrumKix/Assets/Icons/phosphor/regular/magnifying-glass.svg"
                                            Width="15" Height="15"
                                            VerticalAlignment="Center"/>
                             <TextBox Grid.Column="1"
@@ -290,19 +290,19 @@
                                         Command="{Binding ClearSearchCommand}"
                                         IsVisible="{Binding HasSearchText}"
                                         ToolTip.Tip="Suche zurücksetzen">
-                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/x.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/x.svg"
                                                    Width="12" Height="12" Opacity="0.75"/>
                                 </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"
                                         Click="OnAddFilesClick"
                                         ToolTip.Tip="Dateien hinzufügen">
-                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/plus.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/plus.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"
                                         Click="OnAddFolderClick"
                                         ToolTip.Tip="Ordner hinzufügen">
-                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/folder-plus.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/folder-plus.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
                                 <!-- Die CD bei MusicBrainz nachschlagen. Steht nur da, wenn eine
@@ -312,26 +312,26 @@
                                         Command="{Binding IdentifyAudioCdCommand}"
                                         IsVisible="{Binding CanIdentifyAudioCd}"
                                         ToolTip.Tip="Audio-CD bei MusicBrainz nachschlagen">
-                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/disc.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/disc.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"
                                         Command="{Binding RemoveMissingTracksCommand}"
                                         IsVisible="{Binding HasMissingTracks}"
                                         ToolTip.Tip="Fehlende Titel aus der Liste nehmen">
-                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/file-x.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/file-x.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"
                                         Click="OnRemoveSelectedClick"
                                         ToolTip.Tip="Ausgewählte Titel aus der Liste nehmen">
-                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/minus.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/minus.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
                                 <Button Classes="icon-btn" Width="28" Height="28"
                                         Command="{Binding ClearPlaylistCommand}"
                                         ToolTip.Tip="Liste leeren">
-                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/trash.svg"
+                                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/trash.svg"
                                                    Width="15" Height="15"/>
                                 </Button>
                             </StackPanel>
@@ -380,7 +380,7 @@
                                     Classes.active="{Binding IsShuffle}"
                                     Command="{Binding ToggleShuffleCommand}"
                                     ToolTip.Tip="Zufällige Reihenfolge">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/arrows-shuffle.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/shuffle.svg"
                                                Width="17" Height="17"/>
                             </Button>
                             <Button Classes="transport-toggle"
@@ -402,12 +402,12 @@
                                     VerticalAlignment="Center">
                             <Button Classes="transport" Command="{Binding PreviousCommand}"
                                     ToolTip.Tip="Voriger Titel">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/player-skip-back.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/skip-back.svg"
                                                Width="20" Height="20"/>
                             </Button>
                             <Button Classes="transport" Command="{Binding StopCommand}"
                                     ToolTip.Tip="Anhalten">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/player-stop.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/stop.svg"
                                                Width="18" Height="18"/>
                             </Button>
                             <Button Classes="transport primary" Command="{Binding PlayPauseCommand}"
@@ -417,7 +417,7 @@
                             </Button>
                             <Button Classes="transport" Command="{Binding NextCommand}"
                                     ToolTip.Tip="Nächster Titel">
-                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/outline/player-skip-forward.svg"
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/skip-forward.svg"
                                                Width="20" Height="20"/>
                             </Button>
                         </StackPanel>

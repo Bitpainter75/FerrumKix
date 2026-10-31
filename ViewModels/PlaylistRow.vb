@@ -56,8 +56,8 @@ Namespace ViewModels
         Public ReadOnly Property ChevronSource As String
             Get
                 Return If(_isExpanded,
-                          "avares://FerrumKix/Assets/Icons/outline/chevron-up.svg",
-                          "avares://FerrumKix/Assets/Icons/outline/chevron-down.svg")
+                          "avares://FerrumKix/Assets/Icons/phosphor/regular/caret-up.svg",
+                          "avares://FerrumKix/Assets/Icons/phosphor/regular/caret-down.svg")
             End Get
         End Property
 

@@ -1355,8 +1355,8 @@ Namespace ViewModels
         Public ReadOnly Property PlayPauseIconSource As String
             Get
                 Return If(_isPlaying,
-                          "avares://FerrumKix/Assets/Icons/outline/player-pause.svg",
-                          "avares://FerrumKix/Assets/Icons/outline/player-play.svg")
+                          "avares://FerrumKix/Assets/Icons/phosphor/regular/pause.svg",
+                          "avares://FerrumKix/Assets/Icons/phosphor/regular/play.svg")
             End Get
         End Property
 
@@ -1395,10 +1395,10 @@ Namespace ViewModels
         ''' beidem laesst sich mit einem Klick rueckgaengig machen.</summary>
         Public ReadOnly Property VolumeIconSource As String
             Get
-                If _isMuted Then Return "avares://FerrumKix/Assets/Icons/outline/volume-3.svg"
-                If _volume < 1 Then Return "avares://FerrumKix/Assets/Icons/outline/volume-3.svg"
-                If _volume < 50 Then Return "avares://FerrumKix/Assets/Icons/outline/volume-2.svg"
-                Return "avares://FerrumKix/Assets/Icons/outline/volume.svg"
+                If _isMuted Then Return "avares://FerrumKix/Assets/Icons/phosphor/regular/speaker-x.svg"
+                If _volume < 1 Then Return "avares://FerrumKix/Assets/Icons/phosphor/regular/speaker-x.svg"
+                If _volume < 50 Then Return "avares://FerrumKix/Assets/Icons/phosphor/regular/speaker-low.svg"
+                Return "avares://FerrumKix/Assets/Icons/phosphor/regular/speaker-high.svg"
             End Get
         End Property
 
@@ -1441,8 +1441,8 @@ Namespace ViewModels
         Public ReadOnly Property RepeatIconSource As String
             Get
                 Return If(_repeat = RepeatMode.Single,
-                          "avares://FerrumKix/Assets/Icons/outline/repeat-once.svg",
-                          "avares://FerrumKix/Assets/Icons/outline/repeat.svg")
+                          "avares://FerrumKix/Assets/Icons/phosphor/regular/repeat-once.svg",
+                          "avares://FerrumKix/Assets/Icons/phosphor/regular/repeat.svg")
             End Get
         End Property
 

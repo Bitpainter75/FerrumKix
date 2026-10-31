@@ -156,7 +156,7 @@ Namespace Views
   Private Sub UpdateSortDirection()
    Dim icon = FindControl(Of FerrumKix.Controls.SvgIcon)("SortDirectionIcon")
    If icon Is Nothing Then Return
-   icon.Source = If(_descending, "avares://FerrumKix/Assets/Icons/outline/sort-descending.svg", "avares://FerrumKix/Assets/Icons/outline/sort-ascending.svg")
+   icon.Source = If(_descending, "avares://FerrumKix/Assets/Icons/phosphor/regular/sort-descending.svg", "avares://FerrumKix/Assets/Icons/phosphor/regular/sort-ascending.svg")
   End Sub
 
   Private Sub OnFavoriteFilterClick(sender As Object, e As RoutedEventArgs)
