@@ -726,6 +726,14 @@
         <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
     </Style>
 
+    <!-- Fluent setzt fuer Menues eine feste maximale Hoehe. Bei grosser Schrift erscheinen daher
+         schon fuer kurze Kontextmenues die Scrollpfeile, obwohl auf dem Bildschirm genug Raum
+         frei ist. Die Begrenzung hier ist nur eine Schutzgrenze oberhalb jeder realistischen
+         Bildschirmhoehe; die Popup-Platzierung begrenzt weiterhin automatisch am Bildschirmrand. -->
+    <Style Selector="ContextMenu">
+        <Setter Property="MaxHeight" Value="10000"/>
+    </Style>
+
     <Style Selector="ComboBox">
         <Setter Property="Background" Value="{DynamicResource FP.Bg.Input}"/>
         <Setter Property="Foreground" Value="{DynamicResource FP.Text.Primary}"/>
