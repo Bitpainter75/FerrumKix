@@ -36,7 +36,7 @@ Namespace Views
             If hasData Then
                 Await IO.File.WriteAllBytesAsync(target, data)
             Else
-                fallback.Save(target)
+                fallback.Save(target, PngBitmapEncoderOptions.Default)
             End If
             Return True
         End Function

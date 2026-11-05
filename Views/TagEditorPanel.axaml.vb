@@ -60,11 +60,15 @@ Namespace Views
    Dim first = _tracks.FirstOrDefault() : If first Is Nothing Then Return
    Dim folder = FolderName(first)
    FindControl(Of TextBox)("ArtistBox").Text = Suggested(first.Artist, folder) : FindControl(Of TextBox)("AlbumArtistBox").Text = first.AlbumArtist : FindControl(Of TextBox)("AlbumBox").Text = Suggested(first.Album, folder)
-   FindControl(Of TextBox)("YearBox").Text = If(first.Year = 0, "", first.Year.ToString()) : FindControl(Of ComboBox)("GenreBox").ItemsSource = AppSettingsService.Current.TagGenres : FindControl(Of ComboBox)("GenreBox").Text = first.Genre : FindControl(Of TextBox)("SortBox").Text = first.AlbumSortOrder : FindControl(Of TextBox)("DiscBox").Text = String.Empty
+   FindControl(Of TextBox)("YearBox").Text = If(first.Year = 0, "", first.Year.ToString()) : FindControl(Of ComboBox)("GenreBox").ItemsSource = AppSettingsService.Current.TagGenres : FindControl(Of ComboBox)("GenreBox").Text = first.Genre : FindControl(Of TextBox)("SortBox").Text = first.AlbumSortOrder
+   ' Die Discnummer steht wie jedes andere Feld so da, wie sie in den Dateien steht. Frueher
+   ' startete sie immer leer, und weil ein leeres Feld als "keine Discnummer" geschrieben wird,
+   ' loeschte jedes Speichern die vorhandene. Tragen die gewaehlten Dateien VERSCHIEDENE
+   ' Nummern (ein mehrteiliges Album auf einmal), bleibt das Feld leer und jede Datei behaelt
+   ' beim Speichern ihre eigene - es sei denn, es wird eine Nummer eingetragen.
+   _discMixed = _tracks.Select(Function(track) Math.Max(0, track.DiscNumber)).Distinct().Count() > 1
+   FindControl(Of TextBox)("DiscBox").Text = If(_discMixed OrElse first.DiscNumber <= 0, String.Empty, first.DiscNumber.ToString())
    AddHandler FindControl(Of ComboBox)("GenreBox").TemplateApplied, AddressOf OnGenreTemplateApplied
-   ' Die Discnummer startet LEER, auch wenn in den Dateien eine steht: sie gehoert nur zu
-   ' mehrteiligen Alben und soll bewusst gesetzt werden. Bleibt das Feld leer, wird auch keine
-   ' geschrieben.
    ' Die beiden Werte bleiben sichtbar, auch wenn die gleichnamigen Automatik-Schalter
    ' aktiv sind. So bleibt das Formular ruhig und vollstaendig; beim Speichern greift
    ' weiterhin die gewählte Automatik aus den Einstellungen.
@@ -108,6 +112,9 @@ Namespace Views
 
   ''' <summary>Was in der Hinweiszeile steht, wenn sie die Auswahl beschreibt, und ob sie das
   ''' gerade tut. Siehe <see cref="ShowCoverSize"/>.</summary>
+  ''' <summary>Ob die gewaehlten Dateien verschiedene Discnummern tragen. Dann heisst ein
+  ''' leeres Feld beim Speichern: jede Datei behaelt ihre eigene.</summary>
+  Private _discMixed As Boolean
   Private _coverSize As String = String.Empty
   Private _hintShowsSummary As Boolean
   ''' <summary>Was in der Datei steht - und wo dort nichts steht, der Vorschlag. Ein Feld, in dem
@@ -286,7 +293,7 @@ Namespace Views
   End Sub
   Private Async Sub OnSaveClick(sender As Object, e As RoutedEventArgs)
    Dim artist = FindControl(Of TextBox)("ArtistBox").Text : Dim albumArtist = If(AppSettingsService.Current.TagAlbumArtistFollowsArtist, artist, FindControl(Of TextBox)("AlbumArtistBox").Text)
-   Dim year As Integer : Integer.TryParse(FindControl(Of TextBox)("YearBox").Text, year) : Dim disc As Integer : Integer.TryParse(FindControl(Of TextBox)("DiscBox").Text, disc)
+   Dim year As Integer : Integer.TryParse(FindControl(Of TextBox)("YearBox").Text, year) : Dim discInput As Integer : Integer.TryParse(FindControl(Of TextBox)("DiscBox").Text, discInput) : Dim keepDisc = _discMixed AndAlso String.IsNullOrWhiteSpace(FindControl(Of TextBox)("DiscBox").Text)
    Dim album = FindControl(Of TextBox)("AlbumBox").Text : Dim genre = FindControl(Of ComboBox)("GenreBox").Text : Dim sort = If(AppSettingsService.Current.TagAlbumSortFollowsYear AndAlso year > 0, year.ToString(), FindControl(Of TextBox)("SortBox").Text)
    FindControl(Of Button)("SaveButton").IsEnabled = False
    Dim errors As New List(Of String)
@@ -301,6 +308,7 @@ Namespace Views
    Await Task.Run(Sub()
    For Each edit In edits
     Try
+     Dim disc = If(keepDisc, edit.Track.DiscNumber, discInput)
      Dim target = TagWriteService.Write(edit.Track.FilePath, New TagWriteService.Values With {.Artist = artist, .AlbumArtist = albumArtist, .Album = album, .Year = year, .Genre = genre, .AlbumSortOrder = sort, .DiscNumber = disc, .Title = edit.Title, .TrackNumber = edit.Number, .TotalTracks = edits.Count, .CoverSource = _cover})
      edit.Track.FilePath = target : edit.Track.Artist = artist : edit.Track.AlbumArtist = albumArtist : edit.Track.Album = album : edit.Track.Year = year : edit.Track.Genre = genre : edit.Track.AlbumSortOrder = sort : edit.Track.DiscNumber = disc : edit.Track.Title = edit.Title : edit.Track.TrackNumber = edit.Number
     Catch ex As Exception : errors.Add(Path.GetFileName(edit.Track.FilePath) & ": " & ex.Message) : End Try

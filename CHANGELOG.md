@@ -11,6 +11,9 @@
   named "albumsort", and in the ALBUMSORT field in FLAC and Ogg.
 - The cover in the player column and in the tag editor has a context menu entry "Save cover
   as …". It saves the picture as it is stored in the file or folder, without re-encoding it.
+- The tag editor no longer clears the disc number. Its field always started empty, so every save
+  removed a disc number already in the file. It now shows the disc number of the files; if the
+  selected files carry different ones, the field stays empty and each file keeps its own.
 
 ## 0.9.9
 
