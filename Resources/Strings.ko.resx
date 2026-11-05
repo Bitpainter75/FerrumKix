@@ -780,4 +780,16 @@
   <data name="Interpret_0_c2c5c723" xml:space="preserve">
     <value>아티스트: {0}</value>
   </data>
+  <data name="Cover_speichern_unter_442c71fb" xml:space="preserve">
+    <value>표지를 다른 이름으로 저장 …</value>
+  </data>
+  <data name="Cover_speichern_unter_f7e3f313" xml:space="preserve">
+    <value>표지를 다른 이름으로 저장</value>
+  </data>
+  <data name="Cover_gespeichert_e73f1443" xml:space="preserve">
+    <value>표지를 저장했습니다.</value>
+  </data>
+  <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
+    <value>표지를 저장할 수 없습니다.</value>
+  </data>
 </root>

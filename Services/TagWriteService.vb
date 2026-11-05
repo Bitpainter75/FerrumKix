@@ -211,7 +211,8 @@ Namespace Services
 
         ''' <summary>Die Tracknummer als Text, wie sie im Tag, im Dateinamen und in den
         ''' Eingabefeldern erscheint. Ist das Auffuellen eingeschaltet, richtet sich die
-        ''' Stellenzahl nach der Titelzahl des Albums: 01 bei zehn Titeln, 001 bei hundert.
+        ''' Stellenzahl nach der Titelzahl des Albums, mindestens aber zwei: 01 bei neun oder
+        ''' zehn Titeln, 001 bei hundert.
         ''' An einer Stelle entschieden, damit Feld, Tag und Dateiname nie auseinanderlaufen.</summary>
         Public Shared Function FormatTrackNumber(number As Integer, totalTracks As Integer) As String
             Return FormatTrackNumber(number, totalTracks, AppSettingsService.Current.TagPadTrackNumberToAlbumLength)
@@ -222,7 +223,9 @@ Namespace Services
         Public Shared Function FormatTrackNumber(number As Integer, totalTracks As Integer, pad As Boolean) As String
             Dim value = Math.Max(0, number)
             If Not pad Then Return value.ToString(CultureInfo.InvariantCulture)
-            Dim digits = Math.Max(1, Math.Max(totalTracks, value)).ToString(CultureInfo.InvariantCulture).Length
+            ' Mindestens zwei Stellen, auch bei einem Album mit weniger als zehn Titeln oder einer
+            ' einzeln getaggten Folge: "07" sortiert ueberall gleich, "7" je nach Programm nicht.
+            Dim digits = Math.Max(2, Math.Max(totalTracks, value).ToString(CultureInfo.InvariantCulture).Length)
             Return value.ToString(New String("0"c, digits), CultureInfo.InvariantCulture)
         End Function
 

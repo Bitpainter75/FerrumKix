@@ -54,6 +54,9 @@ Namespace Views
             FindControl(Of TextBlock)("AlbumText").Text = If(first Is Nothing, String.Empty, first.Album)
             FindControl(Of TextBlock)("ArtistText").Text = If(first Is Nothing, String.Empty, If(String.IsNullOrWhiteSpace(first.AlbumArtist), first.Artist, first.AlbumArtist))
             FindControl(Of TextBlock)("CountText").Text = LocalizationService.Format("{0} Titel", If(tracks Is Nothing, 0, tracks.Count))
+            _chosenBytes = Nothing
+            _firstPath = first?.FilePath
+            _coverName = If(first Is Nothing, String.Empty, first.Album)
             ShowBitmap(Nothing, ownsIt:=False)
             If first Is Nothing Then Return
             LoadEmbeddedCoverAsync(first.FilePath)
@@ -96,6 +99,24 @@ Namespace Views
             End Try
         End Sub
 
+        ''' <summary>Speichert das Bild, das gerade im Rahmen steht: ein gewaehltes oder
+        ''' gefundenes so, wie es gekommen ist, sonst das des ersten Titels aus der Datei.</summary>
+        Private Async Sub OnSaveCoverClick(sender As Object, e As RoutedEventArgs)
+            Try
+                Dim shown = TryCast(FindControl(Of Image)("CoverImage").Source, Bitmap)
+                If shown Is Nothing Then Return
+                Dim data As Byte() = _chosenBytes, extension As String = Nothing
+                If data Is Nothing Then
+                    Dim path = _firstPath
+                    Dim original = Await Task.Run(Function() CoverArtService.ReadOriginal(path))
+                    data = original.Data : extension = original.Extension
+                End If
+                Await CoverSaveDialog.SaveAsync(Me, data, extension, shown, If(String.IsNullOrWhiteSpace(_coverName), "Cover", _coverName))
+            Catch ex As Exception
+                DiagnosticLogService.LogException("TagCover.Save", ex)
+            End Try
+        End Sub
+
         Private Sub OnSearchCoverClick(sender As Object, e As RoutedEventArgs)
             RaiseEvent CoverSearchRequested(Me, EventArgs.Empty)
         End Sub
@@ -135,6 +156,7 @@ Namespace Views
             Using stream As New MemoryStream(bytes)
                 preview = New Bitmap(stream)
             End Using
+            _chosenBytes = bytes
             ShowBitmap(preview, ownsIt:=True, fileSize:=bytes.LongLength)
             RaiseEvent CoverChosen(bytes, sourceName)
         End Sub
@@ -148,6 +170,7 @@ Namespace Views
             Dim previousOwned = _ownsCover
             image.Source = bitmap
             _ownsCover = ownsIt
+            FindControl(Of MenuItem)("SaveCoverMenuItem").IsEnabled = bitmap IsNot Nothing
             Dim parts As New List(Of String)()
             If bitmap IsNot Nothing Then parts.Add($"{bitmap.PixelSize.Width} × {bitmap.PixelSize.Height}")
             If fileSize > 0 Then parts.Add(Track.FormatFileSize(fileSize))
@@ -172,6 +195,12 @@ Namespace Views
         ''' <summary>Ob das gezeigte Bild dieser Spalte gehoert (abgelegt) oder dem Zwischenspeicher
         ''' des Coverdienstes (eingebettet). Nur das eigene darf freigegeben werden.</summary>
         Private _ownsCover As Boolean
+
+        ''' <summary>Die Daten eines gewaehlten oder gefundenen Bildes, fuer "Cover speichern
+        ''' unter". Nothing, solange das eingebettete Bild des ersten Titels zu sehen ist.</summary>
+        Private _chosenBytes As Byte()
+        Private _firstPath As String
+        Private _coverName As String = String.Empty
 
     End Class
 

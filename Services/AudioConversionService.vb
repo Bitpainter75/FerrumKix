@@ -191,7 +191,7 @@ Namespace Services
         ''' Quelle vielleicht schon mitbringt. Und "Titel 07" oder "Audio-CD" sind Platzhalter und
         ''' keine Angaben - sie werden ausgelassen, damit eine nicht erkannte CD keine falschen
         ''' Kennzeichen bekommt.</para></summary>
-        Private Shared Sub AddMetadata(psi As ProcessStartInfo, track As Track, totalTracks As Integer)
+        Private Shared Sub AddMetadata(psi As ProcessStartInfo, track As Track, totalTracks As Integer, format As OutputFormat)
             If track Is Nothing Then Return
             Dim cdValues = If(track.IsAudioCdTrack, CdTagValues(track), Nothing)
             Add(psi, "title", track.Title, track.IsAudioCdTrack)
@@ -213,9 +213,17 @@ Namespace Services
                 psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("genre=" & track.Genre.Trim())
             End If
             If cdValues IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(cdValues.AlbumSortOrder) Then
-                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add("albumsort=" & cdValues.AlbumSortOrder)
+                psi.ArgumentList.Add("-metadata") : psi.ArgumentList.Add(AlbumSortKey(format) & "=" & cdValues.AlbumSortOrder)
             End If
         End Sub
+
+        ''' <summary>Der Name, unter dem FFmpeg die Album-Sortierung in das Zielformat schreibt.
+        ''' Fuer ID3v2 kennt FFmpeg nur "album-sort" als Namen des Rahmens TSOA; "albumsort"
+        ''' landete als eigener TXXX-Rahmen, den kein Player als Sortierung liest. In Vorbis
+        ''' Comments heisst das Feld ALBUMSORT.</summary>
+        Private Shared Function AlbumSortKey(format As OutputFormat) As String
+            Return If(format = OutputFormat.Mp3, "album-sort", "ALBUMSORT")
+        End Function
 
         Private Shared Sub Add(psi As ProcessStartInfo, name As String, value As String, guardPlaceholder As Boolean)
             If String.IsNullOrWhiteSpace(value) Then Return
@@ -378,7 +386,7 @@ Namespace Services
                 psi.ArgumentList.Add("-metadata:s:v") : psi.ArgumentList.Add("title=Album cover")
                 psi.ArgumentList.Add("-metadata:s:v") : psi.ArgumentList.Add("comment=Cover (front)")
             End If
-            AddMetadata(psi, tags, totalTracks)
+            AddMetadata(psi, tags, totalTracks, request.Format)
             If tags IsNot Nothing AndAlso tags.IsCueTrack Then
                 ' Aus der Albumdatei kaemen sonst ihr eingebettetes Sheet und ihre Kapitel mit. Ein
                 ' Abspieler, der beides liest, zerlegte den einzelnen Titel dann noch einmal.
@@ -548,7 +556,7 @@ Namespace Services
                 .Album = If(IsCdPlaceholder(track.Album), String.Empty, If(track.Album, String.Empty).Trim()),
                 .Year = year,
                 .Genre = If(track.Genre, String.Empty).Trim(),
-                .AlbumSortOrder = If(AppSettingsService.Current.TagAlbumSortFollowsYear, If(year = 0, String.Empty, year.ToString(CultureInfo.InvariantCulture)), If(track.AlbumSortOrder, String.Empty).Trim()),
+                .AlbumSortOrder = If(AppSettingsService.Current.TagAlbumSortFollowsYear AndAlso year > 0, year.ToString(CultureInfo.InvariantCulture), If(track.AlbumSortOrder, String.Empty).Trim()),
                 .DiscNumber = Math.Max(0, track.DiscNumber),
                 .Title = If(IsCdPlaceholder(track.Title), String.Empty, If(track.Title, String.Empty).Trim()),
                 .TrackNumber = If(track.TrackNumber > 0, track.TrackNumber, number),

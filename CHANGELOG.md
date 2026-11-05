@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.10
+
+- The tag editor no longer drops the album sort order (TSOA, "albumsortorder" in puddletag) of
+  files without a year. With "Album sort follows year" switched on, a missing year used to clear
+  the entered value on saving; now the year only takes over when there is one.
+- With padding switched on, track numbers always have at least two digits, also on albums with
+  fewer than ten tracks: 01 instead of 1.
+- CD rips to MP3 store the album sort order in the TSOA frame instead of an extra TXXX field
+  named "albumsort", and in the ALBUMSORT field in FLAC and Ogg.
+- The cover in the player column and in the tag editor has a context menu entry "Save cover
+  as …". It saves the picture as it is stored in the file or folder, without re-encoding it.
+
 ## 0.9.9
 
 - New, more even symbols throughout the interface, and the settings now use the same symbols

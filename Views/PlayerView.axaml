@@ -46,6 +46,11 @@
                                 Background="#22FFFFFF"
                                 BorderBrush="{DynamicResource FP.Border.Subtle}"
                                 BorderThickness="1">
+                            <Border.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Cover speichern unter …" Click="OnSaveCurrentCoverClick" IsEnabled="{Binding HasCover}"/>
+                                </ContextMenu>
+                            </Border.ContextMenu>
                             <Panel>
                                 <Image Source="{Binding CurrentCover}"
                                        Stretch="UniformToFill"

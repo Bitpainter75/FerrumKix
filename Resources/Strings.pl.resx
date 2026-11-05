@@ -780,4 +780,16 @@
   <data name="Interpret_0_c2c5c723" xml:space="preserve">
     <value>Wykonawca: {0}</value>
   </data>
+  <data name="Cover_speichern_unter_442c71fb" xml:space="preserve">
+    <value>Zapisz okładkę jako …</value>
+  </data>
+  <data name="Cover_speichern_unter_f7e3f313" xml:space="preserve">
+    <value>Zapisz okładkę jako</value>
+  </data>
+  <data name="Cover_gespeichert_e73f1443" xml:space="preserve">
+    <value>Okładka zapisana.</value>
+  </data>
+  <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
+    <value>Nie udało się zapisać okładki.</value>
+  </data>
 </root>

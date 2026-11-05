@@ -60,6 +60,8 @@
                 <ContextMenu>
                     <MenuItem Header="Cover wählen …" Click="OnChooseCoverClick"/>
                     <MenuItem x:Name="SearchCoverMenuItem" Header="Cover online suchen …" Click="OnSearchCoverClick"/>
+                    <Separator/>
+                    <MenuItem x:Name="SaveCoverMenuItem" Header="Cover speichern unter …" Click="OnSaveCoverClick" IsEnabled="False"/>
                 </ContextMenu>
             </Border.ContextMenu>
             <Panel>

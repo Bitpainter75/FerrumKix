@@ -242,6 +242,27 @@ Namespace Views
             End Try
         End Sub
 
+        ''' <summary>Speichert das Cover des laufenden Titels. Die Bilddaten kommen aus der Datei
+        ''' bzw. ihrem Ordner, so wie sie dort liegen; ein Stream-Cover ohne Datei geht als PNG
+        ''' des angezeigten Bildes hinaus.</summary>
+        Private Async Sub OnSaveCurrentCoverClick(sender As Object, e As RoutedEventArgs)
+            Dim viewModel = Me.ViewModel
+            Dim cover = viewModel?.CurrentCover
+            If cover Is Nothing Then Return
+            Dim track = viewModel.CurrentTrack
+            Try
+                Dim path = track?.FilePath
+                Dim original = Await System.Threading.Tasks.Task.Run(Function() CoverArtService.ReadOriginal(path))
+                Dim name = If(track Is Nothing OrElse String.IsNullOrWhiteSpace(track.Album), "Cover", track.Album)
+                If Await CoverSaveDialog.SaveAsync(Me, original.Data, original.Extension, cover, name) Then
+                    viewModel.StatusText = LocalizationService.T("Cover gespeichert.")
+                End If
+            Catch ex As Exception
+                DiagnosticLogService.LogException("Cover.Save", ex)
+                viewModel.StatusText = LocalizationService.T("Cover konnte nicht gespeichert werden.")
+            End Try
+        End Sub
+
         Private Async Sub OnSaveM3uClick(sender As Object, e As RoutedEventArgs)
             Dim storage = TopLevel.GetTopLevel(Me)?.StorageProvider
             If storage Is Nothing OrElse ViewModel Is Nothing Then Return

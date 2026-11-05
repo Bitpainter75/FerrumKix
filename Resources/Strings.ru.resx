@@ -780,4 +780,16 @@
   <data name="Interpret_0_c2c5c723" xml:space="preserve">
     <value>Исполнитель: {0}</value>
   </data>
+  <data name="Cover_speichern_unter_442c71fb" xml:space="preserve">
+    <value>Сохранить обложку как …</value>
+  </data>
+  <data name="Cover_speichern_unter_f7e3f313" xml:space="preserve">
+    <value>Сохранить обложку как</value>
+  </data>
+  <data name="Cover_gespeichert_e73f1443" xml:space="preserve">
+    <value>Обложка сохранена.</value>
+  </data>
+  <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
+    <value>Не удалось сохранить обложку.</value>
+  </data>
 </root>

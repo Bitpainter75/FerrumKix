@@ -140,9 +140,12 @@ Namespace Views
   ''' Zuordnung greift beim Speichern noch einmal, siehe <see cref="OnSaveClick"/>.</summary>
   Private Sub ApplyFollowUps()
    If AppSettingsService.Current.TagAlbumArtistFollowsArtist Then FindControl(Of TextBox)("AlbumArtistBox").Text = FindControl(Of TextBox)("ArtistBox").Text
+   ' Ohne Jahr gibt es nichts anzugleichen. Die Album-Sortierung bleibt dann, wie sie steht:
+   ' bei Hoerspielfolgen ohne Jahr ist sie oft die Folgennummer, und die Automatik hat sie
+   ' frueher beim Speichern stillschweigend geleert.
    If AppSettingsService.Current.TagAlbumSortFollowsYear Then
     Dim year As Integer
-    FindControl(Of TextBox)("SortBox").Text = If(Integer.TryParse(FindControl(Of TextBox)("YearBox").Text, year) AndAlso year > 0, year.ToString(), String.Empty)
+    If Integer.TryParse(FindControl(Of TextBox)("YearBox").Text, year) AndAlso year > 0 Then FindControl(Of TextBox)("SortBox").Text = year.ToString()
    End If
   End Sub
 
@@ -284,7 +287,7 @@ Namespace Views
   Private Async Sub OnSaveClick(sender As Object, e As RoutedEventArgs)
    Dim artist = FindControl(Of TextBox)("ArtistBox").Text : Dim albumArtist = If(AppSettingsService.Current.TagAlbumArtistFollowsArtist, artist, FindControl(Of TextBox)("AlbumArtistBox").Text)
    Dim year As Integer : Integer.TryParse(FindControl(Of TextBox)("YearBox").Text, year) : Dim disc As Integer : Integer.TryParse(FindControl(Of TextBox)("DiscBox").Text, disc)
-   Dim album = FindControl(Of TextBox)("AlbumBox").Text : Dim genre = FindControl(Of ComboBox)("GenreBox").Text : Dim sort = If(AppSettingsService.Current.TagAlbumSortFollowsYear, If(year = 0, "", year.ToString()), FindControl(Of TextBox)("SortBox").Text)
+   Dim album = FindControl(Of TextBox)("AlbumBox").Text : Dim genre = FindControl(Of ComboBox)("GenreBox").Text : Dim sort = If(AppSettingsService.Current.TagAlbumSortFollowsYear AndAlso year > 0, year.ToString(), FindControl(Of TextBox)("SortBox").Text)
    FindControl(Of Button)("SaveButton").IsEnabled = False
    Dim errors As New List(Of String)
    ' Die Eingabefelder gehoeren dem Oberflaechenfaden: JEDER Zugriff von einem anderen Faden wirft

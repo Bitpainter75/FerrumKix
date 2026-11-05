@@ -230,6 +230,40 @@ Namespace Services
             End Using
         End Function
 
+        ''' <summary>Das Titelbild einer Datei so, wie es vorliegt - ohne es neu zu kodieren -,
+        ''' samt passender Endung: erst das eingebettete, sonst das Albumbild im Ordner. Fuer
+        ''' "Cover speichern unter"; ein ueber das angezeigte Bitmap gespeichertes Bild waere
+        ''' groesser und nicht mehr dasselbe. (Nothing, "") wenn es keines gibt. Liest von der
+        ''' Platte, also NICHT auf dem Anzeigefaden.</summary>
+        Public Shared Function ReadOriginal(filePath As String) As (Data As Byte(), Extension As String)
+            If String.IsNullOrWhiteSpace(filePath) Then Return (Nothing, String.Empty)
+            Try
+                Dim picture = ReadEmbeddedPicture(filePath)
+                If picture.Data IsNot Nothing Then Return (picture.Data, ExtensionForMimeType(picture.MimeType))
+            Catch ex As Exception
+                DiagnosticLogService.Log("CoverArt.Original", $"{filePath}: {ex.Message}")
+            End Try
+            Dim folderFile = FindFolderCoverFile(filePath)
+            If folderFile.Length = 0 Then Return (Nothing, String.Empty)
+            Try
+                Return (File.ReadAllBytes(folderFile), Path.GetExtension(folderFile).ToLowerInvariant())
+            Catch ex As Exception
+                DiagnosticLogService.Log("CoverArt.Original", $"{folderFile}: {ex.Message}")
+                Return (Nothing, String.Empty)
+            End Try
+        End Function
+
+        ''' <summary>Die Endung zu Bilddaten, erkannt an ihren ersten Bytes. Fuer Bilder, die
+        ''' nicht aus einem Tag kommen und deshalb keinen MIME-Typ mitbringen.</summary>
+        Public Shared Function ExtensionForData(data As Byte()) As String
+            If data Is Nothing OrElse data.Length < 12 Then Return ".jpg"
+            If data(0) = &H89 AndAlso data(1) = &H50 AndAlso data(2) = &H4E AndAlso data(3) = &H47 Then Return ".png"
+            If data(0) = &H47 AndAlso data(1) = &H49 AndAlso data(2) = &H46 Then Return ".gif"
+            If data(0) = &H42 AndAlso data(1) = &H4D Then Return ".bmp"
+            If data(0) = &H52 AndAlso data(1) = &H49 AndAlso data(2) = &H46 AndAlso data(3) = &H46 AndAlso data(8) = &H57 AndAlso data(9) = &H45 AndAlso data(10) = &H42 AndAlso data(11) = &H50 Then Return ".webp"
+            Return ".jpg"
+        End Function
+
         Private Shared Function WriteEmbeddedArt(filePath As String) As String
             Try
                 Dim picture = ReadEmbeddedPicture(filePath)
