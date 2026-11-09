@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- A new, crisp app icon in the same style as FerrumPix, redrawn by Mibea. Many thanks for the
+  careful work!
+
 ## 0.9.10
 
 - The tag editor no longer drops the album sort order (TSOA, "albumsortorder" in puddletag) of
