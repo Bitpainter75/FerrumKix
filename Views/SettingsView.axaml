@@ -95,12 +95,8 @@
                      libmpv gefunden wurde, sind das Erste, was man beim Oeffnen sehen soll. -->
                 <Border x:Name="AboutSection" Classes="section">
                     <StackPanel Spacing="16">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="avares://FerrumKix/Assets/FerrumKix_Icon_256.png"
-                                   Height="46" Stretch="Uniform" HorizontalAlignment="Left"/>
-                            <Image Source="avares://FerrumKix/Assets/FerrumKix_TopBar.png"
-                                   Margin="10 4 0 0" Height="46" Stretch="Uniform" HorizontalAlignment="Left"/>
-                        </StackPanel>
+                        <Image Source="avares://FerrumKix/Assets/FerrumKix_Banner.png"
+                                   Height="92" Stretch="Uniform" HorizontalAlignment="Left"/>
                         <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto"
                               ColumnSpacing="12" RowSpacing="8">
                             <TextBlock Grid.Row="0" Text="Version" Foreground="{DynamicResource FP.Text.Muted}"/>
