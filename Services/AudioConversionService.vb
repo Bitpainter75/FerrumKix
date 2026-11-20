@@ -53,11 +53,42 @@ Namespace Services
         End Class
 
         Public Shared Function IsFfmpegAvailable() As Boolean
-            Return CanStart("ffmpeg", "-version")
+            Return CanStart(ResolveTool("ffmpeg"), "-version")
+        End Function
+
+        ''' <summary>Der Aufruf fuer ein Hilfsprogramm: erst das des Systems, dann das mitgelieferte.
+        '''
+        ''' <para>Dieselbe Reihenfolge wie bei libmpv (MpvInterop): ein vom Paketverwalter
+        ''' gepflegtes FFmpeg bekommt Sicherheitsaktualisierungen und kennt die Codecs des Systems.
+        ''' AppImage und portables Linux-ZIP bringen FFmpeg und cdparanoia unter
+        ''' runtimes/&lt;rid&gt;/native/bin als Rueckfall mit, fuer Systeme ohne sie.</para></summary>
+        Friend Shared Function ResolveTool(name As String) As String
+            If IsOnPath(name) Then Return name
+            Dim rid = MpvInterop.GetCurrentRuntimeIdentifier()
+            If String.IsNullOrEmpty(rid) Then Return name
+            Dim fileName = If(OperatingSystem.IsWindows(), name & ".exe", name)
+            Dim bundled = Path.Combine(AppContext.BaseDirectory, "runtimes", rid, "native", "bin", fileName)
+            Return If(File.Exists(bundled), bundled, name)
+        End Function
+
+        Private Shared Function IsOnPath(name As String) As Boolean
+            Dim pathValue = Environment.GetEnvironmentVariable("PATH")
+            If String.IsNullOrEmpty(pathValue) Then Return False
+            Dim candidates = If(OperatingSystem.IsWindows(), {name & ".exe", name}, {name})
+            For Each folder In pathValue.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
+                For Each candidate In candidates
+                    Try
+                        If File.Exists(Path.Combine(folder, candidate)) Then Return True
+                    Catch
+                        ' Ein unbrauchbarer PATH-Eintrag ist kein Grund, die Suche aufzugeben.
+                    End Try
+                Next
+            Next
+            Return False
         End Function
 
         Public Shared Function IsCdParanoiaAvailable() As Boolean
-            Return CanStart("cdparanoia", "--version")
+            Return CanStart(ResolveTool("cdparanoia"), "--version")
         End Function
 
         Public Shared Async Function ConvertAsync(request As Request, progress As IProgress(Of String), cancellationToken As CancellationToken) As Task
@@ -338,7 +369,7 @@ Namespace Services
             Dim device As String = Nothing, number As Integer, last As Integer
             If Not Track.TryGetAudioCdSource(track.FilePath, device, number, last) Then Throw New InvalidOperationException(LocalizationService.T("Die Audio-CD-Quelle ist ungültig."))
             Dim temporary = Path.Combine(Path.GetTempPath(), $"ferrumkix-cd-{Guid.NewGuid():N}.wav")
-            Dim psi As New ProcessStartInfo("cdparanoia") With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
+            Dim psi As New ProcessStartInfo(ResolveTool("cdparanoia")) With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
             psi.ArgumentList.Add("-d") : psi.ArgumentList.Add(device) : psi.ArgumentList.Add(number.ToString(CultureInfo.InvariantCulture)) : psi.ArgumentList.Add(temporary)
             Try
                 Await RunProcessAsync(psi, cancellationToken)
@@ -355,7 +386,7 @@ Namespace Services
         ''' die Erkennung ihn laengst ermittelt hat.</param>
         ''' <param name="coverFile">Ein Titelbild, das in die Zieldatei soll, oder Nothing.</param>
         Private Shared Async Function RunFfmpegAsync(input As String, target As String, request As Request, startSeconds As Double?, endSeconds As Double?, cancellationToken As CancellationToken, Optional isConcatList As Boolean = False, Optional tags As Track = Nothing, Optional coverFile As String = Nothing, Optional totalTracks As Integer = 0) As Task
-            Dim psi As New ProcessStartInfo("ffmpeg") With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
+            Dim psi As New ProcessStartInfo(ResolveTool("ffmpeg")) With {.RedirectStandardError = True, .RedirectStandardOutput = True, .UseShellExecute = False, .CreateNoWindow = True}
             psi.ArgumentList.Add("-hide_banner") : psi.ArgumentList.Add("-y")
             If isConcatList Then
                 psi.ArgumentList.Add("-f") : psi.ArgumentList.Add("concat") : psi.ArgumentList.Add("-safe") : psi.ArgumentList.Add("0")

@@ -106,7 +106,7 @@ Namespace Services
             Next
         End Function
 
-        Private Shared Function GetCurrentRuntimeIdentifier() As String
+        Friend Shared Function GetCurrentRuntimeIdentifier() As String
             Dim archSuffix As String
             Select Case RuntimeInformation.ProcessArchitecture
                 Case Architecture.Arm64

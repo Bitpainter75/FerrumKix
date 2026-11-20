@@ -109,12 +109,16 @@ says which ending belongs to which package.
 | DEB | Debian, Ubuntu, Mint | file ending in -amd64.deb |
 | RPM | Fedora, openSUSE | file ending in -x86_64.rpm |
 | ZIP | Portable, unpack and run (x64) | file ending in -linux-x64.zip |
+| ZIP | Portable, unpack and run (ARM64) | file ending in -linux-arm64.zip |
 
 [`ferrumkix-bin`](https://aur.archlinux.org/packages/ferrumkix-bin) tracks each release and pulls
 in the dependencies below on its own. The AppImage carries update information, so tools that
 manage AppImages find new versions by themselves.
 
-The packages are self-contained and bring the .NET runtime with them. **libmpv is needed** and comes from your distribution:
+The packages are self-contained and bring the .NET runtime with them. The AppImage and the
+x64 ZIP also carry libmpv, FFmpeg and cdparanoia as a fallback: FerrumKix uses the ones of your
+system first and falls back to its own only when they are missing. For the DEB, RPM and AUR
+packages and the ARM64 ZIP, **libmpv is needed** and comes from your distribution:
 
 | Distribution | Package |
 |---|---|
@@ -129,9 +133,24 @@ uses **FFmpeg** (`ffmpeg` on Arch, Debian/Ubuntu and Fedora); Audio-CD ripping u
 Audio CD playback uses the optical drive directly. On Linux, your account needs read access to the
 drive (typically through the distribution's optical-drive permission group).
 
-### Windows and macOS
+### Windows
 
-The code is prepared for both, but there are no packages yet and they are untested. MPRIS and the single running instance need the D-Bus session bus and are Linux only. If you build it there and try it, please let me know how it goes.
+The packages are in the same [latest release](https://github.com/Bitpainter75/FerrumKix/releases/tag/latest).
+They are new and still little tested, so please report anything that does not work.
+
+| Package | For | Get it |
+|---|---|---|
+| Setup | Windows 10 and 11 (x64), installs with start menu entry | file ending in -win-x64-Setup.exe |
+| ZIP | Windows (x64), portable, unpack and run | file ending in -win-x64.zip |
+| ZIP | Windows on ARM (ARM64), portable | file ending in -win-arm64.zip |
+
+libmpv and FFmpeg come with the package, nothing has to be installed first. An FFmpeg on the
+`PATH` is preferred over the bundled one.
+
+Linux only: Audio CD playback and ripping, MPRIS media keys, and handing files to an already
+running instance (all of them need Linux interfaces or the D-Bus session bus).
+
+There are no packages for macOS.
 
 ## Usage
 
@@ -174,7 +193,8 @@ dotnet build FerrumKix.sln
 dotnet run --project FerrumKix.vbproj
 ```
 
-`packaging/package.sh` builds the AppImage and the portable ZIP.
+`packaging/package.sh` builds the AppImage and the portable ZIP; `packaging/package.sh all`
+builds every package of the release, Windows included.
 
 ## Licence
 

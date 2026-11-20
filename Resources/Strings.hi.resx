@@ -338,7 +338,7 @@
   <data name="cdparanoia_gefunden_61e0a075" xml:space="preserve"><value>सीडी व्यामोह पाया गया</value></data>
   <data name="cdparanoia_fehlt_1de6a05f" xml:space="preserve"><value>सीडी व्यामोह गायब</value></data>
   <data name="libmpv_l_sst_sich_nicht_laden_Ohne_sie_spielt_Fe_056e2634" xml:space="preserve"><value>libmpv लोड नहीं किया जा सकता. इसके बिना, फेरमप्ले कुछ भी नहीं खेल सकता।</value></data>
-  <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>स्पष्ट सूची</value></data>
+  <data name="Liste_leeren_e9aaf367" xml:space="preserve"><value>सूची खाली करें</value></data>
   <data name="Lyrion_Media_Server_wird_geladen_c33651f2" xml:space="preserve">
     <value>Lyrion Media Server लोड हो रहा है …</value>
   </data>

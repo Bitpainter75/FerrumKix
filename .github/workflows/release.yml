@@ -2,6 +2,10 @@
 # Das private Build-Repo liefert Packaging und Audits; gebaut und veroeffentlicht
 # wird im oeffentlichen FerrumKix-Repository, dessen Actions-Minuten frei sind.
 #
+# PLATTFORMEN: Linux (AppImage, ZIP, deb, rpm), Windows x64 (ZIP und Setup, mit libmpv und
+# FFmpeg) und ARM64 (Linux- und Windows-ZIP). macOS wird bewusst nicht ausgeliefert (Patrick am
+# 2026-11-20).
+#
 # EIN LAUF FUER ALLES, DIE AUR EINGESCHLOSSEN, wie bei FerrumPix. Ein Job baut die Pakete und
 # veroeffentlicht sie in das eine Release "latest" (siehe publish-github-release.sh): eine neue
 # Version als Entwurf mit allen Dateien, der erst dann das bisherige Release archiviert und
@@ -36,6 +40,9 @@ on:
           - zip
           - deb
           - rpm
+          - winzip
+          - winsetup
+          - armzip
 
 permissions:
   contents: write
@@ -43,7 +50,11 @@ permissions:
 jobs:
   pakete:
     name: Pakete bauen und veroeffentlichen
-    runs-on: ubuntu-latest
+    # FEST auf 24.04, nicht ubuntu-latest (wie FerrumPix): AppImage und ZIP bringen libmpv, FFmpeg
+    # und cdparanoia aus diesem System mit, und die verlangen auf dem Zielrechner hoechstens dessen
+    # glibc (2.39). ubuntu-latest ist seit 2026-10-19 26.04 und hob die Untergrenze an.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
     env:
       PAKETE: ${{ inputs.pakete || 'alle' }}
 
@@ -60,10 +71,26 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      # nsis fuer das Windows-Setup; libmpv2, ffmpeg, cdparanoia und patchelf fuer die Beigaben in
+      # AppImage und Linux-ZIP. Zeitschranken und Wiederholung wie bei FerrumPix: die Spiegel der
+      # Laeufer klemmten dort wiederholt.
       - name: Werkzeuge
+        timeout-minutes: 15
         run: |
-          sudo apt-get update
-          sudo apt-get install -y zip desktop-file-utils rpm jq
+          printf 'Acquire::Retries "2";\nAcquire::http::Timeout "20";\nAcquire::https::Timeout "20";\nAcquire::ForceIPv4 "true";\n' \
+            | sudo tee /etc/apt/apt.conf.d/99-release-timeouts >/dev/null
+          for versuch in 1 2 3; do
+            if sudo apt-get update && sudo apt-get install -y zip desktop-file-utils rpm jq nsis xz-utils \
+                 libmpv2 ffmpeg cdparanoia patchelf; then break; fi
+            echo "apt: Versuch $versuch gescheitert"
+            [ "$versuch" = 3 ] && exit 1
+            sleep 20
+          done
+
+      # libmpv und ffmpeg.exe fuer Windows liegen im Build-Repo nur als .xz; auspacken und gegen die
+      # Sollwerte pruefen.
+      - name: Fremdbinaerdateien bereitlegen
+        run: packaging/ci/ensure-binaries.sh
 
       - name: Pakete bauen
         run: |
@@ -93,8 +120,10 @@ jobs:
 
   aur:
     name: AUR
-    runs-on: ubuntu-latest
-    container: archlinux:base-devel
+    runs-on: ubuntu-24.04
+    # Nicht Docker Hub (wie FerrumPix): dessen anonyme Pull-Quote trifft auf GitHub-Runnern
+    # regelmaessig. GHCR beherbergt dieselben offiziellen Arch-Images.
+    container: ghcr.io/archlinux/archlinux:base-devel
     needs: pakete
     # ZULETZT: der PKGBUILD laedt das Linux-ZIP aus dem veroeffentlichten Release und haelt seine
     # Pruefsumme fest. Nur, wenn das Linux-ZIP in diesem Lauf mitkam.

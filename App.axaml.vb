@@ -11,6 +11,29 @@ Public Class App
 
     Public Overrides Sub Initialize()
         AvaloniaXamlLoader.Load(Me)
+        UseAvailableUiFont()
+    End Sub
+
+    ''' <summary>Traegt keine der Schriften des Erscheinungsbilds, bekommt die Oberflaeche eine
+    ''' Schrift, die auf diesem System wirklich da ist. Wie in FerrumPix.
+    '''
+    ''' <para>Die Ressource <c>FP.Font.Family</c> nennt serifenlose Schriften. Auf einem System
+    ''' ohne eine einzige davon (schmale Systeme, AppImage-Umgebungen ohne vollstaendige
+    ''' Fontconfig-Einrichtung) warf in FerrumPix der erste Textblock beim ersten Layout, und die
+    ''' Anwendung endete vor dem Fenster. Der Ersatz steht in den Ressourcen der Anwendung, die vor
+    ''' denen der Stile gefragt werden; alles, was die Schrift ueber die Ressource bezieht, folgt
+    ''' also von selbst. Vor dem ersten Fenster, weil genau dessen erstes Layout sonst wirft.</para></summary>
+    Private Sub UseAvailableUiFont()
+        Try
+            Dim found As Object = Nothing
+            If Not TryGetResource("FP.Font.Family", Nothing, found) Then Return
+            Dim replacement = Controls.UiTypeface.ResolveFallbackFamily(TryCast(found, Avalonia.Media.FontFamily))
+            If replacement Is Nothing Then Return
+            Resources("FP.Font.Family") = replacement
+            DiagnosticLogService.LogAlways("App.Font", $"UI font list not available, using {replacement.Name}")
+        Catch ex As Exception
+            DiagnosticLogService.LogException("App.Font", ex)
+        End Try
     End Sub
 
     Public Overrides Sub OnFrameworkInitializationCompleted()

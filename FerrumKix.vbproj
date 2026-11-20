@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RuntimeIdentifiers>win-x64;win-arm64;linux-x64;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64;win-arm64;linux-x64;linux-arm64</RuntimeIdentifiers>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>FerrumKix</RootNamespace>
@@ -34,12 +34,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.1.5" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.1.5" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.5" />
+    <PackageReference Include="Avalonia" Version="12.1.6" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.6" />
     <!-- Wie in FerrumPix das virtualisierende Raster: der ItemsRepeater baut nur die Kacheln, die
          wirklich im Sichtbereich liegen, und reicht sie beim Rollen weiter. Ohne ihn erzeugt die
-         Alben-Uebersicht des Lyrion-Servers jede Kachel der ganzen Bibliothek auf einmal. -->
+         Alben-Uebersicht des Lyrion-Servers jede Kachel der ganzen Bibliothek auf einmal.
+         Die Fassung laeuft NICHT mit Avalonia mit: der ItemsRepeater erscheint getrennt, 12.0.0
+         ist die neueste (Stand 2026-11-20) und verlangt Avalonia ab 12.0.0, nicht genau 12.0.0.
+         Innerhalb der Hauptversion 12 sagt Avalonia Binaerkompatibilitaet zu; FerrumPix faehrt
+         dieselbe Paarung. Anheben, sobald es eine 12.1.x gibt. -->
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="12.0.0" />
     <!-- Die Titelangaben und das eingebettete Titelbild kommen aus den Kennzeichen der Datei.
          TagLibSharp liest ID3v1, ID3v2, Vorbis, APE und MP4 mit einer Schnittstelle und ist rein

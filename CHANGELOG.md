@@ -1,9 +1,21 @@
 # Changelog
 
-## Unreleased
+## 0.9.11
 
 - A new, crisp app icon in the same style as FerrumPix, redrawn by Mibea. Many thanks for the
   careful work!
+- FerrumKix now comes for Windows (setup and portable ZIP for x64, portable ZIP for ARM64), with
+  libmpv and FFmpeg included, and as a portable ZIP for Linux on ARM64.
+- The AppImage and the Linux ZIP bring libmpv, FFmpeg and cdparanoia along. FerrumKix still
+  prefers the ones of the system and only falls back to its own when they are missing, so it plays,
+  converts and rips without installing anything first.
+- On systems where none of the interface fonts is installed, FerrumKix picks a font that is
+  actually there instead of failing before the window opens, as FerrumPix does.
+- The converter also finds an FFmpeg that ships with the package; one installed on the system
+  still comes first.
+- The Dutch, Czech and Hindi tooltip of the button that clears the playlist said "clear" in the
+  sense of "distinct"; it now says "empty the list" (#6). Thanks to Paul for the report.
+- Avalonia 12.1.6.
 
 ## 0.9.10
 
