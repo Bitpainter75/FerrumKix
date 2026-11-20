@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Posiadacze praw</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>Dane o płytach audio pochodzą z MusicBrainz i są w domenie publicznej (CC0). Okładki z Cover Art Archive nie: należą do swoich posiadaczy praw i są jedynie wyświetlane.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>Dane o płytach audio pochodzą z MusicBrainz i są w domenie publicznej (CC0). Okładki z Cover Art Archive nie: należą do swoich posiadaczy praw. Nie są osadzane podczas zgrywania; edytor tagów zapisuje obraz w pliku tylko na żądanie.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Wyczyść wyszukiwanie</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Nie udało się zapisać okładki.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Konwersja dźwięku</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Zgrywanie płyt Audio CD</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Ikony</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Grafika w systemie Windows</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>Trwa konwersja …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>W tym czasie żadne inne działania nie są dostępne.</value>
   </data>
 </root>

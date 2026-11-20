@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>ผู้ถือสิทธิ์</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>ข้อมูลของแผ่นซีดีเสียงมาจาก MusicBrainz และเป็นสาธารณสมบัติ (CC0) ส่วนภาพปกจาก Cover Art Archive ไม่ใช่ ภาพเหล่านั้นเป็นของผู้ถือสิทธิ์แต่ละราย และเพียงถูกแสดงเท่านั้น</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>ข้อมูลของแผ่นซีดีเสียงมาจาก MusicBrainz และเป็นสาธารณสมบัติ (CC0) ส่วนภาพปกจาก Cover Art Archive ไม่ใช่ ภาพเหล่านั้นเป็นของผู้ถือสิทธิ์แต่ละราย ภาพจะไม่ถูกฝังเมื่อริปแผ่น และตัวแก้ไขแท็กจะเขียนภาพลงในไฟล์เฉพาะเมื่อคุณสั่งเท่านั้น</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>ล้างการค้นหา</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>ไม่สามารถบันทึกปกได้</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>การแปลงไฟล์เสียง</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>การอ่านซีดีเพลง</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>ไอคอน</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>กราฟิกบน Windows</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>กำลังแปลงไฟล์ …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>ระหว่างนี้ไม่สามารถทำอย่างอื่นได้</value>
   </data>
 </root>

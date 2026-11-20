@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Rettighedshavere</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>Oplysningerne om lyd-cd’er kommer fra MusicBrainz og er offentligt eje (CC0). Coverbillederne fra Cover Art Archive er det ikke: de tilhører deres respektive rettighedshavere og bliver kun vist.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>Oplysningerne om lyd-cd’er kommer fra MusicBrainz og er offentligt eje (CC0). Coverbillederne fra Cover Art Archive er det ikke: de tilhører deres respektive rettighedshavere. De indlejres ikke ved ripning; tag-editoren skriver kun et billede ind i filen, når du beder om det.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Ryd søgningen</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Omslaget kunne ikke gemmes.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Lydkonvertering</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Indlæsning af lyd-cd'er</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Ikoner</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Grafik under Windows</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>Konvertering i gang …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>Imens er der ikke andre handlinger til rådighed.</value>
   </data>
 </root>

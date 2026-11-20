@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Titulares de direitos</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>Os dados dos CD de áudio vêm do MusicBrainz e são de domínio público (CC0). As capas do Cover Art Archive não: pertencem aos respetivos titulares de direitos e são apenas apresentadas.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>Os dados dos CD de áudio vêm do MusicBrainz e são de domínio público (CC0). As capas do Cover Art Archive não: pertencem aos respetivos titulares de direitos. Não são incorporadas ao extrair; o editor de etiquetas só grava uma imagem no ficheiro quando o pede.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Limpar a pesquisa</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Não foi possível guardar a capa.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Conversão de áudio</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Extração de CDs de áudio</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Ícones</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Gráficos no Windows</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>Conversão em curso …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>Entretanto, não estão disponíveis outras ações.</value>
   </data>
 </root>

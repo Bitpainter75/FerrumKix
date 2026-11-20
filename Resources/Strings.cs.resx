@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Držitelé práv</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>Údaje k audio CD pocházejí z MusicBrainz a jsou volným dílem (CC0). Obaly z Cover Art Archive nikoli: patří svým držitelům práv a jsou pouze zobrazovány.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>Údaje k audio CD pocházejí z MusicBrainz a jsou volným dílem (CC0). Obaly z Cover Art Archive nikoli: patří svým držitelům práv. Při ripování se nevkládají; editor tagů zapíše obrázek do souboru jen na vyžádání.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Vymazat hledání</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Obal se nepodařilo uložit.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Převod zvuku</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Čtení zvukových CD</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Ikony</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Grafika ve Windows</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>Probíhá převod …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>Během této doby nejsou k dispozici žádné další akce.</value>
   </data>
 </root>

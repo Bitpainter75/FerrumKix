@@ -849,8 +849,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Rights holders</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>The details for audio CDs come from MusicBrainz and are in the public domain (CC0). The cover art from the Cover Art Archive is not: it belongs to its respective rights holders and is only displayed.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>The details for audio CDs come from MusicBrainz and are in the public domain (CC0). The cover art from the Cover Art Archive is not: it belongs to its respective rights holders. It is not embedded when ripping; the tag editor writes an image into a file only when you ask it to.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Clear the search</value>
@@ -1028,5 +1028,17 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Cover could not be saved.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Audio conversion</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Ripping Audio CDs</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Icons</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Graphics on Windows</value>
   </data>
 </root>

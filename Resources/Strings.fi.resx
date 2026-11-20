@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Oikeudenhaltijat</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>Ääni-CD:iden tiedot tulevat MusicBrainzista ja ovat vapaasti käytettävissä (CC0). Cover Art Archiven kansikuvat eivät ole: ne kuuluvat oikeudenhaltijoilleen ja ne vain näytetään.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>Ääni-CD:iden tiedot tulevat MusicBrainzista ja ovat vapaasti käytettävissä (CC0). Cover Art Archiven kansikuvat eivät ole: ne kuuluvat oikeudenhaltijoilleen. Niitä ei upoteta kopioitaessa; tagieditori kirjoittaa kuvan tiedostoon vain pyynnöstä.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Tyhjennä haku</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Kantta ei voitu tallentaa.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Äänen muuntaminen</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Ääni-CD-levyjen lukeminen</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Kuvakkeet</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Grafiikka Windowsissa</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>Muunnos käynnissä …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>Sillä aikaa muita toimintoja ei ole käytettävissä.</value>
   </data>
 </root>

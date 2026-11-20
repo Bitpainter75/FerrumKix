@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>अधिकार धारक</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>ऑडियो सीडी की जानकारी MusicBrainz से आती है और सार्वजनिक डोमेन (CC0) में है। Cover Art Archive के कवर चित्र नहीं: वे अपने संबंधित अधिकार धारकों के हैं और केवल दिखाए जाते हैं।</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>ऑडियो सीडी की जानकारी MusicBrainz से आती है और सार्वजनिक डोमेन (CC0) में है। Cover Art Archive के कवर चित्र नहीं: वे अपने संबंधित अधिकार धारकों के हैं। रिप करते समय उन्हें जोड़ा नहीं जाता; टैग संपादक केवल आपके कहने पर ही फ़ाइल में चित्र लिखता है।</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>खोज साफ़ करें</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>कवर सहेजा नहीं जा सका।</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>ऑडियो रूपांतरण</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>ऑडियो सीडी पढ़ना</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>आइकन</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Windows पर ग्राफ़िक्स</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>रूपांतरण जारी है …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>इस दौरान कोई अन्य क्रिया उपलब्ध नहीं है।</value>
   </data>
 </root>

@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Rechthebbenden</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>De gegevens over audio-cd’s komen van MusicBrainz en zijn publiek domein (CC0). De hoesafbeeldingen van het Cover Art Archive niet: die behoren toe aan hun rechthebbenden en worden alleen getoond.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>De gegevens over audio-cd’s komen van MusicBrainz en zijn publiek domein (CC0). De hoesafbeeldingen van het Cover Art Archive niet: die behoren toe aan hun rechthebbenden. Bij het rippen worden ze niet ingesloten; de tag-editor schrijft alleen op verzoek een afbeelding in het bestand.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Zoekopdracht wissen</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Hoes kon niet worden opgeslagen.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Audioconversie</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Audio-cd's uitlezen</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Pictogrammen</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Grafische weergave op Windows</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>Conversie bezig …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>Intussen zijn er geen andere acties mogelijk.</value>
   </data>
 </root>

@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Hak sahipleri</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>Ses CD’lerine ait bilgiler MusicBrainz’den gelir ve kamu malıdır (CC0). Cover Art Archive’deki kapak görselleri değildir: kendi hak sahiplerine aittir ve yalnızca gösterilir.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>Ses CD’lerine ait bilgiler MusicBrainz’den gelir ve kamu malıdır (CC0). Cover Art Archive’deki kapak görselleri değildir: kendi hak sahiplerine aittir. CD aktarılırken gömülmez; etiket düzenleyici bir görseli dosyaya yalnızca siz istediğinizde yazar.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Aramayı temizle</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Kapak kaydedilemedi.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Ses dönüştürme</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Ses CD'lerini okuma</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Simgeler</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Windows'ta grafik</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>Dönüştürme sürüyor …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>Bu sırada başka işlem yapılamaz.</value>
   </data>
 </root>

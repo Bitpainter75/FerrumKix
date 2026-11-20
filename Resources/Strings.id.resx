@@ -676,8 +676,8 @@
   <data name="Rechteinhaber_90360a33" xml:space="preserve">
     <value>Pemegang hak</value>
   </data>
-  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__531d4a2e" xml:space="preserve">
-    <value>Data CD audio berasal dari MusicBrainz dan berstatus domain publik (CC0). Sampul dari Cover Art Archive tidak: gambar itu milik pemegang haknya masing-masing dan hanya ditampilkan.</value>
+  <data name="Die_Angaben_zu_Audio_CDs_kommen_von_MusicBrainz__f7ba0e13" xml:space="preserve">
+    <value>Data CD audio berasal dari MusicBrainz dan berstatus domain publik (CC0). Sampul dari Cover Art Archive tidak: gambar itu milik pemegang haknya masing-masing. Sampul tidak disematkan saat merip; editor tag hanya menulis gambar ke berkas jika Anda memintanya.</value>
   </data>
   <data name="Suche_zur_cksetzen_6366c7d6" xml:space="preserve">
     <value>Bersihkan pencarian</value>
@@ -791,5 +791,23 @@
   </data>
   <data name="Cover_konnte_nicht_gespeichert_werden_75d757be" xml:space="preserve">
     <value>Sampul tidak dapat disimpan.</value>
+  </data>
+  <data name="Audio_Konvertierung_892bdab1" xml:space="preserve">
+    <value>Konversi audio</value>
+  </data>
+  <data name="Audio_CDs_auslesen_ccd8c726" xml:space="preserve">
+    <value>Membaca CD audio</value>
+  </data>
+  <data name="Symbole_1030a110" xml:space="preserve">
+    <value>Ikon</value>
+  </data>
+  <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
+    <value>Grafis di Windows</value>
+  </data>
+  <data name="Konvertierung_l_uft_cf09155f" xml:space="preserve">
+    <value>Konversi sedang berjalan …</value>
+  </data>
+  <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
+    <value>Selama itu tidak ada tindakan lain yang tersedia.</value>
   </data>
 </root>

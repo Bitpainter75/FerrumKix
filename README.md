@@ -198,7 +198,9 @@ builds every package of the release, Windows included.
 
 ## Licence
 
-FerrumKix is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI and SkiaSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) and [Phosphor Icons](https://github.com/phosphor-icons/core) (MIT). [libmpv](https://mpv.io/) (GPL-2.0-or-later) is not bundled; it is loaded from your system.
+FerrumKix is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI, SkiaSharp and HarfBuzzSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [ANGLE](https://chromium.googlesource.com/angle/angle) on Windows (BSD-3-Clause), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) and [Phosphor Icons](https://github.com/phosphor-icons/core) (MIT).
+
+For playback, conversion and ripping FerrumKix uses [libmpv](https://mpv.io/) (GPL-2.0-or-later), [FFmpeg](https://ffmpeg.org/) and [cdparanoia](https://www.xiph.org/paranoia/) (GPL-2.0-or-later). The copies installed on your system always come first. The Windows packages bundle libmpv and FFmpeg (GPL-3.0-or-later build), the AppImage and the linux-x64 ZIP bundle all three from Ubuntu 24.04 as a fallback; deb, rpm, AUR and the linux-arm64 ZIP take them from the system. Every bundled binary comes with its licence texts and the references to its corresponding source under `licenses/`.
 
 Two services are queried at runtime rather than shipped, and their footing differs. The CD details
 come from [MusicBrainz](https://musicbrainz.org) and are core data under
