@@ -11,6 +11,11 @@ Module Program
 
     <STAThread>
     Function Main(args As String()) As Integer
+        ' ALS ALLERERSTES, weil es um die Ladereihenfolge im Prozess geht und alles Spaetere zu
+        ' spaet sein kann: die eigene HarfBuzz muss gebunden sein, bevor fontconfig beim Aufbau
+        ' seines Zwischenspeichers die des Systems hereinholt. Siehe TextShapingPreload.
+        TextShapingPreload.Apply()
+
         ' DER UMZUG NOCH VOR DEM PROTOKOLLSCHALTER. Einstellungen wie Protokoll legen ihr
         ' Verzeichnis beim ersten Schreiben selbst an, und ein angelegtes Ziel laesst den Umzug
         ' fuer immer ausfallen - der Ordner von FerrumPlay bliebe dann unberuehrt liegen.

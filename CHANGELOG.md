@@ -11,6 +11,8 @@
   converts and rips without installing anything first.
 - On systems where none of the interface fonts is installed, FerrumKix picks a font that is
   actually there instead of failing before the window opens, as FerrumPix does.
+- On Linux, the very first start, the first one after installing a font and any start after the
+  font cache was cleared no longer garble the text of the window or close FerrumKix right away.
 - The converter also finds an FFmpeg that ships with the package; one installed on the system
   still comes first.
 - The Dutch, Czech and Hindi tooltip of the button that clears the playlist said "clear" in the
