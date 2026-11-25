@@ -74,6 +74,14 @@ Namespace Controls
             Return New Rect(Bounds.Size).Contains(point)
         End Function
 
+        ''' <summary>Dieselbe Flaeche fuer die Trefferpruefung mit einer Form (seit Avalonia 12.2).
+        ''' In C# hat die Schnittstelle dafuer eine Vorgabe, VB kennt solche Vorgaben nicht und
+        ''' verlangt die Umsetzung.</summary>
+        Public Function HitTest(geometry As Geometry) As IntersectionResult Implements ICustomHitTest.HitTest
+            Dim result = New RectangleGeometry(New Rect(Bounds.Size)).GetFillIntersectionResult(geometry)
+            Return If(result, IntersectionResult.Empty)
+        End Function
+
         Public Property Minimum As Double
             Get
                 Return GetValue(MinimumProperty)

@@ -17,7 +17,7 @@
   still comes first.
 - The Dutch, Czech and Hindi tooltip of the button that clears the playlist said "clear" in the
   sense of "distinct"; it now says "empty the list" (#6). Thanks to Paul for the report.
-- Avalonia 12.1.6.
+- Avalonia 12.2.0.
 - The licence information is complete again: Settings › Technology, the README and
   THIRD-PARTY-NOTICES.txt now also name FFmpeg, cdparanoia, ANGLE (Windows) and Phosphor Icons,
   and say which package bundles libmpv, FFmpeg and cdparanoia.
