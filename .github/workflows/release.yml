@@ -150,7 +150,11 @@ jobs:
           git clone ssh://aur@aur.archlinux.org/ferrumkix-bin.git packaging/.aur-work
 
       # makepkg laeuft nicht als root; die Identitaet entspricht der manuellen Veroeffentlichung.
+      # GITHUB_TOKEN fuer die Abfrage des Releases: unangemeldet greift auf den Runnern schnell die
+      # Abfragegrenze der API (403). su ohne "-" reicht die Umgebung an builder weiter.
       - name: AUR veroeffentlichen
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           useradd -m builder
           chown -R builder:builder .
