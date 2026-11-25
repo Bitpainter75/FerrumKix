@@ -20,6 +20,8 @@
 - The main window no longer moves by the whole player bar: it moves by the title bar and by a
   strip along the bottom edge, and along the top edge too when the title bar is hidden.
 - Avalonia 12.2.0.
+- In the Lyrion browser, the playback target moved up next to the symbols, so the filter bar no
+  longer overlaps itself in a small window; a long page title is shortened with an ellipsis.
 - The licence information is complete again: Settings › Technology, the README and
   THIRD-PARTY-NOTICES.txt now also name FFmpeg, cdparanoia, ANGLE (Windows) and Phosphor Icons,
   and say which package bundles libmpv, FFmpeg and cdparanoia.

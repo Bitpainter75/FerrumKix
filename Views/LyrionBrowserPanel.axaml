@@ -144,8 +144,17 @@
                 <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/caret-left.svg" Width="17" Height="17"/>
             </Button>
             <TextBlock x:Name="PageTitle" Grid.Column="1" Text="Lyrion Media Server"
+                       TextTrimming="CharacterEllipsis"
                        FontSize="{DynamicResource FP.Font.Heading}" VerticalAlignment="Center"/>
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6">
+                <!-- Wo gespielt wird, vor den Symbolen: es ist keine Einrichtung, sondern eine
+                     Entscheidung, die man beim Hoeren trifft, und sie gilt fuer die ganze Seite.
+                     Hier oben und nicht in der Filterleiste, die sonst bei kleinem Fenster mit
+                     Suche, Interpretenfilter und Reihenfolge ueberlief. Der Titel links kuerzt
+                     sich dafuer mit Auslassungspunkten. -->
+                <ComboBox x:Name="TargetBox" MinWidth="168" VerticalAlignment="Stretch"
+                          SelectionChanged="OnPlaybackTargetChanged"
+                          ToolTip.Tip="Wo die Wiedergabe läuft"/>
                 <Button Classes="icon-btn" Click="OnJumpToCurrentTrackClick" ToolTip.Tip="Zum aktuellen Titel springen">
                     <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/target.svg" Width="16" Height="16"/>
                 </Button>
@@ -165,17 +174,12 @@
 
         <!-- Suche, Interpretenfilter, Reihenfolge und der Favoritenfilter in EINER Zeile. Nur die
              Suche geht an den Server; Reihenfolge und Filter arbeiten auf der schon geholten
-             Liste. -->
-        <Grid Grid.Row="1" Margin="0,14,0,10" ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto" ColumnSpacing="6">
-            <!-- Wo gespielt wird, ganz links: es ist keine Einrichtung, sondern eine Entscheidung,
-                 die man beim Hoeren trifft - und sie gilt fuer alles, was rechts davon steht. -->
-            <ComboBox x:Name="TargetBox" MinWidth="168" VerticalAlignment="Stretch"
-                      SelectionChanged="OnPlaybackTargetChanged"
-                      ToolTip.Tip="Wo die Wiedergabe läuft"/>
+             Liste. Das Zielgeraet steht oben neben den Symbolen. -->
+        <Grid Grid.Row="1" Margin="0,14,0,10" ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="6">
             <!-- Das Kreuz liegt IM Feld, rechts innen: die Suche ist hier nicht an den Bauplan
                  gebunden, deshalb setzt der Behandler seine Sichtbarkeit (OnSearchTextChanged).
                  Gleiche Geste wie in FerrumPix, nur ohne Bindung. -->
-            <Panel Grid.Column="1">
+            <Panel Grid.Column="0">
                 <!-- Rechts Platz fuer das Kreuz: die Vorgabe des Themes ist 10,6, und ohne die
                      breitere rechte Seite liefe ein langer Begriff darunter durch. -->
                 <TextBox x:Name="SearchBox" PlaceholderText="Alben durchsuchen"
@@ -191,7 +195,7 @@
             <!-- Der Interpretenfilter steht nur da, solange er gilt. Er ist zugleich sein eigener
                  Ausschalter: ein Klick nimmt ihn weg. Gesetzt wird er ueber den Interpreten einer
                  Kachel, siehe OnArtistClick. -->
-            <Button x:Name="ArtistFilterButton" Grid.Column="2" Classes="ghost active"
+            <Button x:Name="ArtistFilterButton" Grid.Column="1" Classes="ghost active"
                     IsVisible="False" Padding="10,0" VerticalAlignment="Stretch"
                     Click="OnClearArtistFilterClick" ToolTip.Tip="Interpretenfilter aufheben">
                 <StackPanel Orientation="Horizontal" Spacing="8">
@@ -201,14 +205,14 @@
                                    Width="12" Height="12" IconBrush="{DynamicResource FP.Accent}"/>
                 </StackPanel>
             </Button>
-            <ComboBox x:Name="SortBox" Grid.Column="3" MinWidth="184" VerticalAlignment="Stretch"
+            <ComboBox x:Name="SortBox" Grid.Column="2" MinWidth="184" VerticalAlignment="Stretch"
                       SelectionChanged="OnSortChanged"/>
-            <Button x:Name="SortDirectionButton" Grid.Column="4" Classes="icon-btn"
+            <Button x:Name="SortDirectionButton" Grid.Column="3" Classes="icon-btn"
                     Click="OnSortDirectionClick" ToolTip.Tip="Reihenfolge umkehren">
                 <icons:SvgIcon x:Name="SortDirectionIcon" Width="16" Height="16"
                                Source="avares://FerrumKix/Assets/Icons/phosphor/regular/sort-ascending.svg"/>
             </Button>
-            <Button x:Name="FavoriteFilterButton" Grid.Column="5" Classes="icon-btn"
+            <Button x:Name="FavoriteFilterButton" Grid.Column="4" Classes="icon-btn"
                     Click="OnFavoriteFilterClick" ToolTip.Tip="Nur Favoriten zeigen">
                 <icons:SvgIcon Width="16" Height="16"
                                Source="avares://FerrumKix/Assets/Icons/phosphor/regular/star.svg"/>
