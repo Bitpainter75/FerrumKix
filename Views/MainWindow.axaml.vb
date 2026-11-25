@@ -239,12 +239,13 @@ Namespace Views
 
         ''' <summary>Das Fenster verschieben. Der Handler haengt am Rahmen und damit an der ganzen
         ''' Fensterflaeche; ohne die Pruefung unten liesse sich das Fenster an jeder Stelle des
-        ''' Inhalts greifen. Ziehbereiche tragen deshalb ausdruecklich die Klasse "window-drag",
-        ''' und alles Bedienbare darin gewinnt gegen den Zug.</summary>
+        ''' Inhalts greifen. Gezogen wird an der Titelzeile (Klasse "window-drag") und in den
+        ''' Randstreifen von <see cref="EdgeDragZone"/> Punkten: unten immer, oben nur, wenn die
+        ''' Titelzeile ausgeblendet ist. Alles Bedienbare gewinnt gegen den Zug.</summary>
         Private Sub OnFramePointerPressed(sender As Object, e As PointerPressedEventArgs)
             If Not e.GetCurrentPoint(Me).Properties.IsLeftButtonPressed Then Return
             Dim source = TryCast(e.Source, Control)
-            If Not IsInWindowDragArea(source) Then Return
+            If Not IsInWindowDragArea(source) AndAlso Not IsInEdgeDragZone(source, e.GetPosition(Me)) Then Return
 
             ' Doppelklick auf die obere Leiste schaltet zwischen maximiert und Normalgroesse -
             ' dieselbe Geste wie bei den Fenstern des Systems. Die Pruefung steht VOR dem Zug,
@@ -269,18 +270,46 @@ Namespace Views
             Return False
         End Function
 
+        ''' <summary>Breite der Randstreifen, an denen sich das Fenster ausser an der Titelzeile
+        ''' greifen laesst (unten immer, oben bei ausgeblendeter Titelzeile).</summary>
+        Private Const EdgeDragZone As Double = 20
+
+        ''' <summary>Liegt der Druck im unteren Randstreifen oder - bei ausgeblendeter Titelzeile -
+        ''' im oberen? Die Lage zaehlt hier und keine Klasse: der Streifen geht quer ueber alles,
+        ''' was an der Kante liegt. Bedienbares darin gewinnt wie ueberall.</summary>
+        Private Function IsInEdgeDragZone(source As Control, position As Point) As Boolean
+            If source Is Nothing OrElse IsOverInteractiveControl(source) Then Return False
+            Dim height = ClientSize.Height
+            If position.Y >= height - EdgeDragZone Then Return True
+            Dim topArea = Me.FindControl(Of Border)("TopWindowDragArea")
+            Return topArea IsNot Nothing AndAlso Not topArea.IsEffectivelyVisible AndAlso position.Y < EdgeDragZone
+        End Function
+
         Private Shared Function IsInWindowDragArea(source As Control) As Boolean
+            If IsOverInteractiveControl(source) Then Return False
             Dim control = source
             While control IsNot Nothing
-                ' Alles Bedienbare gewinnt gegen den Ziehbereich: sonst waere ein Knopf in der
-                ' Fussleiste nicht mehr klickbar, weil der Zug schon beim Druecken beginnt.
+                If control.Classes.Contains("window-drag") Then Return True
+                control = TryCast(control.Parent, Control)
+            End While
+            Return False
+        End Function
+
+        ''' <summary>Alles Bedienbare gewinnt gegen den Zug: sonst waere ein Knopf im Ziehbereich
+        ''' nicht mehr klickbar, weil der Zug schon beim Druecken beginnt. Listen und rollender
+        ''' Inhalt zaehlen mit, damit der untere Randstreifen keine Zeile oder Kachel schluckt.</summary>
+        Private Shared Function IsOverInteractiveControl(source As Control) As Boolean
+            Dim control = source
+            While control IsNot Nothing
                 If TypeOf control Is Button OrElse TypeOf control Is TextBox OrElse
                    TypeOf control Is Slider OrElse TypeOf control Is ComboBox OrElse
                    TypeOf control Is ListBox OrElse TypeOf control Is CheckBox OrElse
                    TypeOf control Is Controls.SeekBar OrElse TypeOf control Is Controls.VolumeKnob OrElse
+                   TypeOf control Is Controls.RoundSlider OrElse
+                   TypeOf control Is ItemsControl OrElse TypeOf control Is ItemsRepeater OrElse
+                   TypeOf control Is ScrollViewer OrElse TypeOf control Is SelectableTextBlock OrElse
                    TypeOf control Is Avalonia.Controls.Primitives.ToggleButton OrElse
-                   TypeOf control Is Avalonia.Controls.Primitives.ScrollBar Then Return False
-                If control.Classes.Contains("window-drag") Then Return True
+                   TypeOf control Is Avalonia.Controls.Primitives.ScrollBar Then Return True
                 control = TryCast(control.Parent, Control)
             End While
             Return False

@@ -352,10 +352,9 @@
                  Meldung, in der Mitte der Transport, rechts die Lautstaerke. Die Mitte sitzt in
                  einer Auto-Spalte zwischen zwei gleich breiten Sternspalten und steht dadurch in
                  der Fenstermitte, egal wie lang die Meldung links ist.
-                 Die Leiste ist zugleich Ziehbereich fuer das Fenster - alles Bedienbare darin
-                 gewinnt gegen den Zug, siehe MainWindow.IsInWindowDragArea. -->
+                 Ziehbereich nur ueber den unteren Randstreifen des Fensters (MainWindow.EdgeDragZone),
+                 nicht ueber die ganze Leiste; am Rand selbst wird die Groesse geaendert. -->
             <Border Grid.Row="1"
-                    Classes="window-drag"
                     Background="{DynamicResource FP.Footer.Bg}"
                     BorderBrush="{DynamicResource FP.Footer.Edge}"
                     BorderThickness="0,1,0,0"
