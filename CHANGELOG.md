@@ -80,6 +80,12 @@
   `--browser` itself always stays on the command line, and a start parameter wins over the
   variable of the same setting.
 
+- A slim bar: the button next to the volume shrinks FerrumKix to a single strip with cover,
+  transport, title with a thin progress line, time and volume. The pin keeps it on top of all
+  other windows. The bar is moved by dragging it anywhere and stretched at its left and right
+  edges; a double click on a free spot or the arrows bring the full view back, in its old size
+  and place. FerrumKix remembers where the bar was and starts again the way it was closed. Under
+  Wayland, where the bar lands and whether it stays on top is up to the compositor.
 - In the Lyrion browser, clicking the artist on an album tile always switches to Artist/Year and
   shows all albums of that artist, also when "Recently added" was selected before, which only
   holds the newest albums.

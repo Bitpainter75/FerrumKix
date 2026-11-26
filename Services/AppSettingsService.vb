@@ -22,6 +22,16 @@ Namespace Services
         Public Property WindowHeight As Double = 780
         Public Property WindowMaximized As Boolean = False
 
+        ''' <summary>Die schmale Leiste statt der vollen Ansicht (MiniBarView). Beim naechsten Start
+        ''' kommt FerrumKix so zurueck, wie es beendet wurde. Die Werte darueber bleiben die der
+        ''' vollen Ansicht; die Leiste hat ihre eigenen.</summary>
+        Public Property BarMode As Boolean = False
+        ''' <summary>Die Leiste bleibt ueber allen Fenstern.</summary>
+        Public Property BarPinned As Boolean = False
+        Public Property BarLeft As Integer = -1
+        Public Property BarTop As Integer = -1
+        Public Property BarWidth As Double = 820
+
         ''' <summary>Die Lautstaerke in Prozent.</summary>
         Public Property Volume As Double = 80
         Public Property Muted As Boolean = False

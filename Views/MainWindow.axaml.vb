@@ -30,8 +30,30 @@ Namespace Views
         ''' <summary>Das Fenster ging in den Infobereich oder kam von dort zurueck.</summary>
         Public Event TrayVisibilityChanged As EventHandler
 
+        ''' <summary>Hoehe der schmalen Leiste. Steht ebenso in MiniBarView.axaml; wer eine
+        ''' aendert, aendert beide.</summary>
+        Private Const BarHeight As Double = 48
+
+        ''' <summary>So schmal darf die Leiste werden. Darunter haetten Titel und Fortschritt
+        ''' keinen Platz mehr neben den Knoepfen.</summary>
+        Private Const BarMinWidth As Double = 560
+
+        ''' <summary>Ob die Leiste gerade angewandt ist. Getrennt vom ViewModel gefuehrt, weil das
+        ''' Umschalten Groesse und Lage merkt und zurueckgibt und dafuer wissen muss, woher es kommt.</summary>
+        Private _barApplied As Boolean
+
+        ' Die volle Ansicht, wie sie vor der Leiste war: dorthin geht es zurueck.
+        Private _normalWidth As Double
+        Private _normalHeight As Double
+        Private _normalPosition As PixelPoint
+        Private _normalMaximized As Boolean
+        Private _fullMinWidth As Double
+        Private _fullMinHeight As Double
+
         Public Sub New()
             InitializeComponent()
+            _fullMinWidth = MinWidth
+            _fullMinHeight = MinHeight
             WireWindowChrome()
             RestoreWindowPlacement()
 
@@ -117,11 +139,95 @@ Namespace Views
             If _observedViewModel IsNot Nothing Then
                 AddHandler _observedViewModel.PropertyChanged, AddressOf OnViewModelPropertyChanged
             End If
+            ApplyBarMode()
             ApplyWindowButtonsSide()
         End Sub
 
         Private Sub OnViewModelPropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs)
-            If e.PropertyName = NameOf(MainWindowViewModel.WindowButtonLayout) Then ApplyWindowButtonsSide()
+            Select Case e.PropertyName
+                Case NameOf(MainWindowViewModel.WindowButtonLayout)
+                    ApplyWindowButtonsSide()
+                Case NameOf(MainWindowViewModel.IsBarMode)
+                    ApplyBarMode()
+                    ApplyWindowButtonsSide()
+                Case NameOf(MainWindowViewModel.IsBarPinned)
+                    Topmost = _barApplied AndAlso Me.ViewModel.IsBarPinned
+            End Select
+        End Sub
+
+        ' Die schmale Leiste
+
+        ''' <summary>Setzt das Fenster auf die Leiste oder zurueck auf die volle Ansicht.
+        '''
+        ''' <para>HIN: Groesse, Lage und Maximiert der vollen Ansicht werden gemerkt. Das Fenster
+        ''' wird so hoch wie die Leiste und laesst sich nur noch in der Breite ziehen; Breite und
+        ''' Lage der Leiste kommen aus den Einstellungen, damit sie wieder dort steht, wo man sie
+        ''' hingelegt hat. Festgepinnt bleibt sie ueber allen Fenstern (Topmost).</para>
+        '''
+        ''' <para>ZURUECK: Breite und Lage der Leiste werden gemerkt, die volle Ansicht kommt in
+        ''' ihrer alten Groesse an ihrer alten Stelle wieder, maximiert, wenn sie es war.</para>
+        '''
+        ''' <para>Unter Wayland setzt der Compositor Lage und "oben halten" nach eigenen Regeln;
+        ''' beides ist dort ein Wunsch und keine Zusage.</para></summary>
+        Private Sub ApplyBarMode()
+            Dim viewModel = Me.ViewModel
+            Dim wanted = viewModel IsNot Nothing AndAlso viewModel.IsBarMode
+            If wanted = _barApplied Then
+                Topmost = _barApplied AndAlso viewModel IsNot Nothing AndAlso viewModel.IsBarPinned
+                Return
+            End If
+
+            Dim settings = AppSettingsService.Current
+            If wanted Then
+                _normalMaximized = WindowState = WindowState.Maximized OrElse WindowState = WindowState.FullScreen
+                If _normalMaximized Then
+                    ' Maximiert ist die Groesse die des Bildschirms. Die eigene steht noch in den
+                    ' Einstellungen, vom letzten Mal, als das Fenster normal war.
+                    _normalWidth = settings.WindowWidth
+                    _normalHeight = settings.WindowHeight
+                    _normalPosition = New PixelPoint(settings.WindowLeft, settings.WindowTop)
+                Else
+                    _normalWidth = Width
+                    _normalHeight = Height
+                    _normalPosition = Position
+                End If
+
+                WindowState = WindowState.Normal
+                MinWidth = BarMinWidth
+                MinHeight = BarHeight
+                MaxHeight = BarHeight
+                Height = BarHeight
+                Width = Math.Max(BarMinWidth, settings.BarWidth)
+                Dim barPosition = New PixelPoint(settings.BarLeft, settings.BarTop)
+                If settings.BarLeft >= 0 AndAlso settings.BarTop >= 0 AndAlso IsOnAnyScreen(barPosition) Then Position = barPosition
+                Topmost = viewModel.IsBarPinned
+            Else
+                RememberBarPlacement()
+                Topmost = False
+                MaxHeight = Double.PositiveInfinity
+                MinHeight = _fullMinHeight
+                MinWidth = _fullMinWidth
+                Width = Math.Max(_fullMinWidth, _normalWidth)
+                Height = Math.Max(_fullMinHeight, _normalHeight)
+                If _normalPosition.X >= 0 AndAlso _normalPosition.Y >= 0 AndAlso IsOnAnyScreen(_normalPosition) Then Position = _normalPosition
+                If _normalMaximized Then WindowState = WindowState.Maximized
+            End If
+            _barApplied = wanted
+
+            ' Die Leiste laesst sich nur in der Breite ziehen: oben, unten und an den Ecken
+            ' faengt nichts mehr die Maus ab.
+            For Each handleName In {"ResizeTop", "ResizeBottom", "ResizeTopLeft", "ResizeTopRight", "ResizeBottomLeft", "ResizeBottomRight"}
+                Dim border = Me.FindControl(Of Border)(handleName)
+                If border IsNot Nothing Then border.IsVisible = Not wanted
+            Next
+            UpdateMaximizeGlyph()
+        End Sub
+
+        Private Sub RememberBarPlacement()
+            Dim settings = AppSettingsService.Current
+            settings.BarWidth = Width
+            settings.BarLeft = Position.X
+            settings.BarTop = Position.Y
         End Sub
 
         ''' <summary>Setzt die Fensterknoepfe auf die eingestellte Seite - rechts wie ausgeliefert
@@ -144,6 +250,8 @@ Namespace Views
                 host.IsVisible = False
                 Return
             End If
+            ' Die Leiste bringt ihre eigenen Knoepfe mit.
+            host.IsVisible = Not _barApplied
 
             ' Beim Bauen des Fensters gibt es noch kein ViewModel - dann direkt ueber die
             ' Einstellung, es ist dieselbe Quelle.
@@ -258,6 +366,13 @@ Namespace Views
             Dim source = TryCast(e.Source, Control)
             If Not IsInWindowDragArea(source) AndAlso Not IsInEdgeDragZone(source, e.GetPosition(Me)) Then Return
 
+            ' In der Leiste holt ein Doppelklick auf eine freie Stelle die volle Ansicht zurueck.
+            If _barApplied AndAlso e.ClickCount > 0 AndAlso e.ClickCount Mod 2 = 0 Then
+                Me.ViewModel.IsBarMode = False
+                e.Handled = True
+                Return
+            End If
+
             ' Doppelklick auf die obere Leiste schaltet zwischen maximiert und Normalgroesse -
             ' dieselbe Geste wie bei den Fenstern des Systems. Die Pruefung steht VOR dem Zug,
             ' sonst begaenne der zweite Klick nur eine weitere Fensterbewegung. Jeder zweite
@@ -327,7 +442,7 @@ Namespace Views
         End Function
 
         Private Sub ToggleMaximized()
-            If BrowserBridge.IsActive Then Return
+            If BrowserBridge.IsActive OrElse _barApplied Then Return
             WindowState = If(WindowState = WindowState.Maximized, WindowState.Normal, WindowState.Maximized)
             UpdateMaximizeGlyph()
         End Sub
@@ -418,6 +533,21 @@ Namespace Views
                 If BrowserBridge.IsActive Then
                     Dim browserViewModel = Me.ViewModel
                     If browserViewModel IsNot Nothing Then settings.SidePanelWidth = browserViewModel.SidePanelWidth
+                    AppSettingsService.Save()
+                    Return
+                End If
+                ' In der Leiste gilt fuer die volle Ansicht, was vor dem Umschalten gemerkt wurde.
+                If _barApplied Then
+                    RememberBarPlacement()
+                    settings.WindowMaximized = _normalMaximized
+                    If Not _normalMaximized Then
+                        settings.WindowWidth = _normalWidth
+                        settings.WindowHeight = _normalHeight
+                        settings.WindowLeft = _normalPosition.X
+                        settings.WindowTop = _normalPosition.Y
+                    End If
+                    Dim barViewModel = Me.ViewModel
+                    If barViewModel IsNot Nothing Then settings.SidePanelWidth = barViewModel.SidePanelWidth
                     AppSettingsService.Save()
                     Return
                 End If

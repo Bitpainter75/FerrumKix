@@ -1,0 +1,111 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:icons="clr-namespace:FerrumKix.Controls"
+             x:Class="FerrumKix.Views.MiniBarView">
+
+    <!-- DIE LEISTE: FerrumKix als schmaler Streifen, den man an den Bildschirmrand legt und
+         festpinnt. Von links nach rechts: Cover, Transport, Titel mit Fortschritt darunter, Zeit,
+         Lautstaerke und die drei Knoepfe der Leiste (festpinnen, zurueck zur vollen Ansicht,
+         schliessen).
+
+         Die ganze Leiste ist Ziehbereich (Klasse window-drag): sie hat keine Titelzeile, an der
+         man sie greifen koennte. Alles Bedienbare gewinnt dabei gegen den Zug, siehe
+         MainWindow.IsOverInteractiveControl. Ein Doppelklick auf eine freie Stelle holt die volle
+         Ansicht zurueck.
+
+         Die Hoehe steht an zwei Stellen: hier und in MainWindow.BarHeight. Wer eine aendert,
+         aendert beide. -->
+    <Border Classes="window-drag"
+            Height="48"
+            Background="{DynamicResource FP.Footer.Bg}"
+            Padding="8,0,8,0">
+        <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto" ColumnSpacing="10" VerticalAlignment="Center">
+
+            <!-- Das Cover, klein. Ohne Bild das Notensymbol wie in der grossen Ansicht. -->
+            <Border Grid.Column="0" Width="34" Height="34" CornerRadius="4" ClipToBounds="True"
+                    Background="#22FFFFFF"
+                    IsHitTestVisible="False">
+                <Panel>
+                    <Image Source="{Binding CurrentCover}" Stretch="UniformToFill" IsVisible="{Binding HasCover}"/>
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/music-note.svg"
+                                   Width="18" Height="18"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   IconBrush="{DynamicResource FP.Text.Muted}"
+                                   IsVisible="{Binding !HasCover}"/>
+                </Panel>
+            </Border>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+                <Button Classes="bar-transport" Command="{Binding PreviousCommand}" ToolTip.Tip="Voriger Titel">
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/skip-back.svg" Width="16" Height="16"/>
+                </Button>
+                <Button Classes="bar-transport primary" Command="{Binding PlayPauseCommand}" ToolTip.Tip="Wiedergabe und Pause">
+                    <icons:SvgIcon Source="{Binding PlayPauseIconSource}" Width="16" Height="16"/>
+                </Button>
+                <Button Classes="bar-transport" Command="{Binding StopCommand}" ToolTip.Tip="Anhalten">
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/stop.svg" Width="14" Height="14"/>
+                </Button>
+                <Button Classes="bar-transport" Command="{Binding NextCommand}" ToolTip.Tip="Nächster Titel">
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/skip-forward.svg" Width="16" Height="16"/>
+                </Button>
+            </StackPanel>
+
+            <!-- Titel und Interpret in einer Zeile, der Fortschritt als duenner Strich darunter.
+                 Der Text faengt keine Klicks: die Flaeche bleibt zum Ziehen frei. -->
+            <Grid Grid.Column="2" RowDefinitions="Auto,Auto" VerticalAlignment="Center" Margin="4,0,0,0">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" IsHitTestVisible="False" ClipToBounds="True">
+                    <TextBlock Text="{Binding CurrentTitle}"
+                               FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding CurrentArtist}"
+                               Classes="muted"
+                               TextTrimming="CharacterEllipsis"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                <icons:SeekBar x:Name="BarSeek"
+                               Grid.Row="1"
+                               Height="12"
+                               BarHeight="3"
+                               Position="{Binding PositionSeconds}"
+                               Duration="{Binding DurationSeconds}"
+                               TrackBrush="{DynamicResource FP.Footer.Track}"
+                               ProgressBrush="{DynamicResource FP.Accent}"/>
+            </Grid>
+
+            <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="3" VerticalAlignment="Center"
+                        IsHitTestVisible="False">
+                <TextBlock Text="{Binding PositionText}" Classes="footer-time"/>
+                <TextBlock Text="/" Classes="footer-time total"/>
+                <TextBlock Text="{Binding DurationText}" Classes="footer-time total"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+                <Button Classes="transport-toggle" Command="{Binding ToggleMuteCommand}" ToolTip.Tip="Stumm schalten">
+                    <icons:SvgIcon Source="{Binding VolumeIconSource}" Width="15" Height="15"/>
+                </Button>
+                <icons:VolumeKnob Width="30" Height="30"
+                                  Classes.muted="{Binding IsMuted}"
+                                  Value="{Binding Volume, Mode=TwoWay}"
+                                  ToolTip.Tip="Lautstärke: ziehen, Mausrad oder Pfeiltasten"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+                <Button Classes="transport-toggle"
+                        Classes.active="{Binding IsBarPinned}"
+                        Command="{Binding ToggleBarPinCommand}"
+                        ToolTip.Tip="Über allen Fenstern halten">
+                    <icons:SvgIcon Source="{Binding BarPinIconSource}" Width="15" Height="15"/>
+                </Button>
+                <Button Classes="transport-toggle"
+                        Command="{Binding ToggleBarModeCommand}"
+                        ToolTip.Tip="Volle Ansicht">
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/arrows-out-simple.svg" Width="15" Height="15"/>
+                </Button>
+                <Button Classes="transport-toggle" x:Name="BarCloseButton" ToolTip.Tip="Schließen">
+                    <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/x.svg" Width="15" Height="15"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

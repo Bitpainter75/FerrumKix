@@ -16,7 +16,8 @@
             ClipToBounds="True"
             Background="{DynamicResource FP.Bg.Root}">
         <Grid>
-                <Grid RowDefinitions="Auto,*">
+                <!-- Die volle Ansicht. In der schmalen Leiste tritt MiniBarView an ihre Stelle. -->
+                <Grid RowDefinitions="Auto,*" IsVisible="{Binding !IsBarMode}">
 
                     <!-- DIE FENSTERLEISTE. Hier laesst sich das Fenster verschieben; die Hoehe steht an
                          zwei Stellen zusammen, hier und an den Fensterknoepfen weiter unten. Wer eine
@@ -68,6 +69,8 @@
                         <views:SettingsView IsVisible="{Binding IsSettingsVisible}"/>
                     </Grid>
                 </Grid>
+
+                <views:MiniBarView VerticalAlignment="Top" IsVisible="{Binding IsBarMode}"/>
 
                 <!-- Die Knoepfe liegen NICHT in der Leiste, sondern darueber im Fenstergitter: der
                      obere Rand haelt sie in ihrer Mitte. Bei einer Leiste von 32 und Knoepfen von 24

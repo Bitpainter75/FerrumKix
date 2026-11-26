@@ -1041,4 +1041,13 @@
   <data name="Grafik_unter_Windows_ef8f1042" xml:space="preserve">
     <value>Graphics on Windows</value>
   </data>
+  <data name="ber_allen_Fenstern_halten_21bae8f9" xml:space="preserve">
+    <value>Keep on top of all windows</value>
+  </data>
+  <data name="Volle_Ansicht_7fb5c5db" xml:space="preserve">
+    <value>Full view</value>
+  </data>
+  <data name="Als_schmale_Leiste_anzeigen_2b395188" xml:space="preserve">
+    <value>Show as a slim bar</value>
+  </data>
 </root>

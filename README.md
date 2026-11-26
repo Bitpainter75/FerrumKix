@@ -77,6 +77,8 @@ The window is split into three areas. The cover column on the left shows the art
 
 The transport sits on a dark deck at the bottom: the progress bar across the full width, shuffle and repeat on the left, previous, stop, play and next in the middle, and the volume on the right. The volume is a rotary knob, taken from the FerrumKix logo - drag it up or to the right to turn it up, or use the mouse wheel or the arrow keys.
 
+The button next to the volume shrinks FerrumKix to a slim bar: cover, transport, title with a thin progress line, time and volume in one strip you can lay along the edge of the screen. The pin keeps the bar on top of all other windows; drag it anywhere on the bar, stretch it at its left and right edges, and double-click a free spot or use the arrows to return to the full view. FerrumKix remembers where the bar was and starts the way you left it.
+
 <img src="AudioConverter.png" height="550" />
 
 ## Settings

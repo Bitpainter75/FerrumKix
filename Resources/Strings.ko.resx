@@ -810,4 +810,13 @@
   <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
     <value>그동안에는 다른 작업을 할 수 없습니다.</value>
   </data>
+  <data name="ber_allen_Fenstern_halten_21bae8f9" xml:space="preserve">
+    <value>항상 모든 창 위에 표시</value>
+  </data>
+  <data name="Volle_Ansicht_7fb5c5db" xml:space="preserve">
+    <value>전체 보기</value>
+  </data>
+  <data name="Als_schmale_Leiste_anzeigen_2b395188" xml:space="preserve">
+    <value>얇은 바로 표시</value>
+  </data>
 </root>

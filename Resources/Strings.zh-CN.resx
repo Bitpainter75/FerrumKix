@@ -810,4 +810,13 @@
   <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
     <value>在此期间无法执行其他操作。</value>
   </data>
+  <data name="ber_allen_Fenstern_halten_21bae8f9" xml:space="preserve">
+    <value>保持在所有窗口之上</value>
+  </data>
+  <data name="Volle_Ansicht_7fb5c5db" xml:space="preserve">
+    <value>完整视图</value>
+  </data>
+  <data name="Als_schmale_Leiste_anzeigen_2b395188" xml:space="preserve">
+    <value>显示为窄条</value>
+  </data>
 </root>

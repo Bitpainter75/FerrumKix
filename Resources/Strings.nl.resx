@@ -810,4 +810,13 @@
   <data name="W_hrenddessen_sind_keine_weiteren_Aktionen_m_gli_be8d8925" xml:space="preserve">
     <value>Intussen zijn er geen andere acties mogelijk.</value>
   </data>
+  <data name="ber_allen_Fenstern_halten_21bae8f9" xml:space="preserve">
+    <value>Boven alle vensters houden</value>
+  </data>
+  <data name="Volle_Ansicht_7fb5c5db" xml:space="preserve">
+    <value>Volledige weergave</value>
+  </data>
+  <data name="Als_schmale_Leiste_anzeigen_2b395188" xml:space="preserve">
+    <value>Als smalle balk tonen</value>
+  </data>
 </root>

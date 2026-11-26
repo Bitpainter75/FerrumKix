@@ -442,6 +442,16 @@
                                        Classes="footer-time"
                                        MinWidth="24"
                                        VerticalAlignment="Center"/>
+                            <!-- In die schmale Leiste wechseln (MiniBarView). Hier und nicht in der
+                                 Kopfzeile: die Leiste ist diese Fussleiste fuer sich allein. -->
+                            <Button Classes="transport-toggle"
+                                    Margin="6,0,0,0"
+                                    IsVisible="{Binding CanUseBarMode}"
+                                    Command="{Binding ToggleBarModeCommand}"
+                                    ToolTip.Tip="Als schmale Leiste anzeigen">
+                                <icons:SvgIcon Source="avares://FerrumKix/Assets/Icons/phosphor/regular/arrows-in-simple.svg"
+                                               Width="17" Height="17"/>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Grid>

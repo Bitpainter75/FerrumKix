@@ -370,6 +370,39 @@
         <Setter Property="IconBrush" Value="{DynamicResource FP.Footer.OnAccent}"/>
     </Style>
 
+    <!-- Der Transport der schmalen Leiste (MiniBarView): dieselben Knoepfe, kleiner. -->
+    <Style Selector="Button.bar-transport">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="CornerRadius" Value="15"/>
+    </Style>
+    <Style Selector="Button.bar-transport icons|SvgIcon">
+        <Setter Property="IconBrush" Value="{DynamicResource FP.Text.Secondary}"/>
+    </Style>
+    <Style Selector="Button.bar-transport:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Bg.Hover}"/>
+    </Style>
+    <Style Selector="Button.bar-transport:pointerover icons|SvgIcon">
+        <Setter Property="IconBrush" Value="{DynamicResource FP.Text.Primary}"/>
+    </Style>
+    <Style Selector="Button.bar-transport.primary">
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="CornerRadius" Value="17"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="Background" Value="{DynamicResource FP.Accent}"/>
+    </Style>
+    <Style Selector="Button.bar-transport.primary:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource FP.Accent.Light}"/>
+    </Style>
+    <Style Selector="Button.bar-transport.primary icons|SvgIcon">
+        <Setter Property="IconBrush" Value="{DynamicResource FP.Footer.OnAccent}"/>
+    </Style>
+
     <!-- Die ausloesenden Textknoepfe im Konverter und Tag-Editor bleiben zurueckhaltend:
          Akzent nur am Rahmen, dazu die normale Schriftfarbe. -->
     <Style Selector="Button.primary-action">
