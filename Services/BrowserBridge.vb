@@ -336,6 +336,7 @@ Namespace Services
             listener.AuthenticationSchemeSelectorDelegate =
                 Function(request)
                     If _password.Length > 0 AndAlso request.Url.AbsolutePath <> "/ws" AndAlso
+                       Not IsIconRoute(request.Url.AbsolutePath) AndAlso
                        IsAcceptedRoute(request) Then Return AuthenticationSchemes.Basic
                     Return AuthenticationSchemes.Anonymous
                 End Function
@@ -412,6 +413,12 @@ Namespace Services
                     End If
                     Dim socketContext = Await context.AcceptWebSocketAsync(Nothing)
                     Await RunClientAsync(socketContext.WebSocket)
+                    Return
+                End If
+
+                ' Das Symbol der Anwendung fuer den Tab, ohne Anmeldung (BrowserBridgeIcons.vb).
+                If IsIconRoute(path) Then
+                    Await ServeIconAsync(context, path)
                     Return
                 End If
 
