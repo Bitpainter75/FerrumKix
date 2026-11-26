@@ -2,6 +2,9 @@ Imports System
 Imports System.Collections.Generic
 Imports System.Linq
 Imports Avalonia
+Imports Avalonia.Dialogs
+Imports Avalonia.Headless
+Imports Avalonia.Platform
 Imports FerrumKix.Services
 
 Module Program
@@ -50,19 +53,37 @@ Module Program
                 e.SetObserved()
             End Sub
 
+        ' Falsche Angaben fuer den Browser enden HIER mit einer Zeile, bevor das Toolkit entsteht:
+        ' danach waere es eine Ausnahme mitten im Start, mit Aufrufkette statt Erklaerung.
+        Dim inBrowser = BrowserBridge.IsRequested(args)
+        If inBrowser Then
+            Dim problem = BrowserBridge.CheckArguments(args)
+            If problem IsNot Nothing Then
+                Console.Error.WriteLine(problem)
+                Return 2
+            End If
+        End If
+
         Dim remaining = SplitStartupPaths(args)
 
         ' EINE INSTANZ. Laeuft FerrumKix schon, bekommt die laufende Instanz die Pfade und dieser
         ' Prozess endet hier - noch vor Avalonia, damit kein zweites Fenster aufblitzt. Siehe
         ' SingleInstanceService.
         If SingleInstanceService.ClaimOrHandOver(_startupPaths) Then
+            ' Fuer den Browser ist das kein Erfolg: die laufende Instanz hat ein Fenster und keinen
+            ' Browser, und dieser Aufruf haette sonst wortlos nichts bewirkt.
+            If inBrowser Then
+                Console.Error.WriteLine("FerrumKix is already running. Close it first, then start it again with " & BrowserBridge.StartSwitch & ".")
+                Return 2
+            End If
             DiagnosticLogService.LogAlways("App.Start", $"pid={Environment.ProcessId}, an die laufende Instanz uebergeben, paths={_startupPaths.Count}")
             Return 0
         End If
 
         DiagnosticLogService.LogAlways("App.Start", $"pid={Environment.ProcessId}, paths={_startupPaths.Count}")
         Try
-            Return BuildAvaloniaApp().StartWithClassicDesktopLifetime(ForwardedArguments(remaining))
+            Dim builder = If(inBrowser, BuildBrowserApp(args), BuildAvaloniaApp())
+            Return builder.StartWithClassicDesktopLifetime(ForwardedArguments(remaining))
         Finally
             SingleInstanceService.Shutdown()
         End Try
@@ -116,13 +137,37 @@ Module Program
     ''' meldet sie als Fehler.</summary>
     Private Function ForwardedArguments(args As String()) As String()
         If args Is Nothing Then Return Array.Empty(Of String)()
-        Return args.Where(Function(a) Not String.Equals(a, DebugSwitch, StringComparison.OrdinalIgnoreCase)).ToArray()
+        Return args.Where(Function(a) Not String.Equals(a, DebugSwitch, StringComparison.OrdinalIgnoreCase) AndAlso
+                                      Not BrowserBridge.IsOwnArgument(a)).ToArray()
     End Function
 
     Public Function BuildAvaloniaApp() As AppBuilder
         Return AppBuilder.Configure(Of App)() _
             .UsePlatformDetect() _
             .LogToTrace()
+    End Function
+
+    ''' <summary>Der Aufbau fuer den Start mit <c>--browser</c>, wie in FerrumPix: dieselbe
+    ''' Anwendung, aber ohne Fenstersystem. Gezeichnet wird mit Skia in den Speicher, und
+    ''' <see cref="BrowserBridge"/> bringt die Bilder in den Browser.
+    '''
+    ''' <para>FrameBufferFormat: Bgra8888 ist das Format, in dem die Bruecke die Bilder ohne
+    ''' Umrechnen kodieren kann.</para>
+    '''
+    ''' <para>UseManagedSystemDialogs: ohne Fenstersystem gibt es keinen Dateidialog des Systems.
+    ''' Der des Toolkits ist ein gewoehnliches Fenster und erscheint damit auch im Browser.</para>
+    '''
+    ''' <para>Die Bruecke startet ueber AfterSetup, also sobald das Toolkit steht und bevor das
+    ''' erste Fenster entsteht.</para></summary>
+    Public Function BuildBrowserApp(args As String()) As AppBuilder
+        Return AppBuilder.Configure(Of App)() _
+            .UseSkia() _
+            .UseHeadless(New AvaloniaHeadlessPlatformOptions With {
+                .UseHeadlessDrawing = False,
+                .FrameBufferFormat = PixelFormat.Bgra8888}) _
+            .UseManagedSystemDialogs() _
+            .LogToTrace() _
+            .AfterSetup(Sub(appBuilder) BrowserBridge.Start(args))
     End Function
 
 End Module

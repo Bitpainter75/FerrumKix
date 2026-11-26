@@ -79,12 +79,15 @@ Public Class App
 
             ' DAS SYMBOL IM INFOBEREICH. Es wird immer gebaut und nur nach der Einstellung
             ' eingeblendet, damit der Schalter ohne Neustart wirkt.
+            ' Im Browser nicht: die Plattform ohne Bildschirm hat keinen Infobereich.
             Dim tray As TrayIconService = Nothing
-            Try
-                tray = New TrayIconService(Me, window, viewModel)
-            Catch ex As Exception
-                DiagnosticLogService.LogException("App.Tray", ex)
-            End Try
+            If Not BrowserBridge.IsActive Then
+                Try
+                    tray = New TrayIconService(Me, window, viewModel)
+                Catch ex As Exception
+                    DiagnosticLogService.LogException("App.Tray", ex)
+                End Try
+            End If
 
             ' AUFRAEUMEN BEIM BEENDEN, und zwar hier und nicht im Fenster: das Fenster kann auch
             ' ohne Programmende geschlossen werden, und der Spieler haelt einen Fremdfaden. Wird er

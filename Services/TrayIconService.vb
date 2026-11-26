@@ -90,6 +90,9 @@ Namespace Services
 
         ''' <summary>Ob das Fenster sich jetzt in den Infobereich verbergen darf.</summary>
         Public Shared Function CanHideToTray() As Boolean
+            ' Im Browser waere ein verborgenes Fenster ein leerer Tab, zurueckholen liesse es sich
+            ' nur am Rechner, auf dem FerrumKix laeuft.
+            If BrowserBridge.IsActive Then Return False
             Return AppSettingsService.Current.ShowTrayIcon AndAlso IsHostAvailable()
         End Function
 

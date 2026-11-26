@@ -1,5 +1,97 @@
 # Changelog
 
+## 0.9.12
+
+- FerrumKix can be used in a web browser, as FerrumPix can. It is the same application with
+  everything it can do; it just opens no window on the screen and shows itself in a browser tab
+  instead. That is useful on a computer without a screen, such as a small server with the speakers
+  attached. **The sound stays on the computer FerrumKix runs on**: the browser is the screen and
+  the remote control, not the loudspeaker. This is a first version: files cannot be dropped onto
+  the page or uploaded from the device you sit at, copy and paste stay inside FerrumKix, and there
+  is no symbol in the notification area in this mode.
+
+  **On the same computer.** Start FerrumKix with `--browser` and open the address it prints:
+
+  ```
+  FerrumKix --browser
+  ```
+
+  FerrumKix is then at `http://127.0.0.1:14500` and fills the tab. Reloading the tab or coming back
+  later shows the same session, the music keeps playing in between, and one browser can be
+  connected at a time. If FerrumKix is already running with a window, close it first: there is only
+  one FerrumKix at a time.
+
+  **With a sign-in.** Give a password, and a user name if you like, and the browser asks for them
+  before it shows anything:
+
+  ```
+  FerrumKix --browser --browser-user=anna --browser-password=secret
+  ```
+
+  **On another port.** `--browser-bind` sets address and port:
+
+  ```
+  FerrumKix --browser --browser-bind=127.0.0.1:8080
+  ```
+
+  **From another device**, such as a tablet or a phone in the same network. FerrumKix itself does
+  not encrypt the connection, and a password sent over the network could be read along. So it only
+  accepts other devices through a reverse proxy that provides HTTPS.
+  Tell FerrumKix that the proxy is there with `--browser-tls-proxy`; a password is required then:
+
+  ```
+  FerrumKix --browser --browser-tls-proxy --browser-user=anna --browser-password=secret
+  ```
+
+  The proxy runs on the same computer and forwards `https://music.example.home` to
+  `127.0.0.1:14500`, including the WebSocket at `/ws`. Anyone who tries to reach FerrumKix past
+  the proxy is turned away before being asked for the password. Without `--browser-tls-proxy`,
+  FerrumKix refuses to start on an address other than its own computer and says why.
+
+  If the proxy runs on a different computer, FerrumKix has to listen on the network and needs to
+  know which computer the proxy is, because it only believes what comes from there:
+
+  ```
+  FerrumKix --browser --browser-tls-proxy --browser-bind=0.0.0.0:14500 --browser-proxy-address=192.168.1.2 --browser-user=anna --browser-password=secret
+  ```
+
+  **With the settings in the environment.** Every setting can come from an environment variable
+  instead of the command line. That keeps the password out of the process list, where a start
+  parameter can be read by everyone on the computer, and it is the usual way for a service:
+
+  ```
+  env FERRUMKIX_BROWSER_USER=anna FERRUMKIX_BROWSER_PASSWORD=secret FerrumKix --browser
+  ```
+
+  The example from above with the proxy on a different computer looks like this:
+
+  ```
+  env FERRUMKIX_BROWSER_BIND=0.0.0.0:14500 FERRUMKIX_BROWSER_TLS_PROXY=1 FERRUMKIX_BROWSER_PROXY_ADDRESS=192.168.1.2 FERRUMKIX_BROWSER_USER=anna FERRUMKIX_BROWSER_PASSWORD=secret FerrumKix --browser
+  ```
+
+  | Start parameter | Environment variable |
+  |---|---|
+  | `--browser-bind=127.0.0.1:8080` | `FERRUMKIX_BROWSER_BIND=127.0.0.1:8080` |
+  | `--browser-user=anna` | `FERRUMKIX_BROWSER_USER=anna` |
+  | `--browser-password=secret` | `FERRUMKIX_BROWSER_PASSWORD=secret` |
+  | `--browser-tls-proxy` | `FERRUMKIX_BROWSER_TLS_PROXY=1` |
+  | `--browser-proxy-address=192.168.1.2` | `FERRUMKIX_BROWSER_PROXY_ADDRESS=192.168.1.2` |
+
+  `--browser` itself always stays on the command line, and a start parameter wins over the
+  variable of the same setting.
+
+- In the Lyrion browser, clicking the artist on an album tile always switches to Artist/Year and
+  shows all albums of that artist, also when "Recently added" was selected before, which only
+  holds the newest albums.
+- Tracks ripped from an audio CD or converted are added to the playlist right away; after a
+  cancelled run, the ones finished until then. A file that was overwritten and is already in the
+  list keeps its single entry.
+- The main window no longer moves by the whole player bar: it moves by the title bar and by a
+  strip along the bottom edge, and along the top edge too when the title bar is hidden.
+- In the Lyrion browser, the playback target moved up next to the symbols, so the filter bar no
+  longer overlaps itself in a small window; a long page title is shortened with an ellipsis.
+- Avalonia 12.2.0.
+
 ## 0.9.11
 
 - A new, crisp app icon in the same style as FerrumPix, redrawn by Mibea. Many thanks for the
@@ -17,17 +109,6 @@
   still comes first.
 - The Dutch, Czech and Hindi tooltip of the button that clears the playlist said "clear" in the
   sense of "distinct"; it now says "empty the list" (#6). Thanks to Paul for the report.
-- The main window no longer moves by the whole player bar: it moves by the title bar and by a
-  strip along the bottom edge, and along the top edge too when the title bar is hidden.
-- Avalonia 12.2.0.
-- In the Lyrion browser, the playback target moved up next to the symbols, so the filter bar no
-  longer overlaps itself in a small window; a long page title is shortened with an ellipsis.
-- In the Lyrion browser, clicking the artist on an album tile always switches to Artist/Year and
-  shows all albums of that artist, also when "Recently added" was selected before, which only
-  holds the newest albums.
-- Tracks ripped from an audio CD or converted are added to the playlist right away; after a
-  cancelled run, the ones finished until then. A file that was overwritten and is already in the
-  list keeps its single entry.
 - The licence information is complete again: Settings › Technology, the README and
   THIRD-PARTY-NOTICES.txt now also name FFmpeg, cdparanoia, ANGLE (Windows) and Phosphor Icons,
   and say which package bundles libmpv, FFmpeg and cdparanoia.

@@ -138,6 +138,13 @@ Namespace Views
             Dim logo = Me.FindControl(Of StackPanel)("WindowLogoPanel")
             If host Is Nothing OrElse panel Is Nothing Then Return
 
+            ' Im Browser gibt es nichts zu minimieren, zu maximieren oder zu schliessen: das Fenster
+            ' fuellt den Tab, und der gehoert dem Browser.
+            If BrowserBridge.IsActive Then
+                host.IsVisible = False
+                Return
+            End If
+
             ' Beim Bauen des Fensters gibt es noch kein ViewModel - dann direkt ueber die
             ' Einstellung, es ist dieselbe Quelle.
             Dim layout = Me.ViewModel?.WindowButtonLayout
@@ -182,6 +189,7 @@ Namespace Views
         End Property
 
         Private Sub MinimizeWindow()
+            If BrowserBridge.IsActive Then Return
             If AppSettingsService.Current.MinimizeToTray AndAlso TrayIconService.CanHideToTray() Then
                 HideToTray()
             Else
@@ -230,6 +238,7 @@ Namespace Views
             If border Is Nothing Then Return
             AddHandler border.PointerPressed,
                 Sub(sender, e)
+                    If BrowserBridge.IsActive Then Return
                     If WindowState = WindowState.Maximized Then Return
                     If Not e.GetCurrentPoint(Me).Properties.IsLeftButtonPressed Then Return
                     BeginResizeDrag(edge, e)
@@ -243,6 +252,8 @@ Namespace Views
         ''' Randstreifen von <see cref="EdgeDragZone"/> Punkten: unten immer, oben nur, wenn die
         ''' Titelzeile ausgeblendet ist. Alles Bedienbare gewinnt gegen den Zug.</summary>
         Private Sub OnFramePointerPressed(sender As Object, e As PointerPressedEventArgs)
+            ' Im Browser weder verschieben noch per Doppelklick umschalten: das Fenster fuellt den Tab.
+            If BrowserBridge.IsActive Then Return
             If Not e.GetCurrentPoint(Me).Properties.IsLeftButtonPressed Then Return
             Dim source = TryCast(e.Source, Control)
             If Not IsInWindowDragArea(source) AndAlso Not IsInEdgeDragZone(source, e.GetPosition(Me)) Then Return
@@ -316,6 +327,7 @@ Namespace Views
         End Function
 
         Private Sub ToggleMaximized()
+            If BrowserBridge.IsActive Then Return
             WindowState = If(WindowState = WindowState.Maximized, WindowState.Normal, WindowState.Maximized)
             UpdateMaximizeGlyph()
         End Sub
@@ -331,6 +343,8 @@ Namespace Views
         ''' angeschlossenen Bildschirm mehr liegt, kommt in die Mitte des ersten: eine Lage von
         ''' einem Aufbau mit zwei Bildschirmen ist auf einem einzelnen unerreichbar.</summary>
         Private Sub RestoreWindowPlacement()
+            ' Im Browser bestimmt der Tab Lage und Groesse, siehe BrowserBridge.ApplyViewport.
+            If BrowserBridge.IsActive Then Return
             Dim settings = AppSettingsService.Current
             Width = Math.Max(MinWidth, settings.WindowWidth)
             Height = Math.Max(MinHeight, settings.WindowHeight)
@@ -399,6 +413,14 @@ Namespace Views
 
             Try
                 Dim settings = AppSettingsService.Current
+                ' Im Browser gehoert die Fenstergroesse dem Tab. Gemerkt, kaeme das Fenster beim
+                ' naechsten gewoehnlichen Start in der Groesse des Tabs wieder.
+                If BrowserBridge.IsActive Then
+                    Dim browserViewModel = Me.ViewModel
+                    If browserViewModel IsNot Nothing Then settings.SidePanelWidth = browserViewModel.SidePanelWidth
+                    AppSettingsService.Save()
+                    Return
+                End If
                 settings.WindowMaximized = WindowState = WindowState.Maximized OrElse WindowState = WindowState.FullScreen
 
                 ' Die Groesse im maximierten Zustand ist die des Bildschirms und nicht die, die der

@@ -155,7 +155,7 @@ There are no packages for macOS.
 ## Usage
 
 ```
-FerrumKix [--debug] [file or folder ...]
+FerrumKix [--debug] [--browser] [file or folder ...]
 ```
 
 Files, folders, and M3U/M3U8 playlists passed on the command line are opened directly. Folders are
@@ -171,7 +171,8 @@ If FerrumKix is already running, the running instance takes the files and folder
 first track, and scrolls the playlist to it; the new call exits right away without opening a second
 window. Called without paths, it brings the running window to the front.
 
-`--debug` writes a log for this run.
+`--debug` writes a log for this run. `--browser` shows FerrumKix in a web browser instead of a
+window, see [In the browser](#in-the-browser).
 
 | Key | Action |
 |---|---|
@@ -183,6 +184,81 @@ window. Called without paths, it brings the running window to the front.
 Double-click a track to play it, double-click an album header to collapse or expand the group.
 
 Settings and the playlist are stored in `~/.config/FerrumKix/`.
+
+## In the browser
+
+Sometimes the music lives on a computer you are not sitting at: a small server in the hallway with
+the speakers attached but no screen, or the big machine in the study while you are on the sofa. For
+that, FerrumKix can show itself in a web browser instead of in a window, the same way FerrumPix
+does.
+
+It is the same FerrumKix with everything it can do: playlist, Lyrion, tag editor, converter and
+settings. Nothing is installed on the device you sit at; a browser is enough. **The sound stays
+where FerrumKix runs.** The browser is the screen and the remote control, the music comes out of
+the speakers of the computer FerrumKix runs on.
+
+To try it on your own computer, start FerrumKix with `--browser`:
+
+```
+ferrumkix --browser
+```
+
+`ferrumkix`, in lowercase, is the command the Linux packages install. The AppImage is started by
+its file name:
+
+```
+./FerrumKix-0.9.12-1-x86_64.AppImage --browser
+```
+
+No window opens. FerrumKix tells you the address instead, `http://127.0.0.1:14500`, and when you
+open it, FerrumKix fills the browser tab. Close the tab and come back later, and everything is as
+you left it; the music keeps playing in the meantime.
+
+Leave the terminal open while you use it. FerrumKix runs in that terminal, and closing it ends
+FerrumKix; the page in the browser then stops reacting. If FerrumKix is already running with a
+window, close it first: there is only one FerrumKix at a time.
+
+If you want a sign-in in front of it, give it a password, and a user name if you like. The browser
+then asks for them before it shows anything:
+
+```
+ferrumkix --browser --browser-user=anna --browser-password=secret
+```
+
+To reach it from another device, such as a tablet or a phone in the same network, one more thing
+is needed. FerrumKix does not encrypt the connection itself, and a password travelling through the
+network unprotected could be read by anyone listening. So it only lets other devices in through a
+reverse proxy that provides HTTPS, the kind of small web server many people already run in front of
+their home services. Tell FerrumKix that the proxy is there, and a password becomes mandatory:
+
+```
+ferrumkix --browser --browser-tls-proxy --browser-user=anna --browser-password=secret
+```
+
+If you start it for other devices without that, FerrumKix does not start and tells you why. That
+is on purpose: it is better to be told once than to find out later that your password was readable.
+
+Everything you can pass on the command line can also come from the environment, which is handy for
+a service and keeps the password out of the list of running programs:
+
+```
+env FERRUMKIX_BROWSER_USER=anna FERRUMKIX_BROWSER_PASSWORD=secret ferrumkix --browser
+```
+
+| On the command line | In the environment | What it does |
+|---|---|---|
+| `--browser` | | shows FerrumKix in the browser instead of a window |
+| `--browser-bind=127.0.0.1:8080` | `FERRUMKIX_BROWSER_BIND` | the address and port to listen on |
+| `--browser-user=anna` | `FERRUMKIX_BROWSER_USER` | the user name for the sign-in |
+| `--browser-password=secret` | `FERRUMKIX_BROWSER_PASSWORD` | the password for the sign-in |
+| `--browser-tls-proxy` | `FERRUMKIX_BROWSER_TLS_PROXY=1` | a reverse proxy with HTTPS stands in front |
+| `--browser-proxy-address=192.168.1.2` | `FERRUMKIX_BROWSER_PROXY_ADDRESS` | where that proxy is, if it runs on a different computer |
+
+This is a first version. Files cannot be dropped onto the page or uploaded from the device you sit
+at; the playlist takes them from the computer FerrumKix runs on, through its own file dialog. Copy
+and paste stay inside FerrumKix. There is no symbol in the notification area in this mode. And
+because the computer draws everything without the help of its graphics card, it feels a little less
+quick than the window does, mostly with very large browser windows.
 
 ## Building from source
 
@@ -198,7 +274,7 @@ builds every package of the release, Windows included.
 
 ## Licence
 
-FerrumKix is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI, SkiaSharp and HarfBuzzSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [ANGLE](https://chromium.googlesource.com/angle/angle) on Windows (BSD-3-Clause), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) and [Phosphor Icons](https://github.com/phosphor-icons/core) (MIT).
+FerrumKix is [GPL-3.0-only](LICENSE). Every package carries that licence text and a `THIRD-PARTY-NOTICES.txt` naming each component and the licence it is used under: .NET, Avalonia UI, SkiaSharp and HarfBuzzSharp (MIT), Skia (BSD-3-Clause), HarfBuzz (Old MIT), [ANGLE](https://chromium.googlesource.com/angle/angle) on Windows (BSD-3-Clause), [TagLib#](https://github.com/mono/taglib-sharp) (LGPL-2.1) [Phosphor Icons](https://github.com/phosphor-icons/core) (MIT) and, for the browser mode, the [Inter](https://github.com/rsms/inter) typeface (OFL-1.1).
 
 For playback, conversion and ripping FerrumKix uses [libmpv](https://mpv.io/) (GPL-2.0-or-later), [FFmpeg](https://ffmpeg.org/) and [cdparanoia](https://www.xiph.org/paranoia/) (GPL-2.0-or-later). The copies installed on your system always come first. The Windows packages bundle libmpv and FFmpeg (GPL-3.0-or-later build), the AppImage and the linux-x64 ZIP bundle all three from Ubuntu 24.04 as a fallback; deb, rpm, AUR and the linux-arm64 ZIP take them from the system. Every bundled binary comes with its licence texts and the references to its corresponding source under `licenses/`.
 

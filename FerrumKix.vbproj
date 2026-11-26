@@ -36,6 +36,8 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="12.2.0" />
     <PackageReference Include="Avalonia.Desktop" Version="12.2.0" />
+    <!-- Zeichnen ohne Bildschirm: der Start mit dem Schalter fuer den Browser (BrowserBridge). -->
+    <PackageReference Include="Avalonia.Headless" Version="12.2.0" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.2.0" />
     <!-- Wie in FerrumPix das virtualisierende Raster: der ItemsRepeater baut nur die Kacheln, die
          wirklich im Sichtbereich liegen, und reicht sie beim Rollen weiter. Ohne ihn erzeugt die
