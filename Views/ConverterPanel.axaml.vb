@@ -275,8 +275,21 @@ Namespace Views
                 ' steht, gilt der Lauf als laufend, und der Startknopf bliebe gesperrt.
                 _cancel?.Dispose() : _cancel = Nothing
                 SetProcessingControls(False)
+                AddCreatedFilesToPlaylist(request.CreatedFiles)
                 If _closeWhenFinished Then RaiseEvent CloseRequested(Me, EventArgs.Empty)
             End Try
+        End Sub
+
+        ''' <summary>Was gerade gerippt oder konvertiert wurde, kommt gleich in die Wiedergabeliste -
+        ''' auch nach einem Abbruch das, was bis dahin fertig war. Steht eine Datei schon darin
+        ''' (ueberschrieben), bleibt es bei dem einen Eintrag. Das Modell wird VOR dem Schliessen
+        ''' geholt: danach haengt das Panel nicht mehr am Fenster.</summary>
+        Private Async Sub AddCreatedFilesToPlaylist(files As IReadOnlyList(Of String))
+            If files Is Nothing OrElse files.Count = 0 Then Return
+            Dim owner = TryCast(TopLevel.GetTopLevel(Me)?.DataContext, MainWindowViewModel)
+            If owner Is Nothing Then Return
+            Dim paths = files.Where(AddressOf File.Exists).ToList()
+            If paths.Count > 0 Then Await owner.AddPathsAsync(paths)
         End Sub
 
         Private Shared Function IsSameFormatInSourceFolder(tracks As List(Of Track), folder As String, format As AudioConversionService.OutputFormat) As Boolean

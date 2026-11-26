@@ -191,12 +191,22 @@ Namespace Views
   End Sub
 
   ''' <summary>Der Interpret auf einer Kachel. Er steckt wie der Stern IN der Albumschaltflaeche;
-  ''' ohne dieses Handled oeffnete der Klick zugleich das Album.</summary>
+  ''' ohne dieses Handled oeffnete der Klick zugleich das Album.
+  ''' Der Filter arbeitet auf der geholten Liste. Unter "Zuletzt hinzugefuegt" ist das nur ein
+  ''' Ausschnitt der Bibliothek, der Interpret zeigte dort nur seine neuesten Alben. Deshalb geht
+  ''' der Klick immer auf Interpret/Jahr und holt die Liste neu, wenn eine andere Reihenfolge
+  ''' stand.</summary>
   Private Sub OnArtistClick(sender As Object, e As RoutedEventArgs)
    e.Handled = True
    Dim album = TryCast(TryCast(sender, Button)?.Tag, LyrionAlbumTile)?.Album
    If album Is Nothing OrElse (String.IsNullOrWhiteSpace(album.ArtistId) AndAlso String.IsNullOrWhiteSpace(album.Artist)) Then Return
+   Dim reload = _sort <> LyrionMediaServerService.AlbumSort.ArtistYear
+   If reload Then
+    _sort = LyrionMediaServerService.AlbumSort.ArtistYear
+    FillSortBox()
+   End If
    SetArtistFilter(If(album.ArtistId, String.Empty), If(album.Artist, String.Empty))
+   If reload Then LoadAlbumsAsync()
   End Sub
 
   Private Sub OnClearArtistFilterClick(sender As Object, e As RoutedEventArgs)

@@ -22,6 +22,12 @@
 - Avalonia 12.2.0.
 - In the Lyrion browser, the playback target moved up next to the symbols, so the filter bar no
   longer overlaps itself in a small window; a long page title is shortened with an ellipsis.
+- In the Lyrion browser, clicking the artist on an album tile always switches to Artist/Year and
+  shows all albums of that artist, also when "Recently added" was selected before, which only
+  holds the newest albums.
+- Tracks ripped from an audio CD or converted are added to the playlist right away; after a
+  cancelled run, the ones finished until then. A file that was overwritten and is already in the
+  list keeps its single entry.
 - The licence information is complete again: Settings › Technology, the README and
   THIRD-PARTY-NOTICES.txt now also name FFmpeg, cdparanoia, ANGLE (Windows) and Phosphor Icons,
   and say which package bundles libmpv, FFmpeg and cdparanoia.

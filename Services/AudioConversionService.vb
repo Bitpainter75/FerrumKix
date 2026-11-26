@@ -50,6 +50,10 @@ Namespace Services
             ''' <summary>Status je Ursprungszeile fuer die Warteschlange der Oberfläche. -1 steht
             ''' fuer einen Sammellauf, dessen Ergebnis mehrere Zeilen umfasst.</summary>
             Public Property ItemProgress As Action(Of Integer, String)
+            ''' <summary>Die Dateien, die der Lauf fertig geschrieben hat, in der Reihenfolge des
+            ''' Laufs. Auch nach einem Abbruch oder Fehler steht hier, was bis dahin fertig war - die
+            ''' Oberflaeche nimmt sie in die Wiedergabeliste auf.</summary>
+            Public ReadOnly Property CreatedFiles As New List(Of String)()
         End Class
 
         Public Shared Function IsFfmpegAvailable() As Boolean
@@ -164,6 +168,7 @@ Namespace Services
                         If track.IsAudioCdTrack AndAlso request.Format = OutputFormat.Mp3 Then
                             target = TagWriteService.Write(target, CdTagValues(track), rename:=False)
                         End If
+                        request.CreatedFiles.Add(target)
                         request.ItemProgress?.Invoke(index, LocalizationService.T("Fertig"))
                     Finally
                         DeleteTemporaryCdWav(input)
@@ -296,6 +301,7 @@ Namespace Services
                 Dim target = TargetPath(request.OutputDirectory, SafeFileName(stem) & ExtensionFor(request.Format), request.OverwriteExisting)
                 Await RunFfmpegAsync(listPath, target, request, Nothing, Nothing, cancellationToken, isConcatList:=True)
                 If writeCueFile Then WriteCue(target, tracks)
+                request.CreatedFiles.Add(target)
             Finally
                 Try
                     If File.Exists(listPath) Then File.Delete(listPath)
@@ -342,6 +348,7 @@ Namespace Services
                 progress?.Report(LocalizationService.Format("Teile CUE {0} von {1}: {2}", index + 1, total, entry.Title))
                 Dim target = TargetPath(request.OutputDirectory, CueFileName(source, entry, total, request.Format), request.OverwriteExisting)
                 Await RunFfmpegAsync(source.FilePath, target, request, entry.StartSeconds, endSeconds, cancellationToken)
+                request.CreatedFiles.Add(target)
             Next
         End Function
 
