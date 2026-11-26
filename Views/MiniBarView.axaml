@@ -14,11 +14,17 @@
          Ansicht zurueck.
 
          Die Hoehe steht an zwei Stellen: hier und in MainWindow.BarHeight. Wer eine aendert,
-         aendert beide. -->
+         aendert beide.
+
+         Ein Akzentrahmen hebt die Leiste vom Hintergrund ab, wo sie frei auf dem Bildschirm
+         liegt. Er sitzt innerhalb der 48 Punkte und folgt der Rundung von WindowFrame. -->
     <Border Classes="window-drag"
             Height="48"
             Background="{DynamicResource FP.Footer.Bg}"
-            Padding="8,0,8,0">
+            BorderBrush="{DynamicResource FP.Accent}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Padding="7,0,7,0">
         <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto" ColumnSpacing="10" VerticalAlignment="Center">
 
             <!-- Das Cover, klein. Ohne Bild das Notensymbol wie in der grossen Ansicht. -->

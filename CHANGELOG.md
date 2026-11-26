@@ -86,6 +86,7 @@
   edges; a double click on a free spot or the arrows bring the full view back, in its old size
   and place. FerrumKix remembers where the bar was and starts again the way it was closed. Under
   Wayland, where the bar lands and whether it stays on top is up to the compositor.
+  A thin frame in the accent colour sets the bar apart from whatever lies behind it.
 - In the Lyrion browser, clicking the artist on an album tile always switches to Artist/Year and
   shows all albums of that artist, also when "Recently added" was selected before, which only
   holds the newest albums.
